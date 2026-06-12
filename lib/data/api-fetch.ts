@@ -22,10 +22,12 @@ export interface ApiFetchOptions {
   onBeforeRequest?: () => void
   /** Called after each successful response to update internal counters. */
   onAfterSuccess?: () => void
+  /** Request timeout in ms. Default: 10000 (10 seconds). */
+  timeoutMs?: number
 }
 
 export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions): Promise<T> {
-  const { baseUrl, headers = {}, params, onBeforeRequest, onAfterSuccess } = options
+  const { baseUrl, headers = {}, params, onBeforeRequest, onAfterSuccess, timeoutMs = 10000 } = options
 
   onBeforeRequest?.()
 
@@ -42,7 +44,10 @@ export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions): P
 
     let response: Response
     try {
-      response = await fetch(url, { headers })
+      response = await fetch(url, {
+        headers,
+        signal: AbortSignal.timeout(timeoutMs),
+      })
     } catch (networkError) {
       lastError = networkError instanceof Error ? networkError : new Error(String(networkError))
       console.error(`[apiFetch] Network error: ${lastError.message}`)

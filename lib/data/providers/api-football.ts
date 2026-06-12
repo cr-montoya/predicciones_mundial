@@ -119,6 +119,11 @@ export class ApiFootballProvider implements DataProvider {
       season: String(season),
     })
 
+    if (!Array.isArray(data?.response)) {
+      console.error('[api-football] fetchFixtures: Invalid response structure', { data, errors: data?.errors })
+      return []
+    }
+
     console.log(
       `[api-football] fetchFixtures: ${data.response.length} fixtures for league ${leagueId} season ${season}`
     )
@@ -136,12 +141,17 @@ export class ApiFootballProvider implements DataProvider {
   }
 
   async fetchTeamStats(teamId: number, leagueId: number, season: number): Promise<Partial<Team>> {
-    interface Resp { response: ApiTeamStatsResponse }
+    interface Resp { response: ApiTeamStatsResponse; errors?: Record<string, string> }
     const data = await this.fetch<Resp>('teams/statistics', {
       team: String(teamId),
       league: String(leagueId),
       season: String(season),
     })
+
+    if (!data?.response?.goals?.for?.average?.total || !data?.response?.goals?.against?.average?.total) {
+      console.warn('[api-football] fetchTeamStats: Missing fields in response', { teamId, errors: data?.errors })
+      return {}
+    }
 
     const r = data.response
     return {
@@ -151,10 +161,15 @@ export class ApiFootballProvider implements DataProvider {
   }
 
   async fetchMatchEvents(fixtureId: number): Promise<MatchEvent[]> {
-    interface Resp { response: ApiEventItem[] }
+    interface Resp { response: ApiEventItem[]; errors?: Record<string, string> }
     const data = await this.fetch<Resp>('fixtures/events', {
       fixture: String(fixtureId),
     })
+
+    if (!Array.isArray(data?.response)) {
+      console.warn('[api-football] fetchMatchEvents: Invalid response structure', { fixtureId, errors: data?.errors })
+      return []
+    }
 
     const events: MatchEvent[] = []
     let syntheticId = 1
@@ -174,10 +189,15 @@ export class ApiFootballProvider implements DataProvider {
   }
 
   async fetchMatchStats(fixtureId: number): Promise<MatchStats[]> {
-    interface Resp { response: ApiStatItem[] }
+    interface Resp { response: ApiStatItem[]; errors?: Record<string, string> }
     const data = await this.fetch<Resp>('fixtures/statistics', {
       fixture: String(fixtureId),
     })
+
+    if (!Array.isArray(data?.response)) {
+      console.warn('[api-football] fetchMatchStats: Invalid response structure', { fixtureId, errors: data?.errors })
+      return []
+    }
 
     return data.response.map((item) => ({
       fixtureId,
