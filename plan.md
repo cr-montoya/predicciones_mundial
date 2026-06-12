@@ -132,7 +132,31 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
   - Agente **security** audita que no haya `fs` imports, que secrets no estén expuestos, que APIs estén rate-limited.
   - `pnpm build` compila sin errores para Cloudflare.
 
-### Fase 10 — Deploy a Cloudflare Pages
+### Fase 10 — Hardening & Autenticación
+- **Objetivo**: Asegurar la app antes del deploy con rate limiting, autenticación simple y security headers.
+- **Rate Limiting** (por IP):
+  - Implementar middleware que limita requests por IP (ej. 30 req/min para endpoints de refresh).
+  - Usar `request.ip` en Next.js; guardar contador en Cloudflare KV (replicable) o en-memoria con key `IP:timestamp`.
+  - Retornar HTTP 429 si se excede límite.
+- **Autenticación simple**:
+  - Crear tabla `users` en DB: `id, username, password_hash, created_at`.
+  - Hash de passwords: usar `bcrypt` (pnpm add bcrypt).
+  - Endpoint de login: `POST /api/auth/login` que devuelve JWT en httpOnly cookie.
+  - JWT include: `{ sub: userId, exp: now + 7 days }`.
+  - Middleware: verificar JWT antes de acceder a refresh y otras operaciones sensibles.
+  - Seed: crear un usuario de demo (username: `demo`, password: generado aleatoriamente, compartible).
+- **Security Headers** (middleware o Next.js config):
+  - `Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-...'` (mitigar XSS).
+  - `X-Content-Type-Options: nosniff` (evitar sniffing de MIME types).
+  - `X-Frame-Options: DENY` (evitar clickjacking).
+  - `Strict-Transport-Security: max-age=31536000` (HTTPS only).
+  - `Referrer-Policy: no-referrer-when-downgrade`.
+- **Verificación**:
+  - Security agent audita: no hay secrets nuevos, headers correctos, rate limit funciona.
+  - Tests de autenticación: login correcto, JWT expirado rechazado, rate limit activa.
+  - `pnpm test` pasa 169+ tests.
+
+### Fase 11 — Deploy a Cloudflare Pages
 - **Preparación**:
   - Crear cuenta Cloudflare (free).
   - Crear D1 database en dashboard de Cloudflare.
