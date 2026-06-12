@@ -36,3 +36,5 @@ next-env.d.ts
 
 # project specific
 data/mundial.db
+data/mundial.db-shm
+data/mundial.db-wal
