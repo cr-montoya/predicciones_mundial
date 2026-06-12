@@ -91,6 +91,15 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
 - Modo captura: vista limpia para los clips.
 - Indicador de "última actualización" (timestamp de la última corrida) visible en la UI.
 
+### Fase 6 — Diseño Broadcast
+- **Estilo visual**: Look de terminal de datos deportiva (broadcast / Opta). Números grandes como protagonista. Fondo oscuro con acento. Visualizaciones custom (no Recharts default).
+- **Home rediseñado**:
+  - Partidos del día (fixtures con estado y horario)
+  - Top 10 mercados recomendados (highest-probability markets across all matches)
+  - Candidatos a campeón y Bota de Oro (secundarios, pero presentes)
+- **Paleta**: Oscuro + un acento (dorado, cian, verde). Sin gradientes morados genéricos. Sin cards redondeadas flotando.
+- **Tipografía**: Monoespaciada (ya en Tailwind), números en 3xl/4xl, etiquetas en caps tracking-widest.
+
 ---
 
 ## Riesgos
