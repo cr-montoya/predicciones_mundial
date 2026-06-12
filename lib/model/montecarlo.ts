@@ -54,14 +54,14 @@ export function simulateTournament(input: TournamentInput): TournamentOutput {
 
   const winnerProbs: Record<string, number> = {}
   for (const t of teams) {
-    winnerProbs[`${t.id}_${t.name}`] = (winnerCount.get(t.id) ?? 0) / MONTE_CARLO_ITERATIONS
+    winnerProbs[t.name] = (winnerCount.get(t.id) ?? 0) / MONTE_CARLO_ITERATIONS
   }
 
   const winnerOutput: ModelOutput = {
     market: 'tournament_winner',
     probabilities: winnerProbs,
     confidence: 'medium',
-    modelVersion: '1.0',
+    modelVersion: '1.1',
     computedAt: new Date().toISOString(),
   }
   sanityCheck(winnerOutput)
@@ -69,7 +69,7 @@ export function simulateTournament(input: TournamentInput): TournamentOutput {
   const hasPlayers = bootCount.size > 0
   const goldenBootOutput: ModelOutput = hasPlayers
     ? buildGoldenBoot(bootCount, players)
-    : { market: 'golden_boot', probabilities: {}, confidence: 'low', modelVersion: '1.0', computedAt: new Date().toISOString() }
+    : { market: 'golden_boot', probabilities: {}, confidence: 'low', modelVersion: '1.1', computedAt: new Date().toISOString() }
 
   return { winner: winnerOutput, goldenBoot: goldenBootOutput }
 }
@@ -84,7 +84,7 @@ function buildGoldenBoot(
 
   for (const [playerId, count] of bootCount) {
     const p = playerById.get(playerId)
-    const label = p ? `${playerId}_${p.name}` : `${playerId}`
+    const label = p ? p.name : `unknown_${playerId}`
     probs[label] = count / total
   }
 
@@ -92,7 +92,7 @@ function buildGoldenBoot(
     market: 'golden_boot',
     probabilities: probs,
     confidence: 'medium',
-    modelVersion: '1.0',
+    modelVersion: '1.1',
     computedAt: new Date().toISOString(),
   }
   sanityCheck(output)

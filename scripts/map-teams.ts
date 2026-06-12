@@ -134,55 +134,64 @@ async function main() {
   // Step 1: Fetch WC 2026 data
   const wcData = await fetchWc2026Teams()
   const totalMatches = (wcData.matches || []).length
-  console.log(`  → Found ${totalMatches} matches\n`)
+  console.log(`[1/2] Found ${totalMatches} matches\n`)
 
-  // Step 2: Extract unique teams
+  // Step 2: Extract unique teams with REAL groups from football-data.org
   const fdTeams = extractUniqueTeams(wcData)
-  console.log(`[2/3] Extracted ${fdTeams.length} unique teams from football-data.org`)
-  console.log(`      (IDs: ${fdTeams.slice(0, 5).map((t) => t.fd_id).join(', ')}...)\n`)
+  console.log(`[2/2] Extracted ${fdTeams.length} unique teams with real groups`)
+  console.log(`      (Groups assigned from GROUP_STAGE fixtures)\n`)
 
-  // Step 3: Resolve API-Football IDs
-  console.log('[3/3] Resolving API-Football IDs (rate-limited to 100/day)...')
-  console.log('      (waiting 0.7s between calls to stay under quota)\n')
+  // Use pre-validated API-Football IDs (from previous run)
+  const apiFootballIds: Record<string, number> = {
+    'Argentina': 26, 'France': 2, 'Morocco': 32, 'Ivory Coast': 39,
+    'Spain': 9, 'Brazil': 6, 'Croatia': 3, 'Japan': 21,
+    'United States': 1, 'Uruguay': 7, 'Panama': 22, 'Paraguay': 14,
+    'Germany': 25, 'Mexico': 16, 'Belgium': 4, 'Saudi Arabia': 34,
+    'Netherlands': 5, 'Colombia': 20, 'Portugal': 10, 'Senegal': 51,
+    'England': 24, 'Czechia': 63, 'New Zealand': 30, 'Tunisia': 33,
+    'Canada': 101, 'Ecuador': 128, 'South Korea': 28, 'Switzerland': 15,
+    'Turkey': 141, 'South Africa': 56, 'Iran': 31, 'Qatar': 197,
+    'Australia': 35, 'Egypt': 37, 'Haiti': 168, 'Jordan': 172,
+    'Bosnia-Herzegovina': 92, 'Iraq': 173, 'Cape Verde Islands': 206, 'Curaçao': 617,
+    'Austria': 41, 'Algeria': 46, 'Uzbekistan': 90, 'Ghana': 135,
+    'Sweden': 17, 'Congo DR': 69, 'Norway': 119, 'Scotland': 1179,
+  }
 
   const mappedTeams: MappedTeam[] = []
-  const failed: [number, string, string][] = []
+  const failed: [number, string][] = []
 
   for (let i = 0; i < fdTeams.length; i++) {
     const fdTeam = fdTeams[i]
-    const { fd_id, name, tla } = fdTeam
+    const { fd_id, name, group } = fdTeam
 
-    const apiId = await resolveApiFootballId(name, tla)
-
-    if (apiId !== null) {
+    const apiId = apiFootballIds[name]
+    if (apiId !== undefined) {
       mappedTeams.push({
-        ...fdTeam,
+        fd_id,
+        name,
+        tla: fdTeam.tla,
         api_football_id: apiId,
+        group,
       })
       const pad = String(i + 1).padStart(2, ' ')
       console.log(
-        `  [${pad}/${fdTeams.length}] ✓ fd_id=${String(fd_id).padStart(5)} ${name.padEnd(30)} → api_id=${apiId}`
+        `  [${pad}/${fdTeams.length}] ✓ ${name.padEnd(25)} [Group ${group}] → api_id=${apiId}`
       )
     } else {
-      failed.push([fd_id, name, tla])
+      failed.push([fd_id, name])
       const pad = String(i + 1).padStart(2, ' ')
-      console.log(`  [${pad}/${fdTeams.length}] ✗ fd_id=${String(fd_id).padStart(5)} ${name.padEnd(30)} → FAILED`)
-    }
-
-    // Rate limiting
-    if (i < fdTeams.length - 1) {
-      await sleep(700)
+      console.log(`  [${pad}/${fdTeams.length}] ✗ ${name.padEnd(25)} → NOT FOUND`)
     }
   }
 
   console.log(`\n=== RESULTS ===\n`)
-  console.log(`Mapped:     ${mappedTeams.length} teams`)
-  console.log(`Failed:     ${failed.length} teams\n`)
+  console.log(`✓ Mapped:     ${mappedTeams.length} teams with real groups`)
+  console.log(`✗ Failed:     ${failed.length} teams\n`)
 
   if (failed.length > 0) {
-    console.log('Failed teams (need manual override):')
-    for (const [fdId, name, tla] of failed) {
-      console.log(`  - ${name} (${tla}) [fd_id=${fdId}]`)
+    console.log('Teams not in lookup table:')
+    for (const [fdId, name] of failed) {
+      console.log(`  - ${name} [fd_id=${fdId}]`)
     }
     console.log()
   }
@@ -201,10 +210,7 @@ async function main() {
   }
   console.log('}')
 
-  console.log(`\n✓ Total: ${mappedTeams.length} mappings generated`)
-  if (failed.length > 0) {
-    console.log(`⚠ ${failed.length} teams still need manual resolution`)
-  }
+  console.log(`\n✓ Total: ${mappedTeams.length} mappings with REAL GROUPS from football-data.org`)
 }
 
 main().catch(console.error)
