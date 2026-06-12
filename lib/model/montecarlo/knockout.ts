@@ -31,10 +31,11 @@ function pairWithGroupAvoidance(
 
     if (valid) return thisPairs
     if (attempt === 9) {
+      const fallbackPairs: Array<[number, number]> = []
       for (let i = 0; i < shuffled.length; i += 2) {
-        thisPairs.push([shuffled[i], shuffled[i + 1]])
+        fallbackPairs.push([shuffled[i], shuffled[i + 1]])
       }
-      return thisPairs
+      return fallbackPairs
     }
   }
 

@@ -60,7 +60,7 @@ export function simGroupStage(
 
   for (const sorted of standings.values()) {
     qualifiers.push(sorted[0].teamId, sorted[1].teamId)
-    thirds.push(sorted[2])
+    if (sorted[2]) thirds.push(sorted[2])
   }
 
   thirds.sort(compareStanding)
