@@ -1,6 +1,4 @@
-import Database from 'better-sqlite3'
-import { readFileSync } from 'fs'
-import { join } from 'path'
+type Database = any
 import type { Team, Player, Fixture, FixtureStatus, MatchStats, MatchEvent, ModelOutput, RunLog, AgentName } from '@/lib/types'
 import {
   mapTeam, mapPlayer, mapFixture, mapMatchStats, mapMatchEvent, mapPrediction, mapRunLog,
@@ -10,8 +8,15 @@ import {
 import { seedTeams } from './seed'
 import { worldCupTeams } from '@/lib/data/teams-seed'
 
-const DB_PATH = join(process.cwd(), 'data', 'mundial.db')
-const SCHEMA_PATH = join(process.cwd(), 'lib', 'db', 'schema.sql')
+let DB_PATH: string
+let SCHEMA_PATH: string
+
+// Lazy imports: better-sqlite3 only in Node.js environments
+function initPaths() {
+  const { join } = require('path')
+  DB_PATH = join(process.cwd(), 'data', 'mundial.db')
+  SCHEMA_PATH = join(process.cwd(), 'lib', 'db', 'schema.sql')
+}
 
 function migrateRunLog(instance: Database.Database): void {
   const row = instance
@@ -36,60 +41,79 @@ function migrateRunLog(instance: Database.Database): void {
   `)
 }
 
+let dbInstance: Database.Database | null = null
+
 function openDb(): Database.Database {
-  const instance = new Database(DB_PATH)
-  instance.pragma('journal_mode = WAL')
-  instance.pragma('foreign_keys = ON')
-  const schema = readFileSync(SCHEMA_PATH, 'utf-8')
-  instance.exec(schema)
-  migrateRunLog(instance)
-  seedTeams(instance, worldCupTeams)
-  return instance
+  if (dbInstance) return dbInstance
+
+  try {
+    initPaths()
+    const DatabaseConstructor = require('better-sqlite3')
+    const { readFileSync } = require('fs')
+
+    const instance = new DatabaseConstructor(DB_PATH)
+    instance.pragma('journal_mode = WAL')
+    instance.pragma('foreign_keys = ON')
+    const schema = readFileSync(SCHEMA_PATH, 'utf-8')
+    instance.exec(schema)
+    migrateRunLog(instance)
+    seedTeams(instance, worldCupTeams)
+
+    dbInstance = instance
+    return instance
+  } catch (error) {
+    throw new Error(
+      `Failed to initialize database. better-sqlite3 is only available in Node.js environments. ` +
+      `If you're on Cloudflare Pages, use D1 instead. Error: ${error}`
+    )
+  }
 }
 
-export const db: Database.Database = openDb()
+export function getDb(): Database.Database {
+  return openDb()
+}
 
 export function getTeams(): Team[] {
-  const rows = db.prepare('SELECT * FROM teams').all() as TeamRow[]
+  const rows = getDb().prepare('SELECT * FROM teams').all() as TeamRow[]
   return rows.map(mapTeam)
 }
 
 export function getTeamById(id: number): Team | undefined {
-  const row = db.prepare('SELECT * FROM teams WHERE id = ?').get(id) as TeamRow | undefined
+  const row = getDb().prepare('SELECT * FROM teams WHERE id = ?').get(id) as TeamRow | undefined
   return row ? mapTeam(row) : undefined
 }
 
 export function getFixtures(status?: FixtureStatus): Fixture[] {
   const rows = status
-    ? (db.prepare('SELECT * FROM fixtures WHERE status = ? ORDER BY kickoff_utc').all(status) as FixtureRow[])
-    : (db.prepare('SELECT * FROM fixtures ORDER BY kickoff_utc').all() as FixtureRow[])
+    ? (getDb().prepare('SELECT * FROM fixtures WHERE status = ? ORDER BY kickoff_utc').all(status) as FixtureRow[])
+    : (getDb().prepare('SELECT * FROM fixtures ORDER BY kickoff_utc').all() as FixtureRow[])
   return rows.map(mapFixture)
 }
 
 export function getFixtureById(id: number): Fixture | undefined {
-  const row = db.prepare('SELECT * FROM fixtures WHERE id = ?').get(id) as FixtureRow | undefined
+  const row = getDb().prepare('SELECT * FROM fixtures WHERE id = ?').get(id) as FixtureRow | undefined
   return row ? mapFixture(row) : undefined
 }
 
 export function getPlayersByTeam(teamId: number): Player[] {
-  const rows = db.prepare('SELECT * FROM players WHERE team_id = ?').all(teamId) as PlayerRow[]
+  const rows = getDb().prepare('SELECT * FROM players WHERE team_id = ?').all(teamId) as PlayerRow[]
   return rows.map(mapPlayer)
 }
 
 export function getMatchStats(fixtureId: number): MatchStats[] {
-  const rows = db.prepare('SELECT * FROM match_stats WHERE fixture_id = ?').all(fixtureId) as MatchStatsRow[]
+  const rows = getDb().prepare('SELECT * FROM match_stats WHERE fixture_id = ?').all(fixtureId) as MatchStatsRow[]
   return rows.map(mapMatchStats)
 }
 
 export function getMatchEvents(fixtureId: number): MatchEvent[] {
-  const rows = db
+  const rows = getDb()
     .prepare('SELECT * FROM match_events WHERE fixture_id = ? ORDER BY minute')
     .all(fixtureId) as MatchEventRow[]
   return rows.map(mapMatchEvent)
 }
 
 export function getLatestPredictions(fixtureId: number): ModelOutput[] {
-  const rows = db.prepare(`
+  const rows = getDb().prepare(`
     SELECT p.*
     FROM predictions p
     INNER JOIN (
@@ -104,7 +128,7 @@ export function getLatestPredictions(fixtureId: number): ModelOutput[] {
 }
 
 export function getLatestTournamentPredictions(): ModelOutput[] {
-  const rows = db.prepare(`
+  const rows = getDb().prepare(`
     SELECT p.*
     FROM predictions p
     INNER JOIN (
@@ -119,7 +143,7 @@ export function getLatestTournamentPredictions(): ModelOutput[] {
 }
 
 export function getLastRunLog(agentName: AgentName): RunLog | undefined {
-  const row = db.prepare(`
+  const row = getDb().prepare(`
     SELECT * FROM run_log
     WHERE agent_name = ?
     ORDER BY started_at DESC
@@ -129,7 +153,7 @@ export function getLastRunLog(agentName: AgentName): RunLog | undefined {
 }
 
 export function getLastOkRunLog(agentName: AgentName): RunLog | undefined {
-  const row = db.prepare(`
+  const row = getDb().prepare(`
     SELECT * FROM run_log
     WHERE agent_name = ? AND status = 'ok'
     ORDER BY started_at DESC
@@ -161,7 +185,7 @@ export interface User {
 }
 
 export function getUserByUsername(username: string): (User & { passwordHash: string }) | undefined {
-  const row = db
+  const row = getDb()
     .prepare('SELECT id, username, password_hash AS passwordHash, created_at AS createdAt FROM users WHERE username = ?')
     .get(username) as (User & { passwordHash: string }) | undefined
   return row
@@ -169,7 +193,7 @@ export function getUserByUsername(username: string): (User & { passwordHash: str
 
 export function createUser(username: string, passwordHash: string): User {
   const createdAt = new Date().toISOString()
-  const result = db
+  const result = getDb()
     .prepare('INSERT INTO users (username, password_hash, created_at) VALUES (?, ?, ?)')
     .run(username, passwordHash, createdAt)
 
@@ -181,6 +205,6 @@ export function createUser(username: string, passwordHash: string): User {
 }
 
 export function userExists(username: string): boolean {
-  const row = db.prepare('SELECT 1 FROM users WHERE username = ?').get(username)
+  const row = getDb().prepare('SELECT 1 FROM users WHERE username = ?').get(username)
   return !!row
 }
