@@ -30,9 +30,21 @@ export function Hero({ fixturesToday, fallbackLabel }: HeroProps) {
   return (
     <div className="border-b py-10 px-6" style={{ borderColor: 'var(--border)' }}>
       <div className="max-w-4xl mx-auto w-full flex flex-col gap-4">
-        <span className="text-xs tracking-widest" style={{ color: 'var(--muted)' }}>
-          {formatDate()}
-        </span>
+        <div className="flex items-center gap-2">
+          <span
+            className="text-xs px-2 py-1 font-bold tracking-widest"
+            style={{
+              background: 'var(--accent)',
+              color: 'var(--bg)',
+              borderRadius: '2px',
+            }}
+          >
+            FIFA WORLD CUP
+          </span>
+          <span className="text-xs tracking-widest" style={{ color: 'var(--muted)' }}>
+            {formatDate()}
+          </span>
+        </div>
         {fallbackLabel ? (
           <div className="flex flex-col gap-2">
             <span className="text-xs tracking-widest" style={{ color: 'var(--muted)' }}>
@@ -46,10 +58,10 @@ export function Hero({ fixturesToday, fallbackLabel }: HeroProps) {
             </span>
           </div>
         ) : (
-          <div className="flex items-baseline gap-6">
+          <div className="flex items-center gap-6">
             <span
               className="font-bold tabular-nums"
-              style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', color: 'var(--accent)', lineHeight: 1 }}
+              style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', color: 'var(--accent)', lineHeight: 1 }}
             >
               {count}
             </span>

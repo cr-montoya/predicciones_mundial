@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import type { ModelOutput } from '@/lib/types'
 
 function displayName(key: string): string {
@@ -20,9 +23,11 @@ interface CandidateListProps {
 }
 
 function CandidateList({ output, title }: CandidateListProps) {
+  const [expanded, setExpanded] = useState(false)
   const sorted = Object.entries(output.probabilities)
     .sort(([, a], [, b]) => b - a)
-    .slice(0, 5)
+  const displayed = expanded ? sorted : sorted.slice(0, 5)
+  const hasMore = sorted.length > 5
 
   return (
     <div className="flex flex-col gap-4 border-t pt-4" style={{ borderColor: 'var(--border)' }}>
@@ -30,7 +35,7 @@ function CandidateList({ output, title }: CandidateListProps) {
         {title}
       </h3>
       <div className="flex flex-col gap-3">
-        {sorted.map(([key, prob], i) => {
+        {displayed.map(([key, prob], i) => {
           const pct = Math.round(prob * 100)
           return (
             <div key={key} className="flex items-baseline justify-between gap-4">
@@ -58,6 +63,15 @@ function CandidateList({ output, title }: CandidateListProps) {
           )
         })}
       </div>
+      {hasMore && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="text-xs tracking-widest py-2 transition-colors hover:opacity-80"
+          style={{ color: 'var(--accent)' }}
+        >
+          {expanded ? '← OCULTAR' : 'VER MÁS →'}
+        </button>
+      )}
     </div>
   )
 }
