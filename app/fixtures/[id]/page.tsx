@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getFixtureById, getTeamById, getLatestPredictions } from '@/lib/db/client'
 import { MarketSection } from '@/components/market-section'
+import { FadeIn } from '@/components/fade-in'
 import type { ModelOutput, MarketType } from '@/lib/types'
 
 interface PageProps {
@@ -84,28 +85,40 @@ export default async function FixturePage({ params }: PageProps) {
 
   return (
     <div className="flex flex-col gap-10 px-6 py-12 max-w-4xl mx-auto w-full">
-      <FixtureHeader
-        home={homeName}
-        away={awayName}
-        kickoff={fixture.kickoffUtc}
-        homeGoals={fixture.homeGoals}
-        awayGoals={fixture.awayGoals}
-        status={fixture.status}
-      />
+      <FadeIn>
+        <FixtureHeader
+          home={homeName}
+          away={awayName}
+          kickoff={fixture.kickoffUtc}
+          homeGoals={fixture.homeGoals}
+          awayGoals={fixture.awayGoals}
+          status={fixture.status}
+        />
+      </FadeIn>
 
       {predictions.length === 0 ? (
-        <div
-          className="border p-6 text-sm"
-          style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
-        >
-          Sin predicciones. Pulsa Actualizar en la pantalla principal.
-        </div>
+        <FadeIn delay={0.1}>
+          <div
+            className="border p-6 text-sm"
+            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
+          >
+            Sin predicciones. Pulsa Actualizar en la pantalla principal.
+          </div>
+        </FadeIn>
       ) : (
         <div className="flex flex-col gap-12">
-          <MarketSection title="RESULTADO" markets={resultMarkets} />
-          <MarketSection title="GOLES" markets={goalMarkets} topN={5} />
-          <MarketSection title="DISCIPLINA" markets={disciplineMarkets} />
-          <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} />
+          <FadeIn delay={0.1}>
+            <MarketSection title="RESULTADO" markets={resultMarkets} />
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <MarketSection title="GOLES" markets={goalMarkets} topN={5} />
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <MarketSection title="DISCIPLINA" markets={disciplineMarkets} />
+          </FadeIn>
+          <FadeIn delay={0.25}>
+            <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} />
+          </FadeIn>
         </div>
       )}
     </div>

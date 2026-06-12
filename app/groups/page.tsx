@@ -1,4 +1,5 @@
 import { getTeams, getFixtures } from '@/lib/db/client'
+import { FadeIn } from '@/components/fade-in'
 import type { Team, Fixture } from '@/lib/types'
 
 interface StandingRow {
@@ -109,19 +110,25 @@ export default function GroupsPage() {
 
   return (
     <div className="flex flex-col gap-8 px-6 py-12 max-w-5xl mx-auto w-full">
-      <h1 className="text-2xl font-bold tracking-widest" style={{ color: 'var(--text)' }}>
-        FASE DE GRUPOS
-      </h1>
+      <FadeIn>
+        <h1 className="text-2xl font-bold tracking-widest" style={{ color: 'var(--text)' }}>
+          FASE DE GRUPOS
+        </h1>
+      </FadeIn>
       {standings.size === 0 ? (
-        <p className="text-sm" style={{ color: 'var(--muted)' }}>
-          Sin equipos registrados.
-        </p>
+        <FadeIn delay={0.1}>
+          <p className="text-sm" style={{ color: 'var(--muted)' }}>
+            Sin equipos registrados.
+          </p>
+        </FadeIn>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[...standings.entries()].map(([group, rows]) => (
-            <GroupTable key={group} group={group} rows={rows} />
-          ))}
-        </div>
+        <FadeIn delay={0.1}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[...standings.entries()].map(([group, rows]) => (
+              <GroupTable key={group} group={group} rows={rows} />
+            ))}
+          </div>
+        </FadeIn>
       )}
     </div>
   )

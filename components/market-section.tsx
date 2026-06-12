@@ -32,8 +32,8 @@ export function MarketSection({ title, markets, topN }: MarketSectionProps) {
         {title}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {markets.map((m) => (
-          <div key={m.market} className="flex flex-col gap-3">
+        {markets.map((m, i) => (
+          <div key={`${m.market}-${i}`} className="flex flex-col gap-3">
             <h3 className="text-xs tracking-wider" style={{ color: 'var(--muted)' }}>
               {m.market.replace(/_/g, ' ').toUpperCase()}
             </h3>

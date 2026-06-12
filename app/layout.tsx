@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { JetBrains_Mono } from 'next/font/google'
+import { DisclaimerBanner } from '@/components/disclaimer-banner'
+import { CaptureWrapper } from '@/components/capture-wrapper'
 import './globals.css'
 
 const jetbrainsMono = JetBrains_Mono({
@@ -12,6 +15,43 @@ export const metadata: Metadata = {
   description: 'Proyecciones estadísticas del Mundial 2026 generadas por IA',
 }
 
+function Header() {
+  return (
+    <header
+      className="border-b px-6 py-3 flex items-center gap-4"
+      style={{ borderColor: 'var(--border)' }}
+    >
+      <a
+        href="/"
+        className="text-sm font-bold tracking-widest"
+        style={{ color: 'var(--accent)' }}
+      >
+        MUNDIAL 2026
+      </a>
+      <span style={{ color: 'var(--muted)' }}>·</span>
+      <span className="text-sm tracking-widest" style={{ color: 'var(--muted)' }}>
+        IA PREDICTOR
+      </span>
+      <nav className="ml-auto flex gap-6">
+        <a
+          href="/groups"
+          className="text-xs tracking-wider hover:text-white transition-colors"
+          style={{ color: 'var(--muted)' }}
+        >
+          GRUPOS
+        </a>
+        <a
+          href="/fixtures"
+          className="text-xs tracking-wider hover:text-white transition-colors"
+          style={{ color: 'var(--muted)' }}
+        >
+          PARTIDOS
+        </a>
+      </nav>
+    </header>
+  )
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -21,38 +61,12 @@ export default function RootLayout({
         className="min-h-full flex flex-col"
         style={{ background: 'var(--bg)', color: 'var(--text)' }}
       >
-        <header
-          className="border-b px-6 py-3 flex items-center gap-4"
-          style={{ borderColor: 'var(--border)' }}
-        >
-          <a
-            href="/"
-            className="text-sm font-bold tracking-widest"
-            style={{ color: 'var(--accent)' }}
-          >
-            MUNDIAL 2026
-          </a>
-          <span style={{ color: 'var(--muted)' }}>·</span>
-          <span className="text-sm tracking-widest" style={{ color: 'var(--muted)' }}>
-            IA PREDICTOR
-          </span>
-          <nav className="ml-auto flex gap-6">
-            <a
-              href="/groups"
-              className="text-xs tracking-wider hover:text-white transition-colors"
-              style={{ color: 'var(--muted)' }}
-            >
-              GRUPOS
-            </a>
-            <a
-              href="/fixtures"
-              className="text-xs tracking-wider hover:text-white transition-colors"
-              style={{ color: 'var(--muted)' }}
-            >
-              PARTIDOS
-            </a>
-          </nav>
-        </header>
+        <DisclaimerBanner />
+        <Suspense>
+          <CaptureWrapper captureHidden={null}>
+            <Header />
+          </CaptureWrapper>
+        </Suspense>
         <main className="flex-1 flex flex-col">{children}</main>
       </body>
     </html>
