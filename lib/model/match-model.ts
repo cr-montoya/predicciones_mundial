@@ -42,13 +42,13 @@ export function computeMatchOutputs(input: MatchInput): ModelOutput[] {
   const doubleChance = makeOutput('double_chance', deriveDoubleChance(matrix), 'medium')
   sanityCheckProbabilityBounds(doubleChance)
 
-  const ou15 = makeOutput('over_under_goals', deriveOverUnder(matrix, 1.5), 'medium')
+  const ou15 = makeOutput('over_under_goals_1_5', deriveOverUnder(matrix, 1.5), 'medium')
   sanityCheck(ou15)
 
-  const ou25 = makeOutput('over_under_goals', deriveOverUnder(matrix, 2.5), 'medium')
+  const ou25 = makeOutput('over_under_goals_2_5', deriveOverUnder(matrix, 2.5), 'medium')
   sanityCheck(ou25)
 
-  const ou35 = makeOutput('over_under_goals', deriveOverUnder(matrix, 3.5), 'medium')
+  const ou35 = makeOutput('over_under_goals_3_5', deriveOverUnder(matrix, 3.5), 'medium')
   sanityCheck(ou35)
 
   const btts = makeOutput('btts', deriveBtts(matrix), 'medium')

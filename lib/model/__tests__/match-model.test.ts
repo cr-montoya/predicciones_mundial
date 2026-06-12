@@ -56,8 +56,8 @@ describe('computeMatchOutputs', () => {
     expect(outputs.length).toBeGreaterThanOrEqual(1)
   })
 
-  it('sanityCheck no lanza para mercados result_1x2, over_under_goals, btts', () => {
-    const targetMarkets = new Set(['result_1x2', 'over_under_goals', 'btts'])
+  it('sanityCheck no lanza para mercados result_1x2, over_under_goals_*, btts', () => {
+    const targetMarkets = new Set(['result_1x2', 'over_under_goals_1_5', 'over_under_goals_2_5', 'over_under_goals_3_5', 'btts'])
     const relevant = outputs.filter(o => targetMarkets.has(o.market))
     expect(relevant.length).toBeGreaterThan(0)
     for (const output of relevant) {

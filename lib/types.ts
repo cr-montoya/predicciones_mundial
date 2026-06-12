@@ -1,7 +1,9 @@
 export type MarketType =
   | 'result_1x2'
   | 'double_chance'
-  | 'over_under_goals'
+  | 'over_under_goals_1_5'
+  | 'over_under_goals_2_5'
+  | 'over_under_goals_3_5'
   | 'btts'
   | 'exact_score'
   | 'first_scorer'

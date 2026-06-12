@@ -76,6 +76,21 @@ export function getLatestPredictions(fixtureId: number): ModelOutput[] {
   return rows.map(mapPrediction)
 }
 
+export function getLatestTournamentPredictions(): ModelOutput[] {
+  const rows = db.prepare(`
+    SELECT p.*
+    FROM predictions p
+    INNER JOIN (
+      SELECT market, MAX(computed_at) AS max_at
+      FROM predictions
+      WHERE fixture_id IS NULL
+      GROUP BY market
+    ) latest ON p.market = latest.market AND p.computed_at = latest.max_at
+    WHERE p.fixture_id IS NULL
+  `).all() as PredictionRow[]
+  return rows.map(mapPrediction)
+}
+
 export function getLastRunLog(agentName: AgentName): RunLog | undefined {
   const row = db.prepare(`
     SELECT * FROM run_log
