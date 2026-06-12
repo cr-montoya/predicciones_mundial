@@ -50,10 +50,14 @@ export function middleware(request: NextRequest) {
     'Strict-Transport-Security',
     'max-age=31536000; includeSubDomains'
   )
-  response.headers.set(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'nonce-random'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;"
-  )
+
+  // CSP: más permisivo en desarrollo (React necesita unsafe-eval), restrictivo en producción
+  const isDev = process.env.NODE_ENV === 'development'
+  const csp = isDev
+    ? "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;"
+    : "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;"
+
+  response.headers.set('Content-Security-Policy', csp)
 
   return response
 }
