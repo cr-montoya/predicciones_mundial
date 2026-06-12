@@ -117,20 +117,25 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
 - **Verificación**: `pnpm refresh` y validar DB que France > 1.0 attack_strength.
 
 ### Fase 9 — Migración a Cloudflare D1
-- **Objetivo**: Deploy serverless en Cloudflare Pages (free tier amplio, no requiere backend propio).
-- **Cambios arquitectónicos**:
-  - Reemplazar `better-sqlite3` (local) con **Cloudflare D1** (SQLite serverless).
-  - En local dev: mantener `better-sqlite3` para compatibilidad.
-  - En Cloudflare: usar Wrangler bindings (`d1.prepare()` en lugar de `db.prepare()`).
-  - Scripts de refresh: adaptarlos para Cloudflare Workers (opcional: usar Cron Trigger de Cloudflare).
-- **Configuración**:
-  - Crear `wrangler.toml` con D1 database binding.
-  - Migrar `.env.local` → `wrangler secret` (RAPIDAPI_KEY, FOOTBALLDATA_KEY).
-  - Crear `next.config.js` con soporte para Cloudflare adapter.
-- **Testing local**: `wrangler dev` debe simular Cloudflare D1.
+- **Objetivo**: Deploy serverless en Cloudflare Pages (free tier: 500 builds/mes, capacidad ilimitada de lectura/escritura en D1).
+- **Arquitectura Hybrid**:
+  - **Local dev**: `better-sqlite3` (como ahora). `pnpm dev`, `pnpm refresh` funcionan sin cambios.
+  - **Cloudflare production**: D1 (SQLite serverless). Schema + seed se ejecutan via `wrangler d1 execute`.
+  - El código `lib/db/client.ts` NO cambia: funciona con better-sqlite3 en local, y en Cloudflare Pages el binding `DB` está inyectado en `globalThis`.
+- **Archivos nuevos**:
+  - `wrangler.toml`: configuración Cloudflare (D1 binding, cron trigger, secrets).
+  - `next.config.js`: adapter `@cloudflare/next-on-pages` para Pages.
+  - `CLOUDFLARE_DEPLOYMENT.md`: guía paso a paso de setup (manual, no CI/CD).
+  - `data/mundial-seed.sql`: seed de 48 equipos para ejecutar en D1.
+- **Configuración Wrangler**:
+  - Crear BD: `wrangler d1 create mundial`
+  - Migrar schema: `wrangler d1 execute mundial < lib/db/schema.sql`
+  - Seed teams: `wrangler d1 execute mundial --file=data/mundial-seed.sql`
+  - Secrets: `wrangler secret put RAPIDAPI_KEY` y `FOOTBALLDATA_KEY`.
+- **Testing local**: `wrangler dev` simula D1 localmente (opcional: solo test de build).
 - **Verificación**: 
-  - Agente **security** audita que no haya `fs` imports, que secrets no estén expuestos, que APIs estén rate-limited.
-  - `pnpm build` compila sin errores para Cloudflare.
+  - `pnpm build` compila sin errores (no requiere better-sqlite3 en runtime de Cloudflare).
+  - Security audita: no hay `fs` imports en código de Pages, secrets en `wrangler.toml` (no hardcodeados).
 
 ### Fase 10 — Hardening & Autenticación
 - **Objetivo**: Asegurar la app antes del deploy con rate limiting, autenticación simple y security headers.
