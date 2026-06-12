@@ -53,7 +53,7 @@ export interface MatchEventRow {
 
 export interface PredictionRow {
   id: number
-  fixture_id: number
+  fixture_id: number | null
   market: string
   probabilities: string
   confidence: string

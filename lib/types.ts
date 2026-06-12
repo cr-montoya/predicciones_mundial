@@ -27,11 +27,16 @@ export interface RunLog {
   /** Quien dispara la corrida: el script CLI (pnpm refresh) o el Server Action. */
   agentName: AgentName
   startedAt: string
-  /** null mientras la corrida esta en curso; se completa al terminar. */
+  /** null mientras la corrida esta en curso ('running'); se completa al terminar. */
   finishedAt: string | null
   durationMs: number | null
-  status: 'ok' | 'error'
-  /** null cuando status = 'ok'; descripcion de la excepcion cuando 'error'. */
+  /**
+   * 'running' al insertar la fila al inicio del refresh; se actualiza a 'ok' o
+   * 'error' al terminar. Una fila que queda en 'running' indica un proceso que
+   * murio a mitad. La guarda de frescura solo cuenta corridas 'ok'.
+   */
+  status: 'ok' | 'error' | 'running'
+  /** null cuando status IN ('ok', 'running'); descripcion de la excepcion cuando 'error'. */
   message: string | null
 }
 

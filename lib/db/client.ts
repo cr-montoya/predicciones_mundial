@@ -85,3 +85,23 @@ export function getLastRunLog(agentName: AgentName): RunLog | undefined {
   `).get(agentName) as RunLogRow | undefined
   return row ? mapRunLog(row) : undefined
 }
+
+export function getLastOkRunLog(agentName: AgentName): RunLog | undefined {
+  const row = db.prepare(`
+    SELECT * FROM run_log
+    WHERE agent_name = ? AND status = 'ok'
+    ORDER BY started_at DESC
+    LIMIT 1
+  `).get(agentName) as RunLogRow | undefined
+  return row ? mapRunLog(row) : undefined
+}
+
+export {
+  insertOrReplaceFixture,
+  upsertTeamStats,
+  upsertMatchStats,
+  insertPrediction,
+  insertRunLog,
+  updateRunLog,
+  getAllPlayers,
+} from './write'

@@ -522,3 +522,199 @@ P_PENALTY_HOME_WIN        = 0.5
 
 Toda constante recalibrable vive aquí. Cambiar cualquiera -> bump de minor en el
 modelo afectado (sección 6).
+
+---
+
+## 9. Contratos del agent de refresh (Fase 3)
+
+Resuelve los 4 blockers de Fase 3. El developer implementa `scripts/refresh.ts` y
+el Server Action siguiendo esto sin tomar decisiones de cuota ni de coeficientes;
+cualquier desviación vuelve al analyst. Recordatorio del harness: solo los agents
+(CLI y Server Action) llaman a la API o escriben en DB. El modelo no se entera de
+nada de esta sección; consume `Team` ya normalizado.
+
+### 9.1 Guarda de frescura — N (Blocker 1)
+
+`REFRESH_GUARD_MINUTES = 60`. Confirmado.
+
+El refresh NO llama a la API si existe una corrida con `status = 'ok'` cuyo
+`started_at` esté dentro de los últimos 60 minutos. Se consulta así:
+
+```sql
+SELECT started_at FROM run_log
+WHERE status = 'ok'
+ORDER BY started_at DESC
+LIMIT 1;
+```
+
+Si `now - started_at < 60 min`, el refresh aborta temprano SIN insertar fila de
+run_log (no fue una corrida real) y devuelve el timestamp de la última corrida ok
+para que la UI muestre "actualizado hace X min".
+
+Justificación del valor:
+- La cuota es 100 req/día y un refresh completo consume 50-200 req. El bloqueo
+  matemáticamente seguro sería `1440 / floor(100 / req_por_refresh)` minutos, pero
+  con la estrategia incremental de 9.3 un refresh típico consume pocas requests
+  (1 de fixtures + N de stats de los fixtures recién terminados), no 50-200. En
+  días de Mundial terminan a lo sumo ~4-8 partidos por jornada, así que el coste
+  real por refresh post-arranque es bajo.
+- 60 min es el tope útil por una razón de producto, no solo de cuota: los stats de
+  un equipo solo cambian cuando juega, y los partidos no terminan con más
+  frecuencia que ~cada 1-2 horas. Refrescar más seguido no aporta datos nuevos.
+- El caso que la guarda debe matar es el doble-click / doble-trigger accidental
+  (CLI + botón casi simultáneos), que con 60 min queda cubierto con margen amplio.
+
+La guarda se basa en `started_at` (no `finished_at`) a propósito: cuenta desde
+que la corrida arrancó, evitando que dos disparos casi simultáneos pasen ambos la
+guarda antes de que el primero termine de escribir. Para cerrar la ventana de
+carrera del todo, la inserción de la fila 'running' (9.4) actúa como cerrojo: ver
+9.4.
+
+### 9.2 Derivación de attackStrength y defenseStrength (Blocker 3)
+
+La fórmula propuesta es correcta en su forma, con dos precisiones obligatorias
+(manejo de la media y de los NULL). Se computa DESPUÉS de traer `avgGoalsScored` /
+`avgGoalsConceded` de TODOS los equipos con dato, en una pasada batch sobre los 48
+equipos (no equipo por equipo: la media del torneo necesita el conjunto completo).
+
+```
+// 1. Cohorte de medias: solo equipos con dato no nulo en cada métrica.
+scoredVals   = [t.avgGoalsScored   for t in teams if t.avgGoalsScored   != null]
+concededVals = [t.avgGoalsConceded for t in teams if t.avgGoalsConceded != null]
+
+// 2. Si la cohorte está vacía (estado inicial tras el seed, todos NULL),
+//    NO se computa nada: attack/defense quedan en su DEFAULT 1.0 de schema.
+if scoredVals.length == 0 || concededVals.length == 0: skip (todos en 1.0)
+
+meanScored   = mean(scoredVals)     // > 0 garantizado si hay >=1 dato con goles
+meanConceded = mean(concededVals)
+
+// 3. Por equipo:
+attackStrength(i)  = (avgGoalsScored(i)   != null && meanScored   > 0)
+                       ? clamp(avgGoalsScored(i)   / meanScored,   STRENGTH_MIN, STRENGTH_MAX)
+                       : 1.0   // fallback neutro
+defenseStrength(i) = (avgGoalsConceded(i) != null && meanConceded > 0)
+                       ? clamp(avgGoalsConceded(i) / meanConceded, STRENGTH_MIN, STRENGTH_MAX)
+                       : 1.0   // fallback neutro
+```
+
+Nuevas constantes en `lib/model/constants.ts`:
+
+```
+STRENGTH_MIN = 0.30
+STRENGTH_MAX = 3.00
+```
+
+Coinciden con el rango `[0.3, 3.0]` ya declarado para los coeficientes en
+`lib/types.ts`. El clamp protege contra divisiones extremas cuando un equipo con
+muestra pequeña marca/concede una cantidad atípica; sin él, un goleo aislado podría
+empujar el lambda final fuera de rango y disparar el clamp de lambda (sección 1.4),
+que debe permanecer inactivo en partidos normales.
+
+Manejo de NULL (decisión confirmada): **fallback neutro 1.0**, NO "no actualizar".
+- Razón: el modelo de Poisson SIEMPRE necesita un coeficiente; un equipo sin datos
+  no puede quedar sin `attackStrength`. 1.0 = "media del torneo" es la lectura
+  honesta de "no tengo señal sobre este equipo", y es exactamente el DEFAULT del
+  schema. "No actualizar" deja el valor previo, que solo es correcto si ya hubo
+  una corrida con dato; en el primer refresh equivale a 1.0 igualmente. Por
+  simplicidad y determinismo se fija siempre el valor calculado o 1.0, idempotente.
+- El equipo sin dato NO entra en el cálculo de la media (paso 1), para no sesgar la
+  media del torneo con ceros falsos.
+
+Nota de orientación de `defenseStrength` (no invertir): por convención de
+`lib/types.ts`, mayor `defenseStrength` = PEOR defensa (concede más). Por eso se
+divide directamente `avgGoalsConceded / meanConceded` sin invertir: un equipo que
+concede más que la media obtiene > 1.0, y en la fórmula de lambda eso AUMENTA el
+lambda del rival (`lambdaAway = ... * defenseHome`), que es el efecto deseado.
+
+`recentForm` (confirmado): se deja como `null` mientras no haya historial de
+partidos jugados, y el modelo aplica `form = 1.0` por el fallback ya definido en
+sección 1.3. `fetchTeamStats` no devuelve forma, así que NO se deriva en este
+agent en v1: derivarla de `avgGoalsScored` sería doble conteo de la misma señal
+que ya está en `attackStrength`. Cuando en una v1.x existan resultados de partidos
+del propio Mundial en `fixtures` (status='finished'), `recentForm` se computará por
+separado como factor sobre los últimos `N_RECENT_MATCHES` resultados del equipo
+(p. ej. normalizando puntos o goles recientes vs su propia media), no desde
+`fetchTeamStats`. Hasta entonces: `recentForm = null`.
+
+### 9.3 Estrategia de cuota — qué refrescar (Blocker 4)
+
+Confirmada la estrategia incremental, con la precisión de cómo se detecta "recién
+terminado". Cada refresh hace, en orden:
+
+1. **Calendario: SIEMPRE.** Una sola llamada `fetchFixtures` (1 request) actualiza
+   `kickoff_utc` y `status` de todos los fixtures de una vez. Barato y mantiene el
+   calendario fresco. Antes de sobrescribir, el agent lee de DB el `status` previo
+   de cada fixture para poder calcular el delta del paso 2.
+
+2. **Stats por fixture: SOLO los recién terminados.** Un fixture es "recién
+   terminado" si su `status` en DB era `'scheduled'` o `'live'` ANTES de este
+   refresh y la API ahora lo reporta `'finished'`. Solo para esos se piden
+   `fetchMatchStats` / eventos / lineups. Un fixture que YA estaba `'finished'` en
+   DB no se vuelve a pedir (sus stats son inmutables). En `match_stats`,
+   `match_events` y resultados se hace UPSERT idempotente.
+
+   ```
+   recienTerminados = fixtures where (prevStatus IN ('scheduled','live'))
+                                 and (newStatus == 'finished')
+   ```
+
+3. **teamStats (attack/defense): SOLO si hubo >=1 fixture recién terminado.** Los
+   coeficientes solo cambian cuando se juega un partido. Si `recienTerminados`
+   está vacío, NO se llama a `fetchTeamStats` ni se recalculan las fuerzas: se
+   ahorra cuota. Si hubo al menos uno, se refrescan los stats de los equipos
+   afectados (los que jugaron esos fixtures), se recomputan TODAS las fuerzas en
+   batch (la media del torneo cambia, sección 9.2) y se reescriben.
+
+4. **Predicciones: recalcular siempre que el paso 3 haya corrido** (cambiaron las
+   fuerzas) o que haya fixtures nuevos en calendario. El recálculo del modelo es
+   cómputo local puro (sin cuota), así que ante la duda se recalcula. Cada corrida
+   inserta filas nuevas en `predictions` (histórico, no UPDATE in-place; ver
+   schema).
+
+Esto mantiene el coste típico por refresh en `1 + |recienTerminados| (* k stats
+por fixture)` requests, muy por debajo de los 100/día en operación normal. El
+único refresh caro es el primero (poblar todo); ese se hace una vez y conviene
+correrlo con el script CLI, no con el botón.
+
+### 9.4 Patrón de run_log (Blocker 2) — Opción A
+
+Elegida **Opción A**: el schema admite `status IN ('ok', 'error', 'running')`
+(ya editado en `lib/db/schema.sql`; `RunLog.status` ampliado en `lib/types.ts`).
+
+Justificación frente a Opción B: insertar solo al final pierde rastro de las
+corridas que mueren a mitad (excepción de la API, kill del proceso), que son
+precisamente las que hay que poder diagnosticar; y el `run_log` debe poder
+distinguir "no se ha refrescado nunca" de "se intentó y se colgó". El coste de la
+Opción A es un solo `UPDATE` extra por corrida, trivial en SQLite local.
+
+Ciclo de vida de la fila (idéntico en CLI y Server Action):
+
+```
+1. Verificar guarda de frescura (9.1). Si bloquea -> return SIN insertar fila.
+2. INSERT run_log (agent_name, started_at = now, status = 'running',
+                   finished_at = NULL, duration_ms = NULL, message = NULL)
+   -> guardar el id devuelto.
+3. Ejecutar el refresh (pasos de 9.3).
+4a. Éxito  -> UPDATE run_log SET status='ok',    finished_at=now,
+              duration_ms = now - started_at, message=NULL  WHERE id=?
+4b. Error  -> UPDATE run_log SET status='error', finished_at=now,
+              duration_ms = now - started_at, message=<texto excepción> WHERE id=?
+   El UPDATE de error va en un finally/catch para que NUNCA quede 'running' por una
+   excepción capturable.
+```
+
+Reglas de consistencia:
+- `status='running'` => `finished_at` y `duration_ms` son NULL, `message` NULL.
+- `status='ok'`      => `finished_at` y `duration_ms` no nulos, `message` NULL.
+- `status='error'`   => `finished_at` y `duration_ms` no nulos, `message` no nulo.
+- La guarda de frescura (9.1) cuenta SOLO `status='ok'`. Una fila `'running'` o
+  `'error'` no bloquea el siguiente intento.
+
+Cerrojo anti-carrera: la inserción 'running' del paso 2 ocurre antes de cualquier
+llamada a la API. Como SQLite con WAL serializa las escrituras, dos disparos casi
+simultáneos no rompen datos; y la combinación de la guarda por `started_at` (9.1)
++ esta inserción temprana hace que el segundo disparo, si llega tras el primer
+INSERT, vea la corrida reciente y aborte. Las filas `'running'` huérfanas (proceso
+muerto sin catch) se pueden marcar como `'error'` con un barrido de arranque
+opcional (no obligatorio en v1); no afectan la guarda porque no son `'ok'`.

@@ -113,7 +113,7 @@ CREATE INDEX IF NOT EXISTS idx_match_events_player ON match_events (player_id);
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS predictions (
   id             INTEGER PRIMARY KEY AUTOINCREMENT,
-  fixture_id     INTEGER NOT NULL,
+  fixture_id     INTEGER,
   market         TEXT    NOT NULL,
   probabilities  TEXT    NOT NULL,
   confidence     TEXT    NOT NULL CHECK (confidence IN ('high', 'medium', 'low')),
@@ -129,7 +129,12 @@ CREATE INDEX IF NOT EXISTS idx_predictions_fixture_market
 -- ---------------------------------------------------------------------------
 -- run_log
 -- Bitacora de cada corrida de un agent (script CLI o Server Action).
--- message: NULL cuando status = 'ok'; texto de la excepcion cuando 'error'.
+-- Patron insertar-al-inicio: la fila se inserta con status = 'running' al
+-- arrancar el refresh y se actualiza a 'ok' / 'error' al terminar. Asi una
+-- corrida que muere a mitad deja rastro (queda como 'running' huerfana).
+-- finished_at / duration_ms son NULL mientras status = 'running'.
+-- message: NULL cuando status IN ('ok', 'running'); texto de la excepcion
+-- cuando 'error'.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS run_log (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -137,7 +142,7 @@ CREATE TABLE IF NOT EXISTS run_log (
   started_at   TEXT    NOT NULL,
   finished_at  TEXT,
   duration_ms  INTEGER,
-  status       TEXT    NOT NULL CHECK (status IN ('ok', 'error')),
+  status       TEXT    NOT NULL CHECK (status IN ('ok', 'error', 'running')),
   message      TEXT
 );
 
