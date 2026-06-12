@@ -116,6 +116,57 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
   - Resultado: France, Spain, Argentina, etc. suben a 5-10% en tournament_winner; Haiti baja a <1%.
 - **Verificación**: `pnpm refresh` y validar DB que France > 1.0 attack_strength.
 
+### Fase 9 — Migración a Cloudflare D1
+- **Objetivo**: Deploy serverless en Cloudflare Pages (free tier amplio, no requiere backend propio).
+- **Cambios arquitectónicos**:
+  - Reemplazar `better-sqlite3` (local) con **Cloudflare D1** (SQLite serverless).
+  - En local dev: mantener `better-sqlite3` para compatibilidad.
+  - En Cloudflare: usar Wrangler bindings (`d1.prepare()` en lugar de `db.prepare()`).
+  - Scripts de refresh: adaptarlos para Cloudflare Workers (opcional: usar Cron Trigger de Cloudflare).
+- **Configuración**:
+  - Crear `wrangler.toml` con D1 database binding.
+  - Migrar `.env.local` → `wrangler secret` (RAPIDAPI_KEY, FOOTBALLDATA_KEY).
+  - Crear `next.config.js` con soporte para Cloudflare adapter.
+- **Testing local**: `wrangler dev` debe simular Cloudflare D1.
+- **Verificación**: 
+  - Agente **security** audita que no haya `fs` imports, que secrets no estén expuestos, que APIs estén rate-limited.
+  - `pnpm build` compila sin errores para Cloudflare.
+
+### Fase 10 — Deploy a Cloudflare Pages
+- **Preparación**:
+  - Crear cuenta Cloudflare (free).
+  - Crear D1 database en dashboard de Cloudflare.
+  - Crear proyecto en Pages y conectar repo de GitHub.
+- **Build & Deploy**:
+  - Pages automáticamente detecta Next.js.
+  - Environment variables (RAPIDAPI_KEY, etc.) configuradas en Settings → Environment variables.
+  - D1 binding inyectado via `wrangler.toml`.
+- **Post-Deploy**:
+  - Verificar que `/` carga correctamente (home page).
+  - Ejecutar refresh manual desde dashboard (si aplica).
+  - Revisar logs en Cloudflare Analytics.
+- **Ventajas**:
+  - Zero cold starts gracias a Cloudflare edge.
+  - D1 escala automáticamente sin costo adicional en free tier.
+  - HTTPS automático con certificados Cloudflare.
+  - Global CDN para assets estáticos (JS, CSS).
+
+---
+
+## Agentes y flujo de verificación
+
+Cada fase se valida con estos 4 agentes en secuencia:
+
+1. **Analyst** (si hay cambios de modelo): valida matemática, contratos, lambdas.
+2. **Developer** (si hay cambios de código): implementa siguiendo harness.
+3. **QA** (siempre): corre tests, valida sanity checks de outputs. Tests pasan = ✅.
+4. **Reviewer** (siempre): audita harness, capas, convenciones. Sin bloqueantes = ✅.
+5. **Security** (siempre, crítico antes de Cloudflare): detección de vulns, exposure de secretos, OWASP. Sin CRÍTICO = ✅.
+
+**Flujo**: Analyst → Developer → QA → Reviewer → Security → Aprobado.
+
+Si alguno reporta bloqueante: vuelve a Developer para arreglo, luego re-valida desde QA.
+
 ---
 
 ## Riesgos
@@ -123,3 +174,4 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
 - **Límite API free**: como el refresh es manual y tiene guarda de frescura, tú controlas cada llamada y respetas los 100 req/día. Para data en vivo durante partidos hay que pasar a plan pago.
 - **Calidad de predicciones**: Poisson es sólido para goles, más ruidoso para tarjetas/corners. Mostrar confianza baja en esos mercados.
 - **Legal**: mientras la app solo muestre probabilidades y no reciba dinero, es análisis estadístico.
+- **Cloudflare D1**: aunque el free tier es amplio, si la BD crece mucho, considera plan pago de Cloudflare.

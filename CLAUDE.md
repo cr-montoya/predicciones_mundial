@@ -7,9 +7,10 @@ App que proyecta TODOS los mercados estadísticos de cada partido del Mundial 20
 - Next.js 15 (App Router) + React + TypeScript
 - Tailwind + shadcn/ui
 - Recharts para visualizaciones
-- SQLite (better-sqlite3) en archivo local (data/mundial.db) para cachear data
-- Recálculo manual bajo demanda: script (pnpm refresh) o botón "Actualizar" en la UI (Server Action). Sin cron ni proceso 24/7.
+- SQLite vía **Cloudflare D1** (serverless, no filesystem) para cachear data. Local: mejor-sqlite3 en desarrollo.
+- Recálculo manual bajo demanda: script (pnpm refresh) o botón "Actualizar" en la UI (Server Action). Sin cron ni proceso 24/7. En Cloudflare: Cron Trigger o manual via dashboard.
 - Fuente de datos: API-Football (RapidAPI). Fallback: football-data.org
+- Deploy: **Cloudflare Pages** (free tier amplio, compatible con Next.js)
 
 ## Harness de capas
 
@@ -42,6 +43,8 @@ UI  <-  Agents  <-  Models  <-  Skills
 - Solo agents (scripts/refresh.ts y el Server Action) pueden llamar a la API externa o escribir en DB.
 - Todo agent registra en DB un `run_log` con timestamp, duración y resultado (ok / error).
 - El Server Action de refresh verifica la guarda de frescura antes de correr.
+- **En Cloudflare D1**: agents acceden a DB vía `d1.prepare()` (Wrangler) en lugar de `better-sqlite3` directo. Bindings configurados en `wrangler.toml`.
+- Secretos (`RAPIDAPI_KEY`, etc.) via `wrangler secret` (no en código ni .env en Cloudflare).
 
 ### Agentes disponibles en este proyecto
 Invocar con `Agent({ subagent_type: ... })` o dejar que Claude orqueste según la tarea:
@@ -49,6 +52,7 @@ Invocar con `Agent({ subagent_type: ... })` o dejar que Claude orqueste según l
 - **developer**: implementa código siguiendo los contratos del harness.
 - **qa**: escribe y corre tests, valida sanity checks de outputs.
 - **reviewer**: revisa consistencia entre capas y adherencia al harness.
+- **security**: auditoría de código, detección de vulnerabilidades OWASP, exposure de secretos, buenas prácticas.
 
 ## Convenciones
 - Server Actions para fetch de data, no API routes sueltas. El refresh es un Server Action con guarda de frescura (no refresca si la última corrida fue hace menos de N minutos) para respetar la cuota de la API.
@@ -80,15 +84,27 @@ Secuencia obligatoria en este orden:
 1. `pnpm tsc --noEmit` — cero errores de tipos.
 2. `pnpm test` — todos los tests pasan.
 3. Agente **reviewer** — sin bloqueantes en el checklist.
+4. Agente **security** — sin vulnerabilidades críticas (bloqueantes); altos y informativos pueden ir a siguientes releases.
 
-Ninguna fase se da por terminada si alguno de los tres falla.
+Ninguna fase se da por terminada si alguno de los primeros 3 falla, o si security reporta CRÍTICO.
+Antes de deploy a Cloudflare: security check es obligatorio.
 
 ## Ciclo de corrección
 
-Cuando el agente QA reporta un fallo:
+Cuando un agente reporta un fallo:
 
-1. Si el fallo es de **implementación** (bug en código): el agente developer corrige, QA re-corre los tests afectados.
-2. Si el fallo es de **lógica estadística** (distribución incorrecta, lambda fuera de rango, probabilidades que no suman 1): escalar al analyst primero. El analyst redefine, el developer reimplementa, QA valida.
-3. Una vez que los tests pasan, el reviewer aprueba para continuar a la siguiente fase.
+1. **QA reporta test failure**: 
+   - Si es **implementación** (bug): developer corrige, QA re-corre.
+   - Si es **lógica estadística**: analyst redefine, developer reimplementa, QA valida.
 
-El loop no se cierra hasta que el reviewer dice `APROBADO`.
+2. **Reviewer reporta bloqueante**:
+   - Developer arregla violación del harness, reviewer re-valida.
+
+3. **Security reporta CRÍTICO**:
+   - Developer arregla vulnerabilidad, security re-audita.
+
+4. Una vez aprobados todos (QA + Reviewer + Security): la fase avanza.
+
+El loop no se cierra hasta que todos digan `APROBADO`.
+
+Nota: Before merge/deploy to Cloudflare, siempre security check es requerido, incluso si la fase anterior lo pasó.
