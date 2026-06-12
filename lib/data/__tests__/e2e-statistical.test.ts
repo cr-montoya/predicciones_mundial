@@ -19,7 +19,7 @@ import { mockTeams } from '@/lib/data/fixtures-mock'
 // (misma forma normalizada que produciría el provider tras FD_TEAM_MAP)
 // ---------------------------------------------------------------------------
 
-const brazil: Team = mockTeams.find(t => t.id === 1003)!
+const brazil: Team = mockTeams.find(t => t.id === 6)!
 const mexico: Team = {
   id: 2001,
   name: 'Mexico',
@@ -35,7 +35,7 @@ const mexico: Team = {
 
 const fixture: Fixture = {
   id: 9010,
-  homeTeamId: 1003,
+  homeTeamId: 6,
   awayTeamId: 2001,
   kickoffUtc: '2026-06-20T20:00:00Z',
   status: 'scheduled',

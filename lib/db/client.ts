@@ -7,6 +7,8 @@ import {
   type TeamRow, type PlayerRow, type FixtureRow, type MatchStatsRow,
   type MatchEventRow, type PredictionRow, type RunLogRow,
 } from './mappers'
+import { seedTeams } from './seed'
+import { worldCupTeams } from '@/lib/data/teams-seed'
 
 const DB_PATH = join(process.cwd(), 'data', 'mundial.db')
 const SCHEMA_PATH = join(process.cwd(), 'lib', 'db', 'schema.sql')
@@ -41,6 +43,7 @@ function openDb(): Database.Database {
   const schema = readFileSync(SCHEMA_PATH, 'utf-8')
   instance.exec(schema)
   migrateRunLog(instance)
+  seedTeams(instance, worldCupTeams)
   return instance
 }
 
@@ -144,3 +147,5 @@ export {
   updateRunLog,
   getAllPlayers,
 } from './write'
+
+export { seedTeams } from './seed'

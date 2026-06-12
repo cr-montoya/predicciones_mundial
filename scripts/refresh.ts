@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { runRefresh } from '@/lib/agents/run-refresh'
 
 async function main(): Promise<void> {
