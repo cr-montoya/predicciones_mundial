@@ -16,7 +16,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${jetbrainsMono.variable} h-full`}>
+    <html lang="es" className={`${jetbrainsMono.variable} h-full`} suppressHydrationWarning>
       <body
         className="min-h-full flex flex-col"
         style={{ background: 'var(--bg)', color: 'var(--text)' }}

@@ -11,12 +11,36 @@ import {
 const DB_PATH = join(process.cwd(), 'data', 'mundial.db')
 const SCHEMA_PATH = join(process.cwd(), 'lib', 'db', 'schema.sql')
 
+function migrateRunLog(instance: Database.Database): void {
+  const row = instance
+    .prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'run_log'")
+    .get() as { sql: string } | undefined
+
+  if (!row || row.sql.includes("'running'")) return
+
+  instance.exec(`
+    ALTER TABLE run_log RENAME TO run_log_old;
+    CREATE TABLE run_log (
+      id           INTEGER PRIMARY KEY AUTOINCREMENT,
+      agent_name   TEXT    NOT NULL CHECK (agent_name IN ('cli_refresh', 'server_action')),
+      started_at   TEXT    NOT NULL,
+      finished_at  TEXT,
+      duration_ms  INTEGER,
+      status       TEXT    NOT NULL CHECK (status IN ('ok', 'error', 'running')),
+      message      TEXT
+    );
+    INSERT INTO run_log SELECT * FROM run_log_old;
+    DROP TABLE run_log_old;
+  `)
+}
+
 function openDb(): Database.Database {
   const instance = new Database(DB_PATH)
   instance.pragma('journal_mode = WAL')
   instance.pragma('foreign_keys = ON')
   const schema = readFileSync(SCHEMA_PATH, 'utf-8')
   instance.exec(schema)
+  migrateRunLog(instance)
   return instance
 }
 
