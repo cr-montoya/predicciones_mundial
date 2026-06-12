@@ -149,3 +149,38 @@ export {
 } from './write'
 
 export { seedTeams } from './seed'
+
+// ============================================================================
+// User management
+// ============================================================================
+
+export interface User {
+  id: number
+  username: string
+  createdAt: string
+}
+
+export function getUserByUsername(username: string): (User & { passwordHash: string }) | undefined {
+  const row = db
+    .prepare('SELECT id, username, password_hash AS passwordHash, created_at AS createdAt FROM users WHERE username = ?')
+    .get(username) as (User & { passwordHash: string }) | undefined
+  return row
+}
+
+export function createUser(username: string, passwordHash: string): User {
+  const createdAt = new Date().toISOString()
+  const result = db
+    .prepare('INSERT INTO users (username, password_hash, created_at) VALUES (?, ?, ?)')
+    .run(username, passwordHash, createdAt)
+
+  return {
+    id: Number(result.lastInsertRowid),
+    username,
+    createdAt,
+  }
+}
+
+export function userExists(username: string): boolean {
+  const row = db.prepare('SELECT 1 FROM users WHERE username = ?').get(username)
+  return !!row
+}

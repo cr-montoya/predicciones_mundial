@@ -148,3 +148,16 @@ CREATE TABLE IF NOT EXISTS run_log (
 
 -- La guarda de frescura consulta la ultima corrida ok por tiempo.
 CREATE INDEX IF NOT EXISTS idx_run_log_started ON run_log (started_at DESC);
+
+-- ---------------------------------------------------------------------------
+-- users
+-- Tabla para autenticación simple. password_hash es bcrypt(password, salt=10).
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS users (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  username      TEXT    NOT NULL UNIQUE,
+  password_hash TEXT    NOT NULL,
+  created_at    TEXT    NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_username ON users (username);
