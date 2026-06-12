@@ -1,10 +1,10 @@
 import type { Fixture, MatchStats, ModelOutput, RunLog, Team, Player } from '@/lib/types'
-import { db } from './client'
+import { getDb } from './client'
 import { mapPlayer } from './mappers'
 import type { PlayerRow } from './row-types'
 
 export function insertOrReplaceFixture(fixture: Fixture): void {
-  db.prepare(`
+  getDb().prepare(`
     INSERT OR REPLACE INTO fixtures
       (id, home_team_id, away_team_id, kickoff_utc, status, home_goals, away_goals, round)
     VALUES
@@ -25,7 +25,7 @@ export function upsertTeamStats(
   teamId: number,
   stats: Pick<Team, 'avgGoalsScored' | 'avgGoalsConceded' | 'attackStrength' | 'defenseStrength'>
 ): void {
-  db.prepare(`
+  getDb().prepare(`
     UPDATE teams
     SET avg_goals_scored   = @avgGoalsScored,
         avg_goals_conceded = @avgGoalsConceded,
@@ -42,7 +42,7 @@ export function upsertTeamStats(
 }
 
 export function upsertMatchStats(stats: MatchStats): void {
-  db.prepare(`
+  getDb().prepare(`
     INSERT OR REPLACE INTO match_stats
       (fixture_id, team_id, corners, yellow_cards, red_cards, shots_on_target, possession)
     VALUES
@@ -59,7 +59,7 @@ export function upsertMatchStats(stats: MatchStats): void {
 }
 
 export function insertPrediction(fixtureId: number | null, output: ModelOutput): void {
-  db.prepare(`
+  getDb().prepare(`
     INSERT INTO predictions
       (fixture_id, market, probabilities, confidence, model_version, computed_at)
     VALUES
@@ -77,7 +77,7 @@ export function insertPrediction(fixtureId: number | null, output: ModelOutput):
 export function insertRunLog(
   log: Pick<RunLog, 'agentName' | 'startedAt' | 'status'>
 ): number {
-  const result = db.prepare(`
+  const result = getDb().prepare(`
     INSERT INTO run_log (agent_name, started_at, status, finished_at, duration_ms, message)
     VALUES (@agentName, @startedAt, @status, NULL, NULL, NULL)
   `).run({
@@ -92,7 +92,7 @@ export function updateRunLog(
   id: number,
   patch: Pick<RunLog, 'finishedAt' | 'durationMs' | 'status' | 'message'>
 ): void {
-  db.prepare(`
+  getDb().prepare(`
     UPDATE run_log
     SET finished_at = @finishedAt,
         duration_ms = @durationMs,
@@ -109,6 +109,6 @@ export function updateRunLog(
 }
 
 export function getAllPlayers(): Player[] {
-  const rows = db.prepare('SELECT * FROM players').all() as PlayerRow[]
+  const rows = getDb().prepare('SELECT * FROM players').all() as PlayerRow[]
   return rows.map(mapPlayer)
 }

@@ -18,7 +18,7 @@ function initPaths() {
   SCHEMA_PATH = join(process.cwd(), 'lib', 'db', 'schema.sql')
 }
 
-function migrateRunLog(instance: Database.Database): void {
+function migrateRunLog(instance: Database): void {
   const row = instance
     .prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'run_log'")
     .get() as { sql: string } | undefined
@@ -41,9 +41,9 @@ function migrateRunLog(instance: Database.Database): void {
   `)
 }
 
-let dbInstance: Database.Database | null = null
+let dbInstance: Database | null = null
 
-function openDb(): Database.Database {
+function openDb(): Database {
   if (dbInstance) return dbInstance
 
   try {
@@ -69,7 +69,7 @@ function openDb(): Database.Database {
   }
 }
 
-export function getDb(): Database.Database {
+export function getDb(): Database {
   return openDb()
 }
 

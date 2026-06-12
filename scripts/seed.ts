@@ -1,4 +1,4 @@
-import { db } from '@/lib/db/client'
+import { getDb } from '@/lib/db/client'
 
 interface TeamSeed {
   id: number
@@ -91,6 +91,7 @@ const TEAMS: TeamSeed[] = RAW_TEAMS.map((t) => ({
 }))
 
 function run(): void {
+  const db = getDb()
   const insert = db.prepare(`
     INSERT OR REPLACE INTO teams
       (id, name, "group", fifa_ranking, attack_strength, defense_strength,

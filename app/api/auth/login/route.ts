@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/lib/db/client'
+import { getDb } from '@/lib/db/client'
 import { verifyPassword } from '@/lib/auth/password'
 import { createToken } from '@/lib/auth/jwt'
 import { checkRateLimit } from '@/lib/middleware/rate-limit'
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const user = db
+    const user = getDb()
       .prepare('SELECT id, username, password_hash FROM users WHERE username = ?')
       .get(username) as { id: number; username: string; password_hash: string } | undefined
 

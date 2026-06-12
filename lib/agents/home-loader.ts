@@ -1,4 +1,4 @@
-import { db } from '@/lib/db/client'
+import { getDb } from '@/lib/db/client'
 import { sanityCheck } from '@/lib/types'
 import { rankMarkets } from '@/lib/skills/rank-markets'
 import type { Fixture, Team, ModelOutput } from '@/lib/types'
@@ -52,13 +52,13 @@ function buildLabel(home: Team | undefined, away: Team | undefined, fx: Fixture)
 }
 
 function teamMap(): Map<number, Team> {
-  const rows = db.prepare('SELECT * FROM teams').all() as TeamRow[]
+  const rows = getDb().prepare('SELECT * FROM teams').all() as TeamRow[]
   return new Map(rows.map((r) => [r.id, mapTeam(r)]))
 }
 
 function getFixturesToday(): Fixture[] {
   const { start, end } = todayBoundsUtc()
-  const rows = db.prepare(
+  const rows = getDb().prepare(
     'SELECT * FROM fixtures WHERE kickoff_utc >= ? AND kickoff_utc <= ? ORDER BY kickoff_utc'
   ).all(start, end) as FixtureRow[]
   return rows.map(mapFixture)
@@ -66,7 +66,7 @@ function getFixturesToday(): Fixture[] {
 
 function getNextFixture(): Fixture | undefined {
   const now = new Date().toISOString()
-  const row = db.prepare(
+  const row = getDb().prepare(
     "SELECT * FROM fixtures WHERE kickoff_utc > ? AND status != 'finished' ORDER BY kickoff_utc LIMIT 1"
   ).get(now) as FixtureRow | undefined
   return row ? mapFixture(row) : undefined
@@ -80,7 +80,7 @@ function getPredictionsForFixtures(fixtureIds: number[]): Map<number, ModelOutpu
     WHERE fixture_id IN (${ph}) GROUP BY fixture_id, market
   ) latest ON p.fixture_id = latest.fixture_id AND p.market = latest.market
     AND p.computed_at = latest.max_at WHERE p.fixture_id IN (${ph})`
-  const rows = db.prepare(sql).all(...fixtureIds, ...fixtureIds) as PredictionRow[]
+  const rows = getDb().prepare(sql).all(...fixtureIds, ...fixtureIds) as PredictionRow[]
   const result = new Map<number, ModelOutput[]>()
   for (const row of rows) {
     if (row.fixture_id == null) continue
@@ -92,7 +92,7 @@ function getPredictionsForFixtures(fixtureIds: number[]): Map<number, ModelOutpu
 }
 
 function getTournamentPredictions(): ModelOutput[] {
-  const rows = db.prepare(`
+  const rows = getDb().prepare(`
     SELECT p.* FROM predictions p INNER JOIN (
       SELECT market, MAX(computed_at) AS max_at FROM predictions
       WHERE fixture_id IS NULL GROUP BY market
