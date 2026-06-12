@@ -60,10 +60,35 @@ Invocar con `Agent({ subagent_type: ... })` o dejar que Claude orqueste según l
 ## Diseño
 Esta app es para contenido viral: la UI no puede verse genérica de IA (Inter, gradientes morados, cards redondeadas flotando, Recharts default). Norte: look de terminal de datos deportiva (broadcast / Opta), números grandes como protagonista, fondo oscuro con un acento, visualizaciones custom. Comprométete con UNA dirección y no la sueltes entre pantallas.
 
-## Correr en local
+## Comandos
+
 ```bash
 pnpm install
 cp .env.example .env.local   # poner RAPIDAPI_KEY
 pnpm dev                      # localhost:3000
 pnpm refresh                  # trae data nueva y recalcula predicciones (o usa el botón "Actualizar" en la UI)
+pnpm test                     # corre vitest
+pnpm tsc --noEmit             # type-check sin compilar
+pnpm lint                     # ESLint
+pnpm build                    # build de producción (usar para confirmar que no hay errores antes de cerrar una fase)
 ```
+
+## Verificación antes de cerrar cualquier fase
+
+Secuencia obligatoria en este orden:
+
+1. `pnpm tsc --noEmit` — cero errores de tipos.
+2. `pnpm test` — todos los tests pasan.
+3. Agente **reviewer** — sin bloqueantes en el checklist.
+
+Ninguna fase se da por terminada si alguno de los tres falla.
+
+## Ciclo de corrección
+
+Cuando el agente QA reporta un fallo:
+
+1. Si el fallo es de **implementación** (bug en código): el agente developer corrige, QA re-corre los tests afectados.
+2. Si el fallo es de **lógica estadística** (distribución incorrecta, lambda fuera de rango, probabilidades que no suman 1): escalar al analyst primero. El analyst redefine, el developer reimplementa, QA valida.
+3. Una vez que los tests pasan, el reviewer aprueba para continuar a la siguiente fase.
+
+El loop no se cierra hasta que el reviewer dice `APROBADO`.
