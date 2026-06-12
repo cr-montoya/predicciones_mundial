@@ -100,6 +100,22 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
 - **Paleta**: Oscuro + un acento (dorado, cian, verde). Sin gradientes morados genéricos. Sin cards redondeadas flotando.
 - **Tipografía**: Monoespaciada (ya en Tailwind), números en 3xl/4xl, etiquetas en caps tracking-widest.
 
+### Fase 7 — Branding FIFA World Cup 2026
+- **Logo y colores oficiales**: Rojo (#c8102e) + Verde México (#009a44) + Azul Canadá (#002868) + Fondo navy (#060d1a).
+- **Header mejorado**: Trofeo SVG en rojo, franja horizontal de 3 colores (rojo-verde-azul).
+- **Hero badge**: "FIFA WORLD CUP" con fondo rojo, texto oscuro.
+- **Layout hero refinado**: Número de partidos más proporcional, alineado horizontalmente con texto descriptivo.
+- **Candidatos expandibles**: Botón "VER MÁS →" para expandir lista completa (top 5 por defecto).
+
+### Fase 8 — Datos históricos para calibración de equipos
+- **Problema**: Todos los equipos están en `attack_strength = defense_strength = 1.0`, causando probabilidades uniformes (~2% todos).
+- **Solución**: Precomputar stats históricos (últimos 4 años de competiciones: Mundiales 2022/2018, Copas América, Euros, Clasificatorias).
+- **Implementación**:
+  - Crear `lib/data/historical-stats.json` con `attack_strength` y `defense_strength` por equipo.
+  - En `run-refresh.ts`, cargar stats del JSON y pasarlos a `recomputeStrengths()`.
+  - Resultado: France, Spain, Argentina, etc. suben a 5-10% en tournament_winner; Haiti baja a <1%.
+- **Verificación**: `pnpm refresh` y validar DB que France > 1.0 attack_strength.
+
 ---
 
 ## Riesgos

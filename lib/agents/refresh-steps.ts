@@ -7,6 +7,24 @@ import { fetchMatchStats, fetchMatchEvents, fetchTeamStats } from '@/lib/data/ap
 import { computeMatchOutputs } from '@/lib/model/match-model'
 import { simulateTournament } from '@/lib/model/montecarlo'
 import { recomputeStrengths } from './strength-batch'
+import historicalStats from '@/lib/data/historical-stats.json'
+
+export function loadHistoricalStats(): void {
+  const teams = getTeams()
+  const teamStatsMap = historicalStats.teams as Record<string, { avgGoalsScored: number; avgGoalsConceded: number }>
+  for (const team of teams) {
+    const stats = teamStatsMap[team.id.toString()]
+    if (stats) {
+      upsertTeamStats(team.id, {
+        avgGoalsScored: stats.avgGoalsScored,
+        avgGoalsConceded: stats.avgGoalsConceded,
+        attackStrength: 1.0,
+        defenseStrength: 1.0,
+      })
+    }
+  }
+  recomputeStrengths()
+}
 
 export async function fetchAndStoreMatchData(fixtures: Fixture[]): Promise<void> {
   for (const f of fixtures) {

@@ -5,7 +5,7 @@ import {
 } from '@/lib/db/client'
 import { fetchFixtures } from '@/lib/data/api-football'
 import { REFRESH_GUARD_MINUTES } from '@/lib/model/constants'
-import { fetchAndStoreMatchData, refreshTeamStats, recalculatePredictions } from './refresh-steps'
+import { fetchAndStoreMatchData, refreshTeamStats, recalculatePredictions, loadHistoricalStats } from './refresh-steps'
 
 export interface RefreshResult {
   skipped: boolean
@@ -47,6 +47,8 @@ export async function runRefresh(agentName: AgentName): Promise<RefreshResult> {
   let errorMsg: string | undefined
 
   try {
+    loadHistoricalStats()
+
     const prevFixtures = getFixtures()
     const prevStatusById = new Map(prevFixtures.map(f => [f.id, f.status]))
 
