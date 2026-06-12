@@ -23,4 +23,4 @@ export const MONTE_CARLO_ITERATIONS = 10000
 export const P_PENALTY_HOME_WIN = 0.5
 export const STRENGTH_MIN = 0.30
 export const STRENGTH_MAX = 3.00
-export const REFRESH_GUARD_MINUTES = 60
+export const REFRESH_GUARD_MINUTES = 1

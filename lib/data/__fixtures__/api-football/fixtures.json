@@ -1,0 +1,36 @@
+{
+  "response": [
+    {
+      "fixture": {
+        "id": 9001,
+        "date": "2026-06-15T18:00:00Z",
+        "status": { "short": "NS" }
+      },
+      "teams": {
+        "home": { "id": 1001 },
+        "away": { "id": 1002 }
+      },
+      "goals": {
+        "home": null,
+        "away": null
+      },
+      "league": { "round": "Group Stage - Matchday 1" }
+    },
+    {
+      "fixture": {
+        "id": 9002,
+        "date": "2026-06-16T20:00:00Z",
+        "status": { "short": "FT" }
+      },
+      "teams": {
+        "home": { "id": 1004 },
+        "away": { "id": 1001 }
+      },
+      "goals": {
+        "home": 1,
+        "away": 2
+      },
+      "league": { "round": "Group Stage - Matchday 1" }
+    }
+  ]
+}

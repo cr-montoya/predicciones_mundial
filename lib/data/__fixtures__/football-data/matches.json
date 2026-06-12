@@ -1,0 +1,28 @@
+{
+  "matches": [
+    {
+      "id": 9001,
+      "utcDate": "2026-06-15T18:00:00Z",
+      "status": "SCHEDULED",
+      "matchday": 1,
+      "stage": "GROUP_STAGE",
+      "homeTeam": { "id": 759 },
+      "awayTeam": { "id": 773 },
+      "score": {
+        "fullTime": { "home": null, "away": null }
+      }
+    },
+    {
+      "id": 9002,
+      "utcDate": "2026-06-16T20:00:00Z",
+      "status": "FINISHED",
+      "matchday": 1,
+      "stage": "GROUP_STAGE",
+      "homeTeam": { "id": 66 },
+      "awayTeam": { "id": 759 },
+      "score": {
+        "fullTime": { "home": 1, "away": 2 }
+      }
+    }
+  ]
+}
