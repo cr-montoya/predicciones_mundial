@@ -1,9 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-vi.mock('@/lib/db/client', () => ({ db: { prepare: vi.fn() } }))
-vi.mock('@/lib/data/teams-seed', () => ({ worldCupTeams: [] }))
-
-import { todayBoundsUtc } from '@/lib/agents/home-loader'
+import { todayBoundsUtc } from '@/lib/agents/home-types'
 
 describe('todayBoundsUtc (UTC-5 Bogota)', () => {
   beforeEach(() => {
