@@ -180,6 +180,24 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
   - HTTPS automático con certificados Cloudflare.
   - Global CDN para assets estáticos (JS, CSS).
 
+### Arquitectura actual (post-Fase 11)
+La app migró a **ISR estático en Cloudflare Pages** — sin D1, sin refresh button, sin DB en runtime:
+- Fixtures: `lib/data/fixtures-cache.json` (pre-generado con `pnpm refresh-fixtures`, commitear para actualizar).
+- Fuerzas de equipos: `lib/data/historical-stats.json` + skill `computeStrengths` (puro, sin red).
+- Torneo: `lib/data/tournament-prediction.json` (Monte Carlo pre-generado con `pnpm precompute`).
+- Build Cloudflare Pages: `pnpm build` → `out/` (static export). Sin red en build ni runtime.
+
+### Fase 12 — Datos históricos enriquecidos
+- **Problema**: `historical-stats.json` tiene datos limitados (WC2022, Copa América 2024, EURO 2024). El modelo Poisson no distingue bien entre selecciones de fuerza similar.
+- **Objetivo**: Añadir más competiciones (Eliminatorias 2022/2026, Nations League, Confederaciones) y más años (2020-2026). Evaluar ponderación por tipo de competición (torneo > eliminatorias > amistoso).
+- **Flujo harness**: Analyst valida fuentes y fórmula de ponderación → Developer enriquece `historical-stats.json` y actualiza `computeStrengths` si cambia el contrato → QA valida coherencia estadística → Reviewer.
+- **Verificación**: France/Spain/Argentina > 10% en campeón, Haití < 1%.
+
+### Fase 13 — Predicciones explícitas en fixture cards
+- **Problema**: Las cards de partidos en el home solo muestran nombre de equipos y hora. Las predicciones están escondidas en la página de detalle.
+- **Objetivo**: Mostrar en cada card del home el ganador predicho con probabilidad ("España gana · 64%") y los goles esperados ("2.3 goles"). Enlace "VER →" a la página de detalle (ya implementado).
+- **Flujo harness**: Analyst define qué mercado mostrar y formato → Developer modifica `FixtureWithTeams` en `home-types.ts` para incluir predicciones pre-calculadas y actualiza `FixturesToday` → QA → Reviewer.
+
 ---
 
 ## Agentes y flujo de verificación

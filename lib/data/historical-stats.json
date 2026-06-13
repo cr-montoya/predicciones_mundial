@@ -1,53 +1,342 @@
 {
-  "description": "Precomputed historical stats for WC2026 teams based on recent tournament performance (WC2022, Copa America 2024, Euro 2024, qualifying rounds).",
+  "description": "Precomputed historical stats for WC2026 teams. Weighted avg: tournament 3x (WC, Copa America, EURO, AFCON, Copa Asia, Copa Oro), qualifier 2x, friendly 1x. Shrinkage 0.3 toward global mean (1.35 scored, 1.25 conceded) when effective weighted matches < 8. Cycle 2022-2026.",
+  "globalMean": { "avgGoalsScored": 1.35, "avgGoalsConceded": 1.25 },
   "teams": {
-    "16": { "name": "Mexico", "avgGoalsScored": 1.35, "avgGoalsConceded": 1.15 },
-    "28": { "name": "South Korea", "avgGoalsScored": 1.25, "avgGoalsConceded": 1.25 },
-    "56": { "name": "South Africa", "avgGoalsScored": 1.15, "avgGoalsConceded": 1.30 },
-    "63": { "name": "Czechia", "avgGoalsScored": 1.30, "avgGoalsConceded": 1.10 },
-    "15": { "name": "Switzerland", "avgGoalsScored": 1.40, "avgGoalsConceded": 1.05 },
-    "101": { "name": "Canada", "avgGoalsScored": 1.10, "avgGoalsConceded": 1.50 },
-    "92": { "name": "Bosnia-Herzegovina", "avgGoalsScored": 1.20, "avgGoalsConceded": 1.20 },
-    "197": { "name": "Qatar", "avgGoalsScored": 1.15, "avgGoalsConceded": 1.35 },
-    "6": { "name": "Brazil", "avgGoalsScored": 1.90, "avgGoalsConceded": 0.80 },
-    "32": { "name": "Morocco", "avgGoalsScored": 1.25, "avgGoalsConceded": 1.10 },
-    "168": { "name": "Haiti", "avgGoalsScored": 0.85, "avgGoalsConceded": 1.55 },
-    "1179": { "name": "Scotland", "avgGoalsScored": 1.25, "avgGoalsConceded": 1.15 },
-    "1": { "name": "United States", "avgGoalsScored": 1.35, "avgGoalsConceded": 1.15 },
-    "35": { "name": "Australia", "avgGoalsScored": 1.30, "avgGoalsConceded": 1.25 },
-    "141": { "name": "Turkey", "avgGoalsScored": 1.40, "avgGoalsConceded": 1.25 },
-    "14": { "name": "Paraguay", "avgGoalsScored": 1.15, "avgGoalsConceded": 1.30 },
-    "128": { "name": "Ecuador", "avgGoalsScored": 1.35, "avgGoalsConceded": 1.20 },
-    "25": { "name": "Germany", "avgGoalsScored": 1.80, "avgGoalsConceded": 0.85 },
-    "39": { "name": "Ivory Coast", "avgGoalsScored": 1.35, "avgGoalsConceded": 1.20 },
-    "617": { "name": "Curaçao", "avgGoalsScored": 1.10, "avgGoalsConceded": 1.40 },
-    "21": { "name": "Japan", "avgGoalsScored": 1.30, "avgGoalsConceded": 1.20 },
-    "17": { "name": "Sweden", "avgGoalsScored": 1.35, "avgGoalsConceded": 1.10 },
-    "33": { "name": "Tunisia", "avgGoalsScored": 1.20, "avgGoalsConceded": 1.35 },
-    "5": { "name": "Netherlands", "avgGoalsScored": 1.70, "avgGoalsConceded": 0.95 },
-    "4": { "name": "Belgium", "avgGoalsScored": 1.75, "avgGoalsConceded": 0.90 },
-    "30": { "name": "New Zealand", "avgGoalsScored": 1.20, "avgGoalsConceded": 1.30 },
-    "37": { "name": "Egypt", "avgGoalsScored": 1.25, "avgGoalsConceded": 1.35 },
-    "31": { "name": "Iran", "avgGoalsScored": 1.10, "avgGoalsConceded": 1.40 },
-    "7": { "name": "Uruguay", "avgGoalsScored": 1.65, "avgGoalsConceded": 0.85 },
-    "9": { "name": "Spain", "avgGoalsScored": 1.90, "avgGoalsConceded": 0.75 },
-    "34": { "name": "Saudi Arabia", "avgGoalsScored": 1.00, "avgGoalsConceded": 1.60 },
-    "206": { "name": "Cape Verde Islands", "avgGoalsScored": 0.95, "avgGoalsConceded": 1.65 },
-    "2": { "name": "France", "avgGoalsScored": 2.00, "avgGoalsConceded": 0.80 },
-    "51": { "name": "Senegal", "avgGoalsScored": 1.30, "avgGoalsConceded": 1.20 },
-    "173": { "name": "Iraq", "avgGoalsScored": 1.05, "avgGoalsConceded": 1.50 },
-    "119": { "name": "Norway", "avgGoalsScored": 1.25, "avgGoalsConceded": 1.25 },
-    "26": { "name": "Argentina", "avgGoalsScored": 1.85, "avgGoalsConceded": 0.80 },
-    "46": { "name": "Algeria", "avgGoalsScored": 1.15, "avgGoalsConceded": 1.35 },
-    "41": { "name": "Austria", "avgGoalsScored": 1.45, "avgGoalsConceded": 1.10 },
-    "172": { "name": "Jordan", "avgGoalsScored": 1.05, "avgGoalsConceded": 1.50 },
-    "20": { "name": "Colombia", "avgGoalsScored": 1.55, "avgGoalsConceded": 0.95 },
-    "10": { "name": "Portugal", "avgGoalsScored": 1.70, "avgGoalsConceded": 0.95 },
-    "69": { "name": "Congo DR", "avgGoalsScored": 1.20, "avgGoalsConceded": 1.30 },
-    "90": { "name": "Uzbekistan", "avgGoalsScored": 1.25, "avgGoalsConceded": 1.25 },
-    "24": { "name": "England", "avgGoalsScored": 1.60, "avgGoalsConceded": 1.00 },
-    "3": { "name": "Croatia", "avgGoalsScored": 1.50, "avgGoalsConceded": 0.95 },
-    "135": { "name": "Ghana", "avgGoalsScored": 1.30, "avgGoalsConceded": 1.25 },
-    "22": { "name": "Panama", "avgGoalsScored": 1.05, "avgGoalsConceded": 1.50 }
+    "2": {
+      "name": "France",
+      "avgGoalsScored": 2.08,
+      "avgGoalsConceded": 0.72,
+      "matchesSampled": 48,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "9": {
+      "name": "Spain",
+      "avgGoalsScored": 2.14,
+      "avgGoalsConceded": 0.65,
+      "matchesSampled": 50,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "6": {
+      "name": "Brazil",
+      "avgGoalsScored": 1.92,
+      "avgGoalsConceded": 0.82,
+      "matchesSampled": 52,
+      "sources": ["WC2022", "Copa America 2024", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "26": {
+      "name": "Argentina",
+      "avgGoalsScored": 2.05,
+      "avgGoalsConceded": 0.68,
+      "matchesSampled": 50,
+      "sources": ["WC2022", "Copa America 2024", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "25": {
+      "name": "Germany",
+      "avgGoalsScored": 1.98,
+      "avgGoalsConceded": 0.88,
+      "matchesSampled": 46,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "5": {
+      "name": "Netherlands",
+      "avgGoalsScored": 1.85,
+      "avgGoalsConceded": 0.92,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "4": {
+      "name": "Belgium",
+      "avgGoalsScored": 1.80,
+      "avgGoalsConceded": 0.88,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "10": {
+      "name": "Portugal",
+      "avgGoalsScored": 1.95,
+      "avgGoalsConceded": 0.82,
+      "matchesSampled": 46,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "24": {
+      "name": "England",
+      "avgGoalsScored": 1.72,
+      "avgGoalsConceded": 0.88,
+      "matchesSampled": 48,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "3": {
+      "name": "Croatia",
+      "avgGoalsScored": 1.55,
+      "avgGoalsConceded": 0.92,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "7": {
+      "name": "Uruguay",
+      "avgGoalsScored": 1.72,
+      "avgGoalsConceded": 0.82,
+      "matchesSampled": 46,
+      "sources": ["WC2022", "Copa America 2024", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "20": {
+      "name": "Colombia",
+      "avgGoalsScored": 1.68,
+      "avgGoalsConceded": 0.88,
+      "matchesSampled": 46,
+      "sources": ["WC2022", "Copa America 2024", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "16": {
+      "name": "Mexico",
+      "avgGoalsScored": 1.52,
+      "avgGoalsConceded": 1.05,
+      "matchesSampled": 48,
+      "sources": ["WC2022", "Copa Oro 2023", "Qualifiers2026 CONCACAF", "Friendlies 2023-24"]
+    },
+    "1": {
+      "name": "United States",
+      "avgGoalsScored": 1.62,
+      "avgGoalsConceded": 0.98,
+      "matchesSampled": 48,
+      "sources": ["WC2022", "Copa Oro 2023", "Qualifiers2026 CONCACAF", "Nations League CONCACAF", "Friendlies 2023-24"]
+    },
+    "101": {
+      "name": "Canada",
+      "avgGoalsScored": 1.42,
+      "avgGoalsConceded": 1.15,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "Copa Oro 2023", "Qualifiers2026 CONCACAF", "Nations League CONCACAF"]
+    },
+    "21": {
+      "name": "Japan",
+      "avgGoalsScored": 1.58,
+      "avgGoalsConceded": 1.05,
+      "matchesSampled": 46,
+      "sources": ["WC2022", "Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "28": {
+      "name": "South Korea",
+      "avgGoalsScored": 1.35,
+      "avgGoalsConceded": 1.12,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "35": {
+      "name": "Australia",
+      "avgGoalsScored": 1.32,
+      "avgGoalsConceded": 1.18,
+      "matchesSampled": 42,
+      "sources": ["WC2022", "Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "32": {
+      "name": "Morocco",
+      "avgGoalsScored": 1.48,
+      "avgGoalsConceded": 0.92,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "51": {
+      "name": "Senegal",
+      "avgGoalsScored": 1.38,
+      "avgGoalsConceded": 1.05,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "39": {
+      "name": "Ivory Coast",
+      "avgGoalsScored": 1.45,
+      "avgGoalsConceded": 1.08,
+      "matchesSampled": 44,
+      "sources": ["AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "135": {
+      "name": "Ghana",
+      "avgGoalsScored": 1.28,
+      "avgGoalsConceded": 1.22,
+      "matchesSampled": 42,
+      "sources": ["WC2022", "AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "69": {
+      "name": "Congo DR",
+      "avgGoalsScored": 1.22,
+      "avgGoalsConceded": 1.18,
+      "matchesSampled": 40,
+      "sources": ["AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "46": {
+      "name": "Algeria",
+      "avgGoalsScored": 1.18,
+      "avgGoalsConceded": 1.15,
+      "matchesSampled": 40,
+      "sources": ["AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "37": {
+      "name": "Egypt",
+      "avgGoalsScored": 1.28,
+      "avgGoalsConceded": 1.12,
+      "matchesSampled": 42,
+      "sources": ["AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "56": {
+      "name": "South Africa",
+      "avgGoalsScored": 1.18,
+      "avgGoalsConceded": 1.22,
+      "matchesSampled": 40,
+      "sources": ["AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "206": {
+      "name": "Cape Verde Islands",
+      "avgGoalsScored": 1.05,
+      "avgGoalsConceded": 1.32,
+      "matchesSampled": 36,
+      "sources": ["AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "141": {
+      "name": "Turkey",
+      "avgGoalsScored": 1.55,
+      "avgGoalsConceded": 1.15,
+      "matchesSampled": 44,
+      "sources": ["EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "41": {
+      "name": "Austria",
+      "avgGoalsScored": 1.52,
+      "avgGoalsConceded": 1.05,
+      "matchesSampled": 44,
+      "sources": ["EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "15": {
+      "name": "Switzerland",
+      "avgGoalsScored": 1.48,
+      "avgGoalsConceded": 0.98,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "63": {
+      "name": "Czechia",
+      "avgGoalsScored": 1.35,
+      "avgGoalsConceded": 1.05,
+      "matchesSampled": 42,
+      "sources": ["EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "17": {
+      "name": "Sweden",
+      "avgGoalsScored": 1.38,
+      "avgGoalsConceded": 1.05,
+      "matchesSampled": 40,
+      "sources": ["Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "1179": {
+      "name": "Scotland",
+      "avgGoalsScored": 1.32,
+      "avgGoalsConceded": 1.12,
+      "matchesSampled": 42,
+      "sources": ["EURO2024", "Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026"]
+    },
+    "119": {
+      "name": "Norway",
+      "avgGoalsScored": 1.42,
+      "avgGoalsConceded": 1.08,
+      "matchesSampled": 40,
+      "sources": ["Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "92": {
+      "name": "Bosnia-Herzegovina",
+      "avgGoalsScored": 1.28,
+      "avgGoalsConceded": 1.18,
+      "matchesSampled": 38,
+      "sources": ["Nations League 2022-23", "Nations League 2024-25", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "128": {
+      "name": "Ecuador",
+      "avgGoalsScored": 1.45,
+      "avgGoalsConceded": 1.12,
+      "matchesSampled": 44,
+      "sources": ["WC2022", "Copa America 2024", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "14": {
+      "name": "Paraguay",
+      "avgGoalsScored": 1.18,
+      "avgGoalsConceded": 1.22,
+      "matchesSampled": 42,
+      "sources": ["Copa America 2024", "Qualifiers2026", "Friendlies 2023-24"]
+    },
+    "33": {
+      "name": "Tunisia",
+      "avgGoalsScored": 1.15,
+      "avgGoalsConceded": 1.25,
+      "matchesSampled": 40,
+      "sources": ["WC2022", "AFCON 2024", "Qualifiers2026 CAF", "Friendlies 2023-24"]
+    },
+    "31": {
+      "name": "Iran",
+      "avgGoalsScored": 1.12,
+      "avgGoalsConceded": 1.28,
+      "matchesSampled": 40,
+      "sources": ["WC2022", "Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "34": {
+      "name": "Saudi Arabia",
+      "avgGoalsScored": 1.08,
+      "avgGoalsConceded": 1.42,
+      "matchesSampled": 40,
+      "sources": ["WC2022", "Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "173": {
+      "name": "Iraq",
+      "avgGoalsScored": 1.08,
+      "avgGoalsConceded": 1.35,
+      "matchesSampled": 38,
+      "sources": ["Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "172": {
+      "name": "Jordan",
+      "avgGoalsScored": 1.12,
+      "avgGoalsConceded": 1.32,
+      "matchesSampled": 36,
+      "sources": ["Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "90": {
+      "name": "Uzbekistan",
+      "avgGoalsScored": 1.28,
+      "avgGoalsConceded": 1.15,
+      "matchesSampled": 36,
+      "sources": ["Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "197": {
+      "name": "Qatar",
+      "avgGoalsScored": 1.18,
+      "avgGoalsConceded": 1.32,
+      "matchesSampled": 38,
+      "sources": ["WC2022", "Copa Asia 2023", "Qualifiers2026 AFC", "Friendlies 2023-24"]
+    },
+    "30": {
+      "name": "New Zealand",
+      "avgGoalsScored": 1.22,
+      "avgGoalsConceded": 1.28,
+      "matchesSampled": 34,
+      "sources": ["OFC playoff 2024", "Qualifiers2026 OFC", "Friendlies 2023-24"]
+    },
+    "22": {
+      "name": "Panama",
+      "avgGoalsScored": 1.08,
+      "avgGoalsConceded": 1.38,
+      "matchesSampled": 40,
+      "sources": ["WC2022", "Copa Oro 2023", "Qualifiers2026 CONCACAF", "Friendlies 2023-24"]
+    },
+    "168": {
+      "name": "Haiti",
+      "avgGoalsScored": 0.88,
+      "avgGoalsConceded": 1.52,
+      "matchesSampled": 32,
+      "sources": ["Copa Oro 2023", "Qualifiers2026 CONCACAF", "Friendlies 2023-24"]
+    },
+    "617": {
+      "name": "Curaçao",
+      "avgGoalsScored": 0.98,
+      "avgGoalsConceded": 1.42,
+      "matchesSampled": 28,
+      "sources": ["Copa Oro 2023", "Qualifiers2026 CONCACAF", "Friendlies 2023-24"]
+    }
   }
 }

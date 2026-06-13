@@ -65,12 +65,34 @@ export async function loadHomeData(): Promise<HomeData> {
     }
   }
 
-  const fixturesToday: FixtureWithTeams[] = fixtures.map(fx => ({
-    fixture: fx,
-    homeTeam: byId.get(fx.homeTeamId),
-    awayTeam: byId.get(fx.awayTeamId),
-    label: buildLabel(byId.get(fx.homeTeamId), byId.get(fx.awayTeamId), fx),
-  }))
+  const fixturesToday: FixtureWithTeams[] = fixtures.map(fx => {
+    const preds = computePredictionsForFixture(fx, byId)
+    const r1x2 = preds.find(p => p.market === 'result_1x2')
+    const exactScore = preds.find(p => p.market === 'exact_score')
+
+    let prediction: FixtureWithTeams['prediction']
+    if (r1x2 && exactScore) {
+      const [topKey, topProb] = Object.entries(r1x2.probabilities).sort(([, a], [, b]) => b - a)[0]
+      const winner =
+        topKey === 'home' ? (byId.get(fx.homeTeamId)?.name ?? 'Local')
+        : topKey === 'away' ? (byId.get(fx.awayTeamId)?.name ?? 'Visitante')
+        : 'Empate'
+      const expectedGoals = Object.entries(exactScore.probabilities).reduce((sum, [key, prob]) => {
+        const [h, a] = key.split('-').map(Number)
+        if (isNaN(h) || isNaN(a)) return sum
+        return sum + prob * (h + a)
+      }, 0)
+      prediction = { winner, winnerProb: topProb, expectedGoals: Math.round(expectedGoals * 10) / 10 }
+    }
+
+    return {
+      fixture: fx,
+      homeTeam: byId.get(fx.homeTeamId),
+      awayTeam: byId.get(fx.awayTeamId),
+      label: buildLabel(byId.get(fx.homeTeamId), byId.get(fx.awayTeamId), fx),
+      prediction,
+    }
+  })
 
   const rankable: RankableMarket[] = []
   for (const { fixture, label } of fixturesToday) {

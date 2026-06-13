@@ -35,11 +35,18 @@ export function buildLabel(home: Team | undefined, away: Team | undefined, fx: F
   return `${h} vs ${a}`
 }
 
+export interface FixturePrediction {
+  winner: string
+  winnerProb: number
+  expectedGoals: number
+}
+
 export interface FixtureWithTeams {
   fixture: Fixture
   homeTeam: Team | undefined
   awayTeam: Team | undefined
   label: string
+  prediction?: FixturePrediction
 }
 
 export interface HomeData {

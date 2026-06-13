@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { FixtureWithTeams } from '@/lib/agents/home-types'
 
 interface FixturesTodayProps {
@@ -33,13 +34,14 @@ export function FixturesToday({ fixtures }: FixturesTodayProps) {
         PARTIDOS
       </h2>
       <div className="flex flex-col border-t" style={{ borderColor: 'var(--border)' }}>
-        {fixtures.map(({ fixture, label }) => {
+        {fixtures.map(({ fixture, label, prediction }) => {
           const hasScore =
             fixture.homeGoals !== null && fixture.awayGoals !== null
           return (
-            <div
+            <Link
               key={fixture.id}
-              className="flex items-center gap-4 py-3 border-b"
+              href={`/fixtures/${fixture.id}`}
+              className="flex items-center gap-4 py-3 border-b transition-colors hover:bg-white/5"
               style={{ borderColor: 'var(--border)' }}
             >
               <span
@@ -51,8 +53,18 @@ export function FixturesToday({ fixtures }: FixturesTodayProps) {
               <span className="text-xs w-12 tabular-nums" style={{ color: 'var(--muted)' }}>
                 {formatTime(fixture.kickoffUtc)}
               </span>
-              <span className="text-sm flex-1 text-white tracking-wide">
-                {label}
+              <span className="flex flex-col flex-1 min-w-0">
+                <span className="text-sm text-white tracking-wide">{label}</span>
+                {prediction && (
+                  <span className="flex gap-3 text-xs mt-0.5">
+                    <span style={{ color: 'var(--accent)' }}>
+                      {prediction.winner} {Math.round(prediction.winnerProb * 100)}%
+                    </span>
+                    <span style={{ color: 'var(--muted)' }}>
+                      {prediction.expectedGoals} goles
+                    </span>
+                  </span>
+                )}
               </span>
               {hasScore && (
                 <span
@@ -62,7 +74,10 @@ export function FixturesToday({ fixtures }: FixturesTodayProps) {
                   {fixture.homeGoals} - {fixture.awayGoals}
                 </span>
               )}
-            </div>
+              <span className="text-xs tracking-wider" style={{ color: 'var(--muted)' }}>
+                VER →
+              </span>
+            </Link>
           )
         })}
       </div>
