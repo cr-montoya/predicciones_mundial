@@ -24,10 +24,12 @@ export interface ApiFetchOptions {
   onAfterSuccess?: () => void
   /** Request timeout in ms. Default: 10000 (10 seconds). */
   timeoutMs?: number
+  /** ISR cache window in seconds for Next.js Data Cache. Omit to skip caching. */
+  revalidate?: number
 }
 
 export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions): Promise<T> {
-  const { baseUrl, headers = {}, params, onBeforeRequest, onAfterSuccess, timeoutMs = 10000 } = options
+  const { baseUrl, headers = {}, params, onBeforeRequest, onAfterSuccess, timeoutMs = 10000, revalidate } = options
 
   onBeforeRequest?.()
 
@@ -44,10 +46,12 @@ export async function apiFetch<T>(endpoint: string, options: ApiFetchOptions): P
 
     let response: Response
     try {
-      response = await fetch(url, {
+      const init: RequestInit & { next?: { revalidate: number } } = {
         headers,
         signal: AbortSignal.timeout(timeoutMs),
-      })
+      }
+      if (revalidate !== undefined) init.next = { revalidate }
+      response = await fetch(url, init)
     } catch (networkError) {
       lastError = networkError instanceof Error ? networkError : new Error(String(networkError))
       console.error(`[apiFetch] Network error: ${lastError.message}`)

@@ -1,7 +1,6 @@
-import type { RunLog } from '@/lib/types'
-
 interface LastUpdatedProps {
-  log: RunLog | undefined
+  /** Momento ISO en que se genero la data de esta pagina. */
+  generatedAt: string
 }
 
 function formatRelative(isoString: string): string {
@@ -23,18 +22,10 @@ function formatRelative(isoString: string): string {
   })
 }
 
-export function LastUpdated({ log }: LastUpdatedProps) {
-  if (!log || log.status !== 'ok' || !log.finishedAt) {
-    return (
-      <span className="text-xs tracking-wide" style={{ color: 'var(--muted)' }}>
-        Sin datos recientes
-      </span>
-    )
-  }
-
+export function LastUpdated({ generatedAt }: LastUpdatedProps) {
   return (
     <span className="text-xs tracking-wide" style={{ color: 'var(--muted)' }}>
-      Última actualización: {formatRelative(log.finishedAt)}
+      Datos actualizados {formatRelative(generatedAt)} (se refrescan cada hora)
     </span>
   )
 }

@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyToken, getTokenFromCookie } from '@/lib/auth/jwt'
 import { checkRateLimit } from '@/lib/middleware/rate-limit'
 import { getClientIp } from '@/lib/middleware/get-ip'
-
-const PROTECTED_ROUTES = ['/api/actions/refresh', '/api/auth/logout']
-const PUBLIC_ROUTES = ['/api/auth/login', '/']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -22,19 +18,6 @@ export function middleware(request: NextRequest) {
             'Retry-After': String(Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000)),
           },
         }
-      )
-    }
-  }
-
-  // Proteger rutas sensibles
-  if (PROTECTED_ROUTES.some((route) => pathname.startsWith(route))) {
-    const cookieHeader = request.headers.get('cookie')
-    const token = getTokenFromCookie(cookieHeader)
-
-    if (!token || !verifyToken(token)) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
       )
     }
   }

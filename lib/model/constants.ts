@@ -24,3 +24,5 @@ export const P_PENALTY_HOME_WIN = 0.5
 export const STRENGTH_MIN = 0.30
 export const STRENGTH_MAX = 3.00
 export const REFRESH_GUARD_MINUTES = 1
+/** Ventana de cache ISR: los datos en vivo (fixtures) se revalidan cada hora. */
+export const DATA_REVALIDATE_SECONDS = 3600

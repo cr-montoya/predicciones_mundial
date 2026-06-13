@@ -1,4 +1,4 @@
-import type { FixtureWithTeams } from '@/lib/agents/home-loader'
+import type { FixtureWithTeams } from '@/lib/agents/home-types'
 
 interface HeroProps {
   fixturesToday: FixtureWithTeams[]

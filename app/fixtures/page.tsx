@@ -1,7 +1,10 @@
 import Link from 'next/link'
-import { getFixtures, getTeams } from '@/lib/db/client'
+import { loadFixtures } from '@/lib/agents/live-loader'
+import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { FadeIn } from '@/components/fade-in'
 import type { Team } from '@/lib/types'
+
+export const revalidate = 3600
 
 function statusLabel(status: string): string {
   if (status === 'finished') return 'FT'
@@ -25,9 +28,9 @@ function formatKickoff(utc: string): string {
   })
 }
 
-export default function FixturesPage() {
-  const fixtures = getFixtures()
-  const teams = getTeams()
+export default async function FixturesPage() {
+  const fixtures = (await loadFixtures()).sort((a, b) => a.kickoffUtc.localeCompare(b.kickoffUtc))
+  const teams = buildStaticTeams()
   const teamMap = new Map<number, Team>(teams.map((t) => [t.id, t]))
 
   return (

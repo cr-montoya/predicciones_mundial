@@ -1,46 +1,19 @@
 import { getTeams, upsertTeamStats } from '@/lib/db/client'
-import { STRENGTH_MIN, STRENGTH_MAX } from '@/lib/model/constants'
+import { computeStrengths } from '@/lib/model/skills/strengths'
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value))
-}
-
-function mean(values: number[]): number {
-  return values.reduce((a, b) => a + b, 0) / values.length
-}
+// Re-exportado por compatibilidad: la funcion pura vive en el skill (sin DB),
+// para que el camino ISR no arrastre better-sqlite3 al bundle del Worker.
+export { computeStrengths }
 
 export function recomputeStrengths(): void {
-  const teams = getTeams()
+  const withStrengths = computeStrengths(getTeams())
 
-  const scoredVals = teams
-    .map(t => t.avgGoalsScored)
-    .filter((v): v is number => v !== null)
-
-  const concededVals = teams
-    .map(t => t.avgGoalsConceded)
-    .filter((v): v is number => v !== null)
-
-  if (scoredVals.length === 0 || concededVals.length === 0) return
-
-  const meanScored = mean(scoredVals)
-  const meanConceded = mean(concededVals)
-
-  for (const team of teams) {
-    const attackStrength =
-      team.avgGoalsScored !== null && meanScored > 0
-        ? clamp(team.avgGoalsScored / meanScored, STRENGTH_MIN, STRENGTH_MAX)
-        : 1.0
-
-    const defenseStrength =
-      team.avgGoalsConceded !== null && meanConceded > 0
-        ? clamp(team.avgGoalsConceded / meanConceded, STRENGTH_MIN, STRENGTH_MAX)
-        : 1.0
-
+  for (const team of withStrengths) {
     upsertTeamStats(team.id, {
       avgGoalsScored: team.avgGoalsScored,
       avgGoalsConceded: team.avgGoalsConceded,
-      attackStrength,
-      defenseStrength,
+      attackStrength: team.attackStrength,
+      defenseStrength: team.defenseStrength,
     })
   }
 }

@@ -42,9 +42,11 @@ const mockProvider: DataProvider = {
 // Default provider chain
 // ---------------------------------------------------------------------------
 
+// football-data.org es la fuente primaria; API-Football queda como respaldo
+// (su key de RapidAPI no esta activa) y mock como ultimo recurso.
 const defaultProviders: DataProvider[] = [
-  new ApiFootballProvider(),
   new FootballDataProvider(),
+  new ApiFootballProvider(),
   mockProvider,
 ]
 

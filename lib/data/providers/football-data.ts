@@ -2,6 +2,7 @@ import type { Fixture, FixtureStatus, MatchEvent, MatchEventType, MatchStats, Te
 import type { DataProvider } from '@/lib/data/provider'
 import { apiFetch } from '@/lib/data/api-fetch'
 import { RateLimiter } from '@/lib/data/rate-limiter'
+import { DATA_REVALIDATE_SECONDS } from '@/lib/model/constants'
 
 // ---------------------------------------------------------------------------
 // Canonical ID mapping: football-data team ID -> canonical (RapidAPI) team ID
@@ -192,6 +193,7 @@ export class FootballDataProvider implements DataProvider {
       baseUrl: FD_BASE_URL,
       headers: { 'X-Auth-Token': key },
       params,
+      revalidate: DATA_REVALIDATE_SECONDS,
       onBeforeRequest: () => this.limiter.check(),
       onAfterSuccess: () => this.limiter.record(),
     })

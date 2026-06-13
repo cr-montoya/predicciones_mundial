@@ -1,8 +1,11 @@
 import { notFound } from 'next/navigation'
-import { getFixtureById, getTeamById, getLatestPredictions } from '@/lib/db/client'
+import { loadFixtures, computePredictionsForFixture, teamMap } from '@/lib/agents/live-loader'
+import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { MarketSection } from '@/components/market-section'
 import { FadeIn } from '@/components/fade-in'
 import type { ModelOutput, MarketType } from '@/lib/types'
+
+export const revalidate = 3600
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -62,12 +65,13 @@ export default async function FixturePage({ params }: PageProps) {
 
   if (isNaN(fixtureId)) notFound()
 
-  const fixture = getFixtureById(fixtureId)
+  const fixture = (await loadFixtures()).find((f) => f.id === fixtureId)
   if (!fixture) notFound()
 
-  const home = getTeamById(fixture.homeTeamId)
-  const away = getTeamById(fixture.awayTeamId)
-  const predictions = getLatestPredictions(fixtureId)
+  const byId = teamMap(buildStaticTeams())
+  const home = byId.get(fixture.homeTeamId)
+  const away = byId.get(fixture.awayTeamId)
+  const predictions = computePredictionsForFixture(fixture, byId)
 
   const resultMarkets = pickMarkets(predictions, ['result_1x2', 'double_chance'])
   const goalMarkets = pickMarkets(predictions, [
@@ -102,7 +106,7 @@ export default async function FixturePage({ params }: PageProps) {
             className="border p-6 text-sm"
             style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
           >
-            Sin predicciones. Pulsa Actualizar en la pantalla principal.
+            Sin predicciones para este partido (los partidos finalizados no se proyectan).
           </div>
         </FadeIn>
       ) : (

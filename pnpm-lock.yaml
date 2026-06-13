@@ -11,9 +11,6 @@ importers:
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
-      better-sqlite3:
-        specifier: ^12.10.0
-        version: 12.10.0
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
@@ -60,6 +57,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.1.8
         version: 4.1.8(vitest@4.1.8)
+      better-sqlite3:
+        specifier: ^12.10.0
+        version: 12.10.0
       tailwindcss:
         specifier: ^4
         version: 4.3.0

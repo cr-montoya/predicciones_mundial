@@ -1,17 +1,13 @@
 name = "mundial-2026-predictor"
 main = "dist/index.js"
 compatibility_date = "2025-01-01"
-account_id = ""  # Tu Cloudflare account ID
 workers_dev = true
-
-# Pages Functions configuration
-pages_build_caching = true
 
 # Bindings
 [[d1_databases]]
 binding = "DB"
 database_name = "mundial"
-database_id = ""  # Se genera después de crear la BD en Cloudflare
+database_id = "75cfcd4e-2ea3-4a44-9e13-2c9003cc5c10"
 
 # Environment variables (use 'wrangler secret' for sensitive values)
 [env.production]

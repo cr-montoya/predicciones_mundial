@@ -1,6 +1,9 @@
-import { getTeams, getFixtures } from '@/lib/db/client'
+import { loadFixtures } from '@/lib/agents/live-loader'
+import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { FadeIn } from '@/components/fade-in'
 import type { Team, Fixture } from '@/lib/types'
+
+export const revalidate = 3600
 
 interface StandingRow {
   team: Team
@@ -103,9 +106,9 @@ function GroupTable({ group, rows }: { group: string; rows: StandingRow[] }) {
   )
 }
 
-export default function GroupsPage() {
-  const teams = getTeams()
-  const finished = getFixtures('finished')
+export default async function GroupsPage() {
+  const teams = buildStaticTeams()
+  const finished = (await loadFixtures()).filter((f) => f.status === 'finished')
   const standings = buildStandings(teams, finished)
 
   return (
