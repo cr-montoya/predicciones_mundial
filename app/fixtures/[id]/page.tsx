@@ -7,6 +7,11 @@ import type { ModelOutput, MarketType } from '@/lib/types'
 
 export const revalidate = 3600
 
+export async function generateStaticParams() {
+  const fixtures = await loadFixtures()
+  return fixtures.map((f) => ({ id: String(f.id) }))
+}
+
 interface PageProps {
   params: Promise<{ id: string }>
 }
