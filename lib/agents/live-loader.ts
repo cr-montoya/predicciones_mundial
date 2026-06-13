@@ -1,23 +1,20 @@
 import type { Fixture, Team, ModelOutput } from '@/lib/types'
 import { sanityCheck } from '@/lib/types'
 import { rankMarkets, type RankableMarket } from '@/lib/skills/rank-markets'
-import { fetchFixtures } from '@/lib/data/api-football'
 import { computeMatchOutputs } from '@/lib/model/match-model'
 import { buildStaticTeams } from './static-teams'
 import { todayBoundsUtc, buildLabel, type HomeData, type FixtureWithTeams } from './home-types'
 import tournamentPrediction from '@/lib/data/tournament-prediction.json'
-
-const WC_LEAGUE_ID = 1
-const WC_SEASON = 2026
+import fixturesCache from '@/lib/data/fixtures-cache.json'
 
 /** Prediccion del torneo precomputada (Monte Carlo estatico, ver script). */
 function tournamentOutputs(): { winner: ModelOutput; goldenBoot: ModelOutput } {
   return tournamentPrediction as unknown as { winner: ModelOutput; goldenBoot: ModelOutput }
 }
 
-/** Todos los fixtures del Mundial, cacheados 1h via Next Data Cache. */
-export async function loadFixtures(): Promise<Fixture[]> {
-  return fetchFixtures(WC_LEAGUE_ID, WC_SEASON)
+/** Todos los fixtures del Mundial leidos del JSON commiteado (sin red). */
+export function loadFixtures(): Fixture[] {
+  return (fixturesCache as { fixtures: unknown[] }).fixtures as Fixture[]
 }
 
 export function teamMap(teams: Team[]): Map<number, Team> {
@@ -48,7 +45,7 @@ export function computePredictionsForFixture(fixture: Fixture, byId: Map<number,
 export async function loadHomeData(): Promise<HomeData> {
   const teams = buildStaticTeams()
   const byId = teamMap(teams)
-  const allFixtures = await loadFixtures()
+  const allFixtures = loadFixtures()
 
   const { start, end } = todayBoundsUtc()
   let fixtures = allFixtures

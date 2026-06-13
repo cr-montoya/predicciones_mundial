@@ -10,7 +10,8 @@
     "seed": "tsx scripts/seed.ts",
     "seed:user": "tsx scripts/seed-user.ts",
     "refresh": "tsx scripts/refresh.ts",
-    "precompute": "tsx scripts/precompute-tournament.ts"
+    "precompute": "tsx scripts/precompute-tournament.ts",
+    "refresh-fixtures": "tsx scripts/refresh-fixtures.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
