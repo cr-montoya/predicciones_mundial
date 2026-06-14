@@ -1,25 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #060d1a;
-  --text: #f0f4f8;
-  --accent: #c8102e;
-  --accent2: #009a44;
-  --accent3: #002868;
-  --muted: #7a8fa6;
-  --border: #1a2535;
+  --bg: #08090d;
+  --text: #f0ece4;
+  --accent: #FFDB00;
+  --accent2: #D4A843;
+  --accent3: #887044;
+  --muted: #6b6d75;
+  --muted2: #555;
+  --border: rgba(255,255,255,0.04);
+  --border-gold: rgba(255,219,0,0.06);
+  --card-bg: #12141a;
+  --green: #02B906;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text);
-  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-jetbrains-mono), monospace;
+  font-family: var(--font-outfit), system-ui, sans-serif;
 }
 
 * {

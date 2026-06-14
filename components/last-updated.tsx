@@ -1,5 +1,4 @@
 interface LastUpdatedProps {
-  /** Momento ISO en que se genero la data de esta pagina. */
   generatedAt: string
 }
 
@@ -24,8 +23,18 @@ function formatRelative(isoString: string): string {
 
 export function LastUpdated({ generatedAt }: LastUpdatedProps) {
   return (
-    <span className="text-xs tracking-wide" style={{ color: 'var(--muted)' }}>
-      Datos actualizados {formatRelative(generatedAt)} (se refrescan cada hora)
-    </span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
+      <div style={{
+        width: 6,
+        height: 6,
+        background: '#02B906',
+        borderRadius: '50%',
+        animation: 'pulseGlow 2s infinite',
+        flexShrink: 0,
+      }} />
+      <span style={{ fontSize: 11, color: '#555' }}>
+        Datos actualizados {formatRelative(generatedAt)}
+      </span>
+    </div>
   )
 }

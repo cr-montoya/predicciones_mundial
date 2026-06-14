@@ -1,6 +1,6 @@
 import { loadFixtures } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
-import { FadeIn } from '@/components/fade-in'
+import { getFlag } from '@/lib/utils/flags'
 import type { Team, Fixture } from '@/lib/types'
 
 export const revalidate = 3600
@@ -49,59 +49,99 @@ function buildStandings(teams: Team[], finished: Fixture[]): Map<string, Standin
   }
 
   for (const rows of groups.values()) {
-    rows.sort((a, b) =>
-      b.pts - a.pts || b.gd - a.gd || b.gf - a.gf
-    )
+    rows.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf)
   }
 
   return new Map([...groups.entries()].sort(([a], [b]) => a.localeCompare(b)))
 }
 
-function GroupTable({ group, rows }: { group: string; rows: StandingRow[] }) {
+const COL = { w: 26, style: { width: 26, textAlign: 'center' as const, fontSize: 12, color: '#888' } }
+
+function GroupCard({ group, rows }: { group: string; rows: StandingRow[] }) {
   return (
-    <div className="border" style={{ borderColor: 'var(--border)' }}>
-      <div
-        className="px-4 py-2 text-xs tracking-widest font-bold"
-        style={{ background: 'var(--border)', color: 'var(--accent)' }}
-      >
-        GRUPO {group}
+    <div style={{
+      background: '#12141a',
+      border: '1px solid rgba(255,219,0,0.06)',
+      borderRadius: 12,
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '10px 16px',
+        background: 'rgba(255,219,0,0.04)',
+        borderBottom: '1px solid rgba(255,219,0,0.08)',
+      }}>
+        <span style={{ fontSize: 13, fontWeight: 700, color: '#D4A843', letterSpacing: '0.5px' }}>
+          Grupo {group}
+        </span>
       </div>
-      <table className="w-full text-xs">
-        <thead>
-          <tr style={{ color: 'var(--muted)', borderBottom: '1px solid var(--border)' }}>
-            <th className="py-2 px-4 text-left w-6">POS</th>
-            <th className="py-2 px-4 text-left">EQUIPO</th>
-            <th className="py-2 px-2 text-center">PJ</th>
-            <th className="py-2 px-2 text-center">G</th>
-            <th className="py-2 px-2 text-center">E</th>
-            <th className="py-2 px-2 text-center">P</th>
-            <th className="py-2 px-2 text-center">GF</th>
-            <th className="py-2 px-2 text-center">GC</th>
-            <th className="py-2 px-2 text-center">GD</th>
-            <th className="py-2 px-2 text-center font-bold" style={{ color: 'var(--accent)' }}>PTS</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, i) => (
-            <tr
-              key={row.team.id}
-              className="border-t"
-              style={{ borderColor: 'var(--border)' }}
-            >
-              <td className="py-2 px-4" style={{ color: 'var(--muted)' }}>{i + 1}</td>
-              <td className="py-2 px-4 text-white">{row.team.name}</td>
-              <td className="py-2 px-2 text-center">{row.pj}</td>
-              <td className="py-2 px-2 text-center">{row.g}</td>
-              <td className="py-2 px-2 text-center">{row.e}</td>
-              <td className="py-2 px-2 text-center">{row.p}</td>
-              <td className="py-2 px-2 text-center">{row.gf}</td>
-              <td className="py-2 px-2 text-center">{row.gc}</td>
-              <td className="py-2 px-2 text-center">{row.gd >= 0 ? `+${row.gd}` : row.gd}</td>
-              <td className="py-2 px-2 text-center font-bold" style={{ color: 'var(--accent)' }}>{row.pts}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '8px 16px',
+        borderBottom: '1px solid rgba(255,255,255,0.03)',
+      }}>
+        <span style={{ width: 22, fontSize: 10, color: '#555', textTransform: 'uppercase' }}>#</span>
+        <span style={{ flex: 1, fontSize: 10, color: '#555', textTransform: 'uppercase' }}>Equipo</span>
+        <span style={{ ...COL.style, color: '#555' }}>PJ</span>
+        <span style={{ ...COL.style, color: '#555' }}>G</span>
+        <span style={{ ...COL.style, color: '#555' }}>E</span>
+        <span style={{ ...COL.style, color: '#555' }}>P</span>
+        <span style={{ ...COL.style, color: '#555' }}>GF</span>
+        <span style={{ ...COL.style, color: '#555' }}>GC</span>
+        <span style={{ width: 30, textAlign: 'center', fontSize: 10, color: '#555' }}>GD</span>
+        <span style={{ width: 30, textAlign: 'center', fontSize: 10, color: '#D4A843', fontWeight: 600 }}>PTS</span>
+      </div>
+
+      {rows.map((row, i) => {
+        const qualifying = i < 2
+        const flag = getFlag(row.team.name)
+        const gdStr = row.gd >= 0 ? `+${row.gd}` : String(row.gd)
+
+        return (
+          <div
+            key={row.team.id}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              padding: '9px 16px',
+              borderBottom: '1px solid rgba(255,255,255,0.02)',
+              borderLeft: qualifying ? '3px solid rgba(212,168,67,0.25)' : '3px solid transparent',
+            }}
+          >
+            <span style={{ width: 22, fontSize: 12, color: '#6b6d75' }}>{i + 1}</span>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+              {flag && <span style={{ fontSize: 16, flexShrink: 0 }}>{flag}</span>}
+              <span style={{
+                fontSize: 13,
+                color: '#f0ece4',
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}>
+                {row.team.name}
+              </span>
+            </div>
+            <span style={COL.style}>{row.pj}</span>
+            <span style={COL.style}>{row.g}</span>
+            <span style={COL.style}>{row.e}</span>
+            <span style={COL.style}>{row.p}</span>
+            <span style={COL.style}>{row.gf}</span>
+            <span style={COL.style}>{row.gc}</span>
+            <span style={{ width: 30, textAlign: 'center', fontSize: 12, color: '#888' }}>{gdStr}</span>
+            <span style={{
+              width: 30,
+              textAlign: 'center',
+              fontSize: 13,
+              fontWeight: 700,
+              color: row.pts > 0 ? '#FFDB00' : '#6b6d75',
+            }}>
+              {row.pts}
+            </span>
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -112,26 +152,23 @@ export default async function GroupsPage() {
   const standings = buildStandings(teams, finished)
 
   return (
-    <div className="flex flex-col gap-8 px-6 py-12 max-w-5xl mx-auto w-full">
-      <FadeIn>
-        <h1 className="text-2xl font-bold tracking-widest" style={{ color: 'var(--text)' }}>
-          FASE DE GRUPOS
-        </h1>
-      </FadeIn>
+    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
+      <div style={{ fontSize: 28, fontWeight: 700, color: '#f0ece4', marginBottom: 24 }}>
+        Fase de Grupos
+      </div>
+
       {standings.size === 0 ? (
-        <FadeIn delay={0.1}>
-          <p className="text-sm" style={{ color: 'var(--muted)' }}>
-            Sin equipos registrados.
-          </p>
-        </FadeIn>
+        <p style={{ fontSize: 14, color: '#6b6d75' }}>Sin equipos registrados.</p>
       ) : (
-        <FadeIn delay={0.1}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[...standings.entries()].map(([group, rows]) => (
-              <GroupTable key={group} group={group} rows={rows} />
-            ))}
-          </div>
-        </FadeIn>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))',
+          gap: 16,
+        }}>
+          {[...standings.entries()].map(([group, rows]) => (
+            <GroupCard key={group} group={group} rows={rows} />
+          ))}
+        </div>
       )}
     </div>
   )
