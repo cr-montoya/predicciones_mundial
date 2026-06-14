@@ -5,8 +5,6 @@ import { FixturesToday } from '@/components/fixtures-today'
 import { TopMarkets } from '@/components/top-markets'
 import { Candidates } from '@/components/candidates'
 
-// Los datos se regeneran como maximo una vez por hora (ISR): al recargar ves la
-// version cacheada y se actualiza sola tras la ventana, sin gastar la cuota API.
 export const revalidate = 3600
 
 export default async function HomePage() {
@@ -14,29 +12,29 @@ export default async function HomePage() {
   const { fixturesToday, rankedMarkets, allRankedMarkets, tournamentWinner, goldenBoot, fallbackLabel, generatedAt } = data
 
   return (
-    <div className="flex flex-col w-full">
+    <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
       <Hero fixturesToday={fixturesToday} fallbackLabel={fallbackLabel} />
+      <LastUpdated generatedAt={generatedAt} />
 
-      <div className="flex flex-col gap-10 px-6 py-10 max-w-4xl mx-auto w-full">
-        <LastUpdated generatedAt={generatedAt} />
+      {fixturesToday.length > 0 && (
+        <FixturesToday fixtures={fixturesToday} />
+      )}
 
-        {fixturesToday.length > 0 && (
-          <FixturesToday fixtures={fixturesToday} />
-        )}
+      {rankedMarkets.length > 0 ? (
+        <TopMarkets initial={rankedMarkets} all={allRankedMarkets} />
+      ) : (
+        <div style={{
+          padding: '24px 16px',
+          border: '1px solid rgba(255,255,255,0.04)',
+          fontSize: 13,
+          color: '#6b6d75',
+          marginBottom: 36,
+        }}>
+          Sin partidos próximos con predicciones disponibles.
+        </div>
+      )}
 
-        {rankedMarkets.length > 0 ? (
-          <TopMarkets initial={rankedMarkets} all={allRankedMarkets} />
-        ) : (
-          <div
-            className="border py-6 px-4 text-sm tracking-wide"
-            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
-          >
-            SIN PARTIDOS PROXIMOS CON PREDICCIONES DISPONIBLES.
-          </div>
-        )}
-
-        <Candidates winner={tournamentWinner} boot={goldenBoot} />
-      </div>
+      <Candidates winner={tournamentWinner} boot={goldenBoot} />
     </div>
   )
 }

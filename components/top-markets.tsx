@@ -10,47 +10,33 @@ interface TopMarketsProps {
 
 const MARKET_LABELS: Record<string, string> = {
   result_1x2: '1X2',
-  double_chance: 'DOBLE CHANCE',
+  double_chance: 'Doble Oportunidad',
   over_under_goals_1_5: 'O/U 1.5',
   over_under_goals_2_5: 'O/U 2.5',
   over_under_goals_3_5: 'O/U 3.5',
-  btts: 'AMBOS MARCAN',
-  exact_score: 'MARCADOR EXACTO',
-  first_scorer: '1er GOLEADOR',
-  anytime_scorer: 'GOLEADOR',
-  total_cards: 'TARJETAS',
-  corners: 'CORNERS',
-  clean_sheet: 'PORTERIA 0',
+  btts: 'Ambos Marcan',
+  exact_score: 'Marcador Exacto',
+  first_scorer: '1er Goleador',
+  anytime_scorer: 'Goleador',
+  total_cards: 'Tarjetas',
+  corners: 'Corners',
+  clean_sheet: 'Portería 0',
 }
 
 function marketLabel(market: string): string {
-  return MARKET_LABELS[market] ?? market.toUpperCase().replace(/_/g, ' ')
+  return MARKET_LABELS[market] ?? market.replace(/_/g, ' ')
 }
 
-function confidenceBadge(level: string): { label: string; color: string } {
-  if (level === 'high') return { label: 'ALTA', color: 'var(--accent)' }
-  if (level === 'medium') return { label: 'MEDIA', color: '#888' }
-  return { label: 'BAJA', color: '#555' }
+function confidenceBadge(level: string): { label: string; bg: string; color: string } {
+  if (level === 'high') return { label: 'ALTA', bg: 'rgba(255,219,0,0.12)', color: '#FFDB00' }
+  if (level === 'medium') return { label: 'MEDIA', bg: 'rgba(255,165,0,0.12)', color: '#FFA500' }
+  return { label: 'BAJA', bg: 'rgba(255,255,255,0.06)', color: '#6b6d75' }
 }
 
-function ProbBar({ probability }: { probability: number }) {
-  const pct = Math.round(probability * 100)
-  return (
-    <div className="flex items-center gap-3">
-      <span
-        className="text-3xl font-bold tabular-nums w-16 text-right"
-        style={{ color: '#f5c542' }}
-      >
-        {pct}%
-      </span>
-      <div className="h-[2px] flex-1 hidden sm:block" style={{ background: 'var(--border)' }}>
-        <div
-          className="h-full"
-          style={{ width: `${pct}%`, background: '#f5c542', transition: 'width 0.3s' }}
-        />
-      </div>
-    </div>
-  )
+function pctColor(probability: number): string {
+  if (probability >= 0.75) return '#FFDB00'
+  if (probability >= 0.55) return '#D4A843'
+  return '#887044'
 }
 
 export function TopMarkets({ initial, all }: TopMarketsProps) {
@@ -62,69 +48,93 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
   const hasMore = all.length > initial.length
 
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="text-xs tracking-widest" style={{ color: 'var(--muted)' }}>
-        MERCADOS MAS INTERESANTES
-      </h2>
-      <div className="flex flex-col border-t" style={{ borderColor: 'var(--border)' }}>
+    <section style={{ marginBottom: 36 }}>
+      <div style={{
+        fontSize: 11,
+        color: '#6b6d75',
+        letterSpacing: '2px',
+        textTransform: 'uppercase',
+        fontWeight: 600,
+        marginBottom: 16,
+        paddingBottom: 8,
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+      }}>
+        Mercados Más Interesantes
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {markets.map((m, i) => {
           const badge = confidenceBadge(m.confidence)
+          const pct = Math.round(m.topProbability * 100)
           return (
             <div
               key={`${m.fixtureId}-${m.market}`}
-              className="grid py-4 border-b gap-y-1"
               style={{
-                borderColor: 'var(--border)',
-                gridTemplateColumns: '1.5rem 1fr auto',
-                gridTemplateRows: 'auto auto',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '14px 16px',
+                background: 'rgba(255,219,0,0.02)',
+                borderRadius: 10,
+                border: '1px solid rgba(255,219,0,0.04)',
               }}
             >
-              <span
-                className="text-xs row-span-2 pt-1"
-                style={{ color: 'var(--muted)' }}
-              >
+              <div style={{ width: 24, fontSize: 13, color: '#6b6d75', fontWeight: 600, flexShrink: 0 }}>
                 {i + 1}
-              </span>
-              <div className="flex flex-col gap-0.5">
-                <span
-                  className="text-xs tracking-widest"
-                  style={{ color: 'var(--muted)' }}
-                >
-                  {m.fixtureLabel.toUpperCase()}
-                </span>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold tracking-wide text-white">
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, color: '#888', fontWeight: 500 }}>
+                  {m.fixtureLabel}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 3, flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: '#f0ece4' }}>
                     {marketLabel(m.market)}
                   </span>
-                  <span
-                    className="text-xs px-1.5 py-0.5 tracking-widest"
-                    style={{ border: `1px solid ${badge.color}`, color: badge.color }}
-                  >
+                  <span style={{
+                    background: badge.bg,
+                    color: badge.color,
+                    fontSize: 10,
+                    fontWeight: 600,
+                    padding: '2px 6px',
+                    borderRadius: 3,
+                  }}>
                     {badge.label}
                   </span>
+                  <span style={{ fontSize: 12, color: '#6b6d75' }}>
+                    {m.topOutcome}
+                  </span>
                 </div>
-                <span className="text-sm tracking-wide" style={{ color: 'var(--muted)' }}>
-                  {m.topOutcome.toUpperCase()}
-                </span>
               </div>
-              <div className="flex items-end pb-1">
-                <ProbBar probability={m.topProbability} />
-              </div>
+              <span style={{
+                fontSize: 24,
+                fontWeight: 800,
+                color: pctColor(m.topProbability),
+                marginLeft: 12,
+                flexShrink: 0,
+              }}>
+                {pct}%
+              </span>
             </div>
           )
         })}
       </div>
+
       {hasMore && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-xs tracking-widest py-3 border-t transition-colors hover:opacity-80"
-          style={{
-            borderColor: 'var(--border)',
-            color: 'var(--accent)',
-          }}
-        >
-          {expanded ? '← OCULTAR ARRIESGADOS' : 'VER MERCADOS ARRIESGADOS →'}
-        </button>
+        <div style={{ textAlign: 'center', marginTop: 12 }}>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 12,
+              color: '#D4A843',
+              fontWeight: 600,
+              letterSpacing: '0.5px',
+            }}
+          >
+            {expanded ? '← Ocultar arriesgados' : 'Ver mercados arriesgados →'}
+          </button>
+        </div>
       )}
     </section>
   )
