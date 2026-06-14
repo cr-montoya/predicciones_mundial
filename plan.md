@@ -1,23 +1,24 @@
 # PLAN.md — Mundial 2026 IA Predictor
 
-Plan de implementación por fases. Objetivo: app en Next.js que corre en local, recalcula bajo demanda y proyecta todos los mercados estadísticos por partido, lista para grabar contenido.
+Plan de implementación por fases. Objetivo: app en Next.js desplegada en Cloudflare Pages, con datos precomputados y mercados estadísticos por partido, lista para grabar contenido y mejorar visualmente sin romper el harness.
 
 ---
 
 ## Arquitectura general
 
 ```
-Refresh manual (script o botón "Actualizar")
-   -> Ingesta de data (API-Football)
-   -> Normaliza y guarda en SQLite (archivo local)
-   -> Corre el modelo de predicción
-   -> Guarda predicciones con timestamp
-   -> Dashboard (Next.js) lee de SQLite y renderiza
+Refresh manual/local
+   -> Ingesta de data (API-Football / football-data fallback)
+   -> Normaliza fixtures y stats
+   -> Corre modelo de predicción y Monte Carlo
+   -> Genera JSON cacheados en lib/data/
+   -> Next.js exporta sitio estático a out/
+   -> Cloudflare Pages sirve la app desplegada
 ```
 
-Todo corre en local con `pnpm dev`. No hay proceso 24/7 ni deploy: tú disparas el refresh cuando quieres, controlando el consumo de la API.
+Estado actual: la app ya está desplegada en **Cloudflare Pages** como sitio estático. No hay DB ni refresh en runtime de producción: tú actualizas datos con scripts locales (`pnpm refresh-fixtures`, `pnpm precompute`, `pnpm build`) y Cloudflare sirve el contenido generado en `out/`.
 
-Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), presentación (UI). El modelo nunca llama a la API; solo consume lo que ya está en DB. Esto lo hace testeable y rápido.
+Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), presentación (UI). El modelo nunca llama a la API; solo consume fixtures/stats normalizados o JSON precomputados. Esto lo hace testeable, rápido y compatible con Cloudflare Pages.
 
 ---
 
@@ -181,7 +182,7 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
   - Global CDN para assets estáticos (JS, CSS).
 
 ### Arquitectura actual (post-Fase 11)
-La app migró a **ISR estático en Cloudflare Pages** — sin D1, sin refresh button, sin DB en runtime:
+La app migró a **export estático en Cloudflare Pages** — sin D1, sin refresh button, sin DB en runtime:
 - Fixtures: `lib/data/fixtures-cache.json` (pre-generado con `pnpm refresh-fixtures`, commitear para actualizar).
 - Fuerzas de equipos: `lib/data/historical-stats.json` + skill `computeStrengths` (puro, sin red).
 - Torneo: `lib/data/tournament-prediction.json` (Monte Carlo pre-generado con `pnpm precompute`).
@@ -198,21 +199,133 @@ La app migró a **ISR estático en Cloudflare Pages** — sin D1, sin refresh bu
 - **Objetivo**: Mostrar en cada card del home el ganador predicho con probabilidad ("España gana · 64%") y los goles esperados ("2.3 goles"). Enlace "VER →" a la página de detalle (ya implementado).
 - **Flujo harness**: Analyst define qué mercado mostrar y formato → Developer modifica `FixtureWithTeams` en `home-types.ts` para incluir predicciones pre-calculadas y actualiza `FixturesToday` → QA → Reviewer.
 
+
+### Fase 14 — Sistema visual con agente Design
+- **Estado base**: La app ya tiene dirección broadcast/datos deportivos, pero ahora el trabajo fuerte será diseño. Antes de tocar UI se crea el agente `.claude/agents/design.md` y se vuelve parte del flujo de harness.
+- **Objetivo**: Migrar la UI a una dirección visual más consistente, pensada para contenido: home, fixture detail, groups, market cards, estados vacíos, modo captura y responsive.
+- **Criterios de diseño**:
+  - Mantener el look de terminal deportiva/broadcast, con datos y probabilidades como protagonista.
+  - Usar layout denso, escaneable y claro; evitar landing page, cards decorativas innecesarias y gradientes genéricos.
+  - Definir tokens visuales en `app/globals.css`: color, tipografía, bordes, estados, escalas numéricas, espacios y barras de probabilidad.
+  - Reutilizar componentes existentes (`Hero`, `FixturesToday`, `TopMarkets`, `Candidates`, `MarketSection`) antes de crear abstracciones nuevas.
+  - Cuidar mobile primero: textos sin solaparse, botones legibles, cards con dimensiones estables y jerarquía clara.
+- **Entregables**:
+  - Agente `design` documentado en `.claude/agents/design.md`.
+  - Checklist visual por pantalla: home, lista de partidos, detalle de partido, grupos y captura.
+  - Refactor visual por componentes, sin cambiar contratos estadísticos.
+  - Capturas o revisión manual de desktop/mobile antes de cerrar.
+- **Flujo harness**: Design define dirección, tokens y checklist → Developer implementa componentes y CSS → QA corre build/tests y valida rutas principales → Design revisa fidelidad visual/responsive → Reviewer revisa harness/capas → Security revisa que no se introduzcan riesgos.
+- **Verificación**: `pnpm build`, `pnpm test`, revisión responsive en home y detalle de partido, y Design aprobado sin bloqueantes.
+
+### Fase 15 — Español LATAM y glosario de mercados
+- **Problema**: Hay textos mezclados y algunos mercados pueden ser confusos para usuarios que no conocen apuestas deportivas.
+- **Objetivo**: Traducir toda la experiencia a español latinoamericano, con tono claro de análisis estadístico y sin prometer ganancias. Añadir botones de info para explicar cada tipo de mercado.
+- **Alcance de traducción**:
+  - Home, fixture cards, detalle de partido, grupos, candidatos, timestamps, estados vacíos y mensajes de error.
+  - Mercados: 1X2, doble oportunidad, over/under, ambos marcan, marcador exacto, clean sheet, tarjetas, corners y goleadores.
+  - Formatos regionales: fechas/horas para `es-CO` o `es-419`, porcentajes consistentes y nombres comprensibles.
+- **Botón de info**:
+  - Cada sección de mercado debe tener un icono o botón breve que abra tooltip, popover o panel compacto.
+  - Las explicaciones deben ser neutrales: qué significa el mercado, cómo leer el porcentaje y qué tan confiable es el modelo.
+  - Mantener visible el disclaimer de entretenimiento y evitar lenguaje de recomendación financiera.
+- **Arquitectura sugerida**:
+  - Crear un diccionario tipado de etiquetas y descripciones, por ejemplo `lib/content/markets-es.ts`.
+  - UI consume textos desde ese diccionario; no duplicar strings en cada componente.
+  - Si se agrega interactividad, aislarla en componentes client pequeños.
+- **Flujo harness**: Design define patrón de info y microcopy visual → Analyst valida que las explicaciones de mercados sean correctas → Developer implementa diccionario y componentes → QA valida textos/rutas/build → Reviewer → Security.
+- **Verificación**: No quedan strings críticos en inglés, el glosario cubre todos los mercados visibles, `pnpm test` y `pnpm build` pasan.
+
+### Fase 16 — Goleadores y mercados extendidos por partido
+- **Problema**: La experiencia de partido todavía está corta para contenido: goleadores necesita más datos y hay mercados limitados más allá de tarjetas/corners.
+- **Objetivo**: Enriquecer la página de detalle con predicciones de goleadores y más mercados derivados del modelo, manteniendo el sitio estático y sin llamadas runtime en Cloudflare.
+- **Mercados candidatos**:
+  - Goleador en cualquier momento, primer goleador y equipo del goleador.
+  - Total de goles por equipo: local over 0.5/1.5/2.5 y visitante over 0.5/1.5/2.5.
+  - Resultado + ambos marcan, resultado + over 1.5/2.5, gana a cero.
+  - Handicap asiático simple o margen de victoria, si Analyst aprueba el contrato.
+  - Corners por equipo y tarjetas por equipo cuando haya datos suficientes.
+- **Datos de goleadores**:
+  - Fuente preferida: API-Football player stats, lineups y minutos recientes cuando estén disponibles.
+  - Fallback estático: tasas históricas/manuales por jugador, marcadas con confianza baja si faltan minutos o titularidad.
+  - Nunca bloquear la página si no hay data de jugador: mostrar mercado no disponible o confianza baja.
+- **Contrato de modelo**:
+  - Analyst define inputs mínimos: jugador, equipo, minutos esperados, goles por 90, penales, probabilidad de titularidad y lambda del equipo.
+  - Models derivan probabilidades sin red y con `sanityCheck`.
+  - Agents/scripts precomputan y guardan la salida en JSON compatible con static export.
+- **UI**:
+  - Detalle de partido prioriza 3-5 mercados principales y deja el resto en secciones plegables.
+  - Mostrar confianza (`alta`, `media`, `baja`) y explicación corta del porqué cuando aplique.
+  - Mantener diseño apto para captura: números grandes, rankings claros, sin saturar.
+- **Flujo harness**: Analyst define mercados y fórmulas → Design define jerarquía visual de mercados → Developer implementa skills/models/agents/UI → QA valida invariantes y build estático → Reviewer → Security.
+- **Verificación**: Tests de nuevos modelos, fixture detail renderiza con y sin data de jugadores, `pnpm precompute`, `pnpm refresh-fixtures`, `pnpm test` y `pnpm build` pasan.
+
+
 ---
 
 ## Agentes y flujo de verificación
 
-Cada fase se valida con estos 4 agentes en secuencia:
+Cada fase se valida con estos agentes en secuencia. Se omiten los que no aplican, salvo QA, Reviewer y Security, que cierran siempre:
 
-1. **Analyst** (si hay cambios de modelo): valida matemática, contratos, lambdas.
-2. **Developer** (si hay cambios de código): implementa siguiendo harness.
-3. **QA** (siempre): corre tests, valida sanity checks de outputs. Tests pasan = ✅.
-4. **Reviewer** (siempre): audita harness, capas, convenciones. Sin bloqueantes = ✅.
-5. **Security** (siempre, crítico antes de Cloudflare): detección de vulns, exposure de secretos, OWASP. Sin CRÍTICO = ✅.
+1. **Analyst** (si hay cambios de modelo o copy técnico): valida matemática, contratos, lambdas y explicaciones de mercados.
+2. **Design** (si hay cambios de UI/copy visual): define dirección visual, jerarquía, responsive, estados vacíos y checklist de captura.
+3. **Developer** (si hay cambios de código): implementa siguiendo harness.
+4. **QA** (siempre): corre tests, valida sanity checks de outputs, rutas principales y build estático. Tests pasan = ✅.
+5. **Design** (si hubo UI): revisa fidelidad visual, legibilidad, responsive y consistencia de componentes. Sin bloqueantes = ✅.
+6. **Reviewer** (siempre): audita harness, capas, convenciones. Sin bloqueantes = ✅.
+7. **Security** (siempre, crítico antes de Cloudflare/deploy): detección de vulns, exposure de secretos, OWASP. Sin CRÍTICO = ✅.
 
-**Flujo**: Analyst → Developer → QA → Reviewer → Security → Aprobado.
+**Flujo modelo**: Analyst → Developer → QA → Reviewer → Security → Aprobado.
 
-Si alguno reporta bloqueante: vuelve a Developer para arreglo, luego re-valida desde QA.
+**Flujo diseño/UI**: Design → Developer → QA → Design → Reviewer → Security → Aprobado.
+
+**Flujo mixto**: Analyst → Design → Developer → QA → Design → Reviewer → Security → Aprobado.
+
+Si alguno reporta bloqueante: vuelve a Developer para arreglo, y luego se re-valida desde QA. Si el bloqueante cambia contrato estadístico, vuelve primero a Analyst. Si cambia dirección visual, vuelve primero a Design.
+
+---
+
+## Flujo Git y deploy
+
+Como `main` está conectado a producción en Cloudflare Pages, no se trabaja directo sobre `main` para fases nuevas. El flujo será **trunk based development con ramas cortas**: `main` sigue siendo el trunk estable, y cada fase vive en una rama temporal que se integra rápido mediante PR.
+
+### Reglas de ramas
+- `main` representa producción y debe estar siempre desplegable.
+- Cada fase se implementa en una rama desde `main` actualizada.
+- Nombres sugeridos:
+  - `phase/14-design-system`
+  - `phase/15-spanish-market-info`
+  - `phase/16-scorers-extended-markets`
+  - `fix/<descripcion-corta>` para arreglos pequeños.
+- Las ramas deben ser chicas y durar poco: idealmente una fase o un sub-entregable claro.
+- Si una fase crece demasiado, se divide en PRs verticales que no rompan producción.
+
+### Flujo por fase
+1. Crear rama desde `main`.
+2. Ejecutar el flujo de agentes que aplique: Analyst/Design → Developer → QA → Design si hubo UI → Reviewer → Security.
+3. Correr verificación local antes del PR: `pnpm test` y `pnpm build` como mínimo; `pnpm tsc --noEmit` si no queda cubierto por build.
+4. Abrir PR hacia `main` usando `.github/pull_request_template.md`, con resumen, alcance, riesgos, screenshots si hubo UI y comandos ejecutados.
+5. Esperar preview deployment de Cloudflare Pages para probar la rama sin tocar producción.
+6. Tú revisas el PR y el preview: funcionamiento, diseño, copy, datos y comportamiento mobile si aplica.
+7. Solo después de tu aprobación se hace merge a `main`.
+8. Cloudflare despliega producción desde `main`; si algo sale mal, rollback desde Cloudflare o revert del PR.
+
+### Criterios para merge
+- PR aprobado por ti.
+- Template de PR completo, con secciones no aplicables marcadas explícitamente.
+- Checks locales/CI verdes.
+- QA sin fallos.
+- Reviewer sin bloqueantes.
+- Security sin críticos.
+- Design aprobado si hubo cambios visuales o de copy.
+- Preview de Cloudflare revisado cuando la fase toque UI, rutas, build o datos estáticos.
+
+### Recomendaciones para proteger producción
+- Activar branch protection en GitHub para `main`: bloquear pushes directos, requerir PR y checks verdes.
+- Mantener Cloudflare Pages desplegando producción solo desde `main`.
+- Usar preview deployments de Cloudflare para todas las ramas/PRs.
+- Evitar mezclar refactors grandes con cambios de producto en el mismo PR.
+- Mantener feature flags simples para cambios riesgosos, o dejar rutas/mercados nuevos ocultos hasta que estén aprobados.
+- Para datos precomputados, revisar el diff de JSON cuando cambien probabilidades o fixtures importantes.
 
 ---
 
@@ -221,4 +334,6 @@ Si alguno reporta bloqueante: vuelve a Developer para arreglo, luego re-valida d
 - **Límite API free**: como el refresh es manual y tiene guarda de frescura, tú controlas cada llamada y respetas los 100 req/día. Para data en vivo durante partidos hay que pasar a plan pago.
 - **Calidad de predicciones**: Poisson es sólido para goles, más ruidoso para tarjetas/corners. Mostrar confianza baja en esos mercados.
 - **Legal**: mientras la app solo muestre probabilidades y no reciba dinero, es análisis estadístico.
-- **Cloudflare D1**: aunque el free tier es amplio, si la BD crece mucho, considera plan pago de Cloudflare.
+- **Cloudflare Pages estático**: el deploy actual no tiene DB ni refresh runtime. Cualquier fase nueva debe mantener build estático o documentar explícitamente por qué necesita volver a D1/Workers.
+- **Cloudflare D1**: queda como opción futura si se reactiva refresh en producción o persistencia runtime; no es parte del flujo actual.
+- **Main ligado a producción**: ningún cambio de fase debe entrar directo a `main`; todo pasa por rama, PR, preview y aprobación humana antes del merge.
