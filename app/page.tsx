@@ -5,6 +5,7 @@ import { FixturesToday } from '@/components/fixtures-today'
 import { TopMarkets } from '@/components/top-markets'
 import { Candidates } from '@/components/candidates'
 
+export const runtime = 'edge'
 export const revalidate = 3600
 
 export default async function HomePage() {

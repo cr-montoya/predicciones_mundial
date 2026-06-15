@@ -5,12 +5,8 @@ import { MarketSection } from '@/components/market-section'
 import { FadeIn } from '@/components/fade-in'
 import type { ModelOutput, MarketType } from '@/lib/types'
 
+export const runtime = 'edge'
 export const revalidate = 3600
-
-export async function generateStaticParams() {
-  const fixtures = await loadFixtures()
-  return fixtures.map((f) => ({ id: String(f.id) }))
-}
 
 interface PageProps {
   params: Promise<{ id: string }>

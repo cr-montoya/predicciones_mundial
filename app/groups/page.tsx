@@ -3,6 +3,7 @@ import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { getFlag } from '@/lib/utils/flags'
 import type { Team, Fixture } from '@/lib/types'
 
+export const runtime = 'edge'
 export const revalidate = 3600
 
 interface StandingRow {

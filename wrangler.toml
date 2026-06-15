@@ -1,21 +1,8 @@
 name = "mundial-2026-predictor"
-main = "dist/index.js"
-compatibility_date = "2025-01-01"
-workers_dev = true
+compatibility_date = "2026-01-01"
+compatibility_flags = ["nodejs_compat"]
 
-# Bindings
-[[d1_databases]]
-binding = "DB"
-database_name = "mundial"
-database_id = "75cfcd4e-2ea3-4a44-9e13-2c9003cc5c10"
+pages_build_output_dir = ".vercel/output/static"
 
-# Environment variables (use 'wrangler secret' for sensitive values)
 [env.production]
 vars = { ENVIRONMENT = "production" }
-
-[env.development]
-vars = { ENVIRONMENT = "development" }
-
-# Cron jobs (opcional para refresh automático)
-[[triggers.crons]]
-crons = ["0 */6 * * *"]  # Cada 6 horas

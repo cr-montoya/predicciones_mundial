@@ -33,13 +33,3 @@ export function checkRateLimit(
   entry.count++
   return { allowed: true, remaining: maxRequests - entry.count, resetAt: entry.resetAt }
 }
-
-// Cleanup: remover entries expirados cada 5 minutos
-setInterval(() => {
-  const now = Date.now()
-  for (const [ip, entry] of rateLimitStore.entries()) {
-    if (now > entry.resetAt) {
-      rateLimitStore.delete(ip)
-    }
-  }
-}, 5 * 60 * 1000)

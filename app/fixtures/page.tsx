@@ -4,6 +4,7 @@ import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { getFlag } from '@/lib/utils/flags'
 import type { Team } from '@/lib/types'
 
+export const runtime = 'edge'
 export const revalidate = 3600
 
 function toBogotaDate(utc: string): string {
