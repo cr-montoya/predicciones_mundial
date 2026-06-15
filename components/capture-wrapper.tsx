@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 
 interface CaptureWrapperProps {
   children: React.ReactNode
@@ -8,8 +8,11 @@ interface CaptureWrapperProps {
 }
 
 export function CaptureWrapper({ children, captureHidden }: CaptureWrapperProps) {
-  const params = useSearchParams()
-  const isCapture = params.get('capture') === 'true'
+  const [isCapture, setIsCapture] = useState(false)
+
+  useEffect(() => {
+    setIsCapture(new URLSearchParams(window.location.search).get('capture') === 'true')
+  }, [])
 
   if (isCapture) {
     return <>{captureHidden}</>

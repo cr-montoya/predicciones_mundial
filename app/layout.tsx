@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import { Outfit } from 'next/font/google'
 import { DisclaimerBanner } from '@/components/disclaimer-banner'
 import { CaptureWrapper } from '@/components/capture-wrapper'
@@ -26,12 +25,10 @@ export default function RootLayout({
         className="min-h-full flex flex-col"
         style={{ background: 'var(--bg)', color: 'var(--text)' }}
       >
-        <Suspense>
-          <CaptureWrapper captureHidden={null}>
-            <Nav />
-            <DisclaimerBanner />
-          </CaptureWrapper>
-        </Suspense>
+        <CaptureWrapper captureHidden={null}>
+          <Nav />
+          <DisclaimerBanner />
+        </CaptureWrapper>
         <main className="flex-1 flex flex-col">{children}</main>
       </body>
     </html>
