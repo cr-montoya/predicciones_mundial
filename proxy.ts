@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { checkRateLimit } from '@/lib/middleware/rate-limit'
 import { getClientIp } from '@/lib/middleware/get-ip'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const ip = getClientIp(request)
 

@@ -2,7 +2,7 @@ allowBuilds:
   better-sqlite3: true
   esbuild: true
   sharp: false
-  workerd: true
+  workerd: false
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
