@@ -37,10 +37,14 @@ export function middleware(request: NextRequest) {
   // Next.js App Router requiere 'unsafe-inline' en script-src: inyecta scripts inline para
   // el RSC payload (self.__next_f.push). Sin esto la hidratación falla en producción.
   // 'unsafe-eval' solo en dev (turbopack lo necesita).
+  // Vercel preview inyecta feedback.js desde vercel.live — solo lo permitimos en preview.
   const isDev = process.env.NODE_ENV === 'development'
+  const isVercelPreview = process.env.VERCEL_ENV === 'preview'
   const scriptSrc = isDev
     ? "'self' 'unsafe-eval' 'unsafe-inline'"
-    : "'self' 'unsafe-inline'"
+    : isVercelPreview
+      ? "'self' 'unsafe-inline' https://vercel.live"
+      : "'self' 'unsafe-inline'"
   const csp = `default-src 'self'; script-src ${scriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;`
 
   response.headers.set('Content-Security-Policy', csp)
