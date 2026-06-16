@@ -1,5 +1,5 @@
 ---
-status: blocked
+status: pending
 phase: 22
 owner: cristian
 branch: phase/22-mis-picks
@@ -21,7 +21,7 @@ gates:
 
 ## Status
 
-blocked — depende de phase-19 (picks en localStorage)
+pending
 
 ## Objective
 
