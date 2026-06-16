@@ -92,8 +92,8 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | --- | --- | --- |
 | `auto-refresh-workers` | historical | Exploración histórica de Cloudflare Workers/next-on-pages. |
 | `vercel-env-csp` | historical | Diagnóstico y fixes de env vars/CSP en Vercel. |
-| `fix-better-sqlite3-devdep` | in_review | Agregar serverExternalPackages para eliminar warning DEP0176 en Vercel. |
-| `fix-goleadores-empty-state` | pending | Ocultar sección GOLEADORES cuando no hay jugadores elegibles. |
+| `fix-better-sqlite3-devdep` | completed | Agregar serverExternalPackages para eliminar warning DEP0176 en Vercel. |
+| `fix-goleadores-empty-state` | in_review | Mostrar goleadores reales con squads estáticos de los 32 equipos. |
 
 ## Reglas
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-pending
+completed
 
 ## Tasks
 
@@ -17,4 +17,4 @@ pending
 - [x] `pnpm tsc --noEmit`, `pnpm test` y `pnpm build` pasan.
 - [x] `pnpm spec:check` pasa (sin errores).
 - [x] `specs/README.md` actualizado.
-- [ ] Warning DEP0176 no aparece en log del preview de Vercel.
+- [x] Warning DEP0176 no aparece en log del preview de Vercel.

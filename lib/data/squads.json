@@ -1,0 +1,6281 @@
+{
+  "1": [
+    {
+      "id": 1163,
+      "teamId": 1,
+      "name": "Weston McKennie",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1164,
+      "teamId": 1,
+      "name": "Alejandro Zendejas",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1165,
+      "teamId": 1,
+      "name": "Cristian Roldan",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1166,
+      "teamId": 1,
+      "name": "Tyler Adams",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1167,
+      "teamId": 1,
+      "name": "Brenden Aaronson",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1168,
+      "teamId": 1,
+      "name": "Gio Reyna",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1169,
+      "teamId": 1,
+      "name": "Sebastian Berhalter",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1170,
+      "teamId": 1,
+      "name": "Malik Tillman",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1171,
+      "teamId": 1,
+      "name": "Christian Pulisic",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1172,
+      "teamId": 1,
+      "name": "Tim Weah",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1173,
+      "teamId": 1,
+      "name": "Haji Wright",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1174,
+      "teamId": 1,
+      "name": "Ricardo Pepi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1175,
+      "teamId": 1,
+      "name": "Folarin Balogun",
+      "position": "FW",
+      "goalsScored": 2,
+      "minutesPlayed": 180,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1176,
+      "teamId": 1,
+      "name": "Max Arfsten",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "2": [
+    {
+      "id": 1191,
+      "teamId": 2,
+      "name": "N'Golo Kanté",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1192,
+      "teamId": 2,
+      "name": "Adrien Rabiot",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1193,
+      "teamId": 2,
+      "name": "Aurélien Tchouameni",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1194,
+      "teamId": 2,
+      "name": "Manu Koné",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1195,
+      "teamId": 2,
+      "name": "Rayan Cherki",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1196,
+      "teamId": 2,
+      "name": "Maghnes Akliouche",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1197,
+      "teamId": 2,
+      "name": "Desire Doue",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1198,
+      "teamId": 2,
+      "name": "Warren Zaïre-Emery",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1199,
+      "teamId": 2,
+      "name": "Jean-Philippe Mateta",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1200,
+      "teamId": 2,
+      "name": "Ousmane Dembélé",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1201,
+      "teamId": 2,
+      "name": "Kylian Mbappé",
+      "position": "FW",
+      "goalsScored": 2,
+      "minutesPlayed": 180,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1202,
+      "teamId": 2,
+      "name": "Marcus Thuram-Ulien",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1203,
+      "teamId": 2,
+      "name": "Michael Olise",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1204,
+      "teamId": 2,
+      "name": "Bradley Barcola",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    }
+  ],
+  "3": [
+    {
+      "id": 1318,
+      "teamId": 3,
+      "name": "Luka Modrić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1319,
+      "teamId": 3,
+      "name": "Mateo Kovačić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1320,
+      "teamId": 3,
+      "name": "Mario Pašalić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1321,
+      "teamId": 3,
+      "name": "Nikola Vlašić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1322,
+      "teamId": 3,
+      "name": "Nikola Moro",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1323,
+      "teamId": 3,
+      "name": "Kristijan Jakić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1324,
+      "teamId": 3,
+      "name": "Luka Sučić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1325,
+      "teamId": 3,
+      "name": "Petar Sucic",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1326,
+      "teamId": 3,
+      "name": "Martin Baturina",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1327,
+      "teamId": 3,
+      "name": "Toni Fruk",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1328,
+      "teamId": 3,
+      "name": "Andrej Kramarić",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1329,
+      "teamId": 3,
+      "name": "Ivan Perišić",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1330,
+      "teamId": 3,
+      "name": "Ante Budimir",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1331,
+      "teamId": 3,
+      "name": "Petar Musa",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1332,
+      "teamId": 3,
+      "name": "Marco Pašalić",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1333,
+      "teamId": 3,
+      "name": "Igor Matanovic",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "4": [
+    {
+      "id": 1390,
+      "teamId": 4,
+      "name": "Kevin De Bruyne",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1391,
+      "teamId": 4,
+      "name": "Axel Witsel",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1392,
+      "teamId": 4,
+      "name": "Youri Tielemans",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1393,
+      "teamId": 4,
+      "name": "Dodi Lukebakio",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1394,
+      "teamId": 4,
+      "name": "Alexis Saelemaekers",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1395,
+      "teamId": 4,
+      "name": "Hans Vanaken",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1396,
+      "teamId": 4,
+      "name": "Nicolas Raskin",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1397,
+      "teamId": 4,
+      "name": "Jeremy Doku",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1398,
+      "teamId": 4,
+      "name": "Amadou Onana",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1399,
+      "teamId": 4,
+      "name": "Diego Moreira",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1400,
+      "teamId": 4,
+      "name": "Romelu Lukaku",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1401,
+      "teamId": 4,
+      "name": "Leandro Trossard",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1402,
+      "teamId": 4,
+      "name": "Charles De Ketelaere",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1403,
+      "teamId": 4,
+      "name": "Matias Fernandez-Pardo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "5": [
+    {
+      "id": 1633,
+      "teamId": 5,
+      "name": "Marten de Roon",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1634,
+      "teamId": 5,
+      "name": "Donyell Malen",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1635,
+      "teamId": 5,
+      "name": "Frenkie de Jong",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1636,
+      "teamId": 5,
+      "name": "Noa Lang",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1637,
+      "teamId": 5,
+      "name": "Guus Til",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1638,
+      "teamId": 5,
+      "name": "Teun Koopmeiners",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1639,
+      "teamId": 5,
+      "name": "Tijjani Reijnders",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1640,
+      "teamId": 5,
+      "name": "Ryan Gravenberch",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1641,
+      "teamId": 5,
+      "name": "Mats Wieffer",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1642,
+      "teamId": 5,
+      "name": "Quinten Timber",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1643,
+      "teamId": 5,
+      "name": "Crysencio Summerville",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1644,
+      "teamId": 5,
+      "name": "Cody Gakpo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1645,
+      "teamId": 5,
+      "name": "Justin Kluivert",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1646,
+      "teamId": 5,
+      "name": "Wout Weghorst",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1647,
+      "teamId": 5,
+      "name": "Memphis Depay",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1648,
+      "teamId": 5,
+      "name": "Brian Brobbey",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "6": [
+    {
+      "id": 1090,
+      "teamId": 6,
+      "name": "Lucas Paquetá",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1091,
+      "teamId": 6,
+      "name": "Bruno Guimarães",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1092,
+      "teamId": 6,
+      "name": "Casemiro",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1093,
+      "teamId": 6,
+      "name": "Fabinho",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1094,
+      "teamId": 6,
+      "name": "Danilo dos Santos de Oliveira",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1095,
+      "teamId": 6,
+      "name": "Vinicius Junior",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1096,
+      "teamId": 6,
+      "name": "Neymar",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1097,
+      "teamId": 6,
+      "name": "Matheus Cunha",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1098,
+      "teamId": 6,
+      "name": "Raphinha",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1099,
+      "teamId": 6,
+      "name": "Martinelli",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1100,
+      "teamId": 6,
+      "name": "Thiago",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1101,
+      "teamId": 6,
+      "name": "Luiz Henrique",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1102,
+      "teamId": 6,
+      "name": "Endrick",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1103,
+      "teamId": 6,
+      "name": "Rayan",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "7": [
+    {
+      "id": 1001,
+      "teamId": 7,
+      "name": "Federico Valverde",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1002,
+      "teamId": 7,
+      "name": "Giorgian De Arrascaeta",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1003,
+      "teamId": 7,
+      "name": "Rodrigo Bentancur",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1004,
+      "teamId": 7,
+      "name": "Manuel Ugarte",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1005,
+      "teamId": 7,
+      "name": "Brian Rodríguez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1006,
+      "teamId": 7,
+      "name": "Rodrigo Zalazar",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1007,
+      "teamId": 7,
+      "name": "Facundo Pellistri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1008,
+      "teamId": 7,
+      "name": "Emiliano Martínez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1009,
+      "teamId": 7,
+      "name": "Juan Sanabria",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1010,
+      "teamId": 7,
+      "name": "Nicolas de la Cruz",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1011,
+      "teamId": 7,
+      "name": "Rodrigo Aguirre",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1012,
+      "teamId": 7,
+      "name": "Darwin Núñez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1013,
+      "teamId": 7,
+      "name": "Agustín Canobbio",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1014,
+      "teamId": 7,
+      "name": "Federico Viñas",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "9": [
+    {
+      "id": 1031,
+      "teamId": 9,
+      "name": "Fabián Ruiz",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1032,
+      "teamId": 9,
+      "name": "Marcos Llorente",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1033,
+      "teamId": 9,
+      "name": "Rodri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1034,
+      "teamId": 9,
+      "name": "Mikel Merino",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1035,
+      "teamId": 9,
+      "name": "Dani Olmo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1036,
+      "teamId": 9,
+      "name": "Ferrán Torres",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1037,
+      "teamId": 9,
+      "name": "Martín Zubimendi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1038,
+      "teamId": 9,
+      "name": "Pedri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1039,
+      "teamId": 9,
+      "name": "Pablo Gavira",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1040,
+      "teamId": 9,
+      "name": "Mikel Oyarzabal",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1041,
+      "teamId": 9,
+      "name": "Álex Baena",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1042,
+      "teamId": 9,
+      "name": "Borja Iglesias",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1043,
+      "teamId": 9,
+      "name": "Yeremi Pino",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1044,
+      "teamId": 9,
+      "name": "Nico Williams",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1045,
+      "teamId": 9,
+      "name": "Lamine Yamal",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1046,
+      "teamId": 9,
+      "name": "Víctor Muñoz",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "10": [
+    {
+      "id": 1104,
+      "teamId": 10,
+      "name": "Bernardo Silva",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1105,
+      "teamId": 10,
+      "name": "Rúben Neves",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1106,
+      "teamId": 10,
+      "name": "Bruno Fernandes",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1107,
+      "teamId": 10,
+      "name": "Gonçalo Guedes",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1108,
+      "teamId": 10,
+      "name": "Samuel Almeida Costa",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1109,
+      "teamId": 10,
+      "name": "Vitinha",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1110,
+      "teamId": 10,
+      "name": "Joao Neves",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1111,
+      "teamId": 10,
+      "name": "Cristiano Ronaldo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1112,
+      "teamId": 10,
+      "name": "Pedro Neto",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1113,
+      "teamId": 10,
+      "name": "Rafael Leão",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1114,
+      "teamId": 10,
+      "name": "Trincão",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1115,
+      "teamId": 10,
+      "name": "João Félix",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1116,
+      "teamId": 10,
+      "name": "Gonçalo Ramos",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1117,
+      "teamId": 10,
+      "name": "Francisco Conceição",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "14": [
+    {
+      "id": 1047,
+      "teamId": 14,
+      "name": "Andrés Cubas",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1048,
+      "teamId": 14,
+      "name": "Kaku",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1049,
+      "teamId": 14,
+      "name": "Miguel Almirón",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1050,
+      "teamId": 14,
+      "name": "Mauricio",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1051,
+      "teamId": 14,
+      "name": "Braian Ojeda",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1052,
+      "teamId": 14,
+      "name": "Matías Galarza",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1053,
+      "teamId": 14,
+      "name": "Damian Bobadilla",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1054,
+      "teamId": 14,
+      "name": "Diego Gómez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1055,
+      "teamId": 14,
+      "name": "Antonio Sanabria",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1056,
+      "teamId": 14,
+      "name": "Gabriel Ávalos",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1057,
+      "teamId": 14,
+      "name": "Isidro Pitta",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1058,
+      "teamId": 14,
+      "name": "Ramón Sosa",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1059,
+      "teamId": 14,
+      "name": "Julio Enciso",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1060,
+      "teamId": 14,
+      "name": "Gustavo Caballero",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1061,
+      "teamId": 14,
+      "name": "Alex Arce",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "15": [
+    {
+      "id": 1259,
+      "teamId": 15,
+      "name": "Remo Freuler",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1260,
+      "teamId": 15,
+      "name": "Granit Xhaka",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1261,
+      "teamId": 15,
+      "name": "Denis Zakaria",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1262,
+      "teamId": 15,
+      "name": "Michel Aebischer",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1263,
+      "teamId": 15,
+      "name": "Djibril Sow",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1264,
+      "teamId": 15,
+      "name": "Christian Fassnacht",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1265,
+      "teamId": 15,
+      "name": "Ruben Vargas",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1266,
+      "teamId": 15,
+      "name": "Ardon Jasari",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1267,
+      "teamId": 15,
+      "name": "Fabian Rieder",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1268,
+      "teamId": 15,
+      "name": "Johan Manzambi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1269,
+      "teamId": 15,
+      "name": "Breel Embolo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1270,
+      "teamId": 15,
+      "name": "Noah Okafor",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1271,
+      "teamId": 15,
+      "name": "Cédric Itten",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1272,
+      "teamId": 15,
+      "name": "Dan Ndoye",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1273,
+      "teamId": 15,
+      "name": "Zeki Amdouni",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "16": [
+    {
+      "id": 1132,
+      "teamId": 16,
+      "name": "Edson Álvarez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1133,
+      "teamId": 16,
+      "name": "Orbelín Pineda",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1134,
+      "teamId": 16,
+      "name": "Luis Chávez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1135,
+      "teamId": 16,
+      "name": "Luis Romo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1136,
+      "teamId": 16,
+      "name": "Erik Lira",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1137,
+      "teamId": 16,
+      "name": "Álvaro Fidalgo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1138,
+      "teamId": 16,
+      "name": "Brian Gutiérrez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1139,
+      "teamId": 16,
+      "name": "Obed Vargas",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1140,
+      "teamId": 16,
+      "name": "Gilberto Mora",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1141,
+      "teamId": 16,
+      "name": "Raúl Jiménez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1142,
+      "teamId": 16,
+      "name": "Julián Quiñones",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1143,
+      "teamId": 16,
+      "name": "Roberto Alvarado",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1144,
+      "teamId": 16,
+      "name": "Santiago Giménez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1145,
+      "teamId": 16,
+      "name": "Alexis Vega",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1146,
+      "teamId": 16,
+      "name": "Guillermo Martínez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1147,
+      "teamId": 16,
+      "name": "César Huerta",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1148,
+      "teamId": 16,
+      "name": "Armando González",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "17": [
+    {
+      "id": 1289,
+      "teamId": 17,
+      "name": "Ken Sema",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1290,
+      "teamId": 17,
+      "name": "Mattias Svanberg",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1291,
+      "teamId": 17,
+      "name": "Jesper Karlström",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1292,
+      "teamId": 17,
+      "name": "Yasin Ayari",
+      "position": "MF",
+      "goalsScored": 2,
+      "minutesPlayed": 180,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1293,
+      "teamId": 17,
+      "name": "Besfort Zeneli",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1294,
+      "teamId": 17,
+      "name": "Taha Ali",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1295,
+      "teamId": 17,
+      "name": "Lucas Bergvall",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1296,
+      "teamId": 17,
+      "name": "Alexander Isak",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1297,
+      "teamId": 17,
+      "name": "Viktor Gyökeres",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1298,
+      "teamId": 17,
+      "name": "Gustaf Nilsson",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1299,
+      "teamId": 17,
+      "name": "Benjamin Nygren",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1300,
+      "teamId": 17,
+      "name": "Alexander Bernhardsson",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1301,
+      "teamId": 17,
+      "name": "Anthony Elanga",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "20": [
+    {
+      "id": 1432,
+      "teamId": 20,
+      "name": "James Rodríguez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1433,
+      "teamId": 20,
+      "name": "Jefferson Lerma",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1434,
+      "teamId": 20,
+      "name": "Jhon Arias",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1435,
+      "teamId": 20,
+      "name": "Jorge Carrascal",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1436,
+      "teamId": 20,
+      "name": "Kevin Castaño",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1437,
+      "teamId": 20,
+      "name": "Juan Quintero",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1438,
+      "teamId": 20,
+      "name": "Jaminton Campaz",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1439,
+      "teamId": 20,
+      "name": "Richard Rios",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1440,
+      "teamId": 20,
+      "name": "Juan Portilla",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1441,
+      "teamId": 20,
+      "name": "Gustavo Puerta",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1442,
+      "teamId": 20,
+      "name": "Jhon Córdoba",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1443,
+      "teamId": 20,
+      "name": "Luis Díaz",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1444,
+      "teamId": 20,
+      "name": "Luis Suárez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1445,
+      "teamId": 20,
+      "name": "Cucho Hernández",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1446,
+      "teamId": 20,
+      "name": "Carlos Gómez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "21": [
+    {
+      "id": 1118,
+      "teamId": 21,
+      "name": "Wataru Endō",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1119,
+      "teamId": 21,
+      "name": "Daichi Kamada",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1120,
+      "teamId": 21,
+      "name": "Takefusa Kubo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1121,
+      "teamId": 21,
+      "name": "Keito Nakamura",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1122,
+      "teamId": 21,
+      "name": "Ao Tanaka",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1123,
+      "teamId": 21,
+      "name": "Kaishu Sano",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1124,
+      "teamId": 21,
+      "name": "Yuito Suzuki",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1125,
+      "teamId": 21,
+      "name": "Ritsu Doan",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1126,
+      "teamId": 21,
+      "name": "Daizen Maeda",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1127,
+      "teamId": 21,
+      "name": "Koki Ogawa",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1128,
+      "teamId": 21,
+      "name": "Junya Ito",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1129,
+      "teamId": 21,
+      "name": "Ayase Ueda",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1130,
+      "teamId": 21,
+      "name": "Kento Shiogai",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1131,
+      "teamId": 21,
+      "name": "Keisuke Goto",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "22": [
+    {
+      "id": 1519,
+      "teamId": 22,
+      "name": "Adalberto Carrasquilla",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1520,
+      "teamId": 22,
+      "name": "José Luis Rodríguez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1521,
+      "teamId": 22,
+      "name": "Cecilio Waterman",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1522,
+      "teamId": 22,
+      "name": "Édgar Bárcenas",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1523,
+      "teamId": 22,
+      "name": "Aníbal Godoy",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1524,
+      "teamId": 22,
+      "name": "Alberto Quintero",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1525,
+      "teamId": 22,
+      "name": "Carlos Harvey",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1526,
+      "teamId": 22,
+      "name": "César Yanis",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1527,
+      "teamId": 22,
+      "name": "Christian Martinez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1528,
+      "teamId": 22,
+      "name": "José Fajardo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1529,
+      "teamId": 22,
+      "name": "Ismael Díaz",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1530,
+      "teamId": 22,
+      "name": "Tomas Rodriguez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1531,
+      "teamId": 22,
+      "name": "Azarias Londoño",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "24": [
+    {
+      "id": 1149,
+      "teamId": 24,
+      "name": "Jordan Henderson",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1150,
+      "teamId": 24,
+      "name": "Eberechi Eze",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1151,
+      "teamId": 24,
+      "name": "Anthony Gordon",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1152,
+      "teamId": 24,
+      "name": "Declan Rice",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1153,
+      "teamId": 24,
+      "name": "Morgan Rogers",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1154,
+      "teamId": 24,
+      "name": "Elliot Anderson",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1155,
+      "teamId": 24,
+      "name": "Jude Bellingham",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1156,
+      "teamId": 24,
+      "name": "Kobbie Mainoo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1157,
+      "teamId": 24,
+      "name": "Marcus Rashford",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1158,
+      "teamId": 24,
+      "name": "Ollie Watkins",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1159,
+      "teamId": 24,
+      "name": "Ivan Toney",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1160,
+      "teamId": 24,
+      "name": "Harry Kane",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1161,
+      "teamId": 24,
+      "name": "Bukayo Saka",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1162,
+      "teamId": 24,
+      "name": "Noni Madueke",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "25": [
+    {
+      "id": 1015,
+      "teamId": 25,
+      "name": "Nadiem Amiri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1016,
+      "teamId": 25,
+      "name": "Joshua Kimmich",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1017,
+      "teamId": 25,
+      "name": "Leon Goretzka",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1018,
+      "teamId": 25,
+      "name": "Pascal Groß",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1019,
+      "teamId": 25,
+      "name": "Florian Wirtz",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1020,
+      "teamId": 25,
+      "name": "Felix Kalu Nmecha",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1021,
+      "teamId": 25,
+      "name": "Angelo Stiller",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1022,
+      "teamId": 25,
+      "name": "Jamal Musiala",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1023,
+      "teamId": 25,
+      "name": "Aleksandar Pavlović",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1024,
+      "teamId": 25,
+      "name": "Assan Ouédraogo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1025,
+      "teamId": 25,
+      "name": "Kai Havertz",
+      "position": "FW",
+      "goalsScored": 2,
+      "minutesPlayed": 180,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1026,
+      "teamId": 25,
+      "name": "Leroy Sané",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1027,
+      "teamId": 25,
+      "name": "Deniz Undav",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1028,
+      "teamId": 25,
+      "name": "Jamie Leweling",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1029,
+      "teamId": 25,
+      "name": "Nick Woltemade",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1030,
+      "teamId": 25,
+      "name": "Maximilian Beier",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "26": [
+    {
+      "id": 1062,
+      "teamId": 26,
+      "name": "Rodrigo de Paul",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1063,
+      "teamId": 26,
+      "name": "Leandro Paredes",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1064,
+      "teamId": 26,
+      "name": "Giovani Lo Celso",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1065,
+      "teamId": 26,
+      "name": "Exequiel Palacios",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1066,
+      "teamId": 26,
+      "name": "Alexis Mac Allister",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1067,
+      "teamId": 26,
+      "name": "Thiago Almada",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1068,
+      "teamId": 26,
+      "name": "Enzo Fernández",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1069,
+      "teamId": 26,
+      "name": "Nico Paz",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1070,
+      "teamId": 26,
+      "name": "Lionel Messi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1071,
+      "teamId": 26,
+      "name": "Lautaro Martínez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1072,
+      "teamId": 26,
+      "name": "Nicolás González",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1073,
+      "teamId": 26,
+      "name": "Julián Álvarez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1074,
+      "teamId": 26,
+      "name": "José Manuel López",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1075,
+      "teamId": 26,
+      "name": "Giuliano Simeone",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "28": [
+    {
+      "id": 1177,
+      "teamId": 28,
+      "name": "Jens Castrop",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1178,
+      "teamId": 28,
+      "name": "In-beom Hwang",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1179,
+      "teamId": 28,
+      "name": "Dong-gyeong Lee",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1180,
+      "teamId": 28,
+      "name": "Jae-sung Lee",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1181,
+      "teamId": 28,
+      "name": "Jin-Gyu Kim",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1182,
+      "teamId": 28,
+      "name": "Seung-Ho Paik",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1183,
+      "teamId": 28,
+      "name": "Kang-in Lee",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1184,
+      "teamId": 28,
+      "name": "Joon-ho Bae",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1185,
+      "teamId": 28,
+      "name": "Hwang Heechan",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1186,
+      "teamId": 28,
+      "name": "Heung-min Son",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1187,
+      "teamId": 28,
+      "name": "Hyun-jun Yang",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1188,
+      "teamId": 28,
+      "name": "Gue-Sung Cho",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1189,
+      "teamId": 28,
+      "name": "Hyun-Gyu Oh",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1190,
+      "teamId": 28,
+      "name": "Ji-sung Eom",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "30": [
+    {
+      "id": 1245,
+      "teamId": 30,
+      "name": "Alex Rufer",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1246,
+      "teamId": 30,
+      "name": "Sarpreet Singh",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1247,
+      "teamId": 30,
+      "name": "Ryan Thomas",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1248,
+      "teamId": 30,
+      "name": "Callum McCowatt",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1249,
+      "teamId": 30,
+      "name": "Joe Bell",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1250,
+      "teamId": 30,
+      "name": "Marko Stamenic",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1251,
+      "teamId": 30,
+      "name": "Ben Old",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1252,
+      "teamId": 30,
+      "name": "Kosta Barbarouses",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1253,
+      "teamId": 30,
+      "name": "Chris Wood",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1254,
+      "teamId": 30,
+      "name": "Ben Waine",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1255,
+      "teamId": 30,
+      "name": "Elijah Just",
+      "position": "FW",
+      "goalsScored": 2,
+      "minutesPlayed": 180,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1256,
+      "teamId": 30,
+      "name": "Matthew Garbett",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1257,
+      "teamId": 30,
+      "name": "Lachlan Bayliss",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1258,
+      "teamId": 30,
+      "name": "Jesse Randall",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "31": [
+    {
+      "id": 1490,
+      "teamId": 31,
+      "name": "Saeid Ezatolahi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1491,
+      "teamId": 31,
+      "name": "Mehdi Torabi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1492,
+      "teamId": 31,
+      "name": "Mohammad Ghorbani",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1493,
+      "teamId": 31,
+      "name": "Ariya Yousefi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1494,
+      "teamId": 31,
+      "name": "Medhi Ghayedi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1495,
+      "teamId": 31,
+      "name": "Amir Razzaghinia",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1496,
+      "teamId": 31,
+      "name": "Alireza Jahanbakhsh",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1497,
+      "teamId": 31,
+      "name": "Mehdi Taremi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1498,
+      "teamId": 31,
+      "name": "Dennis Eckert",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1499,
+      "teamId": 31,
+      "name": "Ali Alipour",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1500,
+      "teamId": 31,
+      "name": "Shahriar Moghanlou",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1501,
+      "teamId": 31,
+      "name": "Mohammad Mohebi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1502,
+      "teamId": 31,
+      "name": "Saman Ghoddos",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1503,
+      "teamId": 31,
+      "name": "Amir Hosseinzadeh",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "32": [
+    {
+      "id": 1404,
+      "teamId": 32,
+      "name": "Sofyan Amrabat",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1405,
+      "teamId": 32,
+      "name": "Brahim Diaz",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1406,
+      "teamId": 32,
+      "name": "Azzedine Ounahi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1407,
+      "teamId": 32,
+      "name": "Ismael Saibari",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1408,
+      "teamId": 32,
+      "name": "Neil El Aynaoui",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1409,
+      "teamId": 32,
+      "name": "Bilal El Khannouss",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1410,
+      "teamId": 32,
+      "name": "Chemsdine Talbi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1411,
+      "teamId": 32,
+      "name": "Ayyoub Bouaddi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1412,
+      "teamId": 32,
+      "name": "Samir El Mourabet",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1413,
+      "teamId": 32,
+      "name": "Soufiane Rahimi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1414,
+      "teamId": 32,
+      "name": "Ayoub El Kaabi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1415,
+      "teamId": 32,
+      "name": "Abdessamad Ezzalzouli",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1416,
+      "teamId": 32,
+      "name": "Gessime Yassine",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1417,
+      "teamId": 32,
+      "name": "Ayoube Amaimouni-Echghouyab",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "33": [
+    {
+      "id": 1348,
+      "teamId": 33,
+      "name": "Ellyes Skhiri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1349,
+      "teamId": 33,
+      "name": "Rani Khedira",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1350,
+      "teamId": 33,
+      "name": "Anis Ben Slimane",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1351,
+      "teamId": 33,
+      "name": "Ismaël Gharbi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1352,
+      "teamId": 33,
+      "name": "Hannibal Mejbri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1353,
+      "teamId": 33,
+      "name": "Elias Achouri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1354,
+      "teamId": 33,
+      "name": "Hadj Mahmoud",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1355,
+      "teamId": 33,
+      "name": "Sebastian Tounekti",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1356,
+      "teamId": 33,
+      "name": "Firas Chaouat",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1357,
+      "teamId": 33,
+      "name": "Elias Saad",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1358,
+      "teamId": 33,
+      "name": "Hazem Mastouri",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1359,
+      "teamId": 33,
+      "name": "Rayan Elloumi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1360,
+      "teamId": 33,
+      "name": "Khalil Ayari",
+      "position": "FW",
+      "goalsScored": 2,
+      "minutesPlayed": 180,
+      "goalsPerMinute": 0.011111111111111112
+    }
+  ],
+  "34": [
+    {
+      "id": 1334,
+      "teamId": 34,
+      "name": "Salem Al Dawsari",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1335,
+      "teamId": 34,
+      "name": "Abdullah Al Khaibari",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1336,
+      "teamId": 34,
+      "name": "Nasser Al Dawsari",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1337,
+      "teamId": 34,
+      "name": "Ayman Yahya",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1338,
+      "teamId": 34,
+      "name": "Musab Al Juwayr",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1339,
+      "teamId": 34,
+      "name": "Mohammed Kanno",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1340,
+      "teamId": 34,
+      "name": "Ziyad Al-Johani",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1341,
+      "teamId": 34,
+      "name": "Mohammed Abu Al Shamat",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1342,
+      "teamId": 34,
+      "name": "Alaa Al Hejji",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1343,
+      "teamId": 34,
+      "name": "Sultan Mandash",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1344,
+      "teamId": 34,
+      "name": "Saleh Al Shehri",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1345,
+      "teamId": 34,
+      "name": "Abdullah Al-Hamdan",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1346,
+      "teamId": 34,
+      "name": "Khalid Al Ghannam",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1347,
+      "teamId": 34,
+      "name": "Firas Al Brikan",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "35": [
+    {
+      "id": 1232,
+      "teamId": 35,
+      "name": "Mathew Leckie",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1233,
+      "teamId": 35,
+      "name": "Jackson Irvine",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1234,
+      "teamId": 35,
+      "name": "Connor Metcalfe",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1235,
+      "teamId": 35,
+      "name": "Ajdin Hrustic",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1236,
+      "teamId": 35,
+      "name": "Aiden O'Neill",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1237,
+      "teamId": 35,
+      "name": "Awer Mabil",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1238,
+      "teamId": 35,
+      "name": "Cameron Devlin",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1239,
+      "teamId": 35,
+      "name": "Paul Okon-Engstler",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1240,
+      "teamId": 35,
+      "name": "Mohamed Toure",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1241,
+      "teamId": 35,
+      "name": "Nishan Velupillay",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1242,
+      "teamId": 35,
+      "name": "Cristian Volpato",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1243,
+      "teamId": 35,
+      "name": "Nestor Irankunda",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1244,
+      "teamId": 35,
+      "name": "Tete Yengi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "37": [
+    {
+      "id": 1447,
+      "teamId": 37,
+      "name": "Zizo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1448,
+      "teamId": 37,
+      "name": "Nabil Dunga",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1449,
+      "teamId": 37,
+      "name": "Hamdy Fathy",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1450,
+      "teamId": 37,
+      "name": "Trezeguet",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1451,
+      "teamId": 37,
+      "name": "Emam Ashour",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1452,
+      "teamId": 37,
+      "name": "Mohanad Lashin",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1453,
+      "teamId": 37,
+      "name": "Marwan Attia",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1454,
+      "teamId": 37,
+      "name": "Mahmoud Saber",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1455,
+      "teamId": 37,
+      "name": "Mostafa Ziko",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1456,
+      "teamId": 37,
+      "name": "Mohamed Salah",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1457,
+      "teamId": 37,
+      "name": "Omar Marmoush",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1458,
+      "teamId": 37,
+      "name": "Haissem Hassan",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1459,
+      "teamId": 37,
+      "name": "Ibrahim Adel",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1460,
+      "teamId": 37,
+      "name": "Hamza Abdelkarim",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "39": [
+    {
+      "id": 1562,
+      "teamId": 39,
+      "name": "Franck Kessié",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1563,
+      "teamId": 39,
+      "name": "Seko Fofana",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1564,
+      "teamId": 39,
+      "name": "Ibrahim Sangaré",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1565,
+      "teamId": 39,
+      "name": "Jean Michaël Seri",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1566,
+      "teamId": 39,
+      "name": "Amad Diallo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1567,
+      "teamId": 39,
+      "name": "Parfait Guiagon",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1568,
+      "teamId": 39,
+      "name": "Christ Ravynel Inao Oulaï",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1569,
+      "teamId": 39,
+      "name": "Nicolas Pépé",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1570,
+      "teamId": 39,
+      "name": "Evann Guessand",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1571,
+      "teamId": 39,
+      "name": "Ange-Yoan Bonny",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1572,
+      "teamId": 39,
+      "name": "Sepe Elye Wahi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1573,
+      "teamId": 39,
+      "name": "Simon Adingra",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1574,
+      "teamId": 39,
+      "name": "Oumar Diakite",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1575,
+      "teamId": 39,
+      "name": "Bazoumana Touré",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1576,
+      "teamId": 39,
+      "name": "Yan Diomandé",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "41": [
+    {
+      "id": 1418,
+      "teamId": 41,
+      "name": "Florian Grillitsch",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1419,
+      "teamId": 41,
+      "name": "Alessandro Schöpf",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1420,
+      "teamId": 41,
+      "name": "Konrad Laimer",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1421,
+      "teamId": 41,
+      "name": "Marcel Sabitzer",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1422,
+      "teamId": 41,
+      "name": "Xaver Schlager",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1423,
+      "teamId": 41,
+      "name": "Romano Schmid",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1424,
+      "teamId": 41,
+      "name": "Christoph Baumgartner",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1425,
+      "teamId": 41,
+      "name": "Nicolas  Seiwald",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1426,
+      "teamId": 41,
+      "name": "Patrick Wimmer",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1427,
+      "teamId": 41,
+      "name": "Carney Chukwuemeka",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1428,
+      "teamId": 41,
+      "name": "Paul Wanner",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1429,
+      "teamId": 41,
+      "name": "Michael Gregoritsch",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1430,
+      "teamId": 41,
+      "name": "Marko Arnautovic",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1431,
+      "teamId": 41,
+      "name": "Saša Kalajdžić",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "46": [
+    {
+      "id": 1218,
+      "teamId": 46,
+      "name": "Nabil Bentaleb",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1219,
+      "teamId": 46,
+      "name": "Houssem Aouar",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1220,
+      "teamId": 46,
+      "name": "Hicham Boudaoui",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1221,
+      "teamId": 46,
+      "name": "Ramiz Zerrouki",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1222,
+      "teamId": 46,
+      "name": "Fares Chaïbi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1223,
+      "teamId": 46,
+      "name": "Ibrahim Maza",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1224,
+      "teamId": 46,
+      "name": "Yacine Titraoui",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1225,
+      "teamId": 46,
+      "name": "Adil Boulbina",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1226,
+      "teamId": 46,
+      "name": "Riyad Mahrez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1227,
+      "teamId": 46,
+      "name": "Amine Gouiri",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1228,
+      "teamId": 46,
+      "name": "Mohammed Amoura",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1229,
+      "teamId": 46,
+      "name": "Nadhir Benbouali",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1230,
+      "teamId": 46,
+      "name": "Anis Moussa",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1231,
+      "teamId": 46,
+      "name": "Farés Ghedjemis",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "51": [
+    {
+      "id": 1374,
+      "teamId": 51,
+      "name": "Pape Gueye",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1375,
+      "teamId": 51,
+      "name": "Idrissa Gana Guèye",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1376,
+      "teamId": 51,
+      "name": "Ismaïla Sarr",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1377,
+      "teamId": 51,
+      "name": "Krépin Diatta",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1378,
+      "teamId": 51,
+      "name": "Pathé Ciss",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1379,
+      "teamId": 51,
+      "name": "Iliman Ndiaye",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1380,
+      "teamId": 51,
+      "name": "Pape Sarr",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1381,
+      "teamId": 51,
+      "name": "Habib Diarra",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1382,
+      "teamId": 51,
+      "name": "Lamine Camara",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1383,
+      "teamId": 51,
+      "name": "Bara Ndiaye",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1384,
+      "teamId": 51,
+      "name": "Sadio Mané",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1385,
+      "teamId": 51,
+      "name": "Cherif Ndiaye",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1386,
+      "teamId": 51,
+      "name": "Nicolas Jackson",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1387,
+      "teamId": 51,
+      "name": "Ahmadou Bamba Dieng",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1388,
+      "teamId": 51,
+      "name": "Assane Diao",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1389,
+      "teamId": 51,
+      "name": "Ibrahim M'Baye",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    }
+  ],
+  "56": [
+    {
+      "id": 1205,
+      "teamId": 56,
+      "name": "Themba Zwane",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1206,
+      "teamId": 56,
+      "name": "Teboho Mokoena",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1207,
+      "teamId": 56,
+      "name": "Sphephelo Sithole",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1208,
+      "teamId": 56,
+      "name": "Jayden Adams",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1209,
+      "teamId": 56,
+      "name": "Thapelo Maseko",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1210,
+      "teamId": 56,
+      "name": "Thalente Mbatha",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1211,
+      "teamId": 56,
+      "name": "Kamogelo Sebelebele",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1212,
+      "teamId": 56,
+      "name": "Lyle Foster",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1213,
+      "teamId": 56,
+      "name": "Oswin Appollis",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1214,
+      "teamId": 56,
+      "name": "Iqraam Rayners",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1215,
+      "teamId": 56,
+      "name": "Evidence Makgopa",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1216,
+      "teamId": 56,
+      "name": "Relebohile Mofokeng",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1217,
+      "teamId": 56,
+      "name": "Tshepang Moremi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "63": [
+    {
+      "id": 1302,
+      "teamId": 63,
+      "name": "Ladislav Krejčí",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1303,
+      "teamId": 63,
+      "name": "Vladimír Darida",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1304,
+      "teamId": 63,
+      "name": "Tomáš Souček",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1305,
+      "teamId": 63,
+      "name": "David Douděra",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1306,
+      "teamId": 63,
+      "name": "Michal Sadílek",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1307,
+      "teamId": 63,
+      "name": "Lukáš Provod",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1308,
+      "teamId": 63,
+      "name": "Pavel Šulc",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1309,
+      "teamId": 63,
+      "name": "Lukáš Červ",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1310,
+      "teamId": 63,
+      "name": "Denis Višinský",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1311,
+      "teamId": 63,
+      "name": "Alexandr Sojka",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1312,
+      "teamId": 63,
+      "name": "Hugo Sochůrek",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1313,
+      "teamId": 63,
+      "name": "Patrik Schick",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1314,
+      "teamId": 63,
+      "name": "Tomáš Chorý",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1315,
+      "teamId": 63,
+      "name": "Jan Kuchta",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1316,
+      "teamId": 63,
+      "name": "Adam Hložek",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1317,
+      "teamId": 63,
+      "name": "Mojmír Chytil",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "69": [
+    {
+      "id": 1547,
+      "teamId": 69,
+      "name": "Gaël Kakuta",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1548,
+      "teamId": 69,
+      "name": "Samuel Moutoussamy",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1549,
+      "teamId": 69,
+      "name": "Edo Kayembe",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1550,
+      "teamId": 69,
+      "name": "Aaron Tshibola",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1551,
+      "teamId": 69,
+      "name": "Charles Pickel",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1552,
+      "teamId": 69,
+      "name": "Noah Sadiki",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1553,
+      "teamId": 69,
+      "name": "Ngal'ayel Mukau",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1554,
+      "teamId": 69,
+      "name": "Yoane Wissa",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1555,
+      "teamId": 69,
+      "name": "Theo Bongonda",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1556,
+      "teamId": 69,
+      "name": "Cédric Bakambu",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1557,
+      "teamId": 69,
+      "name": "Simon Banza",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1558,
+      "teamId": 69,
+      "name": "Nathanael Mbuku",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1559,
+      "teamId": 69,
+      "name": "Meschack Elia",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1560,
+      "teamId": 69,
+      "name": "Brian Cipenga",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1561,
+      "teamId": 69,
+      "name": "Fiston Mayele",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "90": [
+    {
+      "id": 1620,
+      "teamId": 90,
+      "name": "Dostonbek Xamdamov",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1621,
+      "teamId": 90,
+      "name": "Otabek Shukurov",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1622,
+      "teamId": 90,
+      "name": "Oston Urunov",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1623,
+      "teamId": 90,
+      "name": "Jamshid Iskanderov",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1624,
+      "teamId": 90,
+      "name": "Akmal Mozgovoy",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1625,
+      "teamId": 90,
+      "name": "Abbosbek Fayzullaev",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1626,
+      "teamId": 90,
+      "name": "Azizjon Ganiev",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1627,
+      "teamId": 90,
+      "name": "Odiljon Hamrobekov",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1628,
+      "teamId": 90,
+      "name": "Sherzod Esanov",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1629,
+      "teamId": 90,
+      "name": "Eldor Shomurodov",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1630,
+      "teamId": 90,
+      "name": "Jaloliddin Masharipov",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1631,
+      "teamId": 90,
+      "name": "Igor Sergeev",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1632,
+      "teamId": 90,
+      "name": "Azizbek Amonov",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "92": [
+    {
+      "id": 1504,
+      "teamId": 92,
+      "name": "Dženis Burnić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1505,
+      "teamId": 92,
+      "name": "Ivan Šunjić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1506,
+      "teamId": 92,
+      "name": "Amir Hadžiahmetović",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1507,
+      "teamId": 92,
+      "name": "Armin Gigovic",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1508,
+      "teamId": 92,
+      "name": "Ivan Bašić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1509,
+      "teamId": 92,
+      "name": "Benjamin Tahirovic",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1510,
+      "teamId": 92,
+      "name": "Ermin Mahmic",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1511,
+      "teamId": 92,
+      "name": "Amar Memić",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1512,
+      "teamId": 92,
+      "name": "Edin Džeko",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1513,
+      "teamId": 92,
+      "name": "Jovo Lukić",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1514,
+      "teamId": 92,
+      "name": "Ermedin Demirovic",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1515,
+      "teamId": 92,
+      "name": "Haris Tabaković",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1516,
+      "teamId": 92,
+      "name": "Samed Bazdar",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1517,
+      "teamId": 92,
+      "name": "Esmir Bajraktarevic",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1518,
+      "teamId": 92,
+      "name": "Kerim Alajbegović",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "101": [
+    {
+      "id": 1461,
+      "teamId": 101,
+      "name": "Jonathan Osorio",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1462,
+      "teamId": 101,
+      "name": "Stephen Eustáquio",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1463,
+      "teamId": 101,
+      "name": "Mathieu Choinière",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1464,
+      "teamId": 101,
+      "name": "Tajon Buchanan",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1465,
+      "teamId": 101,
+      "name": "Marcelo Flores",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1466,
+      "teamId": 101,
+      "name": "Nathan-Dylan Saliba",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1467,
+      "teamId": 101,
+      "name": "Ismael Kone",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1468,
+      "teamId": 101,
+      "name": "Ali Ahmed",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1469,
+      "teamId": 101,
+      "name": "Niko Sigur",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1470,
+      "teamId": 101,
+      "name": "Jonathan David",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1471,
+      "teamId": 101,
+      "name": "Cyle Larin",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1472,
+      "teamId": 101,
+      "name": "Liam Millar",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1473,
+      "teamId": 101,
+      "name": "Jacob Shaffelburg",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1474,
+      "teamId": 101,
+      "name": "Tani Oluwaseyi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1475,
+      "teamId": 101,
+      "name": "Promise Akinpelu",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "119": [
+    {
+      "id": 1649,
+      "teamId": 119,
+      "name": "Morten Thorsby",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1650,
+      "teamId": 119,
+      "name": "Martin Ødegaard",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1651,
+      "teamId": 119,
+      "name": "Sander Berge",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1652,
+      "teamId": 119,
+      "name": "Patrick Berg",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1653,
+      "teamId": 119,
+      "name": "Fredrik Aursnes",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1654,
+      "teamId": 119,
+      "name": "Kristian Thorstvedt",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1655,
+      "teamId": 119,
+      "name": "Thelo Aasgaard",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1656,
+      "teamId": 119,
+      "name": "Antonio Nusa",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1657,
+      "teamId": 119,
+      "name": "Oscar Bobb",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1658,
+      "teamId": 119,
+      "name": "Alexander Sørloth",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1659,
+      "teamId": 119,
+      "name": "Jens Hauge",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1660,
+      "teamId": 119,
+      "name": "Erling Haaland",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1661,
+      "teamId": 119,
+      "name": "Andreas Schjelderup",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1662,
+      "teamId": 119,
+      "name": "Jørgen Strand Larsen",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "128": [
+    {
+      "id": 1274,
+      "teamId": 128,
+      "name": "Alan Franco",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1275,
+      "teamId": 128,
+      "name": "Jordy Alcívar",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1276,
+      "teamId": 128,
+      "name": "Gonzalo Plata",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1277,
+      "teamId": 128,
+      "name": "Moisés Caicedo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1278,
+      "teamId": 128,
+      "name": "Pedro Vite",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1279,
+      "teamId": 128,
+      "name": "Alan Minda",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1280,
+      "teamId": 128,
+      "name": "Ray Paez",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1281,
+      "teamId": 128,
+      "name": "Denil Castillo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1282,
+      "teamId": 128,
+      "name": "Jordy Caicedo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1283,
+      "teamId": 128,
+      "name": "Enner Valencia",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1284,
+      "teamId": 128,
+      "name": "John Yeboah",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1285,
+      "teamId": 128,
+      "name": "Anthony Valencia",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1286,
+      "teamId": 128,
+      "name": "Nilson Angulo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1287,
+      "teamId": 128,
+      "name": "Kevin Rodríguez",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1288,
+      "teamId": 128,
+      "name": "Jeremy",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "135": [
+    {
+      "id": 1076,
+      "teamId": 135,
+      "name": "Thomas Partey",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1077,
+      "teamId": 135,
+      "name": "Elisha Owusu",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1078,
+      "teamId": 135,
+      "name": "Kwasi Sibo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1079,
+      "teamId": 135,
+      "name": "Augustine Boakye",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1080,
+      "teamId": 135,
+      "name": "Caleb Yirenkyi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1081,
+      "teamId": 135,
+      "name": "Antoine Semenyo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1082,
+      "teamId": 135,
+      "name": "Brandon Thomas-Asante",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1083,
+      "teamId": 135,
+      "name": "Jordan Ayew",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1084,
+      "teamId": 135,
+      "name": "Iñaki Williams",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1085,
+      "teamId": 135,
+      "name": "Kamal Deen Sulemana",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1086,
+      "teamId": 135,
+      "name": "Ernest Nuamah",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1087,
+      "teamId": 135,
+      "name": "Abdul Issahaku",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1088,
+      "teamId": 135,
+      "name": "Christopher Bonsu Baah",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1089,
+      "teamId": 135,
+      "name": "Prince Adu",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "141": [
+    {
+      "id": 1361,
+      "teamId": 141,
+      "name": "Salih Özcan",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1362,
+      "teamId": 141,
+      "name": "Hakan Çalhanoğlu",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1363,
+      "teamId": 141,
+      "name": "Orkun Kökçü",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1364,
+      "teamId": 141,
+      "name": "İsmail Yüksek",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1365,
+      "teamId": 141,
+      "name": "Arda Guler",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1366,
+      "teamId": 141,
+      "name": "Oguz Aydin",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1367,
+      "teamId": 141,
+      "name": "Baris Yilmaz",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1368,
+      "teamId": 141,
+      "name": "İrfan Kahveci",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1369,
+      "teamId": 141,
+      "name": "Yunus Akgün",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1370,
+      "teamId": 141,
+      "name": "Muhammed Kerem Aktürkoğlu",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1371,
+      "teamId": 141,
+      "name": "Deniz Gul",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1372,
+      "teamId": 141,
+      "name": "Kenan Yıldız",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1373,
+      "teamId": 141,
+      "name": "Can Uzun",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "168": [
+    {
+      "id": 1476,
+      "teamId": 168,
+      "name": "Jean-Ricner Bellegarde",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1477,
+      "teamId": 168,
+      "name": "Derrick Etienne",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1478,
+      "teamId": 168,
+      "name": "Danley Jean Jacques",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1479,
+      "teamId": 168,
+      "name": "Dominique Simon",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1480,
+      "teamId": 168,
+      "name": "Carl Sainté",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1481,
+      "teamId": 168,
+      "name": "Woodensky Pierre",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1482,
+      "teamId": 168,
+      "name": "Duckens Nazon",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1483,
+      "teamId": 168,
+      "name": "Frantzdy Pierrot",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1484,
+      "teamId": 168,
+      "name": "Yassin Fortune",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1485,
+      "teamId": 168,
+      "name": "Wilson Isidor",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1486,
+      "teamId": 168,
+      "name": "Lenny Joseph",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1487,
+      "teamId": 168,
+      "name": "Louicius Don Deedson",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1488,
+      "teamId": 168,
+      "name": "Josué Casimir",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1489,
+      "teamId": 168,
+      "name": "Ruben Providence",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "172": [
+    {
+      "id": 1591,
+      "teamId": 172,
+      "name": "Nizar Al Rashdan",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1592,
+      "teamId": 172,
+      "name": "Rajaei Ayed",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1593,
+      "teamId": 172,
+      "name": "Noor Al Rawabdeh",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1594,
+      "teamId": 172,
+      "name": "Mohammad Abu Hasheesh",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1595,
+      "teamId": 172,
+      "name": "Ibrahim Saadeh",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1596,
+      "teamId": 172,
+      "name": "Mohammad Al-Dawoud",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1597,
+      "teamId": 172,
+      "name": "Amer Jamous",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1598,
+      "teamId": 172,
+      "name": "Musa Al Taamari",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1599,
+      "teamId": 172,
+      "name": "Mahmoud Al Mardi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1600,
+      "teamId": 172,
+      "name": "Ali Olwan",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1601,
+      "teamId": 172,
+      "name": "Mohannad Abu Taha",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1602,
+      "teamId": 172,
+      "name": "Mohammad Abu Zrayq",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1603,
+      "teamId": 172,
+      "name": "Ibrahim Sabra",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1604,
+      "teamId": 172,
+      "name": "Odeh Fakhoury",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1605,
+      "teamId": 172,
+      "name": "Ali Azaizeh",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "173": [
+    {
+      "id": 1606,
+      "teamId": 173,
+      "name": "Amir Al Ammari",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1607,
+      "teamId": 173,
+      "name": "Kevin Yakob",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1608,
+      "teamId": 173,
+      "name": "Aimar Sher",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1609,
+      "teamId": 173,
+      "name": "Ibrahim Bayesh",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1610,
+      "teamId": 173,
+      "name": "Youssef Amyn",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1611,
+      "teamId": 173,
+      "name": "Ahmed Qasem",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1612,
+      "teamId": 173,
+      "name": "Zidane Iqbal",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1613,
+      "teamId": 173,
+      "name": "Zaid Ismail",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1614,
+      "teamId": 173,
+      "name": "Aymen Hussein",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1615,
+      "teamId": 173,
+      "name": "Ali Al-Hamadi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1616,
+      "teamId": 173,
+      "name": "Marko Farji",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1617,
+      "teamId": 173,
+      "name": "Ali Jassim El-Aibi",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1618,
+      "teamId": 173,
+      "name": "Mohanad Ali",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1619,
+      "teamId": 173,
+      "name": "Ali Yousif",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "197": [
+    {
+      "id": 1577,
+      "teamId": 197,
+      "name": "Assim Madibo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1578,
+      "teamId": 197,
+      "name": "Abdulaziz Hatem",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1579,
+      "teamId": 197,
+      "name": "Karim Boudiaf",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1580,
+      "teamId": 197,
+      "name": "Ahmed Fathy",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1581,
+      "teamId": 197,
+      "name": "Yusuf Abdurisag",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1582,
+      "teamId": 197,
+      "name": "Ahmed Al Ganehi",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1583,
+      "teamId": 197,
+      "name": "Tahsin Jamshid",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1584,
+      "teamId": 197,
+      "name": "Mohamed Al-Mannai",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1585,
+      "teamId": 197,
+      "name": "Akram Afif",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1586,
+      "teamId": 197,
+      "name": "Almoez Ali",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1587,
+      "teamId": 197,
+      "name": "Mohammed Muntari",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1588,
+      "teamId": 197,
+      "name": "Hassan Al Haydos",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1589,
+      "teamId": 197,
+      "name": "Ahmed Alaa Eldin",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1590,
+      "teamId": 197,
+      "name": "Edmílson",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "206": [
+    {
+      "id": 1532,
+      "teamId": 206,
+      "name": "Deroy Duarte",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1533,
+      "teamId": 206,
+      "name": "Garry Rodrigues",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1534,
+      "teamId": 206,
+      "name": "Kevin Pina",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1535,
+      "teamId": 206,
+      "name": "Laros Duarte",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1536,
+      "teamId": 206,
+      "name": "Yannick Semedo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1537,
+      "teamId": 206,
+      "name": "Telmo Arcanjo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1538,
+      "teamId": 206,
+      "name": "Jamiro Monteiro",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1539,
+      "teamId": 206,
+      "name": "João Paulo",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1540,
+      "teamId": 206,
+      "name": "Willy Semedo",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1541,
+      "teamId": 206,
+      "name": "Ryan Mendes",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1542,
+      "teamId": 206,
+      "name": "Jovane Cabral",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1543,
+      "teamId": 206,
+      "name": "Gilson Tavares",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1544,
+      "teamId": 206,
+      "name": "Nuno Da Costa",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1545,
+      "teamId": 206,
+      "name": "Dailon Rocha Livramento",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1546,
+      "teamId": 206,
+      "name": "Hélio Varela",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "617": [
+    {
+      "id": 1676,
+      "teamId": 617,
+      "name": "Leandro Bacuna",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1677,
+      "teamId": 617,
+      "name": "Godfried Roemeratoe",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1678,
+      "teamId": 617,
+      "name": "Juninho Bacuna",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1679,
+      "teamId": 617,
+      "name": "Kevin Felida",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1680,
+      "teamId": 617,
+      "name": "Gervane Kastaneer",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1681,
+      "teamId": 617,
+      "name": "Kenji Gorré",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1682,
+      "teamId": 617,
+      "name": "Jürgen Locadia",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1683,
+      "teamId": 617,
+      "name": "Tahith Chong",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1684,
+      "teamId": 617,
+      "name": "Sontje Hansen",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1685,
+      "teamId": 617,
+      "name": "Jearl Margaritha",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1686,
+      "teamId": 617,
+      "name": "Jeremy Antonisse",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1687,
+      "teamId": 617,
+      "name": "Brandley Kuwas",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ],
+  "1179": [
+    {
+      "id": 1663,
+      "teamId": 1179,
+      "name": "Scott McTominay",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1664,
+      "teamId": 1179,
+      "name": "Kenny McLean",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1665,
+      "teamId": 1179,
+      "name": "Ryan Christie",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1666,
+      "teamId": 1179,
+      "name": "Lewis Ferguson",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1667,
+      "teamId": 1179,
+      "name": "John McGinn",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
+    },
+    {
+      "id": 1668,
+      "teamId": 1179,
+      "name": "Ben Doak",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1669,
+      "teamId": 1179,
+      "name": "Findlay Curtis",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1670,
+      "teamId": 1179,
+      "name": "Tyler Fletcher",
+      "position": "MF",
+      "goalsScored": 1,
+      "minutesPlayed": 600,
+      "goalsPerMinute": 0.0016666666666666668
+    },
+    {
+      "id": 1671,
+      "teamId": 1179,
+      "name": "Che Adams",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1672,
+      "teamId": 1179,
+      "name": "George Hirst",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1673,
+      "teamId": 1179,
+      "name": "Ross Stewart",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1674,
+      "teamId": 1179,
+      "name": "Lyndon Dykes",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    },
+    {
+      "id": 1675,
+      "teamId": 1179,
+      "name": "Lawrence Shankland",
+      "position": "FW",
+      "goalsScored": 1,
+      "minutesPlayed": 300,
+      "goalsPerMinute": 0.0033333333333333335
+    }
+  ]
+}

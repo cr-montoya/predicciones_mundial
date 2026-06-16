@@ -142,6 +142,7 @@ export default async function FixturePage({ params }: PageProps) {
   ])
   const disciplineMarkets = pickMarkets(predictions, ['total_cards', 'corners'])
   const scorerMarkets = pickMarkets(predictions, ['anytime_scorer', 'first_scorer'])
+    .filter((m) => Object.keys(m.probabilities).length > 0)
 
   const scorerConfidence = scorerMarkets[0]?.confidence
 
@@ -208,6 +209,7 @@ export default async function FixturePage({ params }: PageProps) {
             </CollapsibleSection>
           </FadeIn>
 
+          {scorerMarkets.length > 0 && (
           <FadeIn delay={0.25}>
             <CollapsibleSection
               title="GOLEADORES"
@@ -235,6 +237,7 @@ export default async function FixturePage({ params }: PageProps) {
               <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} noHeader={true} />
             </CollapsibleSection>
           </FadeIn>
+          )}
         </div>
       )}
     </div>

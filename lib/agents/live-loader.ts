@@ -6,6 +6,7 @@ import { buildStaticTeams } from './static-teams'
 import { todayBoundsUtc, buildLabel, type HomeData, type FixtureWithTeams } from './home-types'
 import { fetchFixtures } from '@/lib/data/api-football'
 import tournamentPrediction from '@/lib/data/tournament-prediction.json'
+import { squadsByTeamId } from '@/lib/data/squads'
 
 const WC_LEAGUE_ID = 1
 const WC_SEASON = 2026
@@ -40,8 +41,8 @@ export function computePredictionsForFixture(fixture: Fixture, byId: Map<number,
     home,
     away,
     matchStats: [],
-    homePlayers: [],
-    awayPlayers: [],
+    homePlayers: squadsByTeamId[fixture.homeTeamId] ?? [],
+    awayPlayers: squadsByTeamId[fixture.awayTeamId] ?? [],
   })
 }
 
