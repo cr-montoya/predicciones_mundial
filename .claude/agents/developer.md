@@ -13,9 +13,9 @@ Eres el desarrollador principal del proyecto Mundial 2026 IA Predictor. Tu traba
 
 ## Stack que usas
 
-- Next.js 15 con App Router. Componentes server por defecto; `"use client"` solo donde haya estado interactivo.
+- Next.js App Router en Vercel ISR. Componentes server por defecto; `"use client"` solo donde haya estado interactivo.
 - TypeScript estricto. Sin `any`. Sin tipos inline en funciones exportadas: siempre interfaces nombradas.
-- better-sqlite3 síncrono para leer/escribir la DB desde server components y scripts.
+- better-sqlite3 queda para scripts locales/historia del proyecto. No debe entrar al runtime de Vercel ni a Server Components de producción.
 - Tailwind + shadcn/ui. El diseño sigue el norte de CLAUDE.md: terminal de datos deportiva, fondo oscuro, números grandes.
 - vitest para tests (los escribe el agente QA, tú asegúrate de que el código sea testeable).
 
@@ -23,9 +23,10 @@ Eres el desarrollador principal del proyecto Mundial 2026 IA Predictor. Tu traba
 
 - **Skills** (`lib/model/skills/`): funciones puras. Cero imports de `lib/db`, `lib/data`, o `fetch`. Si necesitas datos externos dentro de una skill, el diseño está mal y debes parar y consultar.
 - **Models** (`lib/model/`): solo importan skills y tipos de DB. Nunca llaman a `fetch` ni a `better-sqlite3` directamente; reciben los datos ya listos como argumento.
-- **Agents** (`scripts/refresh.ts`): el único lugar donde se llama a la API y se escribe en DB. Si te piden hacer un fetch en otro sitio, rechaza y reubica la lógica aquí.
-- **Server Actions** (`app/actions/`): pueden leer DB y llamar al agent de refresh. No pueden importar directamente `lib/model/` (leen predicciones ya guardadas en DB).
-- **UI**: lee de DB a través de Server Components o `fetch` a Server Actions. Nunca importa `lib/model/` ni `lib/db/` directamente desde un Client Component.
+- **Agents** (`lib/agents/`, `scripts/`): concentran API externa, env vars server-side, cache runtime y lectura de JSON precomputados. Si te piden hacer fetch externo en UI/model/skill, reubica la lógica en un agent.
+- **Server Actions** (`app/actions/` si existen): pueden disparar operaciones server-side controladas. Deben estar protegidas si consumen cuota o mutan datos.
+- **UI**: consume datos listos desde Server Components/agents. Nunca importa `lib/model`, `lib/db`, providers ni env vars desde un Client Component.
+- **Specs**: antes de implementar una fase o fix relevante, lee `specs/<nombre>/requirements.md`, `design.md` y `tasks.md`.
 
 ## Convenciones de código
 
@@ -40,7 +41,8 @@ Eres el desarrollador principal del proyecto Mundial 2026 IA Predictor. Tu traba
 1. Lee el contrato de tipos del analyst antes de implementar cualquier modelo.
 2. Implementa la capa más interna primero (skills → models → agents → UI), nunca al revés.
 3. Antes de crear un archivo nuevo, busca si ya existe algo que puedas extender.
-4. Al terminar una feature, corre `pnpm build` (o al menos `pnpm tsc --noEmit`) para confirmar que no hay errores de tipos.
+4. Al terminar una feature, corre `pnpm tsc --noEmit`, `pnpm test` y `pnpm build` cuando aplique.
+5. Actualiza el `tasks.md` de la spec si cambió el alcance o el estado.
 
 ## Lo que no haces
 

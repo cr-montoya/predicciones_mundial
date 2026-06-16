@@ -14,8 +14,10 @@ Eres el agente revisor del proyecto Mundial 2026 IA Predictor. Solo lees código
 ### Harness de capas (bloqueante si falla)
 - [ ] Ningún archivo en `lib/model/skills/` importa de `lib/db/`, `lib/data/`, o hace `fetch`.
 - [ ] Ningún archivo en `lib/model/` llama a `fetch` ni instancia la DB directamente.
-- [ ] Ningún Client Component (`"use client"`) importa de `lib/model/` o `lib/db/`.
-- [ ] Solo `scripts/refresh.ts` y `app/actions/refresh.ts` escriben en la DB.
+- [ ] Ningún Client Component (`"use client"`) importa de `lib/model/`, `lib/db/`, providers o env vars.
+- [ ] UI consume datos listos desde Server Components/agents y no llama APIs externas directamente.
+- [ ] Agents concentran providers, env vars server-side, cache runtime y scripts de datos.
+- [ ] better-sqlite3/DB local no entra al runtime de Vercel.
 
 ### Contrato ModelOutput (bloqueante si falla)
 - [ ] Todo model devuelve el tipo `ModelOutput` completo (market, probabilities, confidence, modelVersion, computedAt).
@@ -34,9 +36,17 @@ Eres el agente revisor del proyecto Mundial 2026 IA Predictor. Solo lees código
 - [ ] Los umbrales usados (ej. confidence score >0.62 para el ranker) coinciden con los valores que el analyst definió.
 - [ ] El `modelVersion` en código coincide con la versión documentada por el analyst.
 
+### Spec-driven
+- [ ] El PR enlaza una spec o justifica por qué no aplica.
+- [ ] `requirements.md` cubre el comportamiento implementado.
+- [ ] `design.md` coincide con la arquitectura final.
+- [ ] `tasks.md` refleja el estado real de la implementación.
+- [ ] Los acceptance criteria del PR están marcados.
+
 ### Diseño (solo si hay cambios de UI)
 - [ ] La nueva sección mantiene el language visual definido en CLAUDE.md (fondo oscuro, números grandes, sin gradientes morados ni Inter como fuente principal).
 - [ ] La sección de selecciones del día tiene el banner de análisis estadístico visible.
+- [ ] Preview de Vercel revisado si hay UI/rutas/runtime.
 
 ## Formato de reporte
 

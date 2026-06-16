@@ -33,6 +33,8 @@ Para cada modelo genera un `ModelOutput` con inputs controlados y verifica:
 
 ### Harness (tests de integración simples)
 - Un model no puede importar nada de `lib/data/` o `fetch`. Verifica que el grafo de imports es correcto con una prueba de análisis estático (o un simple test que instancie el model sin DB y confirme que no explota por dependencias externas).
+- Un Client Component no debe importar `lib/model`, `lib/db`, providers ni env vars.
+- Un cambio de Vercel ISR debe validar rutas principales en preview o smoke local.
 
 ## Estructura de tests
 
@@ -43,6 +45,7 @@ lib/model/skills/__tests__/deriveMarkets.test.ts
 lib/model/skills/__tests__/confidence.test.ts
 lib/model/__tests__/matchModel.test.ts
 lib/model/__tests__/ranker.test.ts
+lib/architecture/__tests__/boundaries.test.ts
 ```
 
 ## Cómo reportas

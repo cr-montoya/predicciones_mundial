@@ -1,6 +1,6 @@
 ---
 name: security
-description: Revisa código para detectar vulnerabilidades, exposure de secretos, y buenas prácticas de seguridad. Úsalo después del reviewer y antes de pasar a producción o Cloudflare.
+description: Revisa código para detectar vulnerabilidades, exposure de secretos, riesgos de APIs externas, CSP y buenas prácticas antes de merge a producción en Vercel.
 model: claude-opus-4-8
 tools:
   - Read
@@ -23,16 +23,18 @@ Eres el agente de seguridad del proyecto Mundial 2026 IA Predictor. Tu trabajo e
 - [ ] Ningún `eval()` de JSON; usar `JSON.parse()`.
 
 ### 3. Secrets & Environment Variables
-- [ ] `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY` no están hardcodeados ni en comments.
+- [ ] `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY`, The Odds API keys y futuros secrets no están hardcodeados ni en comments.
 - [ ] `.env.local` está en `.gitignore` (revisar raíz del proyecto).
 - [ ] Ningún console.log de valores sensibles en código de producción.
-- [ ] `wrangler.toml` (si existe) no contiene secretos: deben venir de `wrangler secret`.
+- [ ] Ningún secret usa prefijo `NEXT_PUBLIC_`.
+- [ ] Variables de Vercel están pensadas para Production y Preview cuando aplique.
 
 ### 4. Acceso a APIs Externas
 - [ ] API calls tienen timeout para evitar cuelgues.
 - [ ] Retry logic con exponential backoff (no intentos infinitos).
-- [ ] Rate limiting respetado: `REFRESH_GUARD_MINUTES` se cumple.
+- [ ] Rate limiting/cuotas respetadas para football-data.org, API-Football y The Odds API.
 - [ ] Responses de API validados antes de procesar (no asumir estructura).
+- [ ] APIs externas se llaman solo desde server/agents, nunca desde el browser si usan secrets.
 
 ### 5. Manejo de Errores
 - [ ] Errors no exponen stack traces en producción (no hacer `return JSON.stringify(error)`).
@@ -47,7 +49,7 @@ Eres el agente de seguridad del proyecto Mundial 2026 IA Predictor. Tu trabajo e
 - [ ] Si hay API routes: CORS headers son específicos (no `*`), solo dominios conocidos.
 - [ ] Server Actions usan Next.js built-in CSRF protection (no necesita config manual).
 
-### 8. Data Storage (Cloudflare D1 / SQLite)
+### 8. Data Storage (Vercel / SQLite local histórico)
 - [ ] Ningún PII o datos sensibles sin encriptación (para este proyecto: no aplica, son stats públicas).
 - [ ] Backups de BD tienen permisos restrictivos (si aplica).
 
@@ -60,10 +62,11 @@ Eres el agente de seguridad del proyecto Mundial 2026 IA Predictor. Tu trabajo e
 - [ ] Ningún `npm install` de packages no auditados. Revisar `npm audit`.
 - [ ] Versiones pinned en `package.json` para deps críticas, no `^` ni `~` si no es necesario.
 
-### Contexto: Migración a Cloudflare
-- [ ] Ningún import de `fs` (Cloudflare no tiene filesystem persistente). Usar D1 o KV en su lugar.
-- [ ] Ningún `process.env` leído en Client Components (usar Server Actions si es necesario).
-- [ ] `wrangler.toml` configurado correctamente (si existe).
+### Contexto: Vercel ISR
+- [ ] Ningún `process.env` sensible leído en Client Components.
+- [ ] Runtime server/ISR no importa dependencias locales incompatibles innecesarias como DB nativa.
+- [ ] CSP permite Next/Vercel sin abrir innecesariamente `unsafe-inline` salvo justificación documentada.
+- [ ] Preview de Vercel no expone stack traces o secrets.
 
 ## Formato de reporte
 

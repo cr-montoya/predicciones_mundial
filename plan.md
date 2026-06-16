@@ -246,7 +246,7 @@ La app migró a **Vercel ISR**:
 - **Verificación**: `pnpm build`, `pnpm test`, revisión responsive en home y detalle de partido, y Design aprobado sin bloqueantes.
 
 ### Fase 15 — Español LATAM y glosario de mercados
-- **Estado**: Siguiente fase activa.
+- **Estado**: Completada.
 - **Spec**: `specs/phase-15-espanol-glosario/`.
 - **Problema**: Hay textos mezclados y algunos mercados pueden ser confusos para usuarios que no conocen apuestas deportivas.
 - **Objetivo**: Traducir toda la experiencia a español latinoamericano, con tono claro de análisis estadístico y sin prometer ganancias. Añadir botones de info para explicar cada tipo de mercado.

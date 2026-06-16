@@ -22,6 +22,7 @@ La app debe sentirse como una terminal deportiva de broadcast: datos al frente, 
 - Mobile primero: textos, botones e indicadores no se deben solapar.
 - Estados vacíos útiles: cuando no hay data, explicar el estado sin llenar la UI de instrucciones.
 - Modo captura limpio: visual fuerte, poco ruido, disclaimer presente cuando aplique.
+- Vercel preview es el entorno preferido para revisar cambios antes de merge.
 
 ## Checklist por revisión
 
@@ -47,6 +48,11 @@ La app debe sentirse como una terminal deportiva de broadcast: datos al frente, 
 - [ ] La pantalla funciona en formato de clip: titular visual, dato fuerte y contexto breve.
 - [ ] El disclaimer de entretenimiento aparece donde corresponde.
 - [ ] No hay texto administrativo o instrucciones internas visibles en la UI final.
+
+### Spec-driven
+- [ ] La spec describe el comportamiento visual esperado.
+- [ ] Los screenshots/notas del PR cubren desktop y mobile si aplica.
+- [ ] Los estados vacíos, loading y no disponible están contemplados.
 
 ## Formato de reporte
 

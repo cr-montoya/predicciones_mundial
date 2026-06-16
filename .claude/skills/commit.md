@@ -30,10 +30,18 @@ test(model): add sanity check tests for score matrix derivation
 
 ## How to commit
 
-1. Run `git diff --staged` (and `git diff` if nothing staged) to read the changes.
-2. Pick the type and scope from the rules above.
-3. Write the single-line message.
-4. Run: `git commit -m "<message>"`
-5. If nothing is staged yet, stage the relevant files first with `git add <files>`.
+1. Run `git status --short` to see every changed and untracked file.
+2. Run `git diff --staged` and `git diff` to read the changes.
+3. Stage the relevant files yourself with `git add`.
+4. Re-run `git status --short` and `git diff --staged` to confirm exactly what will be committed.
+5. Pick the type and scope from the rules above.
+6. Write the single-line message.
+7. Run: `git commit -m "<message>"`
 
-Never use `git add .` or `git add -A` — always add specific files.
+## Staging rules
+
+- You may run `git add <files>` for all files that belong to the requested change.
+- Prefer explicit file paths when the change is small or when unrelated files exist.
+- You may use `git add -A` only when the user explicitly wants all current repo changes committed or when every changed file has been inspected and belongs to the same requested change.
+- Never stage secrets or local machine files: `.env`, `.env.local`, `.env.*`, `.vercel/`, `.wrangler/`, `.next/`, `out/`, logs, caches, or generated artifacts unless the user explicitly asks and it is safe.
+- If unrelated changes exist, leave them unstaged and mention them.

@@ -1,137 +1,260 @@
 # CLAUDE.md — Mundial 2026 IA Predictor
 
 ## Qué es
-App que proyecta TODOS los mercados estadísticos de cada partido del Mundial 2026 (resultado, goles, tarjetas, goleadores, corners) con un modelo propio. Framing: "así predice la IA el Mundial". Análisis de entretenimiento, NO casa de apuestas: solo muestra probabilidades, no recibe ni procesa apuestas.
 
-## Stack
-- Next.js 15 (App Router) + React + TypeScript
-- Tailwind + shadcn/ui
-- Recharts para visualizaciones
-- SQLite vía **Cloudflare D1** (serverless, no filesystem) para cachear data. Local: mejor-sqlite3 en desarrollo.
-- Recálculo manual bajo demanda: script (pnpm refresh) o botón "Actualizar" en la UI (Server Action). Sin cron ni proceso 24/7. En Cloudflare: Cron Trigger o manual via dashboard.
-- Fuente de datos: API-Football (RapidAPI). Fallback: football-data.org
-- Deploy: **Cloudflare Pages** (free tier amplio, compatible con Next.js)
+App que proyecta mercados estadísticos del Mundial 2026 con un modelo propio. Framing:
+"así predice la IA el Mundial". Es análisis de entretenimiento, no casa de apuestas:
+solo muestra probabilidades, contexto y explicaciones; no recibe ni procesa apuestas.
+
+## Stack vigente
+
+- Next.js 16 App Router + React + TypeScript.
+- Tailwind CSS.
+- Vitest para tests.
+- Vercel ISR en producción.
+- `main` despliega producción en Vercel.
+- PRs generan previews de Vercel.
+- Fixtures en runtime server desde football-data.org mediante `FOOTBALLDATA_KEY`.
+- API-Football/RapidAPI queda para endpoints enriquecidos como lineups, injuries, eventos, stats y fallback cuando aplique.
+- Monte Carlo del torneo sigue precomputado en `lib/data/tournament-prediction.json`.
+- SQLite/better-sqlite3 queda para scripts locales e historia del proyecto; no debe entrar al runtime de Vercel.
 
 ## Harness de capas
 
 Las dependencias van en una sola dirección. Ninguna capa puede importar de la capa superior.
 
-```
+```txt
 UI  <-  Agents  <-  Models  <-  Skills
-(DB)   (I/O)      (DB->out)   (pure fn)
+      (I/O)       (math)      (pure fn)
 ```
 
 ### Contrato de Skill
-- Función pura: `(input: T) => U`. Sin imports de DB, API, ni red.
-- Sin estado mutable. Testeable en aislamiento con vitest sin mocks.
+
+- Función pura: `(input: T) => U`.
+- Sin imports de `lib/db`, `lib/data`, providers, env vars, ni red.
+- Sin `fetch`.
+- Sin estado mutable global.
+- Testeable en aislamiento con Vitest sin mocks complejos.
 
 ### Contrato de Model
-- Recibe data ya normalizada de DB (nunca respuesta cruda de API).
-- Devuelve siempre `ModelOutput`:
-  ```ts
-  interface ModelOutput {
-    market: MarketType
-    probabilities: Record<string, number>  // suman 1.0 ± 0.001
-    confidence: 'high' | 'medium' | 'low'
-    modelVersion: string
-    computedAt: string  // ISO 8601
-  }
-  ```
-- Incluye `sanityCheck(output)` que lanza si las probabilidades no suman 1.0.
+
+- Recibe datos ya normalizados como argumentos.
+- Nunca llama APIs externas.
+- Nunca instancia DB.
+- Devuelve `ModelOutput` o contratos derivados documentados por Analyst.
+- Incluye sanity checks para probabilidades y rangos.
+
+```ts
+interface ModelOutput {
+  market: MarketType
+  probabilities: Record<string, number>
+  confidence: 'high' | 'medium' | 'low'
+  modelVersion: string
+  computedAt: string
+}
+```
 
 ### Contrato de Agent
-- Solo agents (scripts/refresh.ts y el Server Action) pueden llamar a la API externa o escribir en DB.
-- Todo agent registra en DB un `run_log` con timestamp, duración y resultado (ok / error).
-- El Server Action de refresh verifica la guarda de frescura antes de correr.
-- **En Cloudflare D1**: agents acceden a DB vía `d1.prepare()` (Wrangler) en lugar de `better-sqlite3` directo. Bindings configurados en `wrangler.toml`.
-- Secretos (`RAPIDAPI_KEY`, etc.) via `wrangler secret` (no en código ni .env en Cloudflare).
 
-### Agentes disponibles en este proyecto
+- Única capa autorizada para API externa, env vars server-side, cache runtime y scripts de datos.
+- Puede llamar modelos con datos normalizados.
+- Puede leer JSON precomputados si son fuente de verdad versionada.
+- Debe degradar con fallback cuando una API no responda.
+- Debe mantener API keys server-side; nunca `NEXT_PUBLIC_` para secrets.
+
+### Contrato de UI
+
+- Server Components por defecto.
+- Client Components solo para interacciones pequeñas.
+- Client Components no importan `lib/model`, `lib/db`, providers, ni env vars.
+- La UI consume datos listos desde agents/server loaders.
+
+## Agentes disponibles
+
 Invocar con `Agent({ subagent_type: ... })` o dejar que Claude orqueste según la tarea:
-- **analyst**: diseña contratos del modelo, valida la matemática estadística.
-- **design**: define dirección visual, UX, responsive, microcopy visual y consistencia de componentes antes y después de cambios de UI.
-- **developer**: implementa código siguiendo los contratos del harness.
-- **qa**: escribe y corre tests, valida sanity checks de outputs.
-- **reviewer**: revisa consistencia entre capas y adherencia al harness.
-- **security**: auditoría de código, detección de vulnerabilidades OWASP, exposure de secretos, buenas prácticas.
+
+- **analyst**: diseña contratos del modelo, valida matemáticas, probabilidades, lambdas, overround y copy técnico de mercados.
+- **design**: define y revisa dirección visual, UX, responsive, microcopy visual, jerarquía y consistencia.
+- **developer**: implementa siguiendo specs y harness.
+- **qa**: escribe/corre tests, valida sanity checks, rutas principales y build.
+- **code-quality**: revisa buenas prácticas de código, mantenibilidad, typing, simplicidad y duplicación.
+- **reviewer**: audita capas, contratos, convenciones y consistencia spec-implementación.
+- **security**: audita secrets, OWASP, CSP, runtime server, cuotas y exposición de APIs.
+
+## Spec Driven Development
+
+Toda fase o fix relevante debe tener spec antes o durante el PR:
+
+```txt
+specs/<nombre>/
+  requirements.md
+  design.md
+  tasks.md
+```
+
+Estados usados:
+
+- `pending`: todavía no implementado.
+- `active`: en implementación.
+- `completed`: cerrado.
+- `historical`: decisión anterior conservada como contexto, no arquitectura vigente.
+
+El PR debe enlazar su spec y marcar los acceptance criteria revisados.
+
+Cuando se cree, renombre, cierre o cambie de estado una spec, actualizar siempre
+`specs/README.md` en el mismo PR. Ese README es el índice vivo del roadmap SDD.
+
+### Skills SDD
+
+Usar estas skills para mantener el flujo spec-driven consistente:
+
+- `.claude/skills/spec-init.md`: crear o normalizar specs y actualizar `specs/README.md`.
+- `.claude/skills/spec-review.md`: revisar que la spec esté lista antes de implementar.
+- `.claude/skills/data-contract.md`: definir contratos de datos para APIs, JSON, modelos, mercados, odds, lineups e ISR.
+- `.claude/skills/adr.md`: documentar decisiones técnicas importantes en `docs/adr/`.
+- `.claude/skills/task-runner.md`: implementar una task concreta sin salirse del alcance de la spec.
+- `.claude/skills/spec-closeout.md`: cerrar una spec antes del PR.
+- `.claude/skills/pr-prep.md`: preparar el cuerpo del PR desde la spec, diff, checks y gates.
+
+Flujo recomendado:
+
+1. `spec-init` cuando no exista spec o haya que normalizarla.
+2. `spec-review` antes de pasar a implementación.
+3. `data-contract` si cambian datos, APIs, modelos, mercados, odds, lineups o cache.
+4. `adr` si se toma una decisión técnica con impacto de arquitectura.
+5. `grill` antes de implementar si aplica.
+6. Agentes pre-implementación cuando apliquen: Analyst, Design y Security.
+7. `task-runner` para ejecutar una task acotada con Developer.
+8. Agentes post-implementación: QA, Code Quality, Reviewer y los re-checks de Design/Security que apliquen.
+9. `spec-closeout` cuando la implementación esté lista.
+10. `grill` re-check si aplica.
+11. `pr-prep` antes de abrir PR.
+12. `commit` cuando haya cambios listos para commitear.
+
+Los agentes no reemplazan las skills: las skills ordenan el proceso y los agentes
+validan calidad desde su especialidad.
+
+## Grill Gate
+
+La skill `.claude/skills/grill.md` es obligatoria para fases, fixes de producto,
+mercados nuevos, cambios de modelo, APIs externas y cambios de runtime.
+
+Uso recomendado:
+
+1. **Antes de implementar**: ejecutar Grill para detectar blockers de datos, contratos,
+   harness, tests y riesgos.
+2. **Antes de abrir PR**: hacer un Grill re-check corto para confirmar que los blockers
+   quedaron resueltos o que los riesgos están documentados.
+
+Si Grill termina con `DO NOT START`, no se debe pasar a Developer hasta resolver blockers
+o actualizar la spec.
+
+## Commit Gate
+
+La skill `.claude/skills/commit.md` es obligatoria siempre que se vaya a crear un commit.
+Todos los commits deben seguir Conventional Commits:
+
+```txt
+<type>(<scope>): <description>
+```
+
+Reglas clave:
+
+- Mensaje en inglés.
+- Una sola línea.
+- Sin body, footer ni `Co-Authored-By`.
+- Tipos permitidos: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `style`, `perf`.
+- Scope por capa/directorio cuando aplique: `model`, `ui`, `agents`, `specs`, `docs`, `security`, etc.
+- La skill puede hacer `git add` y crear el commit. Debe inspeccionar `git status`/diff antes de stagear.
+- Preferir `git add <files>`; `git add -A` solo si todos los cambios revisados pertenecen al mismo pedido.
+- Nunca stagear secrets, archivos locales, caches o builds.
 
 ## Convenciones
-- Server Actions para fetch de data, no API routes sueltas. El refresh es un Server Action con guarda de frescura (no refresca si la última corrida fue hace menos de N minutos) para respetar la cuota de la API.
-- Modelo de predicción aislado en lib/model/ (testeable, sin acoplar a UI).
-- Toda predicción se guarda con timestamp para mostrar "histórico de predicciones".
-- Nada de "--" (doble guion) en código ni texto.
-- Componentes server por defecto; "use client" solo donde haya interactividad.
+
+- Implementar desde dentro hacia afuera: Skills -> Models -> Agents -> UI.
+- No diseñar lógica estadística en Developer sin contrato de Analyst.
+- No mezclar fases distintas en un mismo PR.
+- No usar `npm` ni `yarn`; usar `pnpm`.
+- Mantener secrets fuera del repo y del bundle cliente.
+- Cuando cambien datos precomputados, explicar qué script se corrió y por qué cambió el JSON.
+- Componentes sin estado deben ser server components.
 
 ## Diseño
-Esta app es para contenido viral: la UI no puede verse genérica de IA (Inter, gradientes morados, cards redondeadas flotando, Recharts default). Norte: look de terminal de datos deportiva (broadcast / Opta), números grandes como protagonista, fondo oscuro con un acento, visualizaciones custom. Comprométete con UNA dirección y no la sueltes entre pantallas.
+
+La app es para contenido viral: no debe verse como template genérico. Norte visual:
+terminal de datos deportiva/broadcast, datos al frente, números grandes, fondo oscuro,
+acentos controlados, visualizaciones propias y lenguaje claro en español LATAM.
 
 ## Comandos
 
 ```bash
 pnpm install
-cp .env.example .env.local   # poner RAPIDAPI_KEY
-pnpm dev                      # localhost:3000
-pnpm refresh                  # trae data nueva y recalcula predicciones (o usa el botón "Actualizar" en la UI)
-pnpm test                     # corre vitest
-pnpm tsc --noEmit             # type-check sin compilar
-pnpm lint                     # ESLint
-pnpm build                    # build de producción (usar para confirmar que no hay errores antes de cerrar una fase)
+pnpm dev
+pnpm test
+pnpm tsc --noEmit
+pnpm build
+pnpm precompute
+pnpm refresh-fixtures
 ```
 
-## Verificación antes de cerrar cualquier fase
+## Verificación antes de cerrar una fase
 
-Secuencia obligatoria en este orden:
+1. Analyst aprobado, si cambia modelo, fórmula, probabilidades o copy técnico.
+2. Design aprobado, si cambia UI/copy visual.
+3. Grill report inicial sin blockers, o blockers resueltos en la spec.
+4. `specs/README.md` actualizado si cambió una spec o su estado.
+5. `pnpm tsc --noEmit`.
+6. `pnpm test`.
+7. `pnpm build`.
+8. QA aprobado.
+9. Code Quality sin bloqueantes.
+10. Reviewer sin bloqueantes.
+11. Security sin críticos.
+12. Grill re-check antes del PR si hubo modelo/API/runtime/mercado nuevo.
+13. Preview de Vercel revisado por owner si toca UI, rutas, runtime, ISR o datos.
 
-1. Agente **design** — obligatorio si hubo cambios de UI/copy visual; sin bloqueantes visuales.
-2. `pnpm tsc --noEmit` — cero errores de tipos.
-3. `pnpm test` — todos los tests pasan.
-4. Agente **reviewer** — sin bloqueantes en el checklist.
-5. Agente **security** — sin vulnerabilidades críticas (bloqueantes); altos y informativos pueden ir a siguientes releases.
-
-Ninguna fase se da por terminada si design aplica y reporta bloqueantes, si type-check/tests fallan, si reviewer reporta bloqueantes, o si security reporta CRÍTICO.
-Antes de deploy a Cloudflare: security check es obligatorio.
+Ninguna fase se da por terminada si un gate aplicable falla.
 
 ## Flujo Git y producción
 
-`main` está conectado a producción en Cloudflare Pages. No trabajar fases nuevas directamente sobre `main` salvo documentación menor autorizada explícitamente.
+`main` está conectado a producción en Vercel. No trabajar fases nuevas directamente sobre
+`main`.
 
 Flujo por defecto:
 
-1. Actualizar `main` y crear una rama corta desde ahí: `phase/<numero>-<descripcion>` o `fix/<descripcion>`.
-2. Implementar un scope pequeño y verificable.
-3. Correr los gates aplicables: design/analyst, type-check, tests, build, reviewer y security.
-4. Abrir PR hacia `main` usando `.github/pull_request_template.md`, con resumen, riesgos, comandos ejecutados y screenshots si hubo UI.
-5. Usar el preview deployment de Cloudflare para revisión funcional.
-6. Esperar aprobación humana del owner antes de mergear.
-7. Merge a `main` despliega producción; si falla, revertir el PR o usar rollback de Cloudflare.
+1. Actualizar `main` y crear rama corta: `phase/<numero>-<descripcion>` o `fix/<descripcion>`.
+2. Usar `spec-init` si falta spec y actualizar `specs/README.md`.
+3. Usar `spec-review` para validar que la spec está lista.
+4. Usar `data-contract` si cambian datos, APIs, modelos, mercados, odds, lineups o cache.
+5. Crear/actualizar ADR con `adr` si hay una decisión técnica relevante.
+6. Ejecutar Grill antes de implementar cuando aplique.
+7. Invocar agentes pre-implementación cuando apliquen:
+   Analyst para modelo/probabilidades/copy técnico, Design para UI/UX/copy visual,
+   Security para APIs/env vars/CSP/runtime/datos sensibles.
+8. Implementar un scope pequeño y verificable con `task-runner` y Developer.
+9. Correr gates post-implementación: QA, Code Quality, Reviewer y re-checks de Design/Security si aplican.
+10. Hacer `spec-closeout` y Grill re-check antes del PR cuando aplique.
+11. Preparar el PR con `pr-prep`.
+12. Usar la skill Commit para crear commits estándar cuando haya cambios listos.
+13. Abrir PR hacia `main` usando `.github/pull_request_template.md`.
+14. Revisar preview deployment de Vercel.
+15. Esperar aprobación humana del owner.
+16. Merge a `main`.
+17. Si producción falla, revertir PR o usar rollback de Vercel.
 
 Reglas:
+
 - `main` debe estar siempre desplegable.
 - No hacer push directo a `main` para fases de producto.
 - No mezclar fases distintas en el mismo PR.
 - Dividir fases grandes en PRs verticales pequeños.
-- Si un cambio modifica datos precomputados, explicar qué scripts se corrieron y por qué cambió el JSON.
-- Completar el template de PR antes de pedir revisión del owner.
+- Completar el template de PR antes de pedir review.
 
 ## Ciclo de corrección
 
-Cuando un agente reporta un fallo:
-
-1. **QA reporta test failure**: 
-   - Si es **implementación** (bug): developer corrige, QA re-corre.
-   - Si es **lógica estadística**: analyst redefine, developer reimplementa, QA valida.
-
-2. **Reviewer reporta bloqueante**:
-   - Developer arregla violación del harness, reviewer re-valida.
-
-3. **Design reporta bloqueante**:
-   - Developer ajusta UI/CSS/copy, QA valida que no rompió build/rutas, design re-valida.
-
-4. **Security reporta CRÍTICO**:
-   - Developer arregla vulnerabilidad, security re-audita.
-
-5. Una vez aprobados todos los gates aplicables (QA + Design si aplica + Reviewer + Security): la fase avanza.
-
-El loop no se cierra hasta que todos digan `APROBADO`.
-
-Nota: Before merge/deploy to Cloudflare, siempre security check es requerido, incluso si la fase anterior lo pasó.
+1. **QA falla**: Developer corrige si es implementación; Analyst redefine si es lógica estadística.
+2. **Design bloquea**: Developer ajusta UI/copy; QA valida que build/rutas no se rompan; Design re-valida.
+3. **Code Quality bloquea**: Developer corrige deuda o mala práctica bloqueante; Code Quality re-valida.
+4. **Reviewer bloquea**: Developer corrige violación del harness; Reviewer re-valida.
+5. **Security reporta crítico**: Developer corrige; Security re-audita.
+6. Cuando todos los gates aplicables dicen aprobado, la fase puede avanzar.
