@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { loadFixtures } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { getFlag } from '@/lib/utils/flags'
+import { PickBadge } from '@/components/pick-badge'
 import type { Team } from '@/lib/types'
 
 export const revalidate = 3600
@@ -149,6 +150,10 @@ export default async function FixturesPage() {
                     }}>
                       {st.label}
                     </span>
+                  </div>
+
+                  <div style={{ width: 44, display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                    <PickBadge fixtureId={fx.id} />
                   </div>
                 </Link>
               )

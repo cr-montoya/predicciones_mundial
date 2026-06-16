@@ -1,27 +1,27 @@
 ---
-status: pending
+status: in_review
 phase: 19
 owner: cristian
 branch: phase/19-picks
 pr:
 preview:
 gates:
-  spec_review: pending
-  grill: pending
+  spec_review: passed
+  grill: passed
   analyst: not_applicable
-  design: pending
-  data_contract: pending
+  design: passed
+  data_contract: passed
   security: not_applicable
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  qa: passed
+  code_quality: passed
+  reviewer: passed
 ---
 
 # phase-19-picks — Requirements
 
 ## Status
 
-pending
+in_review
 
 ## Objective
 
