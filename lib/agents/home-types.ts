@@ -1,6 +1,7 @@
 import type { Fixture, Team } from '@/lib/types'
 import type { RankedMarket } from '@/lib/skills/rank-markets'
 import type { ModelOutput } from '@/lib/types'
+import type { AccuracyStats } from '@/lib/skills/accuracy'
 
 const TZ_OFFSET_HOURS = -5
 
@@ -58,4 +59,5 @@ export interface HomeData {
   fallbackLabel: string | null
   /** Momento ISO en que se genero esta data (sirve para "actualizado hace X"). */
   generatedAt: string
+  accuracyStats: AccuracyStats
 }

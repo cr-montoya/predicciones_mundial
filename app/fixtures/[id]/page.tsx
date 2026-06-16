@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation'
-import { loadFixtures, computePredictionsForFixture, teamMap } from '@/lib/agents/live-loader'
+import { loadFixtures, computePredictionsForFixture, computePredictionsRetroactive, teamMap } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { computeLambdas } from '@/lib/model/lambda'
 import { loadOdds, type OddsResult } from '@/lib/agents/odds-loader'
 import { calcValue, type ValueOutput } from '@/lib/model/skills/value-calc'
 import { PickPanel } from '@/components/pick-panel'
+import { ModelResultCard } from '@/components/model-result-card'
 import { MarketSection } from '@/components/market-section'
 import { CollapsibleSection } from '@/components/collapsible-section'
 import { TeamTotalsSection } from '@/components/team-totals-section'
@@ -111,6 +112,10 @@ export default async function FixturePage({ params }: PageProps) {
   const home = byId.get(fixture.homeTeamId)
   const away = byId.get(fixture.awayTeamId)
   const predictions = computePredictionsForFixture(fixture, byId)
+  const retroPredictions = fixture.status === 'finished'
+    ? computePredictionsRetroactive(fixture, byId)
+    : []
+  const r1x2Retro = retroPredictions.find(p => p.market === 'result_1x2')
 
   const homeName = home?.name ?? `Equipo ${fixture.homeTeamId}`
   const awayName = away?.name ?? `Equipo ${fixture.awayTeamId}`
@@ -171,16 +176,19 @@ export default async function FixturePage({ params }: PageProps) {
         />
       </FadeIn>
 
-      {predictions.length === 0 ? (
+      {fixture.status === 'finished' && r1x2Retro && fixture.homeGoals !== null && fixture.awayGoals !== null && (
         <FadeIn delay={0.1}>
-          <div
-            className="border p-6 text-sm"
-            style={{ borderColor: 'var(--border)', color: 'var(--muted)' }}
-          >
-            Sin predicciones para este partido (los partidos finalizados no se proyectan).
-          </div>
+          <ModelResultCard
+            homeName={homeName}
+            awayName={awayName}
+            homeGoals={fixture.homeGoals}
+            awayGoals={fixture.awayGoals}
+            probabilities={r1x2Retro.probabilities}
+          />
         </FadeIn>
-      ) : (
+      )}
+
+      {predictions.length === 0 ? null : (
         <div className="flex flex-col gap-12">
           <FadeIn delay={0.1}>
             <MarketSection title="RESULTADO" markets={resultMarkets} odds={odds} valueMap={valueMap} />

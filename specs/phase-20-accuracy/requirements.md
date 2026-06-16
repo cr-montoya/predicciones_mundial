@@ -1,20 +1,20 @@
 ---
-status: pending
+status: in_review
 phase: 20
 owner: cristian
 branch: phase/20-accuracy
 pr:
 preview:
 gates:
-  spec_review: pending
-  grill: pending
-  analyst: pending
-  design: pending
-  data_contract: pending
+  spec_review: approved
+  grill: approved
+  analyst: approved
+  design: approved
+  data_contract: approved
   security: not_applicable
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  qa: approved
+  code_quality: approved
+  reviewer: approved
 ---
 
 # phase-20-accuracy — Requirements
