@@ -1,5 +1,5 @@
 ---
-status: in_review
+status: active
 phase:
 owner: cristian
 branch: fix/goleadores-empty-state
@@ -12,7 +12,7 @@ gates:
   design: passed
   data_contract: not_applicable
   security: not_applicable
-  qa: passed
+  qa: pending
   code_quality: not_applicable
   reviewer: pending
 ---
@@ -21,50 +21,62 @@ gates:
 
 ## Status
 
-in_review
+active
 
 ## Objective
 
-Eliminar el estado visual roto de la sección GOLEADORES cuando no hay jugadores elegibles:
-actualmente muestra "DATOS LIMITADOS" con headers de mercado pero sin ninguna barra de
-probabilidad, lo que parece un error de carga.
+Mostrar proyecciones reales de goleadores en la sección GOLEADORES de cada partido,
+alimentando el modelo con datos históricos estáticos de los 32 equipos del Mundial 2026.
 
 ## Contexto
 
-El modelo de goleadores (`lib/model/scorers.ts`) retorna `emptyOutput` con `probabilities: {}`
-cuando no hay jugadores elegibles (el caso frecuente, ya que `computePredictionsForFixture`
-pasa `homePlayers: []` y `awayPlayers: []`). La UI muestra la sección colapsada con count=2
-y al expandir muestra los headers de mercado ("Goleador" / "1er goleador") vacíos.
+`computePredictionsForFixture` en `lib/agents/live-loader.ts` siempre pasa
+`homePlayers: []` y `awayPlayers: []`. El modelo de scorers detecta que no hay
+jugadores elegibles y retorna `probabilities: {}`, por lo que la sección GOLEADORES
+aparece vacía (o se oculta con la guarda defensiva).
+
+La solución correcta es proveer datos reales al modelo, siguiendo el mismo patrón de
+`lib/data/tournament-prediction.json`: datos precomputados/estáticos que sirven de
+fuente de verdad hasta que llegue la integración con lineups reales (fase 18).
 
 ## Scope
 
-- Ocultar la sección GOLEADORES en la fixture detail page cuando `probabilities` está vacío
-  en ambos mercados de goleadores.
-- El comportamiento actual con datos reales de jugadores (si los hay) se preserva.
+- Crear `lib/data/squads.ts` con los top goleadores de cada uno de los 32 equipos,
+  con sus tasas históricas de goles/minuto (stats de WC 2022, qualifiers 2026 y
+  selecciones recientes).
+- Actualizar `computePredictionsForFixture` para inyectar los jugadores del equipo
+  local y visitante desde ese archivo estático.
+- Mantener la guarda `scorerMarkets.length > 0` en el UI como red de seguridad para
+  equipos sin datos (por ejemplo, si se agrega un equipo nuevo no cubierto).
 
 ## Out of Scope
 
-- Integrar API-Football para obtener lineups reales (eso es fase 18).
+- Integrar API-Football para lineups reales (fase 18).
 - Cambiar el modelo matemático de goleadores.
-- Modificar la bota de oro del torneo (mercado separado, funciona correctamente).
+- Agregar nuevos mercados de goleadores.
 
 ## Requirements
 
-1. Si `anytime_scorer.probabilities` y `first_scorer.probabilities` están vacíos,
-   no renderizar la sección GOLEADORES en `/fixtures/[id]`.
-2. Si al menos uno tiene jugadores, mostrar la sección normalmente (con "DATOS LIMITADOS"
-   cuando aplique).
-3. El comportamiento no debe afectar otros mercados ni la sección de bota de oro.
+1. `lib/data/squads.ts` contiene datos para los 32 equipos del Mundial 2026.
+2. Cada equipo tiene al menos 4 jugadores elegibles (`minutesPlayed >= 90`, `goalsPerMinute > 0`).
+3. `computePredictionsForFixture` inyecta `homePlayers` y `awayPlayers` desde `squads.ts`.
+4. La sección GOLEADORES muestra jugadores con nombres y probabilidades reales.
+5. El badge "DATOS LIMITADOS" se mantiene (la proyección es histórica, no lineup confirmado).
+6. La guarda `scorerMarkets.length > 0` permanece como red de seguridad.
 
 ## Acceptance Criteria
 
-- [ ] En `/fixtures/[id]` de un partido sin lineup, la sección GOLEADORES no aparece.
-- [ ] En un partido con jugadores (si existe), la sección GOLEADORES sigue mostrándose.
-- [ ] `pnpm tsc --noEmit` y `pnpm test` pasan.
-- [ ] Preview de Vercel confirma que la sección desaparece en partidos sin datos.
+- [ ] Sección GOLEADORES muestra jugadores con nombres y barras de probabilidad.
+- [ ] El badge "DATOS LIMITADOS" sigue apareciendo.
+- [ ] `pnpm tsc --noEmit` pasa.
+- [ ] `pnpm test` pasa.
+- [ ] Preview de Vercel muestra la sección con datos en cualquier partido no finalizado.
 
 ## Risks and Assumptions
 
-- La condición de "vacío" se puede detectar con `Object.keys(probabilities).length === 0`.
-- Cuando fase 18 integre lineups reales, la sección volverá a aparecer automáticamente
-  sin más cambios en esta lógica.
+- Los datos son aproximados (stats históricas, no lineup del día). El badge "DATOS LIMITADOS"
+  comunica esto correctamente.
+- Cuando fase 18 integre lineups reales, solo se reemplaza el origen de los datos en
+  `computePredictionsForFixture` — el modelo y la UI no cambian.
+- Si un equipo no está en `squads.ts`, la guarda en page.tsx oculta la sección
+  silenciosamente en lugar de mostrar un estado roto.

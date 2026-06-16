@@ -179,6 +179,10 @@ export function translateOutcome(market: string, outcome: string): string {
   const dynUnder = outcome.match(/^under_(\d+(?:\.\d+)?)$/)
   if (dynUnder) return `Menos de ${dynUnder[1]}`
 
+  // Player keys from scorer markets: "{id}_{name}"
+  const playerKey = outcome.match(/^\d+_(.+)$/)
+  if (playerKey) return playerKey[1]
+
   return OUTCOME_TRANSLATIONS[outcome] ?? outcome
 }
 
