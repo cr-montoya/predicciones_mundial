@@ -1,3 +1,22 @@
+---
+status: pending
+phase: 17
+owner: cristian
+branch: phase/17-odds-implicitas
+pr:
+preview:
+gates:
+  spec_review: pending
+  grill: pending
+  analyst: passed
+  design: passed
+  data_contract: passed
+  security: pending
+  qa: pending
+  code_quality: pending
+  reviewer: pending
+---
+
 # Requirements: Fase 17 - Probabilidades implicitas de casas de apuestas
 
 ## Estado
@@ -41,7 +60,7 @@ mercado.
 
 ## Criterios de exito
 
-1. Odds implicitas suman aproximadamente 1 antes de ajuste y exactamente 1 despues.
+1. Odds implicitas brutas suman el overround (tipicamente 1.04–1.08, no ~1) antes del ajuste, y exactamente 1.0 despues del ajuste por mercado.
 2. Diferencial queda en rango [-1, 1].
 3. UI muestra diferencial sin parecer recomendacion financiera.
 4. `pnpm test` y `pnpm build` pasan.
