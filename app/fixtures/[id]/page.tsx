@@ -4,6 +4,7 @@ import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { computeLambdas } from '@/lib/model/lambda'
 import { loadOdds, type OddsResult } from '@/lib/agents/odds-loader'
 import { calcValue, type ValueOutput } from '@/lib/model/skills/value-calc'
+import { PickPanel } from '@/components/pick-panel'
 import { MarketSection } from '@/components/market-section'
 import { CollapsibleSection } from '@/components/collapsible-section'
 import { TeamTotalsSection } from '@/components/team-totals-section'
@@ -156,6 +157,17 @@ export default async function FixturePage({ params }: PageProps) {
           homeGoals={fixture.homeGoals}
           awayGoals={fixture.awayGoals}
           status={fixture.status}
+        />
+      </FadeIn>
+
+      <FadeIn delay={0.05}>
+        <PickPanel
+          fixtureId={fixture.id}
+          status={fixture.status}
+          homeGoals={fixture.homeGoals}
+          awayGoals={fixture.awayGoals}
+          homeName={homeName}
+          awayName={awayName}
         />
       </FadeIn>
 
