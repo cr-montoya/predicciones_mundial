@@ -14,8 +14,42 @@ specs/<nombre>/
 
 - `pending`: todavía no implementado.
 - `active`: en implementación.
+- `blocked`: falta una decisión, dato, API, diseño o contrato para poder avanzar.
+- `in_review`: implementación lista, esperando gates, PR o revisión humana.
 - `completed`: cerrado y validado.
+- `deferred`: aplazado conscientemente sin cerrarse como completado.
 - `historical`: se conserva como memoria de decisiones, pero no representa arquitectura vigente.
+
+## Metadata recomendada
+
+Las specs nuevas deben iniciar `requirements.md` con frontmatter:
+
+```yaml
+---
+status: pending
+phase:
+owner: cristian
+branch:
+pr:
+preview:
+gates:
+  spec_review: pending
+  grill: pending
+  analyst: not_applicable
+  design: not_applicable
+  data_contract: not_applicable
+  security: not_applicable
+  qa: pending
+  code_quality: pending
+  reviewer: pending
+---
+```
+
+Valores válidos para `status`: `pending`, `active`, `blocked`, `in_review`,
+`completed`, `deferred`, `historical`.
+
+Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
+`not_applicable`.
 
 ## Cómo usar una spec
 
@@ -26,6 +60,7 @@ specs/<nombre>/
 5. Copiar o resumir los acceptance criteria en el PR template.
 6. Actualizar estado/tareas si el alcance cambia durante la implementación.
 7. Actualizar este README si se crea, renombra, cierra o cambia de estado una spec.
+8. Ejecutar `pnpm spec:check` antes de abrir PR.
 
 ## Índice de fases
 
@@ -66,3 +101,7 @@ specs/<nombre>/
 - Si cambia el estado de una spec, actualizar este README en el mismo PR.
 - Si se agrega una fase/spec nueva, agregarla al índice en este README antes de pedir review.
 - Las specs no reemplazan tests ni review; son contrato de intención y aceptación.
+- Las specs nuevas deben usar metadata YAML.
+- `completed` implica tasks cerradas o excepciones documentadas.
+- `blocked` debe incluir el bloqueo concreto y quién/qué lo desbloquea.
+- `in_review` significa que la implementación terminó y faltan gates, preview o PR.

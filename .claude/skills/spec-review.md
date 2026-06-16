@@ -27,6 +27,8 @@ You review a spec for readiness before implementation. Your job is to catch vagu
 - [ ] Requirements are observable and testable.
 - [ ] Acceptance criteria can be checked in code, UI, tests, or preview.
 - [ ] Status matches `specs/README.md`.
+- [ ] New specs include YAML metadata with status, owner, branch, PR, preview, and gates.
+- [ ] Status is one of: `pending`, `active`, `blocked`, `in_review`, `completed`, `deferred`, `historical`.
 
 ### Design
 
@@ -49,6 +51,15 @@ You review a spec for readiness before implementation. Your job is to catch vagu
 - [ ] Design is required if UI, responsive behavior, hierarchy, copy presentation, or visual system changes.
 - [ ] Security is required if APIs, env vars, CSP, auth, quotas, or runtime behavior changes.
 - [ ] QA is required for tests, build, route smoke, and preview checks.
+- [ ] Code Quality is required for implementation changes.
+- [ ] ADR is required if runtime, data source, storage, model math, cache, auth, or external provider changes.
+
+### Definition of Ready
+
+- [ ] Requirements, design, tasks, gates, risks, and acceptance criteria are complete enough for implementation.
+- [ ] `data-contract` has run or is explicitly not applicable.
+- [ ] ADR exists or is explicitly not applicable.
+- [ ] `pnpm spec:check` passes or expected legacy warnings are documented.
 
 ## Output format
 

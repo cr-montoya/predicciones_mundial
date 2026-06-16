@@ -21,10 +21,11 @@ You implement one focused task from an SDD spec while preserving the harness arc
 3. Identify the exact task to implement.
 4. Confirm the task is not blocked by `spec-review` or `grill`.
 5. Inspect relevant code before editing.
-6. Implement only the selected task and directly required supporting changes.
-7. Update `tasks.md` with completed checkboxes and implementation notes when useful.
-8. Update `specs/README.md` if the spec status changes.
-9. Run applicable checks or document why they were skipped.
+6. Set the spec status to `active` if implementation starts and it is still `pending`.
+7. Implement only the selected task and directly required supporting changes.
+8. Update `tasks.md` with completed checkboxes and implementation notes when useful.
+9. Update `requirements.md` metadata and `specs/README.md` if the spec status changes.
+10. Run applicable checks or document why they were skipped.
 
 ## Scope rules
 
@@ -35,6 +36,7 @@ You implement one focused task from an SDD spec while preserving the harness arc
   - I/O and env vars belong in Agents/server loaders
   - rendering belongs in UI
 - Do not add client-side secret access.
+- Do not move a blocked spec back to `active` unless the blocker is documented as resolved.
 
 ## Implementation order
 

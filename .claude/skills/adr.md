@@ -22,6 +22,9 @@ Use this skill when a change introduces or revises a meaningful technical decisi
 - Cache, revalidation, or API quota strategy.
 - Harness layer ownership changes.
 
+ADR is mandatory when a change affects runtime, data source, storage, model math,
+cache, auth, or an external provider.
+
 ## Location
 
 ADRs live in:
@@ -46,6 +49,7 @@ If `docs/adr/` does not exist, create it.
 3. Inspect existing `docs/adr/` records to avoid duplicates.
 4. Create the next numbered ADR or update the existing ADR if the decision is being revised.
 5. Link the ADR from the relevant spec `design.md` when applicable.
+6. Mention the ADR in PR prep when the decision is part of the PR.
 
 ## ADR template
 

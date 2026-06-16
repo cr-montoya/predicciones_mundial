@@ -96,13 +96,61 @@ Estados usados:
 
 - `pending`: todavía no implementado.
 - `active`: en implementación.
+- `blocked`: falta una decisión, dato, API, diseño o contrato para poder avanzar.
+- `in_review`: implementación lista, esperando gates, PR o revisión humana.
 - `completed`: cerrado.
+- `deferred`: aplazado conscientemente.
 - `historical`: decisión anterior conservada como contexto, no arquitectura vigente.
 
 El PR debe enlazar su spec y marcar los acceptance criteria revisados.
 
 Cuando se cree, renombre, cierre o cambie de estado una spec, actualizar siempre
 `specs/README.md` en el mismo PR. Ese README es el índice vivo del roadmap SDD.
+
+Las specs nuevas deben incluir metadata YAML en `requirements.md` con status,
+owner, branch, PR, preview y estado de gates. Las specs históricas pueden migrarse
+gradualmente, pero toda spec nueva debe seguir el template de `spec-init`.
+
+### Definition of Ready
+
+Una spec está lista para implementación cuando:
+
+- El objetivo, alcance y fuera de alcance son claros.
+- Los requirements son verificables.
+- Los acceptance criteria se pueden copiar o resumir en el PR.
+- Los contratos de datos están definidos si hay APIs, JSON, modelos, odds, lineups o cache.
+- Los riesgos y supuestos están documentados.
+- Los agentes obligatorios están identificados según la matriz de gates.
+- `spec-review` no tiene bloqueantes.
+
+### Definition of Done
+
+Una spec puede cerrarse cuando:
+
+- Tasks y acceptance criteria están completos o explícitamente diferidos.
+- La implementación respeta `design.md` o documenta desviaciones.
+- `specs/README.md` está actualizado si cambió estado, nombre o alcance.
+- `pnpm spec:check` pasa.
+- Checks aplicables fueron ejecutados o documentados como omitidos con razón.
+- Gates aplicables están aprobados.
+- PR template está completo.
+- Preview de Vercel fue revisado si toca UI, rutas, runtime, ISR o datos.
+
+### Matriz de gates
+
+| Tipo de cambio | Gates obligatorios |
+| --- | --- |
+| UI/copy visual | Design, QA, Code Quality, Reviewer |
+| Modelo/probabilidades | Analyst, Grill, QA, Code Quality, Reviewer |
+| API/runtime/env/cache | Data Contract, Grill, Security, QA, Reviewer |
+| Datos JSON/precompute | Analyst si cambia modelo, QA, Code Quality, Reviewer |
+| Security/CSP/auth | Security, QA, Reviewer |
+| Docs/specs only | Spec Review, `pnpm spec:check`, Reviewer opcional |
+| Fix producto | Spec Review, Grill si aplica, QA, Code Quality, Reviewer |
+| Decisión arquitectónica | ADR, Spec Review, Reviewer |
+
+ADR es obligatorio si cambia runtime, fuente de datos, storage, modelo matemático,
+cache, auth o proveedor externo.
 
 ### Skills SDD
 
@@ -206,12 +254,13 @@ pnpm refresh-fixtures
 5. `pnpm tsc --noEmit`.
 6. `pnpm test`.
 7. `pnpm build`.
-8. QA aprobado.
-9. Code Quality sin bloqueantes.
-10. Reviewer sin bloqueantes.
-11. Security sin críticos.
-12. Grill re-check antes del PR si hubo modelo/API/runtime/mercado nuevo.
-13. Preview de Vercel revisado por owner si toca UI, rutas, runtime, ISR o datos.
+8. `pnpm spec:check`.
+9. QA aprobado.
+10. Code Quality sin bloqueantes.
+11. Reviewer sin bloqueantes.
+12. Security sin críticos.
+13. Grill re-check antes del PR si hubo modelo/API/runtime/mercado nuevo.
+14. Preview de Vercel revisado por owner si toca UI, rutas, runtime, ISR o datos.
 
 Ninguna fase se da por terminada si un gate aplicable falla.
 

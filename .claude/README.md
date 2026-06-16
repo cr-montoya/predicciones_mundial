@@ -43,10 +43,34 @@ proyecto Mundial 2026 IA Predictor.
 15. Otros agentes especialistas re-validan si bloquearon o pidieron cambios.
 16. Usar `skills/spec-closeout.md` antes del PR.
 17. Ejecutar Grill re-check antes del PR cuando aplique.
-18. Usar `skills/pr-prep.md` para preparar el cuerpo del PR.
-19. Usar `skills/commit.md` para crear commits estándar cuando haya cambios listos.
-20. Owner revisa preview de Vercel.
-21. Merge a `main` solo con aprobación.
+18. Ejecutar `pnpm spec:check`.
+19. Usar `skills/pr-prep.md` para preparar el cuerpo del PR.
+20. Usar `skills/commit.md` para crear commits estándar cuando haya cambios listos.
+21. Owner revisa preview de Vercel.
+22. Merge a `main` solo con aprobación.
+
+## Estados SDD
+
+- `pending`: existe la spec, no se ha empezado.
+- `active`: implementación en curso.
+- `blocked`: falta una decisión, dato, API, diseño o contrato.
+- `in_review`: implementación lista, esperando gates, PR o revisión humana.
+- `completed`: cerrado y validado.
+- `deferred`: aplazado conscientemente.
+- `historical`: contexto histórico, no arquitectura vigente.
+
+## Matriz de gates
+
+| Tipo de cambio | Gates obligatorios |
+| --- | --- |
+| UI/copy visual | Design, QA, Code Quality, Reviewer |
+| Modelo/probabilidades | Analyst, Grill, QA, Code Quality, Reviewer |
+| API/runtime/env/cache | Data Contract, Grill, Security, QA, Reviewer |
+| Datos JSON/precompute | Analyst si cambia modelo, QA, Code Quality, Reviewer |
+| Security/CSP/auth | Security, QA, Reviewer |
+| Docs/specs only | Spec Review, `pnpm spec:check`, Reviewer opcional |
+| Fix producto | Spec Review, Grill si aplica, QA, Code Quality, Reviewer |
+| Decisión arquitectónica | ADR, Spec Review, Reviewer |
 
 ## Skills
 

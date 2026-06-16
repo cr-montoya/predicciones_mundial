@@ -13,9 +13,20 @@
 - Estado de la spec:
   - [ ] pending
   - [ ] active
+  - [ ] blocked
+  - [ ] in_review
   - [ ] completed
+  - [ ] deferred
   - [ ] historical / no aplica
+- [ ] Metadata de la spec actualizada o no aplica
 - [ ] `specs/README.md` actualizado o no aplica
+
+## SDD
+
+- [ ] Gates aplicables revisados según matriz de `CLAUDE.md`
+- [ ] `pnpm spec:check` ejecutado
+- [ ] ADR enlazado o no aplica
+- [ ] Desviaciones de la spec documentadas o no aplica
 
 ## Resumen
 
@@ -70,6 +81,7 @@
 - [ ] `pnpm tsc --noEmit`
 - [ ] `pnpm test`
 - [ ] `pnpm build`
+- [ ] `pnpm spec:check`
 - [ ] Otro:
 
 ## Harness / arquitectura

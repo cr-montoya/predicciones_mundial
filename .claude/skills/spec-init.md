@@ -36,11 +36,31 @@ specs/<spec-slug>/
 3. Create missing files only if they do not exist.
 4. If files exist, preserve useful content and normalize structure without deleting context.
 5. Update `specs/README.md` in the same change.
-6. Mark the new spec status as `pending` unless the user explicitly says it is already active or completed.
+6. Mark the new spec status as `pending` unless the user explicitly says it is already `active`, `blocked`, `in_review`, `completed`, `deferred`, or `historical`.
+7. Include YAML metadata at the top of every new `requirements.md`.
 
 ## `requirements.md` template
 
 ```md
+---
+status: pending
+phase:
+owner: cristian
+branch:
+pr:
+preview:
+gates:
+  spec_review: pending
+  grill: pending
+  analyst: not_applicable
+  design: not_applicable
+  data_contract: not_applicable
+  security: not_applicable
+  qa: pending
+  code_quality: pending
+  reviewer: pending
+---
+
 # <Spec Title> — Requirements
 
 ## Status
@@ -123,6 +143,8 @@ pending
 
 - [ ] Requirements are satisfied.
 - [ ] Design constraints are followed.
+- [ ] Applicable gates from `CLAUDE.md` were run or documented as not applicable.
+- [ ] `pnpm spec:check` passes.
 - [ ] Tests/checks were run or explicitly documented as skipped.
 - [ ] `specs/README.md` is updated.
 - [ ] PR template references this spec.
@@ -134,3 +156,6 @@ pending
 - Design must name the harness layer that owns the change.
 - Tasks must be small enough to review in a PR.
 - Specs must not hide unknowns; document blockers and assumptions directly.
+- New specs must include YAML metadata.
+- Valid statuses: `pending`, `active`, `blocked`, `in_review`, `completed`, `deferred`, `historical`.
+- Valid gate states: `pending`, `passed`, `failed`, `blocked`, `not_applicable`.

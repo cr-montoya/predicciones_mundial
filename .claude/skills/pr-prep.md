@@ -26,6 +26,9 @@ You prepare a PR using the project template and the actual diff. Do not invent c
 - The PR must include Grill initial/re-check status when applicable.
 - The PR must include Vercel preview review status for UI, runtime, route, ISR, or data changes.
 - The PR must include rollback notes for production-sensitive changes.
+- The PR must include `pnpm spec:check` result.
+- The PR must state which gate-matrix row applies.
+- The PR must link an ADR when runtime, data source, storage, model math, cache, auth, or external provider changed.
 - Do not claim owner approval.
 - Do not claim preview validation unless the preview was actually inspected.
 
@@ -47,10 +50,12 @@ You prepare a PR using the project template and the actual diff. Do not invent c
 - [ ] `pnpm tsc --noEmit`
 - [ ] `pnpm test`
 - [ ] `pnpm build`
+- [ ] `pnpm spec:check`
 - [ ] Vercel preview reviewed
 
 ## Gates
 
+- Gate matrix row:
 - Grill initial:
 - Grill re-check:
 - Analyst:

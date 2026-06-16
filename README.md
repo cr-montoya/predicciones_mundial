@@ -53,6 +53,7 @@ pnpm dev
 pnpm test
 pnpm tsc --noEmit
 pnpm build
+pnpm spec:check
 pnpm precompute
 pnpm refresh-fixtures
 pnpm refresh
@@ -63,6 +64,7 @@ Notas:
 - `pnpm precompute` regenera la predicción de torneo.
 - `pnpm refresh-fixtures` actualiza fixtures/cache local.
 - `pnpm refresh` pertenece al flujo histórico/local de refresh.
+- `pnpm spec:check` valida estructura e índice de specs.
 - Para producción, el runtime vigente es Vercel ISR.
 
 ## Arquitectura
@@ -186,6 +188,7 @@ Checklist de deploy/PR:
 - `pnpm tsc --noEmit`
 - `pnpm test`
 - `pnpm build`
+- `pnpm spec:check`
 - Spec enlazada
 - `specs/README.md` actualizado si aplica
 - PR template completo
