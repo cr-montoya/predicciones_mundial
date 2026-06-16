@@ -188,10 +188,9 @@ La app migró a **Vercel ISR**:
 - Navegación: fix de nav visible ya mergeado.
 
 ### Estado resumido del roadmap
-- **Completadas**: Fases 0-14.
-- **Infra fixes completados o en flujo de PR**: nav visible, migración a Vercel ISR, CSP/env vars para Vercel.
-- **Siguiente fase de producto**: Fase 15 — Español LATAM y glosario de mercados.
-- **Después**: Fase 16 — Goleadores y mercados extendidos por partido.
+- **Completadas**: Fases 0-16.
+- **Siguiente fase de producto**: Fase 17 — Probabilidades implícitas de casas de apuestas.
+- **Después**: Fase 18 — Datos de jugadores enriquecidos (lineups + lesiones).
 
 ### Índice de specs por fase
 - Fase 0: `specs/phase-00-setup/`
@@ -211,6 +210,8 @@ La app migró a **Vercel ISR**:
 - Fase 14: `specs/phase-14-sistema-visual-design/`
 - Fase 15: `specs/phase-15-espanol-glosario/`
 - Fase 16: `specs/phase-16-goleadores-mercados/`
+- Fase 17: `specs/phase-17-odds-implicitas/`
+- Fase 18: `specs/phase-18-jugadores-lineups/`
 
 ### Fase 12 — Datos históricos enriquecidos
 - **Estado**: Completada.
@@ -265,7 +266,7 @@ La app migró a **Vercel ISR**:
 - **Verificación**: No quedan strings críticos en inglés, el glosario cubre todos los mercados visibles, `pnpm test` y `pnpm build` pasan.
 
 ### Fase 16 — Goleadores y mercados extendidos por partido
-- **Estado**: Pendiente.
+- **Estado**: Completada (PR #7).
 - **Spec**: `specs/phase-16-goleadores-mercados/`.
 - **Problema**: La experiencia de partido todavía está corta para contenido: goleadores necesita más datos y hay mercados limitados más allá de tarjetas/corners.
 - **Objetivo**: Enriquecer la página de detalle con predicciones de goleadores y más mercados derivados del modelo, manteniendo Vercel ISR y sin exponer llamadas/API keys al cliente.
@@ -290,6 +291,39 @@ La app migró a **Vercel ISR**:
 - **Flujo harness**: Analyst define mercados y fórmulas → Design define jerarquía visual de mercados → Developer implementa skills/models/agents/UI → QA valida invariantes y build estático → Reviewer → Security.
 - **Verificación**: Tests de nuevos modelos, fixture detail renderiza con y sin data de jugadores, `pnpm precompute`, `pnpm refresh-fixtures`, `pnpm test` y `pnpm build` pasan.
 
+
+### Fase 17 — Probabilidades implícitas de casas de apuestas
+- **Estado**: Pendiente.
+- **Spec**: `specs/phase-17-odds-implicitas/`.
+- **Problema**: El modelo propio genera probabilidades pero el usuario no tiene contexto de si son altas o bajas respecto al mercado. La comparación con las casas de apuestas es el hook viral más fuerte: "dónde discrepa la IA".
+- **Objetivo**: Integrar probabilidades implícitas de bookmakers vía The Odds API (free tier: 500 req/mes) y mostrar junto a cada mercado el diferencial entre el modelo y el mercado.
+- **Fuente**: [The Odds API](https://the-odds-api.com/) — free tier con fixture odds de las casas principales (Bet365, Pinnacle, etc.). Cubre 1X2 y over/under 2.5 como mínimo.
+- **Arquitectura**:
+  - Agent nuevo `lib/agents/odds-loader.ts`: llama The Odds API, normaliza odds a probabilidades implícitas (1/odd, con ajuste de overround) y guarda en `lib/data/odds-cache.json`.
+  - Las odds son datos semi-estáticos (cambian poco salvo cerca del partido): cache ISR con `revalidate = 3600` es suficiente.
+  - `lib/model/skills/value-calc.ts`: skill pura que recibe probabilidad del modelo y probabilidad implícita y devuelve el diferencial y un label (`VALOR+`, `VALOR-`, `NEUTRO`).
+  - UI: columna o badge secundario en `ProbabilityBar` o `MarketSection` mostrando la odd implícita y el diferencial.
+- **Framing obligatorio**: Las probabilidades implícitas aparecen como referencia informativa, no como recomendación. El disclaimer de entretenimiento se mantiene prominente. El copy usa "mercado estima" o "consenso de bookmakers", nunca "apuesta a".
+- **Alcance MVP**: Mercados 1X2 y O/U 2.5 por partido (los de mayor cobertura en The Odds API free). Los demás mercados se pueden agregar en una fase futura si hay interés.
+- **Flujo harness**: Analyst define fórmula de conversión odd→probabilidad y ajuste de overround → Design define cómo mostrar el diferencial en la UI (badge, columna, color) → Developer implementa agent + skill + UI → QA valida conversiones y edge cases (odd = 1.01, odd = 100) → Reviewer → Security (API key server-side, nunca al cliente).
+- **Verificación**: Odds implícitas suman ~1 antes del ajuste de overround; después del ajuste suman exactamente 1. Diferencial en rango [-1, 1]. `pnpm test` y `pnpm build` pasan.
+
+### Fase 18 — Datos de jugadores enriquecidos (lineups + lesiones)
+- **Estado**: Pendiente.
+- **Spec**: `specs/phase-18-jugadores-lineups/`.
+- **Problema**: Los mercados de goleadores tienen confianza `low` porque usan tasas históricas sin saber si el jugador juega. Un titular diferente puede cambiar completamente la distribución.
+- **Objetivo**: Incorporar lineups confirmados (disponibles ~1h antes del partido) y datos de lesiones/suspensiones para elevar la confianza de los mercados de goleadores.
+- **Fuente**: API-Football — endpoints `fixtures/lineups` y `injuries`. Ya usamos API-Football para fixtures; no agrega nueva dependencia.
+- **Arquitectura**:
+  - Agent `lib/agents/lineups-loader.ts`: llama `fixtures/lineups` cuando el partido está a menos de 2h. Si no hay lineup, retorna `null` y el modelo usa el fallback histórico.
+  - Los lineups se guardan en `lib/data/lineups-cache.json` indexado por fixtureId.
+  - `lib/model/scorers.ts` recibe el lineup como input opcional: si viene, filtra solo los titulares confirmados y recalcula probabilidades con `starterProbability = 1.0`; si no, usa la tasa histórica con `starterProbability = 0.8` (asume 80% de probabilidad de jugar).
+  - Confidence: si hay lineup confirmado → `medium`; sin lineup → `low` (como hoy).
+- **Refresh near-kickoff**: El ISR de 1h (`revalidate = 3600`) no es suficiente para datos que cambian 1h antes del partido. Opciones: (a) Vercel On-Demand Revalidation desde un webhook o cron externo, (b) botón "Actualizar lineups" en la UI que dispara un Server Action. Para MVP se usa el Server Action manual.
+- **Lesiones y suspensiones**: Si el jugador aparece en el endpoint de `injuries` como duda o baja, `starterProbability` baja a 0.2 o 0.0. Esto mejora la precisión sin requerir datos de alineación confirmada.
+- **UI**: En la sección GOLEADORES, el badge `DATOS LIMITADOS` desaparece cuando hay lineup confirmado. Se muestra un indicador pequeño "Alineación confirmada" con timestamp.
+- **Flujo harness**: Analyst redefine contrato de `scorers.ts` con `starterProbability` como input → Developer agrega agent + actualiza skill + UI → QA valida casos: lineup completo, sin lineup, jugador lesionado → Reviewer → Security (API key server-side).
+- **Verificación**: Con lineup confirmado, probabilidades de goleadores suman correctamente y la suma de `anytime_scorer` por equipo no supera 1. Tests para los tres estados (lineup, no lineup, lesionado). `pnpm test` y `pnpm build` pasan.
 
 ---
 
@@ -323,9 +357,8 @@ Como `main` está conectado a producción en Vercel, no se trabaja directo sobre
 - `main` representa producción y debe estar siempre desplegable.
 - Cada fase se implementa en una rama desde `main` actualizada.
 - Nombres sugeridos:
-  - `phase/14-design-system`
-  - `phase/15-spanish-market-info`
-  - `phase/16-scorers-extended-markets`
+  - `phase/17-odds-implicitas`
+  - `phase/18-jugadores-lineups`
   - `fix/<descripcion-corta>` para arreglos pequeños.
 - Las ramas deben ser chicas y durar poco: idealmente una fase o un sub-entregable claro.
 - Si una fase crece demasiado, se divide en PRs verticales que no rompan producción.
