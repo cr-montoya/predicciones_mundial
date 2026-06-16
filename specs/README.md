@@ -86,8 +86,8 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | 17 | `phase-17-odds-implicitas` | completed |
 | 18 | `phase-18-jugadores-lineups` | pending |
 | 19 | `phase-19-picks` | completed |
-| 20 | `phase-20-accuracy` | in_review |
-| 21 | `phase-21-bracket` | pending |
+| 20 | `phase-20-accuracy` | completed |
+| 21 | `phase-21-bracket` | in_review |
 | 22 | `phase-22-mis-picks` | pending |
 | 23 | `phase-23-share-card` | pending |
 | 24 | `phase-24-team-page` | pending |

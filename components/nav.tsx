@@ -7,6 +7,7 @@ const TABS = [
   { label: 'Hoy', href: '/' },
   { label: 'Grupos', href: '/groups' },
   { label: 'Partidos', href: '/fixtures' },
+  { label: 'Bracket', href: '/bracket' },
 ]
 
 export function Nav() {
