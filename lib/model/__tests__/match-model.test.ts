@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { computeMatchOutputs, type MatchInput } from '@/lib/model/match-model'
 import { sanityCheck, type Team, type Fixture } from '@/lib/types'
+import { buildScoreMatrix } from '@/lib/model/skills/score-matrix'
+import { deriveTeamTotal, deriveWinToNil } from '@/lib/model/skills/derive-markets'
 
 // Datos sinteticos, sin DB, sin imports externos
 const strongTeam: Team = {
@@ -99,5 +101,87 @@ describe('computeMatchOutputs', () => {
     for (const output of outputs) {
       expect(validLevels.has(output.confidence)).toBe(true)
     }
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Fase 16: 7 nuevos mercados team totals + win_to_nil
+// ---------------------------------------------------------------------------
+
+describe('computeMatchOutputs — Fase 16: count y sanity de nuevos mercados', () => {
+  const outputs = computeMatchOutputs(input)
+
+  const NEW_MARKETS = [
+    'home_team_goals_0_5',
+    'home_team_goals_1_5',
+    'home_team_goals_2_5',
+    'away_team_goals_0_5',
+    'away_team_goals_1_5',
+    'away_team_goals_2_5',
+    'win_to_nil',
+  ] as const
+
+  it('el total de outputs es 20 (13 pre-existentes + 7 nuevos)', () => {
+    expect(outputs.length).toBe(20)
+  })
+
+  it('los 7 nuevos mercados estan presentes en el output', () => {
+    const markets = new Set(outputs.map(o => o.market))
+    for (const m of NEW_MARKETS) {
+      expect(markets.has(m)).toBe(true)
+    }
+  })
+
+  it('sanityCheck no lanza para los 6 mercados de team totals', () => {
+    const teamTotalMarkets = NEW_MARKETS.filter(m => m !== 'win_to_nil')
+    for (const market of teamTotalMarkets) {
+      const output = outputs.find(o => o.market === market)
+      expect(output).toBeDefined()
+      expect(() => sanityCheck(output!)).not.toThrow()
+    }
+  })
+
+  it('win_to_nil: home y away estan en [0, 1] y no suman 1', () => {
+    const winNil = outputs.find(o => o.market === 'win_to_nil')
+    expect(winNil).toBeDefined()
+    const { home, away } = winNil!.probabilities
+    expect(home).toBeGreaterThanOrEqual(0)
+    expect(home).toBeLessThanOrEqual(1)
+    expect(away).toBeGreaterThanOrEqual(0)
+    expect(away).toBeLessThanOrEqual(1)
+    expect(Math.abs(home + away - 1.0)).toBeGreaterThan(0.01)
+  })
+
+  it('todos los nuevos outputs tienen confidence valido', () => {
+    const validLevels = new Set(['high', 'medium', 'low'])
+    for (const market of NEW_MARKETS) {
+      const output = outputs.find(o => o.market === market)
+      expect(output).toBeDefined()
+      expect(validLevels.has(output!.confidence)).toBe(true)
+    }
+  })
+})
+
+describe('computeMatchOutputs — Fase 16: confidence rules de team total', () => {
+  it('home team goals 0.5: confidence high cuando lambdaHome=3.0 (p(over) muy alto)', () => {
+    // Con lambdaHome=3.0 el equipo local anota en casi todos los partidos
+    const matrix = buildScoreMatrix(3.0, 1.0)
+    const { over } = deriveTeamTotal(matrix, 'home', 0.5)
+    // Verificar que el over supera el umbral de 0.70 que activa 'high'
+    expect(over).toBeGreaterThanOrEqual(0.70)
+  })
+
+  it('away team goals 0.5: confidence high cuando lambdaAway=3.0', () => {
+    const matrix = buildScoreMatrix(1.0, 3.0)
+    const { over } = deriveTeamTotal(matrix, 'away', 0.5)
+    expect(over).toBeGreaterThanOrEqual(0.70)
+  })
+
+  it('win_to_nil: confidence low cuando lambdas iguales y moderados (1.35, 1.35)', () => {
+    const matrix = buildScoreMatrix(1.35, 1.35)
+    const winNilProbs = deriveWinToNil(matrix)
+    const pMax = Math.max(winNilProbs.home, winNilProbs.away)
+    // Con equipos iguales y moderados, pMax debe ser < 0.30 (umbral de 'medium')
+    expect(pMax).toBeLessThan(0.30)
   })
 })

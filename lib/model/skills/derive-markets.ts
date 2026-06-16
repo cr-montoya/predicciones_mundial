@@ -62,3 +62,39 @@ export function deriveCleanSheet(matrix: number[][]): { home: number; away: numb
   }
   return { home, away }
 }
+
+export function deriveTeamTotal(
+  matrix: number[][],
+  side: 'home' | 'away',
+  line: number
+): Record<string, number> {
+  const threshold = Math.ceil(line)
+  let over = 0
+  if (side === 'home') {
+    for (let i = threshold; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[i].length; j++) {
+        over += matrix[i][j]
+      }
+    }
+  } else {
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = threshold; j < matrix[i].length; j++) {
+        over += matrix[i][j]
+      }
+    }
+  }
+  return { over, under: 1 - over }
+}
+
+export function deriveWinToNil(
+  matrix: number[][]
+): { home: number; away: number } {
+  let home = 0, away = 0
+  for (let i = 1; i < matrix.length; i++) {
+    home += matrix[i][0]
+  }
+  for (let j = 1; j < matrix[0].length; j++) {
+    away += matrix[0][j]
+  }
+  return { home, away }
+}

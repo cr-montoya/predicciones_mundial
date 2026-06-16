@@ -13,6 +13,13 @@ export type MarketType =
   | 'clean_sheet'
   | 'tournament_winner'
   | 'golden_boot'
+  | 'home_team_goals_0_5'
+  | 'home_team_goals_1_5'
+  | 'home_team_goals_2_5'
+  | 'away_team_goals_0_5'
+  | 'away_team_goals_1_5'
+  | 'away_team_goals_2_5'
+  | 'win_to_nil'
 
 export interface ModelOutput {
   market: MarketType

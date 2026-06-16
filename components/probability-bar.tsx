@@ -1,9 +1,10 @@
 interface ProbabilityBarProps {
   label: string
   probability: number
+  size?: 'sm' | 'md'
 }
 
-export function ProbabilityBar({ label, probability }: ProbabilityBarProps) {
+export function ProbabilityBar({ label, probability, size = 'md' }: ProbabilityBarProps) {
   const pct = Math.round(probability * 100)
   const fillColor = probability > 0.5 ? 'var(--accent)' : 'var(--muted)'
 
@@ -14,7 +15,7 @@ export function ProbabilityBar({ label, probability }: ProbabilityBarProps) {
           {label}
         </span>
         <span
-          className="text-2xl font-bold tabular-nums"
+          className={size === 'sm' ? 'text-lg font-bold tabular-nums' : 'text-2xl font-bold tabular-nums'}
           style={{ color: 'var(--accent)' }}
         >
           {pct}%
