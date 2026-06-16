@@ -1,8 +1,8 @@
 ---
-status: pending
+status: in_review
 phase:
 owner: cristian
-branch:
+branch: fix/better-sqlite3-devdep
 pr:
 preview:
 gates:
@@ -12,7 +12,7 @@ gates:
   design: not_applicable
   data_contract: not_applicable
   security: not_applicable
-  qa: pending
+  qa: passed
   code_quality: not_applicable
   reviewer: pending
 ---
@@ -21,7 +21,7 @@ gates:
 
 ## Status
 
-pending
+in_review
 
 ## Objective
 
