@@ -83,15 +83,17 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | 14 | `phase-14-sistema-visual-design` | completed |
 | 15 | `phase-15-espanol-glosario` | completed |
 | 16 | `phase-16-goleadores-mercados` | completed |
-| 17 | `phase-17-odds-implicitas` | in_review |
+| 17 | `phase-17-odds-implicitas` | completed |
 | 18 | `phase-18-jugadores-lineups` | pending |
 
 ## Specs de infraestructura/fixes
 
-| Spec | Uso |
-| --- | --- |
-| `auto-refresh-workers` | Exploración histórica de Cloudflare Workers/next-on-pages. |
-| `vercel-env-csp` | Diagnóstico y fixes de env vars/CSP en Vercel. |
+| Spec | Estado | Descripción |
+| --- | --- | --- |
+| `auto-refresh-workers` | historical | Exploración histórica de Cloudflare Workers/next-on-pages. |
+| `vercel-env-csp` | historical | Diagnóstico y fixes de env vars/CSP en Vercel. |
+| `fix-better-sqlite3-devdep` | pending | Mover better-sqlite3 a devDependencies para eliminar warning DEP0176 en Vercel. |
+| `fix-goleadores-empty-state` | pending | Ocultar sección GOLEADORES cuando no hay jugadores elegibles. |
 
 ## Reglas
 
