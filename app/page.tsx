@@ -4,12 +4,13 @@ import { Hero } from '@/components/hero'
 import { FixturesToday } from '@/components/fixtures-today'
 import { TopMarkets } from '@/components/top-markets'
 import { Candidates } from '@/components/candidates'
+import { AccuracyWidget } from '@/components/accuracy-widget'
 
 export const revalidate = 3600
 
 export default async function HomePage() {
   const data = await loadHomeData()
-  const { fixturesToday, rankedMarkets, allRankedMarkets, tournamentWinner, goldenBoot, fallbackLabel, generatedAt } = data
+  const { fixturesToday, rankedMarkets, allRankedMarkets, tournamentWinner, goldenBoot, fallbackLabel, generatedAt, accuracyStats } = data
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
@@ -35,6 +36,7 @@ export default async function HomePage() {
       )}
 
       <Candidates winner={tournamentWinner} boot={goldenBoot} />
+      <AccuracyWidget stats={accuracyStats} />
     </div>
   )
 }

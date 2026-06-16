@@ -7,6 +7,12 @@ import { todayBoundsUtc, buildLabel, type HomeData, type FixtureWithTeams } from
 import { fetchFixtures } from '@/lib/data/api-football'
 import tournamentPrediction from '@/lib/data/tournament-prediction.json'
 import { squadsByTeamId } from '@/lib/data/squads'
+import {
+  deriveActualOutcome,
+  topModelCall,
+  computeAccuracyStats,
+  type MatchAccuracyRecord,
+} from '@/lib/skills/accuracy'
 
 const WC_LEAGUE_ID = 1
 const WC_SEASON = 2026
@@ -25,17 +31,10 @@ export function teamMap(teams: Team[]): Map<number, Team> {
   return new Map(teams.map(t => [t.id, t]))
 }
 
-/**
- * Predicciones de un partido calculadas al vuelo (Poisson, barato). matchStats
- * y jugadores van vacios: los mercados de disciplina/corners usan defaults y la
- * bota de oro se proyecta a nivel torneo, no por partido.
- */
-export function computePredictionsForFixture(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
-  if (fixture.status === 'finished') return []
+function predictionsForTeams(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
   const home = byId.get(fixture.homeTeamId)
   const away = byId.get(fixture.awayTeamId)
   if (!home || !away) return []
-
   return computeMatchOutputs({
     fixture,
     home,
@@ -44,6 +43,24 @@ export function computePredictionsForFixture(fixture: Fixture, byId: Map<number,
     homePlayers: squadsByTeamId[fixture.homeTeamId] ?? [],
     awayPlayers: squadsByTeamId[fixture.awayTeamId] ?? [],
   })
+}
+
+/**
+ * Predicciones de un partido calculadas al vuelo (Poisson, barato). Solo para
+ * partidos no finalizados — los finalizados usan computePredictionsRetroactive.
+ */
+export function computePredictionsForFixture(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
+  if (fixture.status === 'finished') return []
+  return predictionsForTeams(fixture, byId)
+}
+
+/**
+ * Misma lógica que computePredictionsForFixture pero sin la guarda de 'finished'.
+ * Usar en fixture detail de partidos finalizados para mostrar la predicción
+ * retroactiva del modelo.
+ */
+export function computePredictionsRetroactive(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
+  return predictionsForTeams(fixture, byId)
 }
 
 export async function loadHomeData(): Promise<HomeData> {
@@ -117,6 +134,29 @@ export async function loadHomeData(): Promise<HomeData> {
 
   const { winner, goldenBoot } = tournamentOutputs()
 
+  const accuracyRecords: MatchAccuracyRecord[] = []
+  for (const f of allFixtures) {
+    if (f.status !== 'finished' || f.homeGoals === null || f.awayGoals === null) continue
+    const preds = computePredictionsRetroactive(f, byId)
+    const r1x2 = preds.find(p => p.market === 'result_1x2')
+    if (!r1x2) continue
+    const call = topModelCall(r1x2.probabilities)
+    if (!call) continue
+    const actual = deriveActualOutcome(f.homeGoals, f.awayGoals)
+    accuracyRecords.push({
+      fixtureId: f.id,
+      homeTeam: byId.get(f.homeTeamId)?.name ?? '',
+      awayTeam: byId.get(f.awayTeamId)?.name ?? '',
+      modelCall: call,
+      actual,
+      correct: call === actual,
+      homeProb: r1x2.probabilities['home'] ?? 0,
+      drawProb: r1x2.probabilities['draw'] ?? 0,
+      awayProb: r1x2.probabilities['away'] ?? 0,
+    })
+  }
+  const accuracyStats = computeAccuracyStats(accuracyRecords)
+
   return {
     fixturesToday,
     rankedMarkets,
@@ -125,5 +165,6 @@ export async function loadHomeData(): Promise<HomeData> {
     goldenBoot,
     fallbackLabel,
     generatedAt: new Date().toISOString(),
+    accuracyStats,
   }
 }
