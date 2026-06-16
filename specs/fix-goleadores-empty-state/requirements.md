@@ -1,18 +1,18 @@
 ---
-status: pending
+status: in_review
 phase:
 owner: cristian
-branch:
+branch: fix/goleadores-empty-state
 pr:
 preview:
 gates:
   spec_review: not_applicable
   grill: not_applicable
   analyst: not_applicable
-  design: pending
+  design: passed
   data_contract: not_applicable
   security: not_applicable
-  qa: pending
+  qa: passed
   code_quality: not_applicable
   reviewer: pending
 ---
@@ -21,7 +21,7 @@ gates:
 
 ## Status
 
-pending
+in_review
 
 ## Objective
 

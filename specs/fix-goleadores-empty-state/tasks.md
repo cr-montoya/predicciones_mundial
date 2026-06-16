@@ -2,20 +2,20 @@
 
 ## Status
 
-pending
+in_review
 
 ## Tasks
 
-- [ ] 1. Verificar en `app/fixtures/[id]/page.tsx` si el CollapsibleSection de GOLEADORES
+- [x] 1. Verificar en `app/fixtures/[id]/page.tsx` si el CollapsibleSection de GOLEADORES
         ya tiene guarda `scorerMarkets.length > 0`. Si no, agregarla.
-- [ ] 2. Filtrar `scorerMarkets` para excluir mercados con `probabilities` vacío.
-- [ ] 3. Correr `pnpm tsc --noEmit` y `pnpm test`.
+- [x] 2. Filtrar `scorerMarkets` para excluir mercados con `probabilities` vacío.
+- [x] 3. Correr `pnpm tsc --noEmit` y `pnpm test`.
 - [ ] 4. Verificar en preview de Vercel que la sección desaparece en partidos sin lineup.
 
 ## Definition of Done
 
-- [ ] Sección GOLEADORES no aparece cuando no hay jugadores elegibles.
-- [ ] `pnpm tsc --noEmit` y `pnpm test` pasan.
-- [ ] `pnpm spec:check` pasa.
-- [ ] `specs/README.md` actualizado.
+- [x] Sección GOLEADORES no aparece cuando no hay jugadores elegibles.
+- [x] `pnpm tsc --noEmit` y `pnpm test` pasan.
+- [x] `pnpm spec:check` pasa.
+- [x] `specs/README.md` actualizado.
 - [ ] Preview de Vercel confirmado por owner.
