@@ -12,6 +12,7 @@
     "seed:user": "tsx scripts/seed-user.ts",
     "refresh": "tsx scripts/refresh.ts",
     "precompute": "tsx scripts/precompute-tournament.ts",
+    "precompute:squads": "tsx scripts/precompute-squads.ts",
     "refresh-fixtures": "tsx scripts/refresh-fixtures.ts"
   },
   "dependencies": {
