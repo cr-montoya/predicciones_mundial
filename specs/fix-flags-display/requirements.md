@@ -1,5 +1,5 @@
 ---
-status: active
+status: completed
 phase:
 owner: cristian
 branch: fix/flags-display
@@ -12,16 +12,16 @@ gates:
   design: passed
   data_contract: not_applicable
   security: not_applicable
-  qa: pending
+  qa: passed
   code_quality: not_applicable
-  reviewer: pending
+  reviewer: passed
 ---
 
 # fix-flags-display — Requirements
 
 ## Status
 
-active
+completed
 
 ## Objective
 

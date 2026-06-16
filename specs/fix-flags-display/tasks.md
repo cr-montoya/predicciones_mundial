@@ -2,7 +2,7 @@
 
 ## Status
 
-active
+completed
 
 ## Tasks
 
@@ -10,7 +10,7 @@ active
 - [x] 2. Corregir entrada "Cape Verde" → "Cape Verde Islands" en `lib/utils/flags.ts`.
 - [x] 3. Agregar "Jordan" → 🇯🇴 y "Congo DR" → 🇨🇩 a `lib/utils/flags.ts`.
 - [x] 4. Verificar que `pnpm tsc --noEmit` y `pnpm test` pasan.
-- [ ] 5. Commit.
+- [x] 5. Commit.
 
 ## Definition of Done
 

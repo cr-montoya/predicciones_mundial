@@ -94,7 +94,7 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | `vercel-env-csp` | historical | Diagnóstico y fixes de env vars/CSP en Vercel. |
 | `fix-better-sqlite3-devdep` | completed | Agregar serverExternalPackages para eliminar warning DEP0176 en Vercel. |
 | `fix-goleadores-empty-state` | completed | Mostrar goleadores reales con squads estáticos de los 32 equipos. |
-| `fix-flags-display` | active | Quitar banderas de jugadores en Bota de Oro; agregar banderas faltantes (Cape Verde Islands, Jordan, Congo DR). |
+| `fix-flags-display` | completed | Quitar banderas de jugadores en Bota de Oro; agregar banderas faltantes (Cape Verde Islands, Jordan, Congo DR). |
 
 ## Reglas
 
