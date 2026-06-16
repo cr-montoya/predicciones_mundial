@@ -35,12 +35,13 @@ function FixtureHeader({
   status: string
 }) {
   const hasScore = homeGoals !== null && awayGoals !== null
-  const date = new Date(kickoff).toLocaleString('es-ES', {
+  const date = new Date(kickoff).toLocaleString('es-CO', {
     weekday: 'short',
     day: '2-digit',
     month: 'short',
     hour: '2-digit',
     minute: '2-digit',
+    timeZone: 'America/Bogota',
   })
 
   return (
