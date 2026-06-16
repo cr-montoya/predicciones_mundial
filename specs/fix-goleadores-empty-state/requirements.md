@@ -1,9 +1,9 @@
 ---
-status: active
+status: completed
 phase:
 owner: cristian
 branch: fix/goleadores-empty-state
-pr:
+pr: "10"
 preview:
 gates:
   spec_review: not_applicable
@@ -12,16 +12,16 @@ gates:
   design: passed
   data_contract: not_applicable
   security: not_applicable
-  qa: pending
+  qa: passed
   code_quality: not_applicable
-  reviewer: pending
+  reviewer: passed
 ---
 
 # fix-goleadores-empty-state — Requirements
 
 ## Status
 
-active
+completed
 
 ## Objective
 

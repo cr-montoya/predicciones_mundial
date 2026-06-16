@@ -2,7 +2,7 @@
 
 ## Status
 
-active
+completed
 
 ## Tasks
 
@@ -12,13 +12,13 @@ active
 - [x] 4. Fix `translateOutcome` en `markets-es.ts` para renderizar solo el nombre sin el prefijo de ID.
 - [x] 5. Correr `pnpm tsc --noEmit` y `pnpm test`.
 - [x] 6. Verificar en local que la sección GOLEADORES muestra jugadores con probabilidades.
-- [ ] 7. Verificar en preview de Vercel.
+- [x] 7. Verificar en preview de Vercel — PR #10 desplegado y revisado.
 
 ## Definition of Done
 
-- [ ] Sección GOLEADORES muestra jugadores reales con probabilidades en todos los partidos no finalizados.
-- [ ] Badge "DATOS LIMITADOS" sigue presente.
-- [ ] `pnpm tsc --noEmit` y `pnpm test` pasan.
-- [ ] `pnpm spec:check` pasa.
-- [ ] `specs/README.md` actualizado.
-- [ ] Preview de Vercel confirmado por owner.
+- [x] Sección GOLEADORES muestra jugadores reales con probabilidades en todos los partidos no finalizados.
+- [x] Badge "DATOS LIMITADOS" sigue presente.
+- [x] `pnpm tsc --noEmit` y `pnpm test` pasan.
+- [x] `pnpm spec:check` pasa.
+- [x] `specs/README.md` actualizado.
+- [x] Preview de Vercel confirmado por owner.
