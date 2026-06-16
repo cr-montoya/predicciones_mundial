@@ -17,23 +17,23 @@
 
 ## 3. Developer
 
-- [ ] Crear rama desde `main`: `phase/17-odds-implicitas`.
-- [ ] Agregar env var server-side para The Odds API.
-- [ ] Crear `lib/agents/odds-loader.ts`.
-- [ ] Crear normalizador de odds/equipos.
-- [ ] Crear `lib/model/skills/value-calc.ts`.
-- [ ] Integrar odds en mercados 1X2 y O/U 2.5.
-- [ ] Actualizar UI con diferencial.
-- [ ] Agregar fallback cuando no hay odds.
+- [x] Crear rama desde `main`: `phase/17-odds-implicitas`.
+- [x] Agregar env var server-side para The Odds API.
+- [x] Crear `lib/agents/odds-loader.ts`.
+- [x] Crear normalizador de odds/equipos.
+- [x] Crear `lib/model/skills/value-calc.ts`.
+- [x] Integrar odds en mercados 1X2 y O/U 2.5.
+- [x] Actualizar UI con diferencial.
+- [x] Agregar fallback cuando no hay odds.
 
 ## 4. QA
 
-- [ ] `pnpm tsc --noEmit`.
-- [ ] `pnpm test`.
-- [ ] `pnpm build`.
-- [ ] Tests de overround.
-- [ ] Tests de diff en rango [-1, 1].
-- [ ] Tests de labels.
+- [x] `pnpm tsc --noEmit`.
+- [x] `pnpm test`.
+- [x] `pnpm build`.
+- [x] Tests de overround.
+- [x] Tests de diff en rango [-1, 1].
+- [x] Tests de labels.
 - [ ] Verificar fixture con odds.
 - [ ] Verificar fixture sin odds.
 

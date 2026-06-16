@@ -1,5 +1,5 @@
 ---
-status: pending
+status: active
 phase: 17
 owner: cristian
 branch: phase/17-odds-implicitas
