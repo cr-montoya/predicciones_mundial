@@ -7,10 +7,9 @@ import type { ModelOutput, MarketType } from '@/lib/types'
 
 export const revalidate = 3600
 
-export async function generateStaticParams() {
-  const fixtures = await loadFixtures()
-  return fixtures.map((f) => ({ id: String(f.id) }))
-}
+// Sin generateStaticParams: las rutas se generan on-demand (ISR) en el primer
+// request y se cachean 1h. Evita 72+ llamadas a la API en build time, lo que
+// agotaría el rate limit y causaría mezcla de IDs reales y mock entre páginas.
 
 interface PageProps {
   params: Promise<{ id: string }>
