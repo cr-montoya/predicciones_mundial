@@ -1,20 +1,20 @@
 ---
-status: active
+status: in_review
 phase: 17
 owner: cristian
 branch: phase/17-odds-implicitas
 pr:
 preview:
 gates:
-  spec_review: pending
-  grill: pending
+  spec_review: passed
+  grill: passed
   analyst: passed
   design: passed
   data_contract: passed
-  security: pending
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  security: passed
+  qa: passed
+  code_quality: passed
+  reviewer: passed
 ---
 
 # Requirements: Fase 17 - Probabilidades implicitas de casas de apuestas
