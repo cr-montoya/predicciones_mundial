@@ -1,9 +1,9 @@
 ---
-status: in_review
+status: completed
 phase:
 owner: cristian
 branch: fix/better-sqlite3-devdep
-pr:
+pr: "9"
 preview:
 gates:
   spec_review: not_applicable
@@ -14,14 +14,14 @@ gates:
   security: not_applicable
   qa: passed
   code_quality: not_applicable
-  reviewer: pending
+  reviewer: passed
 ---
 
 # fix-better-sqlite3-devdep — Requirements
 
 ## Status
 
-in_review
+completed
 
 ## Objective
 
