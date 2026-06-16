@@ -35,9 +35,9 @@ function formatTime(utc: string): string {
 }
 
 function statusStyles(status: string): { bg: string; color: string; label: string } {
-  if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: 'LIVE' }
-  if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: 'FT' }
-  return { bg: 'rgba(255,219,0,0.06)', color: '#6b6d75', label: 'SCH' }
+  if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: 'EN VIVO' }
+  if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: 'FIN' }
+  return { bg: 'rgba(255,219,0,0.06)', color: '#6b6d75', label: 'PROG' }
 }
 
 export default async function FixturesPage() {
@@ -121,7 +121,7 @@ export default async function FixturesPage() {
                       fontWeight: 700,
                       color: hasScore ? '#FFDB00' : '#6b6d75',
                     }}>
-                      {hasScore ? `${fx.homeGoals} - ${fx.awayGoals}` : 'VS'}
+                      {hasScore ? `${fx.homeGoals} - ${fx.awayGoals}` : 'vs'}
                     </span>
                   </div>
 

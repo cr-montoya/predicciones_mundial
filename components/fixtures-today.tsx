@@ -16,9 +16,9 @@ function formatTime(utc: string): string {
 }
 
 function statusStyles(status: string): { bg: string; color: string; label: string } {
-  if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: 'LIVE' }
-  if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: 'FT' }
-  return { bg: 'rgba(255,219,0,0.08)', color: '#D4A843', label: 'SCH' }
+  if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: 'EN VIVO' }
+  if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: 'FIN' }
+  return { bg: 'rgba(255,219,0,0.08)', color: '#D4A843', label: 'PROG' }
 }
 
 export function FixturesToday({ fixtures }: FixturesTodayProps) {

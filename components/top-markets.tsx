@@ -2,29 +2,15 @@
 
 import { useState } from 'react'
 import type { RankedMarket } from '@/lib/skills/rank-markets'
+import { MARKET_SHORT_LABELS, translateOutcome } from '@/lib/content/markets-es'
 
 interface TopMarketsProps {
   initial: RankedMarket[]
   all: RankedMarket[]
 }
 
-const MARKET_LABELS: Record<string, string> = {
-  result_1x2: '1X2',
-  double_chance: 'Doble Oportunidad',
-  over_under_goals_1_5: 'O/U 1.5',
-  over_under_goals_2_5: 'O/U 2.5',
-  over_under_goals_3_5: 'O/U 3.5',
-  btts: 'Ambos Marcan',
-  exact_score: 'Marcador Exacto',
-  first_scorer: '1er Goleador',
-  anytime_scorer: 'Goleador',
-  total_cards: 'Tarjetas',
-  corners: 'Corners',
-  clean_sheet: 'Portería 0',
-}
-
 function marketLabel(market: string): string {
-  return MARKET_LABELS[market] ?? market.replace(/_/g, ' ')
+  return MARKET_SHORT_LABELS[market] ?? market.replace(/_/g, ' ')
 }
 
 function confidenceBadge(level: string): { label: string; bg: string; color: string } {
@@ -66,6 +52,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
         {markets.map((m, i) => {
           const badge = confidenceBadge(m.confidence)
           const pct = Math.round(m.topProbability * 100)
+          const outcomeLabel = translateOutcome(m.market, m.topOutcome)
           return (
             <div
               key={`${m.fixtureId}-${m.market}`}
@@ -100,7 +87,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
                     {badge.label}
                   </span>
                   <span style={{ fontSize: 12, color: '#6b6d75' }}>
-                    {m.topOutcome}
+                    {outcomeLabel}
                   </span>
                 </div>
               </div>
@@ -132,7 +119,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
               letterSpacing: '0.5px',
             }}
           >
-            {expanded ? '← Ocultar arriesgados' : 'Ver mercados arriesgados →'}
+            {expanded ? '← Ocultar' : 'Ver más mercados →'}
           </button>
         </div>
       )}
