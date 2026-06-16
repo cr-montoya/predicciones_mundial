@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { loadFixtures, computePredictionsForFixture, teamMap } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { computeLambdas } from '@/lib/model/lambda'
+import { loadOdds, type OddsResult } from '@/lib/agents/odds-loader'
+import { calcValue, type ValueOutput } from '@/lib/model/skills/value-calc'
 import { MarketSection } from '@/components/market-section'
 import { CollapsibleSection } from '@/components/collapsible-section'
 import { TeamTotalsSection } from '@/components/team-totals-section'
@@ -16,6 +18,43 @@ interface PageProps {
 
 function pickMarkets(predictions: ModelOutput[], types: MarketType[]): ModelOutput[] {
   return types.flatMap((t) => predictions.filter((p) => p.market === t))
+}
+
+function buildValueMap(
+  predictions: ModelOutput[],
+  odds: OddsResult,
+): Record<string, Record<string, ValueOutput>> | null {
+  if (!odds) return null
+
+  const result: Record<string, Record<string, ValueOutput>> = {}
+
+  const r1x2 = predictions.find((p) => p.market === 'result_1x2')
+  if (r1x2) {
+    const outcomes: Record<string, number | null> = { home: odds.homeWin, draw: odds.draw, away: odds.awayWin }
+    const values: Record<string, ValueOutput> = {}
+    for (const [key, marketProb] of Object.entries(outcomes)) {
+      const modelProb = r1x2.probabilities[key]
+      if (marketProb !== null && modelProb !== undefined) {
+        values[key] = calcValue({ modelProbability: modelProb, marketProbability: marketProb })
+      }
+    }
+    if (Object.keys(values).length > 0) result['result_1x2'] = values
+  }
+
+  const ou25 = predictions.find((p) => p.market === 'over_under_goals_2_5')
+  if (ou25) {
+    const outcomes: Record<string, number | null> = { over: odds.over25, under: odds.under25 }
+    const values: Record<string, ValueOutput> = {}
+    for (const [key, marketProb] of Object.entries(outcomes)) {
+      const modelProb = ou25.probabilities[key]
+      if (marketProb !== null && modelProb !== undefined) {
+        values[key] = calcValue({ modelProbability: modelProb, marketProbability: marketProb })
+      }
+    }
+    if (Object.keys(values).length > 0) result['over_under_goals_2_5'] = values
+  }
+
+  return Object.keys(result).length > 0 ? result : null
 }
 
 interface FixtureHeaderProps {
@@ -75,7 +114,12 @@ export default async function FixturePage({ params }: PageProps) {
   const homeName = home?.name ?? `Equipo ${fixture.homeTeamId}`
   const awayName = away?.name ?? `Equipo ${fixture.awayTeamId}`
 
-  const lambdas = home && away ? computeLambdas(home, away) : { lambdaHome: 1.2, lambdaAway: 1.0 }
+  const [lambdas, odds] = await Promise.all([
+    Promise.resolve(home && away ? computeLambdas(home, away) : { lambdaHome: 1.2, lambdaAway: 1.0 }),
+    loadOdds(homeName, awayName),
+  ])
+
+  const valueMap = buildValueMap(predictions, odds)
 
   const resultMarkets = pickMarkets(predictions, ['result_1x2', 'double_chance'])
   const combinedMarkets = pickMarkets(predictions, ['win_to_nil'])
@@ -126,7 +170,7 @@ export default async function FixturePage({ params }: PageProps) {
       ) : (
         <div className="flex flex-col gap-12">
           <FadeIn delay={0.1}>
-            <MarketSection title="RESULTADO" markets={resultMarkets} />
+            <MarketSection title="RESULTADO" markets={resultMarkets} odds={odds} valueMap={valueMap} />
           </FadeIn>
 
           {combinedMarkets.length > 0 && (
@@ -139,7 +183,7 @@ export default async function FixturePage({ params }: PageProps) {
 
           <FadeIn delay={0.15}>
             <CollapsibleSection title="GOLES" count={goalMarkets.length} defaultOpen={true}>
-              <MarketSection title="GOLES" markets={goalMarkets} topN={5} noHeader={true} />
+              <MarketSection title="GOLES" markets={goalMarkets} topN={5} noHeader={true} odds={odds} valueMap={valueMap} />
             </CollapsibleSection>
           </FadeIn>
 
