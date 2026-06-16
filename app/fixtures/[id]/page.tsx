@@ -1,15 +1,14 @@
 import { notFound } from 'next/navigation'
 import { loadFixtures, computePredictionsForFixture, teamMap } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
+import { computeLambdas } from '@/lib/model/lambda'
 import { MarketSection } from '@/components/market-section'
+import { CollapsibleSection } from '@/components/collapsible-section'
+import { TeamTotalsSection } from '@/components/team-totals-section'
 import { FadeIn } from '@/components/fade-in'
 import type { ModelOutput, MarketType } from '@/lib/types'
 
 export const revalidate = 3600
-
-// Sin generateStaticParams: las rutas se generan on-demand (ISR) en el primer
-// request y se cachean 1h. Evita 72+ llamadas a la API en build time, lo que
-// agotaría el rate limit y causaría mezcla de IDs reales y mock entre páginas.
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -19,21 +18,16 @@ function pickMarkets(predictions: ModelOutput[], types: MarketType[]): ModelOutp
   return types.flatMap((t) => predictions.filter((p) => p.market === t))
 }
 
-function FixtureHeader({
-  home,
-  away,
-  kickoff,
-  homeGoals,
-  awayGoals,
-  status,
-}: {
+interface FixtureHeaderProps {
   home: string
   away: string
   kickoff: string
   homeGoals: number | null
   awayGoals: number | null
   status: string
-}) {
+}
+
+function FixtureHeader({ home, away, kickoff, homeGoals, awayGoals, status }: FixtureHeaderProps) {
   const hasScore = homeGoals !== null && awayGoals !== null
   const date = new Date(kickoff).toLocaleString('es-CO', {
     weekday: 'short',
@@ -78,7 +72,13 @@ export default async function FixturePage({ params }: PageProps) {
   const away = byId.get(fixture.awayTeamId)
   const predictions = computePredictionsForFixture(fixture, byId)
 
+  const homeName = home?.name ?? `Equipo ${fixture.homeTeamId}`
+  const awayName = away?.name ?? `Equipo ${fixture.awayTeamId}`
+
+  const lambdas = home && away ? computeLambdas(home, away) : { lambdaHome: 1.2, lambdaAway: 1.0 }
+
   const resultMarkets = pickMarkets(predictions, ['result_1x2', 'double_chance'])
+  const combinedMarkets = pickMarkets(predictions, ['win_to_nil'])
   const goalMarkets = pickMarkets(predictions, [
     'over_under_goals_1_5',
     'over_under_goals_2_5',
@@ -86,11 +86,20 @@ export default async function FixturePage({ params }: PageProps) {
     'btts',
     'exact_score',
   ])
+  const homeTeamMarkets = pickMarkets(predictions, [
+    'home_team_goals_0_5',
+    'home_team_goals_1_5',
+    'home_team_goals_2_5',
+  ])
+  const awayTeamMarkets = pickMarkets(predictions, [
+    'away_team_goals_0_5',
+    'away_team_goals_1_5',
+    'away_team_goals_2_5',
+  ])
   const disciplineMarkets = pickMarkets(predictions, ['total_cards', 'corners'])
-  const scorerMarkets = pickMarkets(predictions, ['first_scorer', 'anytime_scorer'])
+  const scorerMarkets = pickMarkets(predictions, ['anytime_scorer', 'first_scorer'])
 
-  const homeName = home?.name ?? `Equipo ${fixture.homeTeamId}`
-  const awayName = away?.name ?? `Equipo ${fixture.awayTeamId}`
+  const scorerConfidence = scorerMarkets[0]?.confidence
 
   return (
     <div className="flex flex-col gap-10 px-6 py-12 max-w-4xl mx-auto w-full">
@@ -119,14 +128,68 @@ export default async function FixturePage({ params }: PageProps) {
           <FadeIn delay={0.1}>
             <MarketSection title="RESULTADO" markets={resultMarkets} />
           </FadeIn>
+
+          {combinedMarkets.length > 0 && (
+            <FadeIn delay={0.13}>
+              <CollapsibleSection title="COMBINADOS" count={combinedMarkets.length} defaultOpen={true}>
+                <MarketSection title="COMBINADOS" markets={combinedMarkets} noHeader={true} />
+              </CollapsibleSection>
+            </FadeIn>
+          )}
+
           <FadeIn delay={0.15}>
-            <MarketSection title="GOLES" markets={goalMarkets} topN={5} />
+            <CollapsibleSection title="GOLES" count={goalMarkets.length} defaultOpen={true}>
+              <MarketSection title="GOLES" markets={goalMarkets} topN={5} noHeader={true} />
+            </CollapsibleSection>
           </FadeIn>
+
+          {(homeTeamMarkets.length > 0 || awayTeamMarkets.length > 0) && (
+            <FadeIn delay={0.18}>
+              <CollapsibleSection title="GOLES POR EQUIPO" defaultOpen={false}>
+                <TeamTotalsSection
+                  homeMarkets={homeTeamMarkets}
+                  awayMarkets={awayTeamMarkets}
+                  homeName={homeName}
+                  awayName={awayName}
+                  lambdaHome={lambdas.lambdaHome}
+                  lambdaAway={lambdas.lambdaAway}
+                />
+              </CollapsibleSection>
+            </FadeIn>
+          )}
+
           <FadeIn delay={0.2}>
-            <MarketSection title="DISCIPLINA" markets={disciplineMarkets} />
+            <CollapsibleSection title="DISCIPLINA" count={disciplineMarkets.length} defaultOpen={false}>
+              <MarketSection title="DISCIPLINA" markets={disciplineMarkets} noHeader={true} />
+            </CollapsibleSection>
           </FadeIn>
+
           <FadeIn delay={0.25}>
-            <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} />
+            <CollapsibleSection
+              title="GOLEADORES"
+              count={scorerMarkets.length}
+              defaultOpen={true}
+            >
+              {scorerConfidence === 'low' && (
+                <div className="flex flex-col gap-2 mb-4">
+                  <span
+                    className="inline-block text-xs font-bold tracking-wider px-2 py-0.5 w-fit"
+                    style={{
+                      background: 'rgba(255,165,0,0.12)',
+                      color: '#FFA500',
+                      borderRadius: 3,
+                      letterSpacing: 1,
+                    }}
+                  >
+                    DATOS LIMITADOS
+                  </span>
+                  <p className="text-xs" style={{ color: 'var(--muted)' }}>
+                    Sin alineación confirmada. Proyección por minutos históricos.
+                  </p>
+                </div>
+              )}
+              <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} noHeader={true} />
+            </CollapsibleSection>
           </FadeIn>
         </div>
       )}

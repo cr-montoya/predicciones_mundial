@@ -10,6 +10,8 @@ import {
   deriveBtts,
   deriveExactScore,
   deriveCleanSheet,
+  deriveTeamTotal,
+  deriveWinToNil,
 } from '@/lib/model/skills/derive-markets'
 import { buildCardsOutputs, buildCornersOutput } from '@/lib/model/cards-corners'
 import { buildScorerOutputs } from '@/lib/model/scorers'
@@ -29,6 +31,25 @@ function makeOutput(
   confidence: ModelOutput['confidence']
 ): ModelOutput {
   return { market, probabilities, confidence, modelVersion: '1.0', computedAt: new Date().toISOString() }
+}
+
+function teamTotalConfidence(
+  matrix: number[][],
+  side: 'home' | 'away',
+  line: number
+): ModelOutput['confidence'] {
+  const probs = deriveTeamTotal(matrix, side, line)
+  const pMax = Math.max(probs.over, probs.under)
+  if (pMax >= 0.70) return 'high'
+  if (pMax >= 0.58) return 'medium'
+  return 'low'
+}
+
+function winToNilConfidence(probs: { home: number; away: number }): ModelOutput['confidence'] {
+  const pMax = Math.max(probs.home, probs.away)
+  if (pMax >= 0.45) return 'high'
+  if (pMax >= 0.30) return 'medium'
+  return 'low'
 }
 
 export function computeMatchOutputs(input: MatchInput): ModelOutput[] {
@@ -72,6 +93,28 @@ export function computeMatchOutputs(input: MatchInput): ModelOutput[] {
     lambdaAway
   )
 
+  const homeGoals05 = makeOutput('home_team_goals_0_5', deriveTeamTotal(matrix, 'home', 0.5), teamTotalConfidence(matrix, 'home', 0.5))
+  sanityCheck(homeGoals05)
+
+  const homeGoals15 = makeOutput('home_team_goals_1_5', deriveTeamTotal(matrix, 'home', 1.5), teamTotalConfidence(matrix, 'home', 1.5))
+  sanityCheck(homeGoals15)
+
+  const homeGoals25 = makeOutput('home_team_goals_2_5', deriveTeamTotal(matrix, 'home', 2.5), teamTotalConfidence(matrix, 'home', 2.5))
+  sanityCheck(homeGoals25)
+
+  const awayGoals05 = makeOutput('away_team_goals_0_5', deriveTeamTotal(matrix, 'away', 0.5), teamTotalConfidence(matrix, 'away', 0.5))
+  sanityCheck(awayGoals05)
+
+  const awayGoals15 = makeOutput('away_team_goals_1_5', deriveTeamTotal(matrix, 'away', 1.5), teamTotalConfidence(matrix, 'away', 1.5))
+  sanityCheck(awayGoals15)
+
+  const awayGoals25 = makeOutput('away_team_goals_2_5', deriveTeamTotal(matrix, 'away', 2.5), teamTotalConfidence(matrix, 'away', 2.5))
+  sanityCheck(awayGoals25)
+
+  const winToNilProbs = deriveWinToNil(matrix)
+  const winToNil = makeOutput('win_to_nil', winToNilProbs, winToNilConfidence(winToNilProbs))
+  sanityCheckProbabilityBounds(winToNil)
+
   return [
     result1x2,
     doubleChance,
@@ -81,6 +124,13 @@ export function computeMatchOutputs(input: MatchInput): ModelOutput[] {
     btts,
     exactScore,
     cleanSheet,
+    homeGoals05,
+    homeGoals15,
+    homeGoals25,
+    awayGoals05,
+    awayGoals15,
+    awayGoals25,
+    winToNil,
     ...cardsOutputs,
     cornersOutput,
     anytimeScorer,

@@ -97,6 +97,54 @@ export const MARKET_COPY: Record<string, MarketCopy> = {
     example: 'Un jugador con 12% proyecta que en 12 de 100 simulaciones fue el máximo goleador.',
     confidenceNote: 'Alta incertidumbre: depende de que el equipo llegue lejos y el jugador esté activo.',
   },
+  home_team_goals_0_5: {
+    label: 'Goles local más/menos 0.5',
+    shortLabel: 'Local O/U 0.5',
+    description: 'Probabilidad de que el equipo local anote más de 0.5 goles (es decir, al menos 1). Derivado del xG del equipo local.',
+    example: 'Más de 0.5 al 78% indica que el local tiene alta probabilidad de marcar al menos un gol.',
+    confidenceNote: 'Depende directamente de la fuerza ofensiva del equipo local.',
+  },
+  home_team_goals_1_5: {
+    label: 'Goles local más/menos 1.5',
+    shortLabel: 'Local O/U 1.5',
+    description: 'Probabilidad de que el equipo local anote más de 1.5 goles (al menos 2). Derivado del xG del equipo local.',
+    example: 'Más de 1.5 al 45% indica un escenario con posibilidades equilibradas de que el local marque 2 o más.',
+    confidenceNote: 'Depende directamente de la fuerza ofensiva del equipo local.',
+  },
+  home_team_goals_2_5: {
+    label: 'Goles local más/menos 2.5',
+    shortLabel: 'Local O/U 2.5',
+    description: 'Probabilidad de que el equipo local anote más de 2.5 goles (al menos 3). Derivado del xG del equipo local.',
+    example: 'Más de 2.5 al 22% indica que el local necesita una actuación muy ofensiva para superar esta línea.',
+    confidenceNote: 'Depende directamente de la fuerza ofensiva del equipo local.',
+  },
+  away_team_goals_0_5: {
+    label: 'Goles visitante más/menos 0.5',
+    shortLabel: 'Visitante O/U 0.5',
+    description: 'Probabilidad de que el equipo visitante anote más de 0.5 goles (al menos 1). Derivado del xG del equipo visitante.',
+    example: 'Más de 0.5 al 65% indica que el visitante tiene probabilidad alta de marcar al menos un gol.',
+    confidenceNote: 'Depende directamente de la fuerza ofensiva del equipo visitante.',
+  },
+  away_team_goals_1_5: {
+    label: 'Goles visitante más/menos 1.5',
+    shortLabel: 'Visitante O/U 1.5',
+    description: 'Probabilidad de que el equipo visitante anote más de 1.5 goles (al menos 2). Derivado del xG del equipo visitante.',
+    example: 'Más de 1.5 al 35% indica que el visitante tiene probabilidad moderada de marcar 2 o más goles.',
+    confidenceNote: 'Depende directamente de la fuerza ofensiva del equipo visitante.',
+  },
+  away_team_goals_2_5: {
+    label: 'Goles visitante más/menos 2.5',
+    shortLabel: 'Visitante O/U 2.5',
+    description: 'Probabilidad de que el equipo visitante anote más de 2.5 goles (al menos 3). Derivado del xG del equipo visitante.',
+    example: 'Más de 2.5 al 15% indica que es poco probable que el visitante marque 3 o más en este partido.',
+    confidenceNote: 'Depende directamente de la fuerza ofensiva del equipo visitante.',
+  },
+  win_to_nil: {
+    label: 'Gana a cero',
+    shortLabel: 'Gana a cero',
+    description: 'Probabilidad de que un equipo gane el partido sin recibir goles. Los valores de local y visitante son eventos independientes y no suman 1.',
+    example: 'Local gana a cero al 28% y visitante a cero al 18% no suman 100%: ambos excluyen el empate y son escenarios distintos.',
+  },
 }
 
 export function getMarketCopy(market: string): MarketCopy | undefined {
