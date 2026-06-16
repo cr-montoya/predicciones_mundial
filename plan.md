@@ -1,24 +1,23 @@
 # PLAN.md — Mundial 2026 IA Predictor
 
-Plan de implementación por fases. Objetivo: app en Next.js desplegada en Cloudflare Pages, con datos precomputados y mercados estadísticos por partido, lista para grabar contenido y mejorar visualmente sin romper el harness.
+Plan de implementación por fases. Objetivo: app en Next.js desplegada en Vercel con ISR, datos frescos de fixtures en runtime, mercados estadísticos por partido y una UI lista para contenido sin romper el harness.
 
 ---
 
 ## Arquitectura general
 
 ```
-Refresh manual/local
-   -> Ingesta de data (API-Football / football-data fallback)
-   -> Normaliza fixtures y stats
-   -> Corre modelo de predicción y Monte Carlo
-   -> Genera JSON cacheados en lib/data/
-   -> Next.js exporta sitio estático a out/
-   -> Cloudflare Pages sirve la app desplegada
+Request a Vercel
+   -> ISR / revalidate cada 1 hora
+   -> live-loader trae fixtures desde football-data.org en runtime server
+   -> Normaliza fixtures y calcula mercados baratos con Poisson
+   -> Lee Monte Carlo precomputado desde lib/data/tournament-prediction.json
+   -> UI Next.js renderiza home, fixtures, grupos y detalle de partido
 ```
 
-Estado actual: la app ya está desplegada en **Cloudflare Pages** como sitio estático. No hay DB ni refresh en runtime de producción: tú actualizas datos con scripts locales (`pnpm refresh-fixtures`, `pnpm precompute`, `pnpm build`) y Cloudflare sirve el contenido generado en `out/`.
+Estado actual: la app está en **Vercel ISR**. Ya no usa `output: 'export'` ni `out/` como fuente de producción. Los fixtures se cargan en runtime server con `FOOTBALLDATA_KEY`, y Vercel cachea/regenera las páginas con `revalidate = 3600`. El torneo sigue precomputado porque Monte Carlo es más costoso y se actualiza con `pnpm precompute` cuando haga falta.
 
-Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), presentación (UI). El modelo nunca llama a la API; solo consume fixtures/stats normalizados o JSON precomputados. Esto lo hace testeable, rápido y compatible con Cloudflare Pages.
+Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), presentación (UI). El modelo nunca llama a la API; solo consume fixtures/stats normalizados o JSON precomputados. Esto lo hace testeable, rápido y compatible con ISR.
 
 ---
 
@@ -118,6 +117,7 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
 - **Verificación**: `pnpm refresh` y validar DB que France > 1.0 attack_strength.
 
 ### Fase 9 — Migración a Cloudflare D1
+- **Estado**: Histórica / sustituida por Vercel ISR. Se conserva como contexto de decisiones anteriores, no como arquitectura vigente.
 - **Objetivo**: Deploy serverless en Cloudflare Pages (free tier: 500 builds/mes, capacidad ilimitada de lectura/escritura en D1).
 - **Arquitectura Hybrid**:
   - **Local dev**: `better-sqlite3` (como ahora). `pnpm dev`, `pnpm refresh` funcionan sin cambios.
@@ -139,6 +139,7 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
   - Security audita: no hay `fs` imports en código de Pages, secrets en `wrangler.toml` (no hardcodeados).
 
 ### Fase 10 — Hardening & Autenticación
+- **Estado**: Completada como base de seguridad/autenticación. Revisar compatibilidad con Vercel en fixes específicos cuando toque middleware, CSP o env vars.
 - **Objetivo**: Asegurar la app antes del deploy con rate limiting, autenticación simple y security headers.
 - **Rate Limiting** (por IP):
   - Implementar middleware que limita requests por IP (ej. 30 req/min para endpoints de refresh).
@@ -162,45 +163,71 @@ Tres capas separadas: ingesta (data cruda), modelo (math puro, sin red), present
   - Tests de autenticación: login correcto, JWT expirado rechazado, rate limit activa.
   - `pnpm test` pasa 169+ tests.
 
-### Fase 11 — Deploy a Cloudflare Pages
-- **Preparación**:
-  - Crear cuenta Cloudflare (free).
-  - Crear D1 database en dashboard de Cloudflare.
-  - Crear proyecto en Pages y conectar repo de GitHub.
-- **Build & Deploy**:
-  - Pages automáticamente detecta Next.js.
-  - Environment variables (RAPIDAPI_KEY, etc.) configuradas en Settings → Environment variables.
-  - D1 binding inyectado via `wrangler.toml`.
+### Fase 11 — Deploy inicial y cambio de plataforma
+- **Estado**: Completada. Producción actual en Vercel ISR.
+- **Estado histórico**: primero se exploró Cloudflare Pages/D1/export estático.
+- **Estado actual**: producción vive en **Vercel** con Next.js runtime e ISR.
+- **Build & Deploy actual**:
+  - `next.config.ts` sin `output: 'export'`.
+  - `package.json` usa `pnpm build` → `next build`.
+  - Vercel maneja previews por PR y production desde `main`.
+  - Variables server-side en Vercel: `FOOTBALLDATA_KEY` y cualquier fallback requerido.
 - **Post-Deploy**:
-  - Verificar que `/` carga correctamente (home page).
-  - Ejecutar refresh manual desde dashboard (si aplica).
-  - Revisar logs en Cloudflare Analytics.
-- **Ventajas**:
-  - Zero cold starts gracias a Cloudflare edge.
-  - D1 escala automáticamente sin costo adicional en free tier.
-  - HTTPS automático con certificados Cloudflare.
-  - Global CDN para assets estáticos (JS, CSS).
+  - Verificar que `/`, `/fixtures`, `/fixtures/[id]` y `/groups` cargan en preview.
+  - Verificar Vercel Runtime Logs cuando hay errores de env/API.
+  - Revisar consola del navegador para CSP, pero diagnosticar secrets solo desde logs server-side.
 
-### Arquitectura actual (post-Fase 11)
-La app migró a **export estático en Cloudflare Pages** — sin D1, sin refresh button, sin DB en runtime:
-- Fixtures: `lib/data/fixtures-cache.json` (pre-generado con `pnpm refresh-fixtures`, commitear para actualizar).
-- Fuerzas de equipos: `lib/data/historical-stats.json` + skill `computeStrengths` (puro, sin red).
+### Arquitectura actual (post-Fase 14 + fixes de infraestructura)
+La app migró a **Vercel ISR**:
+- Fixtures: `lib/agents/live-loader.ts` llama `fetchFixtures()` en runtime server.
+- Cache: páginas con `export const revalidate = 3600`.
+- Fuerzas de equipos: `lib/data/historical-stats.json` + skill `computeStrengths`.
 - Torneo: `lib/data/tournament-prediction.json` (Monte Carlo pre-generado con `pnpm precompute`).
-- Build Cloudflare Pages: `pnpm build` → `out/` (static export). Sin red en build ni runtime.
+- Build Vercel: `pnpm build` → `next build`. Sin `out/` ni `scripts/make-out.mjs`.
+- CSP: ajustado para Next/Vercel y revisado en fixes posteriores.
+- Navegación: fix de nav visible ya mergeado.
+
+### Estado resumido del roadmap
+- **Completadas**: Fases 0-14.
+- **Infra fixes completados o en flujo de PR**: nav visible, migración a Vercel ISR, CSP/env vars para Vercel.
+- **Siguiente fase de producto**: Fase 15 — Español LATAM y glosario de mercados.
+- **Después**: Fase 16 — Goleadores y mercados extendidos por partido.
+
+### Índice de specs por fase
+- Fase 0: `specs/phase-00-setup/`
+- Fase 1: `specs/phase-01-ingesta-db/`
+- Fase 2: `specs/phase-02-modelo-prediccion/`
+- Fase 3: `specs/phase-03-refresh-demanda/`
+- Fase 4: `specs/phase-04-dashboard/`
+- Fase 5: `specs/phase-05-pulido/`
+- Fase 6: `specs/phase-06-diseno-broadcast/`
+- Fase 7: `specs/phase-07-branding-world-cup/`
+- Fase 8: `specs/phase-08-datos-historicos/`
+- Fase 9: `specs/phase-09-cloudflare-d1/` (histórica)
+- Fase 10: `specs/phase-10-hardening-auth/`
+- Fase 11: `specs/phase-11-deploy-vercel-isr/`
+- Fase 12: `specs/phase-12-datos-historicos-enriquecidos/`
+- Fase 13: `specs/phase-13-predicciones-fixture-cards/`
+- Fase 14: `specs/phase-14-sistema-visual-design/`
+- Fase 15: `specs/phase-15-espanol-glosario/`
+- Fase 16: `specs/phase-16-goleadores-mercados/`
 
 ### Fase 12 — Datos históricos enriquecidos
+- **Estado**: Completada.
 - **Problema**: `historical-stats.json` tiene datos limitados (WC2022, Copa América 2024, EURO 2024). El modelo Poisson no distingue bien entre selecciones de fuerza similar.
 - **Objetivo**: Añadir más competiciones (Eliminatorias 2022/2026, Nations League, Confederaciones) y más años (2020-2026). Evaluar ponderación por tipo de competición (torneo > eliminatorias > amistoso).
 - **Flujo harness**: Analyst valida fuentes y fórmula de ponderación → Developer enriquece `historical-stats.json` y actualiza `computeStrengths` si cambia el contrato → QA valida coherencia estadística → Reviewer.
 - **Verificación**: France/Spain/Argentina > 10% en campeón, Haití < 1%.
 
 ### Fase 13 — Predicciones explícitas en fixture cards
+- **Estado**: Completada (commit `151d246`).
 - **Problema**: Las cards de partidos en el home solo muestran nombre de equipos y hora. Las predicciones están escondidas en la página de detalle.
 - **Objetivo**: Mostrar en cada card del home el ganador predicho con probabilidad ("España gana · 64%") y los goles esperados ("2.3 goles"). Enlace "VER →" a la página de detalle (ya implementado).
 - **Flujo harness**: Analyst define qué mercado mostrar y formato → Developer modifica `FixtureWithTeams` en `home-types.ts` para incluir predicciones pre-calculadas y actualiza `FixturesToday` → QA → Reviewer.
 
 
 ### Fase 14 — Sistema visual con agente Design
+- **Estado**: Completada (PR #1). Base broadcast con tokens visuales, Outfit y acentos dorados.
 - **Estado base**: La app ya tiene dirección broadcast/datos deportivos, pero ahora el trabajo fuerte será diseño. Antes de tocar UI se crea el agente `.claude/agents/design.md` y se vuelve parte del flujo de harness.
 - **Objetivo**: Migrar la UI a una dirección visual más consistente, pensada para contenido: home, fixture detail, groups, market cards, estados vacíos, modo captura y responsive.
 - **Criterios de diseño**:
@@ -218,6 +245,8 @@ La app migró a **export estático en Cloudflare Pages** — sin D1, sin refresh
 - **Verificación**: `pnpm build`, `pnpm test`, revisión responsive en home y detalle de partido, y Design aprobado sin bloqueantes.
 
 ### Fase 15 — Español LATAM y glosario de mercados
+- **Estado**: Siguiente fase activa.
+- **Spec**: `specs/phase-15-espanol-glosario/`.
 - **Problema**: Hay textos mezclados y algunos mercados pueden ser confusos para usuarios que no conocen apuestas deportivas.
 - **Objetivo**: Traducir toda la experiencia a español latinoamericano, con tono claro de análisis estadístico y sin prometer ganancias. Añadir botones de info para explicar cada tipo de mercado.
 - **Alcance de traducción**:
@@ -236,8 +265,10 @@ La app migró a **export estático en Cloudflare Pages** — sin D1, sin refresh
 - **Verificación**: No quedan strings críticos en inglés, el glosario cubre todos los mercados visibles, `pnpm test` y `pnpm build` pasan.
 
 ### Fase 16 — Goleadores y mercados extendidos por partido
+- **Estado**: Pendiente.
+- **Spec**: `specs/phase-16-goleadores-mercados/`.
 - **Problema**: La experiencia de partido todavía está corta para contenido: goleadores necesita más datos y hay mercados limitados más allá de tarjetas/corners.
-- **Objetivo**: Enriquecer la página de detalle con predicciones de goleadores y más mercados derivados del modelo, manteniendo el sitio estático y sin llamadas runtime en Cloudflare.
+- **Objetivo**: Enriquecer la página de detalle con predicciones de goleadores y más mercados derivados del modelo, manteniendo Vercel ISR y sin exponer llamadas/API keys al cliente.
 - **Mercados candidatos**:
   - Goleador en cualquier momento, primer goleador y equipo del goleador.
   - Total de goles por equipo: local over 0.5/1.5/2.5 y visitante over 0.5/1.5/2.5.
@@ -286,7 +317,7 @@ Si alguno reporta bloqueante: vuelve a Developer para arreglo, y luego se re-val
 
 ## Flujo Git y deploy
 
-Como `main` está conectado a producción en Cloudflare Pages, no se trabaja directo sobre `main` para fases nuevas. El flujo será **trunk based development con ramas cortas**: `main` sigue siendo el trunk estable, y cada fase vive en una rama temporal que se integra rápido mediante PR.
+Como `main` está conectado a producción en Vercel, no se trabaja directo sobre `main` para fases nuevas. El flujo será **trunk based development con ramas cortas**: `main` sigue siendo el trunk estable, y cada fase vive en una rama temporal que se integra rápido mediante PR.
 
 ### Reglas de ramas
 - `main` representa producción y debe estar siempre desplegable.
@@ -304,10 +335,10 @@ Como `main` está conectado a producción en Cloudflare Pages, no se trabaja dir
 2. Ejecutar el flujo de agentes que aplique: Analyst/Design → Developer → QA → Design si hubo UI → Reviewer → Security.
 3. Correr verificación local antes del PR: `pnpm test` y `pnpm build` como mínimo; `pnpm tsc --noEmit` si no queda cubierto por build.
 4. Abrir PR hacia `main` usando `.github/pull_request_template.md`, con resumen, alcance, riesgos, screenshots si hubo UI y comandos ejecutados.
-5. Esperar preview deployment de Cloudflare Pages para probar la rama sin tocar producción.
+5. Esperar preview deployment de Vercel para probar la rama sin tocar producción.
 6. Tú revisas el PR y el preview: funcionamiento, diseño, copy, datos y comportamiento mobile si aplica.
 7. Solo después de tu aprobación se hace merge a `main`.
-8. Cloudflare despliega producción desde `main`; si algo sale mal, rollback desde Cloudflare o revert del PR.
+8. Vercel despliega producción desde `main`; si algo sale mal, rollback desde Vercel o revert del PR.
 
 ### Criterios para merge
 - PR aprobado por ti.
@@ -317,12 +348,12 @@ Como `main` está conectado a producción en Cloudflare Pages, no se trabaja dir
 - Reviewer sin bloqueantes.
 - Security sin críticos.
 - Design aprobado si hubo cambios visuales o de copy.
-- Preview de Cloudflare revisado cuando la fase toque UI, rutas, build o datos estáticos.
+- Preview de Vercel revisado cuando la fase toque UI, rutas, build, ISR o datos.
 
 ### Recomendaciones para proteger producción
 - Activar branch protection en GitHub para `main`: bloquear pushes directos, requerir PR y checks verdes.
-- Mantener Cloudflare Pages desplegando producción solo desde `main`.
-- Usar preview deployments de Cloudflare para todas las ramas/PRs.
+- Mantener Vercel desplegando producción solo desde `main`.
+- Usar preview deployments de Vercel para todas las ramas/PRs.
 - Evitar mezclar refactors grandes con cambios de producto en el mismo PR.
 - Mantener feature flags simples para cambios riesgosos, o dejar rutas/mercados nuevos ocultos hasta que estén aprobados.
 - Para datos precomputados, revisar el diff de JSON cuando cambien probabilidades o fixtures importantes.
@@ -334,6 +365,7 @@ Como `main` está conectado a producción en Cloudflare Pages, no se trabaja dir
 - **Límite API free**: como el refresh es manual y tiene guarda de frescura, tú controlas cada llamada y respetas los 100 req/día. Para data en vivo durante partidos hay que pasar a plan pago.
 - **Calidad de predicciones**: Poisson es sólido para goles, más ruidoso para tarjetas/corners. Mostrar confianza baja en esos mercados.
 - **Legal**: mientras la app solo muestre probabilidades y no reciba dinero, es análisis estadístico.
-- **Cloudflare Pages estático**: el deploy actual no tiene DB ni refresh runtime. Cualquier fase nueva debe mantener build estático o documentar explícitamente por qué necesita volver a D1/Workers.
-- **Cloudflare D1**: queda como opción futura si se reactiva refresh en producción o persistencia runtime; no es parte del flujo actual.
+- **Vercel ISR**: cualquier fase nueva debe preservar `revalidate`, runtime server seguro y variables server-side sin prefijo `NEXT_PUBLIC_`.
+- **Cloudflare**: queda como DNS/CDN externo si se usa, pero no debe inyectar scripts que rompan CSP o Next.js.
+- **D1/Workers**: quedan como opción futura si se decide volver a Cloudflare runtime; no son parte del flujo actual.
 - **Main ligado a producción**: ningún cambio de fase debe entrar directo a `main`; todo pasa por rama, PR, preview y aprobación humana antes del merge.
