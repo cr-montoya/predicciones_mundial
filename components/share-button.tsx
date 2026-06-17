@@ -5,14 +5,14 @@ import { useState } from 'react'
 interface ShareButtonProps {
   title: string
   text: string
-  url: string
+  path: string
 }
 
-export function ShareButton({ title, text, url }: ShareButtonProps) {
+export function ShareButton({ title, text, path }: ShareButtonProps) {
   const [feedback, setFeedback] = useState<string | null>(null)
 
   async function handleShare() {
-    if (typeof navigator === 'undefined') return
+    const url = window.location.origin + path
 
     if (navigator.share) {
       try {

@@ -203,7 +203,7 @@ export default async function FixturePage({ params }: PageProps) {
 
   const scorerConfidence = scorerMarkets[0]?.confidence
 
-  const fixtureUrl = `${APP_URL}/fixtures/${fixture.id}`
+  const fixturePath = `/fixtures/${fixture.id}`
   const shareTitle = `${homeName} vs ${awayName} — Predicción IA`
   const shareText = r1x2Retro
     ? `La IA predijo este partido. ¿Acertó?`
@@ -222,7 +222,7 @@ export default async function FixturePage({ params }: PageProps) {
             status={fixture.status}
           />
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <ShareButton title={shareTitle} text={shareText} url={fixtureUrl} />
+            <ShareButton title={shareTitle} text={shareText} path={fixturePath} />
           </div>
         </div>
       </FadeIn>
