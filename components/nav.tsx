@@ -8,6 +8,7 @@ const TABS = [
   { label: 'Grupos', href: '/groups' },
   { label: 'Partidos', href: '/fixtures' },
   { label: 'Bracket', href: '/bracket' },
+  { label: 'Mis Picks', href: '/mis-picks' },
 ]
 
 export function Nav() {
