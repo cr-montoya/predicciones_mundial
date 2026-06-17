@@ -27,6 +27,11 @@ export async function loadFixtures(): Promise<Fixture[]> {
   return fetchFixtures(WC_LEAGUE_ID, WC_SEASON)
 }
 
+/** Squad de un equipo desde los datos precomputados. */
+export function getSquadForTeam(teamId: number) {
+  return squadsByTeamId[teamId] ?? []
+}
+
 export function teamMap(teams: Team[]): Map<number, Team> {
   return new Map(teams.map(t => [t.id, t]))
 }
