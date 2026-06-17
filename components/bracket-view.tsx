@@ -1,15 +1,12 @@
-import type { Team, ModelOutput } from '@/lib/types'
-import type { BracketRound } from '@/lib/skills/bracket'
+import type { ResolvedMatchup } from './bracket-matchup'
 import { BracketMatchup } from './bracket-matchup'
 
 interface BracketViewProps {
-  rounds: BracketRound[]
-  teamMap: Map<number, Team>
-  predictionMap: Map<number, ModelOutput>
+  matchups: ResolvedMatchup[]
 }
 
-export function BracketView({ rounds, teamMap, predictionMap }: BracketViewProps) {
-  if (rounds.length === 0) {
+export function BracketView({ matchups }: BracketViewProps) {
+  if (matchups.length === 0) {
     return (
       <div style={{
         padding: '48px 24px',
@@ -19,45 +16,48 @@ export function BracketView({ rounds, teamMap, predictionMap }: BracketViewProps
         color: '#6b6d75',
         fontSize: 14,
       }}>
-        Los cruces de eliminatorias se mostrarán cuando finalice la fase de grupos.
+        Los cruces se mostrarán cuando haya partidos jugados.
       </div>
     )
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-      {rounds.map(round => (
-        <section key={round.key}>
-          <div style={{
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: '#6b6d75',
-            marginBottom: 16,
-            paddingBottom: 8,
-            borderBottom: '1px solid rgba(255,255,255,0.04)',
-          }}>
-            {round.label}
-          </div>
+      <section>
+        <div style={{
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: '#6b6d75',
+          marginBottom: 16,
+          paddingBottom: 8,
+          borderBottom: '1px solid rgba(255,255,255,0.04)',
+        }}>
+          Ronda de 32
+        </div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+          gap: 12,
+        }}>
+          {matchups.map(m => (
+            <BracketMatchup key={m.matchId} {...m} />
+          ))}
+        </div>
+      </section>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            gap: 12,
-          }}>
-            {round.fixtures.map(fixture => (
-              <BracketMatchup
-                key={fixture.id}
-                fixture={fixture}
-                homeTeam={teamMap.get(fixture.homeTeamId)}
-                awayTeam={teamMap.get(fixture.awayTeamId)}
-                prediction={predictionMap.get(fixture.id)}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+      <div style={{
+        padding: '20px 24px',
+        border: '1px solid rgba(255,255,255,0.04)',
+        borderRadius: 10,
+        color: '#6b6d75',
+        fontSize: 12,
+        lineHeight: 1.6,
+      }}>
+        Los cruces de Octavos, Cuartos, Semifinales y Final se irán completando conforme avance el torneo.
+        Las probabilidades en cruces <span style={{ color: '#FFDB00', opacity: 0.8 }}>PROYECTADO</span> reflejan las standings actuales de grupos.
+      </div>
     </div>
   )
 }
