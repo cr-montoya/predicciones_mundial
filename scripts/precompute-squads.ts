@@ -58,6 +58,16 @@ interface FdScorersResponse {
   scorers: FdScorer[]
 }
 
+interface FdMatch {
+  status: string
+  homeTeam: { id: number }
+  awayTeam: { id: number }
+}
+
+interface FdMatchesResponse {
+  matches: FdMatch[]
+}
+
 // -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
@@ -102,6 +112,21 @@ async function main(): Promise<void> {
   )
   console.log(`[precompute:squads] ${scorersData.scorers.length} scorers received`)
 
+  console.log('[precompute:squads] fetching WC 2026 matches...')
+  const matchesData = await fdFetch<FdMatchesResponse>(
+    `competitions/WC/matches?season=${WC_SEASON}`
+  )
+  // Count finished matches per canonical team ID
+  const teamMatchesPlayed = new Map<number, number>()
+  for (const match of matchesData.matches) {
+    if (match.status !== 'FINISHED') continue
+    const homeId = FD_TEAM_MAP[match.homeTeam.id]
+    const awayId = FD_TEAM_MAP[match.awayTeam.id]
+    if (homeId) teamMatchesPlayed.set(homeId, (teamMatchesPlayed.get(homeId) ?? 0) + 1)
+    if (awayId) teamMatchesPlayed.set(awayId, (teamMatchesPlayed.get(awayId) ?? 0) + 1)
+  }
+  console.log(`[precompute:squads] ${teamMatchesPlayed.size} teams with finished matches`)
+
   // Build scorer lookup: normalized name → goals (keyed by canonical team id for disambiguation)
   const scorerMap = new Map<string, { goals: number; teamId: number }>()
   for (const s of scorersData.scorers) {
@@ -139,9 +164,10 @@ async function main(): Promise<void> {
       let goalsPerMinute: number
 
       if (scorer && scorer.goals > 0) {
-        // Use actual WC goals as the rate signal
+        // Real rate: goals / (team's finished matches * 90 min)
+        const matchesPlayed = teamMatchesPlayed.get(canonicalTeamId) ?? 3
         goalsScored = scorer.goals
-        minutesPlayed = scorer.goals * 90  // approx 90 min per goal as floor
+        minutesPlayed = matchesPlayed * 90
         goalsPerMinute = goalsScored / minutesPlayed
         matched++
       } else {
