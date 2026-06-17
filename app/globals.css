@@ -26,6 +26,12 @@
 
 html {
   background: var(--bg);
+  min-height: 100%;
+}
+
+html,
+body {
+  min-height: 100dvh;
 }
 
 body {
