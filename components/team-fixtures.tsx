@@ -120,12 +120,12 @@ export function TeamFixtures({ fixtures, teamName }: TeamFixturesProps) {
                     {isHome ? 'vs' : 'en'}
                   </span>
                   {flag && <span style={{ fontSize: 15, flexShrink: 0 }}>{flag}</span>}
-                  <Link href={`/teams/${rivalId}`} onClick={e => e.stopPropagation()} style={{
+                  <span style={{
                     fontSize: 13, fontWeight: 500, color: '#f0ece4',
-                    textDecoration: 'none', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}>
                     {rivalName}
-                  </Link>
+                  </span>
                 </div>
 
                 {fixture.status === 'finished' && score && result ? (
