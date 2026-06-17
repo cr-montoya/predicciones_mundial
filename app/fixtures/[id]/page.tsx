@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { loadFixtures, computePredictionsForFixture, computePredictionsRetroactive, teamMap } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { computeLambdas } from '@/lib/model/lambda'
@@ -10,7 +11,57 @@ import { MarketSection } from '@/components/market-section'
 import { CollapsibleSection } from '@/components/collapsible-section'
 import { TeamTotalsSection } from '@/components/team-totals-section'
 import { FadeIn } from '@/components/fade-in'
+import { ShareButton } from '@/components/share-button'
 import type { ModelOutput, MarketType } from '@/lib/types'
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://predicciones-mundial.vercel.app'
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params
+  const fixtureId = parseInt(id, 10)
+  if (isNaN(fixtureId)) return {}
+
+  const fixtures = await loadFixtures()
+  const fixture = fixtures.find(f => f.id === fixtureId)
+  if (!fixture) return {}
+
+  const byId = teamMap(buildStaticTeams())
+  const home = byId.get(fixture.homeTeamId)
+  const away = byId.get(fixture.awayTeamId)
+  const homeName = home?.name ?? `Equipo ${fixture.homeTeamId}`
+  const awayName = away?.name ?? `Equipo ${fixture.awayTeamId}`
+
+  const predictions = fixture.status === 'finished'
+    ? computePredictionsRetroactive(fixture, byId)
+    : computePredictionsForFixture(fixture, byId)
+  const r1x2 = predictions.find(p => p.market === 'result_1x2')
+
+  let description = `${homeName} vs ${awayName} — Predicción IA`
+  if (r1x2) {
+    const h = Math.round((r1x2.probabilities['home'] ?? 0) * 100)
+    const d = Math.round((r1x2.probabilities['draw'] ?? 0) * 100)
+    const a = Math.round((r1x2.probabilities['away'] ?? 0) * 100)
+    description = `Local ${h}% · Empate ${d}% · Visita ${a}%`
+  }
+
+  const ogImage = `${APP_URL}/og/fixture/${fixtureId}`
+
+  return {
+    title: `${homeName} vs ${awayName} — Mundial 2026 IA Predictor`,
+    description,
+    openGraph: {
+      title: `${homeName} vs ${awayName} — Predicción IA`,
+      description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${homeName} vs ${awayName}` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${homeName} vs ${awayName} — Predicción IA`,
+      description,
+      images: [ogImage],
+    },
+  }
+}
 
 export const revalidate = 3600
 
@@ -152,17 +203,28 @@ export default async function FixturePage({ params }: PageProps) {
 
   const scorerConfidence = scorerMarkets[0]?.confidence
 
+  const fixturePath = `/fixtures/${fixture.id}`
+  const shareTitle = `${homeName} vs ${awayName} — Predicción IA`
+  const shareText = r1x2Retro
+    ? `La IA predijo este partido. ¿Acertó?`
+    : `La IA predice este partido del Mundial 2026. ¿Qué opinas?`
+
   return (
     <div className="flex flex-col gap-10 px-6 py-12 max-w-4xl mx-auto w-full">
       <FadeIn>
-        <FixtureHeader
-          home={homeName}
-          away={awayName}
-          kickoff={fixture.kickoffUtc}
-          homeGoals={fixture.homeGoals}
-          awayGoals={fixture.awayGoals}
-          status={fixture.status}
-        />
+        <div className="flex flex-col gap-4">
+          <FixtureHeader
+            home={homeName}
+            away={awayName}
+            kickoff={fixture.kickoffUtc}
+            homeGoals={fixture.homeGoals}
+            awayGoals={fixture.awayGoals}
+            status={fixture.status}
+          />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <ShareButton title={shareTitle} text={shareText} path={fixturePath} />
+          </div>
+        </div>
       </FadeIn>
 
       <FadeIn delay={0.05}>

@@ -72,11 +72,10 @@ async function handleShare() {
 
 ## Security and Runtime
 
-- Route handler en edge runtime. Sin secrets expuestos — el cómputo de predicciones
-  usa solo datos estáticos (`buildStaticTeams`, `squadsByTeamId`).
-- `loadFixtures()` NO puede usarse en edge runtime (usa `fetch` con env vars).
-  La ruta `/og/fixture/[id]` debe recomputar el fixture desde datos estáticos o
-  hacer su propia llamada acotada al API. **Esto es un riesgo a resolver en design.**
+- Route handler en **Node.js runtime** (sin `export const runtime = 'edge'`).
+  Decisión: edge runtime no puede usar `fetch` con env vars ni `loadFixtures()`.
+  Node.js es consistente con el resto de la app y más simple.
+- Sin secrets expuestos al cliente — `FOOTBALLDATA_KEY` permanece server-side.
 - La imagen es pública (sin auth). Aceptable: es contenido de entretenimiento.
 
 ## Testing Strategy
