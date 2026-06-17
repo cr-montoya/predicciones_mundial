@@ -1,5 +1,5 @@
 ---
-status: in_review
+status: completed
 phase: 24
 owner: cristian
 branch: phase/24-team-page
@@ -21,7 +21,7 @@ gates:
 
 ## Status
 
-pending
+completed
 
 ## Objective
 
