@@ -90,7 +90,7 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | 21 | `phase-21-bracket` | completed |
 | 22 | `phase-22-mis-picks` | completed |
 | 23 | `phase-23-share-card` | completed |
-| 24 | `phase-24-team-page` | pending |
+| 24 | `phase-24-team-page` | in_review |
 | 25 | `phase-25-match-context` | pending |
 | 26 | `phase-26-picks-reminder` | pending |
 
