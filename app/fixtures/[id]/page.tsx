@@ -112,14 +112,16 @@ function buildValueMap(
 
 interface FixtureHeaderProps {
   home: string
+  homeId: number
   away: string
+  awayId: number
   kickoff: string
   homeGoals: number | null
   awayGoals: number | null
   status: string
 }
 
-function FixtureHeader({ home, away, kickoff, homeGoals, awayGoals, status }: FixtureHeaderProps) {
+function FixtureHeader({ home, homeId, away, awayId, kickoff, homeGoals, awayGoals, status }: FixtureHeaderProps) {
   const hasScore = homeGoals !== null && awayGoals !== null
   const date = new Date(kickoff).toLocaleString('es-CO', {
     weekday: 'short',
@@ -134,14 +136,18 @@ function FixtureHeader({ home, away, kickoff, homeGoals, awayGoals, status }: Fi
     <div className="flex flex-col gap-4">
       <p className="text-xs tracking-wider" style={{ color: 'var(--muted)' }}>{date}</p>
       <div className="flex items-center gap-6">
-        <span className="text-xl font-bold text-white flex-1 text-right">{home}</span>
+        <a href={`/teams/${homeId}`} className="text-xl font-bold flex-1 text-right" style={{ color: '#f0ece4', textDecoration: 'none' }}>
+          {home}
+        </a>
         <span
           className="text-4xl font-bold tabular-nums w-28 text-center"
           style={{ color: hasScore ? 'var(--accent)' : 'var(--muted)' }}
         >
           {hasScore ? `${homeGoals} - ${awayGoals}` : 'vs'}
         </span>
-        <span className="text-xl font-bold text-white flex-1">{away}</span>
+        <a href={`/teams/${awayId}`} className="text-xl font-bold flex-1" style={{ color: '#f0ece4', textDecoration: 'none' }}>
+          {away}
+        </a>
       </div>
       <p className="text-xs tracking-widest text-center" style={{ color: 'var(--muted)' }}>
         {status === 'finished' ? 'FINALIZADO' : status === 'live' ? 'EN VIVO' : 'PROGRAMADO'}
@@ -215,7 +221,9 @@ export default async function FixturePage({ params }: PageProps) {
         <div className="flex flex-col gap-4">
           <FixtureHeader
             home={homeName}
+            homeId={fixture.homeTeamId}
             away={awayName}
+            awayId={fixture.awayTeamId}
             kickoff={fixture.kickoffUtc}
             homeGoals={fixture.homeGoals}
             awayGoals={fixture.awayGoals}

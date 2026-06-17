@@ -114,8 +114,8 @@
       "name": "Folarin Balogun",
       "position": "FW",
       "goalsScored": 2,
-      "minutesPlayed": 180,
-      "goalsPerMinute": 0.011111111111111112
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.022222222222222223
     },
     {
       "id": 1176,
@@ -224,8 +224,8 @@
       "name": "Kylian Mbappé",
       "position": "FW",
       "goalsScored": 2,
-      "minutesPlayed": 180,
-      "goalsPerMinute": 0.011111111111111112
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.022222222222222223
     },
     {
       "id": 1202,
@@ -1668,8 +1668,8 @@
       "name": "Yasin Ayari",
       "position": "MF",
       "goalsScored": 2,
-      "minutesPlayed": 180,
-      "goalsPerMinute": 0.011111111111111112
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.022222222222222223
     },
     {
       "id": 1293,
@@ -2362,8 +2362,8 @@
       "name": "Kai Havertz",
       "position": "FW",
       "goalsScored": 2,
-      "minutesPlayed": 180,
-      "goalsPerMinute": 0.011111111111111112
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.022222222222222223
     },
     {
       "id": 1026,
@@ -2489,9 +2489,9 @@
       "teamId": 26,
       "name": "Lionel Messi",
       "position": "FW",
-      "goalsScored": 1,
-      "minutesPlayed": 300,
-      "goalsPerMinute": 0.0033333333333333335
+      "goalsScored": 3,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.03333333333333333
     },
     {
       "id": 1071,
@@ -2764,8 +2764,8 @@
       "name": "Elijah Just",
       "position": "FW",
       "goalsScored": 2,
-      "minutesPlayed": 180,
-      "goalsPerMinute": 0.011111111111111112
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.022222222222222223
     },
     {
       "id": 1256,
@@ -3166,8 +3166,8 @@
       "name": "Khalil Ayari",
       "position": "FW",
       "goalsScored": 2,
-      "minutesPlayed": 180,
-      "goalsPerMinute": 0.011111111111111112
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.022222222222222223
     }
   ],
   "34": [
@@ -3734,8 +3734,8 @@
       "name": "Romano Schmid",
       "position": "MF",
       "goalsScored": 1,
-      "minutesPlayed": 600,
-      "goalsPerMinute": 0.0016666666666666668
+      "minutesPlayed": 270,
+      "goalsPerMinute": 0.003703703703703704
     },
     {
       "id": 1424,
@@ -4984,9 +4984,9 @@
       "teamId": 119,
       "name": "Erling Haaland",
       "position": "FW",
-      "goalsScored": 1,
-      "minutesPlayed": 300,
-      "goalsPerMinute": 0.0033333333333333335
+      "goalsScored": 2,
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.022222222222222223
     },
     {
       "id": 1661,
@@ -5607,8 +5607,8 @@
       "name": "Ali Olwan",
       "position": "FW",
       "goalsScored": 1,
-      "minutesPlayed": 300,
-      "goalsPerMinute": 0.0033333333333333335
+      "minutesPlayed": 270,
+      "goalsPerMinute": 0.003703703703703704
     },
     {
       "id": 1601,
@@ -5735,8 +5735,8 @@
       "name": "Aymen Hussein",
       "position": "FW",
       "goalsScored": 1,
-      "minutesPlayed": 300,
-      "goalsPerMinute": 0.0033333333333333335
+      "minutesPlayed": 90,
+      "goalsPerMinute": 0.011111111111111112
     },
     {
       "id": 1615,

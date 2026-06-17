@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { loadFixtures } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { getFlag } from '@/lib/utils/flags'
@@ -112,16 +113,17 @@ function GroupCard({ group, rows }: { group: string; rows: StandingRow[] }) {
             <span style={{ width: 22, fontSize: 12, color: '#6b6d75' }}>{i + 1}</span>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
               {flag && <span style={{ fontSize: 16, flexShrink: 0 }}>{flag}</span>}
-              <span style={{
+              <Link href={`/teams/${row.team.id}`} style={{
                 fontSize: 13,
                 color: '#f0ece4',
                 fontWeight: 500,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                textDecoration: 'none',
               }}>
                 {row.team.name}
-              </span>
+              </Link>
             </div>
             <span style={COL.style}>{row.pj}</span>
             <span style={COL.style}>{row.g}</span>
