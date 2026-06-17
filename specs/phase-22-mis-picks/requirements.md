@@ -1,20 +1,20 @@
 ---
-status: in_review
+status: completed
 phase: 22
 owner: cristian
 branch: phase/22-mis-picks
-pr:
-preview:
+pr: 14
+preview: https://predicciones-mundial-git-phase-22-mis-picks-romanops.vercel.app
 gates:
-  spec_review: pending
-  grill: pending
+  spec_review: passed
+  grill: passed
   analyst: not_applicable
-  design: pending
-  data_contract: pending
+  design: passed
+  data_contract: passed
   security: not_applicable
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  qa: passed
+  code_quality: passed
+  reviewer: passed
 ---
 
 # phase-22-mis-picks — Requirements
