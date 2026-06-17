@@ -1,20 +1,20 @@
 ---
-status: pending
+status: in_review
 phase: 23
 owner: cristian
 branch: phase/23-share-card
-pr:
+pr: 15
 preview:
 gates:
-  spec_review: pending
-  grill: pending
+  spec_review: passed
+  grill: passed
   analyst: not_applicable
   design: pending
   data_contract: not_applicable
   security: not_applicable
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  qa: passed
+  code_quality: passed
+  reviewer: passed
 ---
 
 # phase-23-share-card — Requirements
