@@ -1,5 +1,5 @@
 ---
-status: in_review
+status: completed
 phase: 23
 owner: cristian
 branch: phase/23-share-card
