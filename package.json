@@ -13,7 +13,8 @@
     "refresh": "tsx scripts/refresh.ts",
     "precompute": "tsx scripts/precompute-tournament.ts",
     "precompute:squads": "tsx scripts/precompute-squads.ts",
-    "refresh-fixtures": "tsx scripts/refresh-fixtures.ts"
+    "refresh-fixtures": "tsx scripts/refresh-fixtures.ts",
+    "map-fixtures": "tsx scripts/map-fixtures.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

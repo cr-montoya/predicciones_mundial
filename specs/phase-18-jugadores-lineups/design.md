@@ -84,6 +84,18 @@ En seccion GOLEADORES:
 
 ## Riesgos
 
+### Plan de API requerido
+
+API-Football (RapidAPI) en plan gratuito no tiene acceso a temporada 2026.
+football-data.org en tier gratuito no expone endpoint de lineups.
+
+Mientras no se upgradee un plan, el badge siempre mostrará "DATOS LIMITADOS" y
+el modelo usará fallback por posición histórica. El código está listo para activarse
+automáticamente cuando haya acceso.
+
+Para usar API-Football: upgradar a plan de pago en RapidAPI y correr `pnpm map-fixtures`
+para generar `lib/data/fixture-id-map.json` (mapa FD fixture ID → AF fixture ID).
+
 ### Rate limit
 
 Lineups por fixture pueden aumentar consumo.
