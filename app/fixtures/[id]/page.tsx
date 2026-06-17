@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { loadFixtures, computePredictionsForFixture, computePredictionsRetroactive, teamMap } from '@/lib/agents/live-loader'
+import { loadFixtures, computePredictionsRetroactive, teamMap } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { computeLambdas } from '@/lib/model/lambda'
+import { computeMatchOutputs } from '@/lib/model/match-model'
 import { loadOdds, type OddsResult } from '@/lib/agents/odds-loader'
+import { loadLineups } from '@/lib/agents/lineups-loader'
 import { calcValue, type ValueOutput } from '@/lib/model/skills/value-calc'
 import { PickPanel } from '@/components/pick-panel'
 import { ModelResultCard } from '@/components/model-result-card'
@@ -13,6 +15,7 @@ import { TeamTotalsSection } from '@/components/team-totals-section'
 import { FadeIn } from '@/components/fade-in'
 import { ShareButton } from '@/components/share-button'
 import type { ModelOutput, MarketType } from '@/lib/types'
+import { squadsByTeamId } from '@/lib/data/squads'
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://predicciones-mundial.vercel.app'
 
@@ -33,7 +36,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const predictions = fixture.status === 'finished'
     ? computePredictionsRetroactive(fixture, byId)
-    : computePredictionsForFixture(fixture, byId)
+    : (home && away ? computeMatchOutputs({
+        fixture,
+        home,
+        away,
+        matchStats: [],
+        homePlayers: squadsByTeamId[fixture.homeTeamId] ?? [],
+        awayPlayers: squadsByTeamId[fixture.awayTeamId] ?? [],
+      }) : [])
   const r1x2 = predictions.find(p => p.market === 'result_1x2')
 
   let description = `${homeName} vs ${awayName} — Predicción IA`
@@ -156,6 +166,15 @@ function FixtureHeader({ home, homeId, away, awayId, kickoff, homeGoals, awayGoa
   )
 }
 
+function formatLineupTimestamp(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 60) return `Alineación obtenida hace ${mins} min`
+  const hrs = Math.floor(diff / 3600000)
+  if (hrs < 24) return `Alineación obtenida hace ${hrs} h`
+  return `Alineación obtenida ${new Date(iso).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`
+}
+
 export default async function FixturePage({ params }: PageProps) {
   const { id } = await params
   const fixtureId = parseInt(id, 10)
@@ -168,7 +187,7 @@ export default async function FixturePage({ params }: PageProps) {
   const byId = teamMap(buildStaticTeams())
   const home = byId.get(fixture.homeTeamId)
   const away = byId.get(fixture.awayTeamId)
-  const predictions = computePredictionsForFixture(fixture, byId)
+
   const retroPredictions = fixture.status === 'finished'
     ? computePredictionsRetroactive(fixture, byId)
     : []
@@ -176,6 +195,27 @@ export default async function FixturePage({ params }: PageProps) {
 
   const homeName = home?.name ?? `Equipo ${fixture.homeTeamId}`
   const awayName = away?.name ?? `Equipo ${fixture.awayTeamId}`
+
+  const lineupsData = fixture.status !== 'finished'
+    ? await loadLineups(fixtureId, fixture.homeTeamId, fixture.awayTeamId, fixture.kickoffUtc)
+    : null
+
+  const predictions = fixture.status !== 'finished' && home && away
+    ? computeMatchOutputs({
+        fixture,
+        home,
+        away,
+        matchStats: [],
+        homePlayers: squadsByTeamId[fixture.homeTeamId] ?? [],
+        awayPlayers: squadsByTeamId[fixture.awayTeamId] ?? [],
+        homeScorerInputs: lineupsData?.homeScorerInputs,
+        awayScorerInputs: lineupsData?.awayScorerInputs,
+        lineupConfidence: lineupsData?.lineupConfidence,
+      })
+    : []
+
+  const excludedPlayers = lineupsData?.excludedPlayers ?? []
+  const lineupFetchedAt = lineupsData?.lineupFetchedAt ?? null
 
   const [lambdas, odds] = await Promise.all([
     Promise.resolve(home && away ? computeLambdas(home, away) : { lambdaHome: 1.2, lambdaAway: 1.0 }),
@@ -206,8 +246,6 @@ export default async function FixturePage({ params }: PageProps) {
   const disciplineMarkets = pickMarkets(predictions, ['total_cards', 'corners'])
   const scorerMarkets = pickMarkets(predictions, ['anytime_scorer', 'first_scorer'])
     .filter((m) => Object.keys(m.probabilities).length > 0)
-
-  const scorerConfidence = scorerMarkets[0]?.confidence
 
   const fixturePath = `/fixtures/${fixture.id}`
   const shareTitle = `${homeName} vs ${awayName} — Predicción IA`
@@ -300,33 +338,55 @@ export default async function FixturePage({ params }: PageProps) {
           </FadeIn>
 
           {scorerMarkets.length > 0 && (
-          <FadeIn delay={0.25}>
-            <CollapsibleSection
-              title="GOLEADORES"
-              count={scorerMarkets.length}
-              defaultOpen={true}
-            >
-              {scorerConfidence === 'low' && (
-                <div className="flex flex-col gap-2 mb-4">
-                  <span
-                    className="inline-block text-xs font-bold tracking-wider px-2 py-0.5 w-fit"
-                    style={{
-                      background: 'rgba(255,165,0,0.12)',
-                      color: '#FFA500',
-                      borderRadius: 3,
-                      letterSpacing: 1,
-                    }}
-                  >
-                    DATOS LIMITADOS
-                  </span>
-                  <p className="text-xs" style={{ color: 'var(--muted)' }}>
-                    Sin alineación confirmada. Proyección por minutos históricos.
-                  </p>
-                </div>
-              )}
-              <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} noHeader={true} />
-            </CollapsibleSection>
-          </FadeIn>
+            <FadeIn delay={0.25}>
+              <CollapsibleSection title="GOLEADORES" count={scorerMarkets.length} defaultOpen={true}>
+                {lineupFetchedAt ? (
+                  <div className="flex flex-col gap-1.5 mb-4">
+                    <span
+                      className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider px-2 py-0.5 w-fit"
+                      style={{ background: 'rgba(2,185,6,0.12)', color: '#02B906', borderRadius: 3, letterSpacing: 1 }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{ background: '#02B906', animation: 'pulseGlow 2s ease-in-out infinite' }}
+                      />
+                      ALINEACIÓN CONFIRMADA
+                    </span>
+                    <span className="text-[11px]" style={{ color: '#555' }}>
+                      {formatLineupTimestamp(lineupFetchedAt)}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2 mb-4">
+                    <span
+                      className="inline-block text-xs font-bold tracking-wider px-2 py-0.5 w-fit"
+                      style={{ background: 'rgba(255,165,0,0.12)', color: '#FFA500', borderRadius: 3, letterSpacing: 1 }}
+                    >
+                      DATOS LIMITADOS
+                    </span>
+                    <p className="text-xs" style={{ color: 'var(--muted)' }}>
+                      Sin alineación confirmada. Proyección por minutos históricos.
+                    </p>
+                  </div>
+                )}
+                <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} noHeader={true} />
+                {excludedPlayers.length > 0 && (
+                  <div className="flex flex-col gap-2 mt-4">
+                    {excludedPlayers.map(ep => (
+                      <div key={ep.playerId} className="flex items-center gap-2 flex-wrap" style={{ opacity: 0.4 }}>
+                        <span className="text-xs line-through" style={{ color: 'var(--muted)' }}>{ep.playerName}</span>
+                        <span
+                          className="text-[10px] font-bold tracking-widest px-1.5"
+                          style={{ color: 'var(--muted)', background: 'rgba(255,255,255,0.04)', borderRadius: 3 }}
+                        >
+                          {ep.reason === 'injured' ? 'LESIONADO' : ep.reason === 'suspended' ? 'SUSPENDIDO' : 'BAJA'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CollapsibleSection>
+            </FadeIn>
           )}
         </div>
       )}

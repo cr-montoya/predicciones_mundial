@@ -132,6 +132,47 @@ export interface Player {
   goalsPerMinute: number | null
 }
 
+export type LineupStatus = 'confirmed_starter' | 'bench' | 'unknown' | 'out'
+
+export interface PlayerScorerInput {
+  playerId: number
+  playerName: string
+  teamId: number
+  goalsPerMinute: number
+  starterProbability: number
+  lineupStatus: LineupStatus
+}
+
+export interface ExcludedPlayer {
+  playerId: number
+  playerName: string
+  teamId: number
+  reason: 'injured' | 'suspended' | 'out'
+}
+
+export type InjuryType = 'out' | 'doubtful' | 'suspended'
+
+export interface LineupPlayer {
+  playerId: number
+  playerName: string
+  teamId: number
+  status: LineupStatus
+}
+
+export interface FixtureLineupData {
+  fixtureId: number
+  confirmedAt: string
+  players: LineupPlayer[]
+}
+
+export interface PlayerInjuryData {
+  playerId: number
+  playerName: string
+  teamId: number
+  injuryType: InjuryType
+  starterProbabilityOverride: number
+}
+
 /**
  * Partido del torneo. homeGoals / awayGoals son null mientras el partido no
  * haya terminado (status !== 'finished').
