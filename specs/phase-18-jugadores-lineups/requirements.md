@@ -1,5 +1,5 @@
 ---
-status: in_review
+status: completed
 phase: 18
 owner: cristian
 branch: phase/18-jugadores-lineups
