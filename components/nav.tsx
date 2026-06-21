@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { FixturesNavBadge } from '@/components/fixtures-nav-badge'
 
 const TABS = [
   { label: 'Hoy', href: '/' },
@@ -77,6 +78,7 @@ export function Nav() {
                 }}
               >
                 {label}
+                {href === '/fixtures' && <FixturesNavBadge />}
               </Link>
             )
           })}

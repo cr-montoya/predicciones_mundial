@@ -1,27 +1,27 @@
 ---
-status: pending
+status: in_review
 phase: 26
 owner: cristian
 branch: phase/26-picks-reminder
 pr:
 preview:
 gates:
-  spec_review: pending
-  grill: pending
+  spec_review: passed
+  grill: not_applicable
   analyst: not_applicable
-  design: pending
+  design: passed
   data_contract: not_applicable
   security: not_applicable
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  qa: passed
+  code_quality: passed
+  reviewer: passed
 ---
 
 # phase-26-picks-reminder — Requirements
 
 ## Status
 
-pending
+active
 
 ## Objective
 
