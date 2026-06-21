@@ -1,5 +1,5 @@
 ---
-status: in_review
+status: completed
 phase: 25
 owner: cristian
 branch: phase/25-match-context
@@ -22,7 +22,7 @@ gates:
 
 ## Status
 
-in_review
+completed
 
 ## Objective
 

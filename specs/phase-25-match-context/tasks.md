@@ -30,8 +30,8 @@ pending
 
 ### Cierre
 - [x] 17. `spec-closeout` — in_review, PR pendiente.
-- [ ] 18. PR aprobado y preview revisado por owner.
-- [ ] 19. Marcar `completed` post-merge.
+- [x] 18. PR #18 aprobado y mergeado por owner.
+- [x] 19. Marcar `completed` post-merge.
 
 ## Definition of Done
 
