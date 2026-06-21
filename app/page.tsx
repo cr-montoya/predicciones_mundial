@@ -16,7 +16,12 @@ export default async function HomePage() {
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
       <Hero fixturesToday={fixturesToday} fallbackLabel={fallbackLabel} />
-      <PicksReminderBanner fixtures={fixturesToday.map((f) => f.fixture)} />
+      <PicksReminderBanner fixtures={fixturesToday.map((f) => ({
+        id: f.fixture.id,
+        kickoffUtc: f.fixture.kickoffUtc,
+        status: f.fixture.status,
+        label: f.label,
+      }))} />
       <LastUpdated generatedAt={generatedAt} />
 
       {fixturesToday.length > 0 && (
