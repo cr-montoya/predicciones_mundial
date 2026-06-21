@@ -49,6 +49,15 @@ export interface RunLog {
   message: string | null
 }
 
+export interface H2HMatch {
+  date: string
+  homeTeam: string
+  awayTeam: string
+  homeGoals: number
+  awayGoals: number
+  stage: string
+}
+
 export function sanityCheck(output: ModelOutput): void {
   const sum = Object.values(output.probabilities).reduce((a, b) => a + b, 0)
   if (Math.abs(sum - 1.0) > 0.001) {

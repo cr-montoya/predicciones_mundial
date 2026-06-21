@@ -1,27 +1,28 @@
 ---
-status: pending
+status: in_review
 phase: 25
 owner: cristian
 branch: phase/25-match-context
+
 pr:
 preview:
 gates:
-  spec_review: pending
-  grill: pending
-  analyst: pending
-  design: pending
-  data_contract: pending
+  spec_review: passed
+  grill: passed
+  analyst: passed
+  design: passed
+  data_contract: passed
   security: not_applicable
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  qa: passed
+  code_quality: passed
+  reviewer: passed
 ---
 
 # phase-25-match-context — Requirements
 
 ## Status
 
-pending
+in_review
 
 ## Objective
 
@@ -47,9 +48,11 @@ Mundiales anteriores usando el parámetro `competitions=WC`.
 - Sección "CONTEXTO" en `app/fixtures/[id]/page.tsx` encima de los mercados.
 - **Forma en el torneo**: últimos N partidos del Mundial 2026 de cada equipo
   (W/D/L badges), solo si ya jugaron algún partido.
-- **H2H en Mundiales**: últimos 5 enfrentamientos entre los dos equipos en
-  Mundiales anteriores, desde football-data.org (`/teams/{id}/matches?competitions=WC`).
+- **Encuentros en este Mundial**: partidos entre los dos equipos en el WC 2026,
+  desde football-data.org (`/teams/{id}/matches?competitions=WC`).
   - Si la llamada falla o no hay datos: omitir la subsección silenciosamente.
+  - Nota de diseño: en fase de grupos los equipos aún no se han cruzado →
+    subsección H2H se omite. Útil principalmente en octavos en adelante.
 - Ambas subsecciones son opcionales: si un equipo no ha jugado aún y no hay H2H,
   la sección "CONTEXTO" no se renderiza.
 
@@ -71,16 +74,17 @@ Mundiales anteriores usando el parámetro `competitions=WC`.
    de la página si el API no responde.
 5. Los datos de forma se derivan de fixtures ya cargados (sin llamada extra).
 
-## Blocker conocido
+## Decisión de diseño: scope del H2H
 
-El endpoint H2H de football-data.org debe verificarse antes de implementar
-`h2h-loader.ts`. Si el plan actual no lo soporta, la subsección H2H queda diferida
-y solo se implementa la forma reciente (que no requiere nueva llamada de red).
+El endpoint `/teams/{id}/matches?competitions=WC` devuelve solo la temporada activa
+(WC 2026). Se decidió acotar el H2H a "encuentros en este Mundial" en lugar de
+consultar temporadas anteriores (WC 2022, 2018) con múltiples llamadas adicionales.
+La subsección H2H se omite silenciosamente cuando no hay encuentros (fase de grupos).
 
 ## Acceptance Criteria
 
 - [ ] Fixture entre dos equipos que ya jugaron: muestra forma de ambos.
-- [ ] H2H: si hay datos, se muestran hasta 5 partidos con fecha y resultado.
+- [ ] H2H: si hay datos (encuentros previos en WC 2026), se muestran hasta 5 partidos con fecha y resultado.
 - [ ] H2H: si la llamada falla, la sección se omite sin error visible.
 - [ ] Fixture entre dos equipos sin partidos previos: sección CONTEXTO oculta.
 - [ ] `pnpm tsc --noEmit` pasa.

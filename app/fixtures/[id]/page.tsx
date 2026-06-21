@@ -6,8 +6,10 @@ import { computeLambdas } from '@/lib/model/lambda'
 import { computeMatchOutputs } from '@/lib/model/match-model'
 import { loadOdds, type OddsResult } from '@/lib/agents/odds-loader'
 import { loadLineups } from '@/lib/agents/lineups-loader'
+import { loadH2H } from '@/lib/agents/h2h-loader'
 import { calcValue, type ValueOutput } from '@/lib/model/skills/value-calc'
 import { PickPanel } from '@/components/pick-panel'
+import MatchContext from '@/components/match-context'
 import { ModelResultCard } from '@/components/model-result-card'
 import { MarketSection } from '@/components/market-section'
 import { CollapsibleSection } from '@/components/collapsible-section'
@@ -181,7 +183,8 @@ export default async function FixturePage({ params }: PageProps) {
 
   if (isNaN(fixtureId)) notFound()
 
-  const fixture = (await loadFixtures()).find((f) => f.id === fixtureId)
+  const allFixtures = await loadFixtures()
+  const fixture = allFixtures.find((f) => f.id === fixtureId)
   if (!fixture) notFound()
 
   const byId = teamMap(buildStaticTeams())
@@ -217,9 +220,10 @@ export default async function FixturePage({ params }: PageProps) {
   const excludedPlayers = lineupsData?.excludedPlayers ?? []
   const lineupFetchedAt = lineupsData?.lineupFetchedAt ?? null
 
-  const [lambdas, odds] = await Promise.all([
+  const [lambdas, odds, h2h] = await Promise.all([
     Promise.resolve(home && away ? computeLambdas(home, away) : { lambdaHome: 1.2, lambdaAway: 1.0 }),
     loadOdds(homeName, awayName),
+    loadH2H(fixture.homeTeamId, fixture.awayTeamId),
   ])
 
   const valueMap = buildValueMap(predictions, odds)
@@ -281,6 +285,16 @@ export default async function FixturePage({ params }: PageProps) {
           awayGoals={fixture.awayGoals}
           homeName={homeName}
           awayName={awayName}
+        />
+      </FadeIn>
+
+      <FadeIn delay={0.08}>
+        <MatchContext
+          fixture={fixture}
+          allFixtures={allFixtures}
+          homeName={homeName}
+          awayName={awayName}
+          h2h={h2h}
         />
       </FadeIn>
 

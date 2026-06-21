@@ -91,7 +91,7 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | 22 | `phase-22-mis-picks` | completed |
 | 23 | `phase-23-share-card` | completed |
 | 24 | `phase-24-team-page` | completed |
-| 25 | `phase-25-match-context` | pending |
+| 25 | `phase-25-match-context` | in_review |
 | 26 | `phase-26-picks-reminder` | pending |
 
 ## Specs de infraestructura/fixes
