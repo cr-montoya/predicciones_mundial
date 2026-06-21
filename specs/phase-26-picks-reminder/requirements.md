@@ -1,5 +1,5 @@
 ---
-status: in_review
+status: completed
 phase: 26
 owner: cristian
 branch: phase/26-picks-reminder
