@@ -5,6 +5,7 @@ import { FixturesToday } from '@/components/fixtures-today'
 import { TopMarkets } from '@/components/top-markets'
 import { Candidates } from '@/components/candidates'
 import { AccuracyWidget } from '@/components/accuracy-widget'
+import { PicksReminderBanner } from '@/components/picks-reminder-banner'
 
 export const revalidate = 3600
 
@@ -15,6 +16,7 @@ export default async function HomePage() {
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
       <Hero fixturesToday={fixturesToday} fallbackLabel={fallbackLabel} />
+      <PicksReminderBanner fixtures={fixturesToday.map((f) => f.fixture)} />
       <LastUpdated generatedAt={generatedAt} />
 
       {fixturesToday.length > 0 && (
