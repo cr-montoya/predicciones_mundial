@@ -1,4 +1,4 @@
-import type { Fixture, FixtureStatus, MatchEvent, MatchEventType, MatchStats, Team } from '@/lib/types'
+import type { Fixture, FixtureStatus, MatchEvent, MatchEventType, MatchStats, Team, LineupPlayer, FixtureLineupData, PlayerInjuryData, InjuryType, LineupStatus } from '@/lib/types'
 import type { DataProvider } from '@/lib/data/provider'
 import { apiFetch } from '@/lib/data/api-fetch'
 import { RateLimiter } from '@/lib/data/rate-limiter'
@@ -208,5 +208,63 @@ export class ApiFootballProvider implements DataProvider {
       shotsOnTarget: statValue(item.statistics, 'Shots on Goal'),
       possession: statValue(item.statistics, 'Ball Possession'),
     }))
+  }
+
+  async fetchLineups(fixtureId: number): Promise<FixtureLineupData | null> {
+    interface ApiLineupPlayerItem {
+      player: { id: number; name: string; number: number; pos: string; grid: string | null }
+    }
+    interface ApiLineupTeamItem {
+      team: { id: number; name: string }
+      formation: string | null
+      startXI: ApiLineupPlayerItem[]
+      substitutes: ApiLineupPlayerItem[]
+    }
+    try {
+      interface Resp { response: ApiLineupTeamItem[]; errors?: Record<string, string> }
+      const data = await this.fetch<Resp>('fixtures/lineups', { fixture: String(fixtureId) })
+      if (!Array.isArray(data?.response) || data.response.length === 0) return null
+      const players: LineupPlayer[] = []
+      for (const team of data.response) {
+        for (const entry of team.startXI) {
+          players.push({ playerId: entry.player.id, playerName: entry.player.name, teamId: team.team.id, status: 'confirmed_starter' })
+        }
+        for (const entry of team.substitutes) {
+          players.push({ playerId: entry.player.id, playerName: entry.player.name, teamId: team.team.id, status: 'bench' })
+        }
+      }
+      return { fixtureId, confirmedAt: new Date().toISOString(), players }
+    } catch (err) {
+      console.warn(`[api-football] fetchLineups: fixture ${fixtureId} failed`, err)
+      return null
+    }
+  }
+
+  async fetchInjuries(fixtureId: number): Promise<PlayerInjuryData[]> {
+    interface ApiInjuryItem {
+      player: { id: number; name: string }
+      team: { id: number }
+      injury: { type: string; reason: string }
+    }
+    try {
+      interface Resp { response: ApiInjuryItem[]; errors?: Record<string, string> }
+      const data = await this.fetch<Resp>('injuries', { fixture: String(fixtureId) })
+      if (!Array.isArray(data?.response)) return []
+      return data.response.map(item => {
+        const raw = (item.injury.type ?? '').toLowerCase()
+        const injuryType: InjuryType = raw.includes('suspend') ? 'suspended' : raw.includes('doubt') ? 'doubtful' : 'out'
+        const spOverride = injuryType === 'doubtful' ? 0.2 : 0.0
+        return {
+          playerId: item.player.id,
+          playerName: item.player.name,
+          teamId: item.team.id,
+          injuryType,
+          starterProbabilityOverride: spOverride,
+        }
+      })
+    } catch (err) {
+      console.warn(`[api-football] fetchInjuries: fixture ${fixtureId} failed`, err)
+      return []
+    }
   }
 }

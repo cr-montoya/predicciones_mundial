@@ -1,6 +1,5 @@
-import type { ModelOutput, Player } from '@/lib/types'
+import type { ModelOutput, PlayerScorerInput } from '@/lib/types'
 import { poissonPmf } from '@/lib/model/skills/poisson'
-import { MIN_MINUTES_ELIGIBLE } from '@/lib/model/constants'
 import { sanityCheck } from '@/lib/types'
 import { sanityCheckProbabilityBounds } from '@/lib/model/sanity'
 
@@ -9,10 +8,8 @@ interface ScorerOutputs {
   firstScorer: ModelOutput
 }
 
-function eligiblePlayers(players: Player[]): Player[] {
-  return players.filter(
-    p => p.minutesPlayed >= MIN_MINUTES_ELIGIBLE && p.goalsPerMinute !== null && p.goalsPerMinute > 0
-  )
+function eligibleInputs(inputs: PlayerScorerInput[]): PlayerScorerInput[] {
+  return inputs.filter(p => p.goalsPerMinute > 0)
 }
 
 function emptyOutput(market: ModelOutput['market']): ModelOutput {
@@ -20,55 +17,84 @@ function emptyOutput(market: ModelOutput['market']): ModelOutput {
     market,
     probabilities: {},
     confidence: 'low',
-    modelVersion: '1.0',
+    modelVersion: '1.1',
     computedAt: new Date().toISOString(),
   }
 }
 
+function effectiveRate(input: PlayerScorerInput): number {
+  const sp = Math.max(0, Math.min(1, input.starterProbability))
+  return input.goalsPerMinute * sp
+}
+
+function buildWeights(inputs: PlayerScorerInput[]): Map<PlayerScorerInput, number> {
+  const rates = inputs.map(i => effectiveRate(i))
+  let denom = rates.reduce((a, r) => a + r, 0)
+
+  const useFallback = denom <= 0
+  if (useFallback) {
+    denom = inputs.reduce((a, p) => a + p.goalsPerMinute, 0)
+  }
+
+  const weights = new Map<PlayerScorerInput, number>()
+  for (let idx = 0; idx < inputs.length; idx++) {
+    const numerator = useFallback ? inputs[idx].goalsPerMinute : rates[idx]
+    weights.set(inputs[idx], denom > 0 ? numerator / denom : 0)
+  }
+  return weights
+}
+
 export function buildScorerOutputs(
-  homePlayers: Player[],
-  awayPlayers: Player[],
+  homeInputs: PlayerScorerInput[],
+  awayInputs: PlayerScorerInput[],
   lambdaHome: number,
-  lambdaAway: number
+  lambdaAway: number,
+  confidence: ModelOutput['confidence'] = 'low'
 ): ScorerOutputs {
-  const homeEligible = eligiblePlayers(homePlayers)
-  const awayEligible = eligiblePlayers(awayPlayers)
+  const homeEligible = eligibleInputs(homeInputs)
+  const awayEligible = eligibleInputs(awayInputs)
 
   const noEligible = homeEligible.length === 0 && awayEligible.length === 0
 
   const anytimeScorer: ModelOutput = noEligible
     ? emptyOutput('anytime_scorer')
-    : buildAnytime(homeEligible, awayEligible, lambdaHome, lambdaAway)
+    : buildAnytime(homeEligible, awayEligible, lambdaHome, lambdaAway, confidence)
 
   const firstScorer: ModelOutput = noEligible
     ? emptyOutput('first_scorer')
-    : buildFirst(homeEligible, awayEligible, lambdaHome, lambdaAway)
+    : buildFirst(homeEligible, awayEligible, lambdaHome, lambdaAway, confidence)
 
   return { anytimeScorer, firstScorer }
 }
 
 function buildAnytime(
-  homeEligible: Player[],
-  awayEligible: Player[],
+  homeEligible: PlayerScorerInput[],
+  awayEligible: PlayerScorerInput[],
   lambdaHome: number,
-  lambdaAway: number
+  lambdaAway: number,
+  confidence: ModelOutput['confidence']
 ): ModelOutput {
   const probs: Record<string, number> = {}
 
-  for (const group of [{ players: homeEligible, lambda: lambdaHome }, { players: awayEligible, lambda: lambdaAway }]) {
-    const denom = group.players.reduce((a, p) => a + (p.goalsPerMinute ?? 0), 0)
-    for (const p of group.players) {
-      const weight = (p.goalsPerMinute ?? 0) / denom
+  for (const group of [
+    { inputs: homeEligible, lambda: lambdaHome },
+    { inputs: awayEligible, lambda: lambdaAway },
+  ]) {
+    const weights = buildWeights(group.inputs)
+    for (const input of group.inputs) {
+      const er = effectiveRate(input)
+      if (er === 0) continue
+      const weight = weights.get(input) ?? 0
       const expectedGoals = weight * group.lambda
-      probs[`${p.id}_${p.name}`] = 1 - poissonPmf(0, expectedGoals)
+      probs[`${input.playerId}_${input.playerName}`] = 1 - poissonPmf(0, expectedGoals)
     }
   }
 
   const output: ModelOutput = {
     market: 'anytime_scorer',
     probabilities: probs,
-    confidence: 'low',
-    modelVersion: '1.0',
+    confidence,
+    modelVersion: '1.1',
     computedAt: new Date().toISOString(),
   }
   sanityCheckProbabilityBounds(output)
@@ -76,22 +102,25 @@ function buildAnytime(
 }
 
 function buildFirst(
-  homeEligible: Player[],
-  awayEligible: Player[],
+  homeEligible: PlayerScorerInput[],
+  awayEligible: PlayerScorerInput[],
   lambdaHome: number,
-  lambdaAway: number
+  lambdaAway: number,
+  confidence: ModelOutput['confidence']
 ): ModelOutput {
   const probs: Record<string, number> = {}
   const lambdaMatch = lambdaHome + lambdaAway
   const pNoScorer = Math.exp(-lambdaMatch)
 
-  function addGroup(players: Player[], teamLambda: number): void {
-    if (players.length === 0) return
-    const denom = players.reduce((a, p) => a + (p.goalsPerMinute ?? 0), 0)
-    for (const p of players) {
-      const weight = (p.goalsPerMinute ?? 0) / denom
+  function addGroup(inputs: PlayerScorerInput[], teamLambda: number): void {
+    if (inputs.length === 0) return
+    const weights = buildWeights(inputs)
+    for (const input of inputs) {
+      const er = effectiveRate(input)
+      if (er === 0) continue
+      const weight = weights.get(input) ?? 0
       const expectedGoals = weight * teamLambda
-      probs[`${p.id}_${p.name}`] = (1 - pNoScorer) * (expectedGoals / lambdaMatch)
+      probs[`${input.playerId}_${input.playerName}`] = (1 - pNoScorer) * (expectedGoals / lambdaMatch)
     }
   }
 
@@ -104,8 +133,8 @@ function buildFirst(
   const output: ModelOutput = {
     market: 'first_scorer',
     probabilities: probs,
-    confidence: 'low',
-    modelVersion: '1.0',
+    confidence,
+    modelVersion: '1.1',
     computedAt: new Date().toISOString(),
   }
   sanityCheck(output)

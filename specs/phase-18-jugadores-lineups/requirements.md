@@ -1,8 +1,23 @@
+---
+status: in_review
+phase: 18
+owner: cristian
+branch: phase/18-jugadores-lineups
+pr:
+preview:
+gates:
+  spec_review: passed
+  grill: pending
+  analyst: passed
+  design: passed
+  data_contract: passed
+  security: passed
+  qa: passed
+  code_quality: passed
+  reviewer: passed
+---
+
 # Requirements: Fase 18 - Datos de jugadores enriquecidos
-
-## Estado
-
-Pendiente.
 
 ## Problema
 

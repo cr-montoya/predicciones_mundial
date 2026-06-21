@@ -1,4 +1,4 @@
-import type { Team, Fixture, MatchStats, Player, ModelOutput } from '@/lib/types'
+import type { Team, Fixture, MatchStats, Player, ModelOutput, PlayerScorerInput } from '@/lib/types'
 import { sanityCheck } from '@/lib/types'
 import { sanityCheckProbabilityBounds } from '@/lib/model/sanity'
 import { computeLambdas } from '@/lib/model/lambda'
@@ -15,6 +15,18 @@ import {
 } from '@/lib/model/skills/derive-markets'
 import { buildCardsOutputs, buildCornersOutput } from '@/lib/model/cards-corners'
 import { buildScorerOutputs } from '@/lib/model/scorers'
+import { DEFAULT_STARTER_PROBABILITY } from '@/lib/model/scorer-defaults'
+
+function playerToScorerInput(p: Player): PlayerScorerInput {
+  return {
+    playerId: p.id,
+    playerName: p.name,
+    teamId: p.teamId,
+    goalsPerMinute: p.goalsPerMinute ?? 0,
+    starterProbability: DEFAULT_STARTER_PROBABILITY[p.position] ?? 0.5,
+    lineupStatus: 'unknown',
+  }
+}
 
 export interface MatchInput {
   fixture: Fixture
@@ -23,6 +35,9 @@ export interface MatchInput {
   matchStats: MatchStats[]
   homePlayers: Player[]
   awayPlayers: Player[]
+  homeScorerInputs?: PlayerScorerInput[]
+  awayScorerInputs?: PlayerScorerInput[]
+  lineupConfidence?: ModelOutput['confidence']
 }
 
 function makeOutput(
@@ -86,11 +101,16 @@ export function computeMatchOutputs(input: MatchInput): ModelOutput[] {
   const cardsOutputs = buildCardsOutputs(fixture, matchStats, home.id, away.id)
   const cornersOutput = buildCornersOutput(fixture, matchStats, home.id, away.id)
 
+  const homeScorerInputs = input.homeScorerInputs ?? homePlayers.map(playerToScorerInput)
+  const awayScorerInputs = input.awayScorerInputs ?? awayPlayers.map(playerToScorerInput)
+  const scorerConfidence = input.lineupConfidence ?? 'low'
+
   const { anytimeScorer, firstScorer } = buildScorerOutputs(
-    homePlayers,
-    awayPlayers,
+    homeScorerInputs,
+    awayScorerInputs,
     lambdaHome,
-    lambdaAway
+    lambdaAway,
+    scorerConfidence
   )
 
   const homeGoals05 = makeOutput('home_team_goals_0_5', deriveTeamTotal(matrix, 'home', 0.5), teamTotalConfidence(matrix, 'home', 0.5))
