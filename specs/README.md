@@ -67,28 +67,28 @@ Valid values for gates: `pending`, `passed`, `failed`, `blocked`,
 | Phase | Spec | Status |
 | --- | --- | --- |
 | 0 | `phase-00-setup` | completed |
-| 1 | `phase-01-ingesta-db` | completed |
-| 2 | `phase-02-modelo-prediccion` | completed |
-| 3 | `phase-03-refresh-demanda` | completed / partial historical |
+| 1 | `phase-01-db-ingestion` | completed |
+| 2 | `phase-02-prediction-model` | completed |
+| 3 | `phase-03-on-demand-refresh` | completed / partial historical |
 | 4 | `phase-04-dashboard` | completed |
-| 5 | `phase-05-pulido` | completed |
-| 6 | `phase-06-diseno-broadcast` | completed |
+| 5 | `phase-05-polish` | completed |
+| 6 | `phase-06-broadcast-design` | completed |
 | 7 | `phase-07-branding-world-cup` | completed |
-| 8 | `phase-08-datos-historicos` | completed |
+| 8 | `phase-08-historical-data` | completed |
 | 9 | `phase-09-cloudflare-d1` | historical |
 | 10 | `phase-10-hardening-auth` | completed |
 | 11 | `phase-11-deploy-vercel-isr` | completed |
-| 12 | `phase-12-datos-historicos-enriquecidos` | completed |
-| 13 | `phase-13-predicciones-fixture-cards` | completed |
-| 14 | `phase-14-sistema-visual-design` | completed |
-| 15 | `phase-15-espanol-glosario` | completed |
-| 16 | `phase-16-goleadores-mercados` | completed |
-| 17 | `phase-17-odds-implicitas` | completed |
-| 18 | `phase-18-jugadores-lineups` | completed |
+| 12 | `phase-12-enriched-historical-data` | completed |
+| 13 | `phase-13-fixture-prediction-cards` | completed |
+| 14 | `phase-14-visual-design-system` | completed |
+| 15 | `phase-15-spanish-glossary` | completed |
+| 16 | `phase-16-top-scorer-markets` | completed |
+| 17 | `phase-17-implied-odds` | completed |
+| 18 | `phase-18-player-lineups` | completed |
 | 19 | `phase-19-picks` | completed |
 | 20 | `phase-20-accuracy` | completed |
 | 21 | `phase-21-bracket` | completed |
-| 22 | `phase-22-mis-picks` | completed |
+| 22 | `phase-22-my-picks` | completed |
 | 23 | `phase-23-share-card` | completed |
 | 24 | `phase-24-team-page` | completed |
 | 25 | `phase-25-match-context` | completed |
@@ -104,7 +104,7 @@ Valid values for gates: `pending`, `passed`, `failed`, `blocked`,
 | `auto-refresh-workers` | historical | Historical exploration of Cloudflare Workers / next-on-pages. |
 | `vercel-env-csp` | historical | Diagnosis and fixes for env vars / CSP issues on Vercel. |
 | `fix-better-sqlite3-devdep` | completed | Add serverExternalPackages to eliminate DEP0176 warning on Vercel. |
-| `fix-goleadores-empty-state` | completed | Show real scorers with static squads for all 32 teams. |
+| `fix-top-scorer-empty-state` | completed | Show real scorers with static squads for all 32 teams. |
 | `fix-flags-display` | completed | Remove player flags in Golden Boot; add missing flags (Cape Verde Islands, Jordan, Congo DR). |
 
 ## Rules
