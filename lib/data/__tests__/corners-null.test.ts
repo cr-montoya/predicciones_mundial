@@ -1,7 +1,7 @@
 /**
- * Tests de tratamiento de null en stats.
- * Verifica que buildCornersOutput y buildCardsOutputs usan prior histórico
- * cuando corners/cards son null, sin fallar ni tratar como 0.
+ * Tests for null handling in match stats.
+ * Verifies that buildCornersOutput and buildCardsOutputs use the historical
+ * prior when corners/cards are null, without failing or treating them as 0.
  */
 
 import { describe, it, expect } from 'vitest'
@@ -11,7 +11,7 @@ import type { Fixture, MatchStats } from '@/lib/types'
 import { WC_AVG_CORNERS_PER_MATCH, CORNERS_FALLBACK_LINE } from '@/lib/model/constants'
 
 // ---------------------------------------------------------------------------
-// Fixture de prueba
+// Test fixture
 // ---------------------------------------------------------------------------
 
 const fixture: Fixture = {

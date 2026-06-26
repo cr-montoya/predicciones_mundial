@@ -1,14 +1,14 @@
-# Design: Fase 6 - Diseno Broadcast
+# Design: Phase 6 - Broadcast Design
 
-## Direccion visual
+## Visual Direction
 
-- Terminal deportiva / Opta.
-- Fondo oscuro.
-- Acento unico fuerte.
-- Etiquetas compactas en mayusculas.
-- Numeros 3xl/4xl.
+- Sports terminal / Opta.
+- Dark background.
+- Single strong accent.
+- Compact uppercase labels.
+- Numbers 3xl/4xl.
 
-## Componentes clave
+## Key Components
 
 - `Hero`.
 - `FixturesToday`.
@@ -16,8 +16,8 @@
 - `Candidates`.
 - `ProbabilityBar`.
 
-## Riesgos
+## Risks
 
-- Demasiadas cards.
-- Graficas default sin identidad.
-- Falta de consistencia entre pantallas.
+- Too many cards.
+- Default charts without identity.
+- Lack of consistency between screens.

@@ -9,8 +9,8 @@ export type { CandidateRow }
 const TZ_OFFSET_HOURS = -5
 
 /**
- * Limites UTC del "dia de hoy" en horario de Colombia (UTC-5). Funcion pura,
- * sin DB, compartida entre el loader y los tests.
+ * UTC bounds for "today" in Colombia time (UTC-5). Pure function,
+ * no DB access, shared between the loader and tests.
  */
 export function todayBoundsUtc(): { start: string; end: string } {
   const nowUtc = new Date()
@@ -62,7 +62,7 @@ export interface HomeData {
   candidates: CandidateRow[]
   goldenBootComputedAt: string
   fallbackLabel: string | null
-  /** Momento ISO en que se genero esta data (sirve para "actualizado hace X"). */
+  /** ISO timestamp when this data was generated (used for "updated X ago" display). */
   generatedAt: string
   accuracyStats: AccuracyStats
 }

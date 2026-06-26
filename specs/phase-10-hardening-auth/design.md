@@ -1,26 +1,26 @@
-# Design: Fase 10 - Hardening y autenticacion
+# Design: Phase 10 - Hardening and Authentication
 
-## Componentes
+## Components
 
 - `lib/auth/password.ts`.
 - `lib/auth/jwt.ts`.
 - `lib/middleware/rate-limit.ts`.
 - `lib/middleware/get-ip.ts`.
-- Middleware/headers segun plataforma.
+- Middleware/headers as per platform.
 
-## Seguridad
+## Security
 
-- Passwords hasheados.
-- JWT con expiracion.
-- Cookies httpOnly/Secure/SameSite cuando aplique.
+- Hashed passwords.
+- JWT with expiration.
+- httpOnly/Secure/SameSite cookies where applicable.
 - CSP, HSTS, nosniff, frame protection.
 
-## Nota vigente
+## Current Note
 
-Al migrar a Vercel, CSP y middleware deben revisarse por compatibilidad con Next/Vercel.
+When migrating to Vercel, CSP and middleware must be reviewed for compatibility with Next/Vercel.
 
-## Riesgos
+## Risks
 
-- CSP demasiado estricta para Next.
-- Rate limit en memoria no persistente.
-- JWT secret faltante en produccion.
+- CSP too strict for Next.
+- In-memory rate limit is not persistent.
+- JWT secret missing in production.

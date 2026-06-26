@@ -1,26 +1,26 @@
-# Design: Fase 8 - Datos historicos
+# Design: Phase 8 - Historical Data
 
-## Datos
+## Data
 
-`historical-stats.json` contiene valores normalizados de ataque/defensa.
+`historical-stats.json` contains normalized attack/defense values.
 
-## Flujo
+## Flow
 
 ```
 historical-stats.json
    -> strength batch / computeStrengths
-   -> equipos calibrados
+   -> calibrated teams
    -> match model / Monte Carlo
 ```
 
-## Decisiones
+## Decisions
 
-- Mantener datos historicos como JSON versionado.
-- Evitar red durante modelo.
-- Ajustar fuerzas antes de simular torneo.
+- Keep historical data as versioned JSON.
+- Avoid network calls during model execution.
+- Adjust strengths before simulating the tournament.
 
-## Riesgos
+## Risks
 
-- Datos incompletos o sesgados.
-- Sobreponderar torneos cortos.
-- Cambios bruscos sin tests.
+- Incomplete or biased data.
+- Overweighting short tournaments.
+- Abrupt probability changes without tests.

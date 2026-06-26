@@ -1,12 +1,12 @@
 /**
- * Tests de sanity para la logica de prediccion en live-loader.ts (Fase 13).
+ * Sanity tests for the prediction logic in live-loader.ts (Phase 13).
  *
- * Valida:
- * 1. Fixtures scheduled producen prediction definida con valores coherentes.
- * 2. Fixtures finished producen prediction = undefined.
- * 3. Coherencia del ganador: equipo fuerte (Spain) supera a equipo debil (Haiti).
- * 4. Fixtures sin equipos conocidos producen prediction = undefined.
- * 5. Las claves del mercado result_1x2 son correctas y compatibles con live-loader.
+ * Validates:
+ * 1. Scheduled fixtures produce a defined prediction with coherent values.
+ * 2. Finished fixtures produce prediction = undefined.
+ * 3. Winner coherence: strong team (Spain) beats weak team (Haiti).
+ * 4. Fixtures with unknown teams produce prediction = undefined.
+ * 5. result_1x2 market keys are correct and compatible with live-loader.
  */
 
 import { describe, it, expect } from 'vitest'
@@ -35,9 +35,8 @@ function makeFixture(overrides: Partial<Fixture> & { id: number }): Fixture {
 }
 
 /**
- * Reproduce exactamente la logica de derivacion de prediction de live-loader.ts
- * (el bloque del map() de fixturesToday). Se usa para verificar coherencia entre
- * el modelo de prediccion y el codigo de integracion.
+ * Mirrors the prediction derivation logic from live-loader.ts (the map() block).
+ * Used to verify coherence between the prediction model and the integration code.
  */
 function derivePrediction(
   fixture: Fixture,
@@ -49,17 +48,17 @@ function derivePrediction(
 
   if (!r1x2 || !exactScore) return undefined
 
-  // Replica literalmente el codigo de live-loader.ts lineas 75-84
+  // Mirrors live-loader.ts lines 75-84 literally
   const [topKey, topProb] = Object.entries(r1x2.probabilities).sort(
     ([, a], [, b]) => b - a
   )[0]
 
   const winner =
     topKey === 'home'
-      ? (byId.get(fixture.homeTeamId)?.name ?? 'Local')
+      ? (byId.get(fixture.homeTeamId)?.name ?? 'Home')
       : topKey === 'away'
-      ? (byId.get(fixture.awayTeamId)?.name ?? 'Visitante')
-      : 'Empate'
+      ? (byId.get(fixture.awayTeamId)?.name ?? 'Away')
+      : 'Draw'
 
   const expectedGoals = Object.entries(exactScore.probabilities).reduce(
     (sum, [key, prob]) => {
@@ -78,117 +77,117 @@ function derivePrediction(
 }
 
 // ---------------------------------------------------------------------------
-// Setup: equipos reales del Mundial
+// Setup: real World Cup teams
 // ---------------------------------------------------------------------------
 
 const staticTeams = buildStaticTeams()
 const byId = teamMap(staticTeams)
 
-// IDs reales segun teams-seed.ts y historical-stats.json
+// Real IDs from teams-seed.ts and historical-stats.json
 const SPAIN_ID = 9
 const FRANCE_ID = 2
 const HAITI_ID = 168
 
 // ---------------------------------------------------------------------------
-// Test suite 1: claves del mercado result_1x2
-// CRITICO: live-loader.ts compara topKey con 'home_win' y 'away_win', pero
-// deriveResult1x2 produce claves 'home', 'draw', 'away'. Este test detecta
-// esa inconsistencia.
+// Test suite 1: result_1x2 market keys
+// CRITICAL: live-loader.ts compared topKey against 'home_win' and 'away_win',
+// but deriveResult1x2 produces keys 'home', 'draw', 'away'. This test detects
+// that inconsistency.
 // ---------------------------------------------------------------------------
 
-describe('result_1x2 - claves del mercado (contrato entre model y live-loader)', () => {
+describe('result_1x2 - market keys (contract between model and live-loader)', () => {
   const fixture = makeFixture({ id: 2001, homeTeamId: SPAIN_ID, awayTeamId: HAITI_ID })
   const preds = computePredictionsForFixture(fixture, byId)
   const r1x2 = preds.find(p => p.market === 'result_1x2')!
 
-  it('result_1x2 contiene exactamente home, draw, away', () => {
+  it('result_1x2 contains exactly home, draw, away', () => {
     const keys = Object.keys(r1x2.probabilities).sort()
     expect(keys).toEqual(['away', 'draw', 'home'])
   })
 
-  it('home existe como clave en result_1x2', () => {
+  it('home exists as a key in result_1x2', () => {
     expect(r1x2.probabilities).toHaveProperty('home')
   })
 
-  it('away existe como clave en result_1x2', () => {
+  it('away exists as a key in result_1x2', () => {
     expect(r1x2.probabilities).toHaveProperty('away')
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test suite 2: fixture scheduled Spain vs France produce prediction definida
+// Test suite 2: scheduled Spain vs France produces a defined prediction
 // ---------------------------------------------------------------------------
 
-describe('computePredictionsForFixture - fixture scheduled con equipos conocidos', () => {
+describe('computePredictionsForFixture - scheduled fixture with known teams', () => {
   const fixture = makeFixture({ id: 1001, homeTeamId: SPAIN_ID, awayTeamId: FRANCE_ID })
   const prediction = derivePrediction(fixture, byId)
 
-  it('prediction no es undefined', () => {
+  it('prediction is not undefined', () => {
     expect(prediction).toBeDefined()
   })
 
-  it('winner es string no vacio', () => {
+  it('winner is a non-empty string', () => {
     expect(typeof prediction!.winner).toBe('string')
     expect(prediction!.winner.length).toBeGreaterThan(0)
   })
 
-  it('winnerProb esta estrictamente en (0, 1)', () => {
+  it('winnerProb is strictly in (0, 1)', () => {
     expect(prediction!.winnerProb).toBeGreaterThan(0)
     expect(prediction!.winnerProb).toBeLessThan(1)
   })
 
-  it('expectedGoals esta en [0.4, 7.0]', () => {
+  it('expectedGoals is in [0.4, 7.0]', () => {
     expect(prediction!.expectedGoals).toBeGreaterThanOrEqual(0.4)
     expect(prediction!.expectedGoals).toBeLessThanOrEqual(7.0)
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test suite 3: fixture scheduled Spain vs Haiti (equipo fuerte vs debil)
+// Test suite 3: scheduled Spain vs Haiti (strong team vs weak team)
 // ---------------------------------------------------------------------------
 
 describe('computePredictionsForFixture - Spain (id=9) vs Haiti (id=168)', () => {
   const fixture = makeFixture({ id: 1002, homeTeamId: SPAIN_ID, awayTeamId: HAITI_ID })
   const prediction = derivePrediction(fixture, byId)
 
-  it('prediction no es undefined', () => {
+  it('prediction is not undefined', () => {
     expect(prediction).toBeDefined()
   })
 
-  it('winnerProb esta estrictamente en (0, 1)', () => {
+  it('winnerProb is strictly in (0, 1)', () => {
     expect(prediction!.winnerProb).toBeGreaterThan(0)
     expect(prediction!.winnerProb).toBeLessThan(1)
   })
 
-  it('expectedGoals esta en [0.4, 7.0]', () => {
+  it('expectedGoals is in [0.4, 7.0]', () => {
     expect(prediction!.expectedGoals).toBeGreaterThanOrEqual(0.4)
     expect(prediction!.expectedGoals).toBeLessThanOrEqual(7.0)
   })
 
-  it('winner es string no vacio', () => {
+  it('winner is a non-empty string', () => {
     expect(typeof prediction!.winner).toBe('string')
     expect(prediction!.winner.length).toBeGreaterThan(0)
   })
 
-  it('winner predicho es Spain (equipo mas fuerte jugando como local)', () => {
-    // Spain (attackStrength ~1.4, defenseStrength ~0.55) vs Haiti (debil).
-    // Como local, Spain debe ser el winner predicho.
-    // FALLA si live-loader usa claves incorrectas y siempre devuelve 'Empate'.
+  it('predicted winner is Spain (stronger team playing at home)', () => {
+    // Spain (attackStrength ~1.4, defenseStrength ~0.55) vs Haiti (weak).
+    // As the home team, Spain must be the predicted winner.
+    // FAILS if live-loader uses wrong keys and always returns 'Draw'.
     expect(prediction!.winner).toBe('Spain')
   })
 
-  it('winnerProb de Spain es mayor que 0.5', () => {
-    // Con Spain local contra Haiti, su prob de ganar debe superar 50%.
-    // FALLA si el winner es 'Empate' (prob de empate < 50% en este matchup).
+  it('Spain winnerProb is greater than 0.5', () => {
+    // With Spain at home against Haiti, their win probability must exceed 50%.
+    // FAILS if the winner is 'Draw' (draw probability < 50% in this matchup).
     expect(prediction!.winnerProb).toBeGreaterThan(0.5)
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test suite 4: fixture finished produce prediction = undefined
+// Test suite 4: finished fixture produces prediction = undefined
 // ---------------------------------------------------------------------------
 
-describe('computePredictionsForFixture - fixture finished', () => {
+describe('computePredictionsForFixture - finished fixture', () => {
   const fixture = makeFixture({
     id: 1003,
     homeTeamId: SPAIN_ID,
@@ -198,66 +197,66 @@ describe('computePredictionsForFixture - fixture finished', () => {
     awayGoals: 0,
   })
 
-  it('computePredictionsForFixture devuelve array vacio para fixture finished', () => {
+  it('computePredictionsForFixture returns empty array for finished fixture', () => {
     const preds = computePredictionsForFixture(fixture, byId)
     expect(preds).toHaveLength(0)
   })
 
-  it('prediction derivada es undefined para fixture finished', () => {
+  it('derived prediction is undefined for finished fixture', () => {
     const prediction = derivePrediction(fixture, byId)
     expect(prediction).toBeUndefined()
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test suite 5: fixture sin equipos conocidos produce prediction = undefined
+// Test suite 5: fixture with unknown teams produces prediction = undefined
 // ---------------------------------------------------------------------------
 
-describe('computePredictionsForFixture - fixture con equipos desconocidos', () => {
+describe('computePredictionsForFixture - fixture with unknown teams', () => {
   const fixture = makeFixture({
     id: 1004,
     homeTeamId: 99999,
     awayTeamId: 88888,
   })
 
-  it('computePredictionsForFixture devuelve array vacio para equipos desconocidos', () => {
+  it('computePredictionsForFixture returns empty array for unknown teams', () => {
     const preds = computePredictionsForFixture(fixture, byId)
     expect(preds).toHaveLength(0)
   })
 
-  it('prediction derivada es undefined para equipos desconocidos', () => {
+  it('derived prediction is undefined for unknown teams', () => {
     const prediction = derivePrediction(fixture, byId)
     expect(prediction).toBeUndefined()
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test suite 6: sanity de outputs internos del modelo
+// Test suite 6: sanity checks on internal model outputs
 // ---------------------------------------------------------------------------
 
-describe('computePredictionsForFixture - sanity de outputs internos', () => {
+describe('computePredictionsForFixture - internal output sanity checks', () => {
   const fixture = makeFixture({ id: 1005, homeTeamId: SPAIN_ID, awayTeamId: HAITI_ID })
   const preds = computePredictionsForFixture(fixture, byId)
 
-  it('devuelve al menos los mercados result_1x2 y exact_score', () => {
+  it('returns at least result_1x2 and exact_score markets', () => {
     const markets = preds.map(p => p.market)
     expect(markets).toContain('result_1x2')
     expect(markets).toContain('exact_score')
   })
 
-  it('result_1x2 probabilities suman 1.0 +/- 0.001', () => {
+  it('result_1x2 probabilities sum to 1.0 +/- 0.001', () => {
     const r1x2 = preds.find(p => p.market === 'result_1x2')!
     const sum = Object.values(r1x2.probabilities).reduce((a, b) => a + b, 0)
     expect(Math.abs(sum - 1.0)).toBeLessThanOrEqual(0.001)
   })
 
-  it('exact_score probabilities suman 1.0 +/- 0.001', () => {
+  it('exact_score probabilities sum to 1.0 +/- 0.001', () => {
     const exactScore = preds.find(p => p.market === 'exact_score')!
     const sum = Object.values(exactScore.probabilities).reduce((a, b) => a + b, 0)
     expect(Math.abs(sum - 1.0)).toBeLessThanOrEqual(0.001)
   })
 
-  it('result_1x2 no tiene ninguna entrada exactamente en 0 o 1', () => {
+  it('result_1x2 has no probability exactly at 0 or 1', () => {
     const r1x2 = preds.find(p => p.market === 'result_1x2')!
     for (const [, prob] of Object.entries(r1x2.probabilities)) {
       expect(prob).toBeGreaterThan(0)
@@ -265,17 +264,17 @@ describe('computePredictionsForFixture - sanity de outputs internos', () => {
     }
   })
 
-  it('home > away para Spain local vs Haiti visitante', () => {
+  it('home > away for Spain at home vs Haiti away', () => {
     const r1x2 = preds.find(p => p.market === 'result_1x2')!
     expect(r1x2.probabilities['home']).toBeGreaterThan(r1x2.probabilities['away'])
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test suite 7: coherencia con equipos invertidos (Haiti local, Spain visitante)
+// Test suite 7: coherence with reversed teams (Haiti home, Spain away)
 // ---------------------------------------------------------------------------
 
-describe('computePredictionsForFixture - coherencia con equipos invertidos', () => {
+describe('computePredictionsForFixture - coherence with reversed teams', () => {
   const fixtureHaitiHome = makeFixture({
     id: 1006,
     homeTeamId: HAITI_ID,
@@ -284,11 +283,11 @@ describe('computePredictionsForFixture - coherencia con equipos invertidos', () 
   const preds = computePredictionsForFixture(fixtureHaitiHome, byId)
   const r1x2 = preds.find(p => p.market === 'result_1x2')!
 
-  it('Spain como visitante contra Haiti: away > home', () => {
+  it('Spain as away team vs Haiti: away > home', () => {
     expect(r1x2.probabilities['away']).toBeGreaterThan(r1x2.probabilities['home'])
   })
 
-  it('winner predicho es Spain cuando juega como visitante contra Haiti', () => {
+  it('predicted winner is Spain when playing away against Haiti', () => {
     const prediction = derivePrediction(fixtureHaitiHome, byId)
     expect(prediction!.winner).toBe('Spain')
   })

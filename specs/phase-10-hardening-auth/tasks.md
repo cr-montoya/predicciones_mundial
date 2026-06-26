@@ -1,20 +1,20 @@
-# Tasks: Fase 10 - Hardening y autenticacion
+# Tasks: Phase 10 - Hardening and Authentication
 
 ## Developer
 
-- [x] Implementar hash de passwords.
-- [x] Implementar JWT.
-- [x] Implementar rate limit.
-- [x] Agregar headers de seguridad.
-- [x] Crear seed/demo user si aplica.
+- [x] Implement password hashing.
+- [x] Implement JWT.
+- [x] Implement rate limiting.
+- [x] Add security headers.
+- [x] Create seed/demo user if applicable.
 
 ## QA
 
-- [x] Tests de auth.
-- [x] Tests de rate limiter.
+- [x] Auth tests.
+- [x] Rate limiter tests.
 
 ## Security
 
-- [x] Revisar secrets.
-- [x] Revisar headers.
-- [x] Revisar cookies/JWT.
+- [x] Review secrets.
+- [x] Review headers.
+- [x] Review cookies/JWT.

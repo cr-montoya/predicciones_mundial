@@ -1,29 +1,29 @@
-# Design: Fase 15 — Español LATAM y glosario de mercados
+# Design: Phase 15 — Latin American Spanish and Market Glossary
 
-## Enfoque
+## Approach
 
-Centralizar el lenguaje de mercados en un diccionario tipado y hacer que la UI consuma
-ese contenido desde un solo lugar. La fase debe mejorar comprensión sin meter ruido visual:
-la app sigue siendo una terminal broadcast, no una pantalla de ayuda.
+Centralize market language in a typed dictionary and have the UI consume that content
+from a single place. This phase should improve comprehension without adding visual noise:
+the app remains a broadcast terminal, not a help screen.
 
-## Arquitectura propuesta
+## Proposed Architecture
 
 ```
 lib/content/markets-es.ts
-   -> labels, descripciones, ejemplos, limitaciones
+   -> labels, descriptions, examples, limitations
 
 components/market-info.tsx
-   -> boton/info reutilizable
+   -> reusable info button
 
 components/market-section.tsx
 components/top-markets.tsx
 app/fixtures/[id]/page.tsx
-   -> consumen getMarketCopy(market)
+   -> consume getMarketCopy(market)
 ```
 
-## Diccionario de mercados
+## Market Dictionary
 
-Crear un contrato tipo:
+Create a contract like:
 
 ```ts
 export interface MarketCopy {
@@ -46,52 +46,52 @@ export type MarketCopyKey =
   | 'scorers'
 ```
 
-El diccionario debe cubrir los mercados actuales aunque algunos todavía no estén visibles.
-Esto evita re-trabajo en Fase 16.
+The dictionary must cover current markets even if some are not yet visible.
+This avoids rework in Phase 16.
 
-## Copy base sugerido
+## Suggested Base Copy
 
-- `1X2`: Resultado del partido.
-- `Doble oportunidad`: Dos resultados cubiertos en una misma lectura.
-- `Más/Menos goles`: Probabilidad de que el partido supere o no una línea de goles.
-- `Ambos marcan`: Probabilidad de que los dos equipos anoten al menos un gol.
-- `Marcador exacto`: Marcadores más probables según la matriz Poisson.
-- `Gana a cero`: Equipo gana y no recibe goles.
-- `Tarjetas`: Estimación de disciplina; confianza usualmente más baja.
-- `Corners`: Estimación de tiros de esquina; depende mucho del estilo del partido.
-- `Goleadores`: Probabilidad asociada a jugadores, minutos esperados y lambda del equipo.
+- `1X2`: Match result.
+- `Double chance`: Two outcomes covered in a single reading.
+- `Over/Under goals`: Probability that the match will exceed or not exceed a goal line.
+- `Both teams score`: Probability that both teams score at least one goal.
+- `Exact score`: Most likely scorelines according to the Poisson matrix.
+- `Win to nil`: Team wins and concedes no goals.
+- `Cards`: Discipline estimate; confidence usually lower.
+- `Corners`: Corner estimate; highly dependent on match style.
+- `Top scorers`: Probability associated with players, expected minutes, and team lambda.
 
-## Componente de info
+## Info Component
 
-El patrón recomendado:
+Recommended pattern:
 
-- Botón con icono `i` o `?` pequeño.
-- En desktop: popover/tooltip junto al título del mercado.
-- En mobile: panel compacto debajo del header de sección o dialog ligero si ya existe patrón.
-- Cerrar con click fuera o botón.
-- Sin texto largo visible por defecto.
+- Small `i` or `?` icon button.
+- On desktop: popover/tooltip next to the market title.
+- On mobile: compact panel below the section header or a lightweight dialog if a pattern already exists.
+- Close with click outside or a button.
+- No long text visible by default.
 
-## Formato y localización
+## Formatting and Localization
 
-Crear helpers si hace falta:
+Create helpers if needed:
 
 - `formatPercent(value)`.
 - `formatLocalTime(iso, locale = 'es-CO')`.
 - `formatLocalDate(iso, locale = 'es-CO')`.
 
-Evitar formatos mezclados dentro de componentes.
+Avoid mixed formats inside components.
 
-## UX y diseño
+## UX and Design
 
-- Mantener jerarquía de datos: primero probabilidad, luego explicación.
-- El info button no debe competir con el número principal.
-- Las explicaciones deben ser de 1-3 frases.
-- No usar lenguaje tipo "apuesta segura", "garantizado" o "recomendado".
-- Mantener disclaimer de entretenimiento visible.
+- Maintain data hierarchy: probability first, then explanation.
+- The info button must not compete with the main number.
+- Explanations should be 1–3 sentences.
+- Do not use language like "safe bet", "guaranteed", or "recommended".
+- Keep the entertainment disclaimer visible.
 
-## Impacto esperado
+## Expected Impact
 
-Archivos probables:
+Probable files:
 
 - `lib/content/markets-es.ts`
 - `components/market-info.tsx`
@@ -103,23 +103,23 @@ Archivos probables:
 - `app/fixtures/[id]/page.tsx`
 - `app/groups/page.tsx`
 
-## Riesgos
+## Risks
 
-### Client components innecesarios
+### Unnecessary Client Components
 
-El popover puede forzar `"use client"` en componentes grandes.
+The popover may force `"use client"` on large components.
 
-Mitigación: aislar interactividad en `MarketInfo`.
+Mitigation: isolate interactivity in `MarketInfo`.
 
-### Copy demasiado largo
+### Copy Too Long
 
-Puede romper el layout mobile.
+May break mobile layout.
 
-Mitigación: copy compacto, truncado visual controlado y revisión responsive.
+Mitigation: compact copy, controlled visual truncation, and responsive review.
 
-### Traducción incompleta
+### Incomplete Translation
 
-Pueden quedar strings sueltos en inglés.
+Loose English strings may remain.
 
-Mitigación: QA con búsqueda por strings conocidos: `Over`, `Under`, `Draw`, `Home`,
+Mitigation: QA search for known strings: `Over`, `Under`, `Draw`, `Home`,
 `Away`, `BTTS`, `Clean sheet`, `Winner`.

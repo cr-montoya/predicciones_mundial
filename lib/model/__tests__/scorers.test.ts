@@ -23,10 +23,10 @@ function sumProbs(probs: Record<string, number>): number {
 }
 
 // ---------------------------------------------------------------------------
-// Test 1: Lineup completo — todos titulares confirmados
+// Test 1: Full lineup — all confirmed starters
 // ---------------------------------------------------------------------------
 
-describe('buildScorerOutputs — lineup completo, todos titulares', () => {
+describe('buildScorerOutputs — full lineup, all starters', () => {
   const homeInputs: PlayerScorerInput[] = [
     makeInput({ playerId: 1, teamId: 1, goalsPerMinute: 0.02 }),
     makeInput({ playerId: 2, teamId: 1, goalsPerMinute: 0.01 }),
@@ -44,16 +44,16 @@ describe('buildScorerOutputs — lineup completo, todos titulares', () => {
     'medium'
   )
 
-  it('anytimeScorer.confidence es "medium"', () => {
+  it('anytimeScorer.confidence is "medium"', () => {
     expect(anytimeScorer.confidence).toBe('medium')
   })
 
-  it('modelVersion es "1.1"', () => {
+  it('modelVersion is "1.1"', () => {
     expect(anytimeScorer.modelVersion).toBe('1.1')
     expect(firstScorer.modelVersion).toBe('1.1')
   })
 
-  it('anytime_scorer: todas las probabilidades estan en (0, 1)', () => {
+  it('anytime_scorer: all probabilities are in (0, 1)', () => {
     const entries = Object.entries(anytimeScorer.probabilities)
     expect(entries.length).toBeGreaterThan(0)
     for (const [, prob] of entries) {
@@ -62,7 +62,7 @@ describe('buildScorerOutputs — lineup completo, todos titulares', () => {
     }
   })
 
-  it('anytime_scorer: los 4 jugadores aparecen en probabilities', () => {
+  it('anytime_scorer: all 4 players appear in probabilities', () => {
     const keys = Object.keys(anytimeScorer.probabilities)
     expect(keys).toContain('1_Player1')
     expect(keys).toContain('2_Player2')
@@ -70,21 +70,21 @@ describe('buildScorerOutputs — lineup completo, todos titulares', () => {
     expect(keys).toContain('4_Player4')
   })
 
-  it('first_scorer: suma de probabilidades (incluyendo no_scorer) ≈ 1.0 (±0.001)', () => {
+  it('first_scorer: sum of probabilities (including no_scorer) ≈ 1.0 (±0.001)', () => {
     const total = sumProbs(firstScorer.probabilities)
     expect(Math.abs(total - 1.0)).toBeLessThanOrEqual(0.001)
   })
 
-  it('first_scorer: no_scorer esta presente', () => {
+  it('first_scorer: no_scorer is present', () => {
     expect(firstScorer.probabilities).toHaveProperty('no_scorer')
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test 2: Sin lineup — fallback por posicion (starterProbability parcial)
+// Test 2: No lineup — position-based fallback (partial starterProbability)
 // ---------------------------------------------------------------------------
 
-describe('buildScorerOutputs — sin lineup, fallback por posicion', () => {
+describe('buildScorerOutputs — no lineup, position-based fallback', () => {
   const homeInputs: PlayerScorerInput[] = [
     makeInput({
       playerId: 10,
@@ -112,16 +112,16 @@ describe('buildScorerOutputs — sin lineup, fallback por posicion', () => {
     'low'
   )
 
-  it('anytimeScorer.confidence es "low"', () => {
+  it('anytimeScorer.confidence is "low"', () => {
     expect(anytimeScorer.confidence).toBe('low')
   })
 
-  it('anytime_scorer: ambos jugadores aparecen en probabilities', () => {
+  it('anytime_scorer: both players appear in probabilities', () => {
     expect(anytimeScorer.probabilities).toHaveProperty('10_Player10')
     expect(anytimeScorer.probabilities).toHaveProperty('20_Player20')
   })
 
-  it('anytime_scorer: FW (sp=0.7) tiene mayor probabilidad que MF (sp=0.5)', () => {
+  it('anytime_scorer: FW (sp=0.7) has higher probability than MF (sp=0.5)', () => {
     const pFW = anytimeScorer.probabilities['10_Player10']
     const pMF = anytimeScorer.probabilities['20_Player20']
     // Same lambda for both teams but FW has higher starterProbability
@@ -131,17 +131,17 @@ describe('buildScorerOutputs — sin lineup, fallback por posicion', () => {
     expect(pFW).toBeGreaterThan(pMF)
   })
 
-  it('first_scorer: suma de probabilidades ≈ 1.0 (±0.001)', () => {
+  it('first_scorer: sum of probabilities ≈ 1.0 (±0.001)', () => {
     const total = sumProbs(firstScorer.probabilities)
     expect(Math.abs(total - 1.0)).toBeLessThanOrEqual(0.001)
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test 3: Jugador lesionado excluido (starterProbability: 0.0)
+// Test 3: Injured player excluded (starterProbability: 0.0)
 // ---------------------------------------------------------------------------
 
-describe('buildScorerOutputs — jugador lesionado excluido', () => {
+describe('buildScorerOutputs — injured player excluded', () => {
   const homeInputs: PlayerScorerInput[] = [
     makeInput({
       playerId: 30,
@@ -170,35 +170,35 @@ describe('buildScorerOutputs — jugador lesionado excluido', () => {
     'medium'
   )
 
-  it('anytime_scorer: el jugador con sp=0 NO aparece en probabilities', () => {
+  it('anytime_scorer: player with sp=0 does NOT appear in probabilities', () => {
     const keys = Object.keys(anytimeScorer.probabilities)
     expect(keys).not.toContain('30_Player30')
   })
 
-  it('anytime_scorer: el jugador activo (sp=1.0) SI aparece en probabilities', () => {
+  it('anytime_scorer: active player (sp=1.0) DOES appear in probabilities', () => {
     expect(anytimeScorer.probabilities).toHaveProperty('31_Player31')
   })
 
-  it('anytime_scorer: el jugador lesionado tiene effectiveRate=0 y es excluido sin error', () => {
+  it('anytime_scorer: injured player has effectiveRate=0 and is excluded without error', () => {
     expect(() =>
       buildScorerOutputs(homeInputs, awayInputs, 1.4, 1.1, 'medium')
     ).not.toThrow()
   })
 
-  it('first_scorer: suma de probabilidades ≈ 1.0 (±0.001)', () => {
+  it('first_scorer: sum of probabilities ≈ 1.0 (±0.001)', () => {
     const total = sumProbs(firstScorer.probabilities)
     expect(Math.abs(total - 1.0)).toBeLessThanOrEqual(0.001)
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test 4: Guard de denominador — todos los jugadores con starterProbability=0
+// Test 4: Denominator guard — all players with starterProbability=0
 // ---------------------------------------------------------------------------
 
-describe('buildScorerOutputs — guard denom=0, todos sp=0', () => {
-  // Todos sp=0 => effectiveRate=0 para todos => denom=0 => fallback a goalsPerMinute
-  // Pero en buildAnytime/buildFirst, "if (er === 0) continue" sigue activo,
-  // asi que los jugadores NO aparecen en probs. firstScorer tendra no_scorer=1.0
+describe('buildScorerOutputs — denominator guard, all sp=0', () => {
+  // All sp=0 => effectiveRate=0 for all => denom=0 => fallback to goalsPerMinute
+  // But in buildAnytime/buildFirst "if (er === 0) continue" is still active,
+  // so players do NOT appear in probs. firstScorer will have no_scorer=1.0
   const homeInputs: PlayerScorerInput[] = [
     makeInput({
       playerId: 50,
@@ -227,13 +227,13 @@ describe('buildScorerOutputs — guard denom=0, todos sp=0', () => {
 
   let result: ReturnType<typeof buildScorerOutputs>
 
-  it('no lanza durante buildScorerOutputs (sin errores de guard)', () => {
+  it('does not throw during buildScorerOutputs (no guard errors)', () => {
     expect(() => {
       result = buildScorerOutputs(homeInputs, awayInputs, 1.2, 1.0, 'low')
     }).not.toThrow()
   })
 
-  it('no hay NaN ni Infinity en anytime_scorer probabilities', () => {
+  it('no NaN or Infinity in anytime_scorer probabilities', () => {
     result = buildScorerOutputs(homeInputs, awayInputs, 1.2, 1.0, 'low')
     for (const [, prob] of Object.entries(result.anytimeScorer.probabilities)) {
       expect(Number.isNaN(prob)).toBe(false)
@@ -241,7 +241,7 @@ describe('buildScorerOutputs — guard denom=0, todos sp=0', () => {
     }
   })
 
-  it('no hay NaN ni Infinity en first_scorer probabilities', () => {
+  it('no NaN or Infinity in first_scorer probabilities', () => {
     result = buildScorerOutputs(homeInputs, awayInputs, 1.2, 1.0, 'low')
     for (const [, prob] of Object.entries(result.firstScorer.probabilities)) {
       expect(Number.isNaN(prob)).toBe(false)
@@ -249,16 +249,16 @@ describe('buildScorerOutputs — guard denom=0, todos sp=0', () => {
     }
   })
 
-  it('first_scorer: suma de probabilidades ≈ 1.0 (±0.001)', () => {
+  it('first_scorer: sum of probabilities ≈ 1.0 (±0.001)', () => {
     result = buildScorerOutputs(homeInputs, awayInputs, 1.2, 1.0, 'low')
     const total = sumProbs(result.firstScorer.probabilities)
     expect(Math.abs(total - 1.0)).toBeLessThanOrEqual(0.001)
   })
 
-  it('comportamiento observado: jugadores con sp=0 no aparecen en anytime_scorer (effectiveRate=0 los excluye)', () => {
+  it('observed behavior: players with sp=0 do not appear in anytime_scorer (effectiveRate=0 filters them out)', () => {
     result = buildScorerOutputs(homeInputs, awayInputs, 1.2, 1.0, 'low')
-    // Con sp=0, effectiveRate=0 => el guard "if (er === 0) continue" los filtra
-    // aunque buildWeights haga fallback a goalsPerMinute internamente
+    // With sp=0, effectiveRate=0 => the guard "if (er === 0) continue" filters them
+    // even if buildWeights falls back to goalsPerMinute internally
     const keys = Object.keys(result.anytimeScorer.probabilities)
     expect(keys).not.toContain('50_Player50')
     expect(keys).not.toContain('51_Player51')
@@ -267,42 +267,42 @@ describe('buildScorerOutputs — guard denom=0, todos sp=0', () => {
 })
 
 // ---------------------------------------------------------------------------
-// Test 5: emptyOutput — arrays vacios en home y away
+// Test 5: emptyOutput — empty home and away arrays
 // ---------------------------------------------------------------------------
 
-describe('buildScorerOutputs — arrays vacios (emptyOutput)', () => {
+describe('buildScorerOutputs — empty arrays (emptyOutput)', () => {
   const { anytimeScorer, firstScorer } = buildScorerOutputs([], [], 1.3, 1.1, 'low')
 
-  it('anytime_scorer.probabilities esta vacio', () => {
+  it('anytime_scorer.probabilities is empty', () => {
     expect(Object.keys(anytimeScorer.probabilities).length).toBe(0)
   })
 
-  it('first_scorer.probabilities esta vacio', () => {
+  it('first_scorer.probabilities is empty', () => {
     expect(Object.keys(firstScorer.probabilities).length).toBe(0)
   })
 
-  it('anytime_scorer.confidence es "low"', () => {
+  it('anytime_scorer.confidence is "low"', () => {
     expect(anytimeScorer.confidence).toBe('low')
   })
 
-  it('first_scorer.confidence es "low"', () => {
+  it('first_scorer.confidence is "low"', () => {
     expect(firstScorer.confidence).toBe('low')
   })
 
-  it('anytime_scorer.market es "anytime_scorer"', () => {
+  it('anytime_scorer.market is "anytime_scorer"', () => {
     expect(anytimeScorer.market).toBe('anytime_scorer')
   })
 
-  it('first_scorer.market es "first_scorer"', () => {
+  it('first_scorer.market is "first_scorer"', () => {
     expect(firstScorer.market).toBe('first_scorer')
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test 6 (bonus): eligibleInputs — jugadores con goalsPerMinute=0 son excluidos
+// Test 6 (bonus): eligibleInputs — players with goalsPerMinute=0 are excluded
 // ---------------------------------------------------------------------------
 
-describe('buildScorerOutputs — goalsPerMinute=0 excluye jugadores antes de calcular', () => {
+describe('buildScorerOutputs — goalsPerMinute=0 excludes players before calculation', () => {
   const homeInputs: PlayerScorerInput[] = [
     makeInput({ playerId: 70, teamId: 1, goalsPerMinute: 0.0, starterProbability: 1.0, lineupStatus: 'confirmed_starter' }),
   ]
@@ -318,15 +318,15 @@ describe('buildScorerOutputs — goalsPerMinute=0 excluye jugadores antes de cal
     'low'
   )
 
-  it('anytime_scorer: jugador con goalsPerMinute=0 no aparece', () => {
+  it('anytime_scorer: player with goalsPerMinute=0 does not appear', () => {
     expect(anytimeScorer.probabilities).not.toHaveProperty('70_Player70')
   })
 
-  it('anytime_scorer: jugador activo SI aparece', () => {
+  it('anytime_scorer: active player DOES appear', () => {
     expect(anytimeScorer.probabilities).toHaveProperty('80_Player80')
   })
 
-  it('first_scorer: suma ≈ 1.0 (±0.001)', () => {
+  it('first_scorer: sum ≈ 1.0 (±0.001)', () => {
     const total = sumProbs(firstScorer.probabilities)
     expect(Math.abs(total - 1.0)).toBeLessThanOrEqual(0.001)
   })

@@ -33,19 +33,19 @@ export type AgentName = 'cli_refresh' | 'server_action'
 
 export interface RunLog {
   id?: number
-  /** Quien dispara la corrida: el script CLI (pnpm refresh) o el Server Action. */
+  /** Who triggered the run: the CLI script (pnpm refresh) or the Server Action. */
   agentName: AgentName
   startedAt: string
-  /** null mientras la corrida esta en curso ('running'); se completa al terminar. */
+  /** null while the run is in progress ('running'); set when the run completes. */
   finishedAt: string | null
   durationMs: number | null
   /**
-   * 'running' al insertar la fila al inicio del refresh; se actualiza a 'ok' o
-   * 'error' al terminar. Una fila que queda en 'running' indica un proceso que
-   * murio a mitad. La guarda de frescura solo cuenta corridas 'ok'.
+   * 'running' when the row is inserted at the start of the refresh; updated to
+   * 'ok' or 'error' when it finishes. A row stuck in 'running' indicates a
+   * process that died mid-run. The freshness guard only counts 'ok' runs.
    */
   status: 'ok' | 'error' | 'running'
-  /** null cuando status IN ('ok', 'running'); descripcion de la excepcion cuando 'error'. */
+  /** null when status IN ('ok', 'running'); exception description when 'error'. */
   message: string | null
 }
 
@@ -68,8 +68,8 @@ export function sanityCheck(output: ModelOutput): void {
 }
 
 // ---------------------------------------------------------------------------
-// Entidades de dominio (normalizadas desde DB, nunca respuesta cruda de API).
-// Estas son las que consume el modelo de predicción en lib/model/.
+// Domain entities (normalized from DB, never raw API responses).
+// These are consumed by the prediction model in lib/model/.
 // ---------------------------------------------------------------------------
 
 export type FixtureStatus = 'scheduled' | 'live' | 'finished'
@@ -83,60 +83,60 @@ export type MatchEventType =
   | 'substitution'
 
 /**
- * Selección del torneo. Los campos attackStrength / defenseStrength son los
- * coeficientes que alimentan el cálculo de lambda en el modelo de Poisson.
+ * Tournament team. The attackStrength / defenseStrength fields are the
+ * coefficients that feed the lambda calculation in the Poisson model.
  *
- * Convención de las fuerzas: ratios relativos a la media de la liga/torneo,
- * centrados en 1.0. attackStrength > 1 => marca más goles que la media;
- * defenseStrength > 1 => concede más goles que la media (peor defensa).
- * lambdaHome y lambdaAway se derivan combinando estas fuerzas con la media
- * de goles del torneo y homeAdvantage. Rango esperado de los coeficientes:
- * [0.3, 3.0]; lambda resultante esperado en [0.5, 3.5].
+ * Strength convention: ratios relative to the league/tournament mean, centered
+ * at 1.0. attackStrength > 1 => scores more goals than average;
+ * defenseStrength > 1 => concedes more goals than average (worse defense).
+ * lambdaHome and lambdaAway are derived by combining these strengths with the
+ * tournament goal mean and homeAdvantage. Expected coefficient range: [0.3, 3.0];
+ * expected resulting lambda: [0.5, 3.5].
  */
 export interface Team {
   id: number
   name: string
-  /** Grupo del Mundial 2026: 'A'..'L' (12 grupos). */
+  /** World Cup 2026 group: 'A'..'L' (12 groups). */
   group: string
-  /** Ranking FIFA oficial. Puede faltar para algún equipo recién clasificado. */
+  /** Official FIFA ranking. May be absent for a recently qualified team. */
   fifaRanking: number | null
-  /** Coeficiente ofensivo relativo a la media (~1.0). */
+  /** Offensive coefficient relative to the mean (~1.0). */
   attackStrength: number
-  /** Coeficiente defensivo relativo a la media (~1.0). Mayor = peor defensa. */
+  /** Defensive coefficient relative to the mean (~1.0). Higher = worse defense. */
   defenseStrength: number
   /**
-   * Multiplicador de ventaja de localía aplicado al lambda del equipo local
-   * (~1.0 = sin ventaja). En Mundial casi todos juegan en campo neutral salvo
-   * los anfitriones (USA, Canadá, México), por eso es por equipo.
+   * Home advantage multiplier applied to the home team lambda (~1.0 = no
+   * advantage). At the World Cup almost all games are on neutral ground except
+   * for the hosts (USA, Canada, Mexico), hence this is per-team.
    */
   homeAdvantage: number
   /**
-   * Forma reciente: factor multiplicativo derivado de los últimos 5-10
-   * partidos (~1.0 = en forma media). Opcional hasta que haya historial.
+   * Recent form: multiplicative factor derived from the last 5-10 matches
+   * (~1.0 = average form). Optional until historical data is available.
    */
   recentForm: number | null
-  /** Goles a favor promedio por partido (histórico). Alimenta las fuerzas. */
+  /** Average goals scored per match (historical). Feeds the strength coefficients. */
   avgGoalsScored: number | null
-  /** Goles en contra promedio por partido (histórico). */
+  /** Average goals conceded per match (historical). */
   avgGoalsConceded: number | null
 }
 
 /**
- * Jugador. goalsPerMinute se usa para repartir el lambda del equipo entre
- * los jugadores y proyectar goleador / primer goleador.
+ * Player. goalsPerMinute is used to distribute the team lambda across players
+ * and project top scorer / first scorer markets.
  */
 export interface Player {
   id: number
   teamId: number
   name: string
   position: PlayerPosition
-  /** Goles anotados en el periodo histórico considerado. */
+  /** Goals scored in the historical period considered. */
   goalsScored: number
-  /** Minutos jugados en el mismo periodo. 0 si no ha jugado. */
+  /** Minutes played in the same period. 0 if the player has not played. */
   minutesPlayed: number
   /**
-   * Tasa goles/minuto = goalsScored / minutesPlayed. Almacenada para evitar
-   * división por cero en consumo; null si minutesPlayed es 0 (sin muestra).
+   * Goals-per-minute rate = goalsScored / minutesPlayed. Stored pre-computed to
+   * avoid division-by-zero at consumption; null when minutesPlayed is 0 (no sample).
    */
   goalsPerMinute: number | null
 }
@@ -183,27 +183,27 @@ export interface PlayerInjuryData {
 }
 
 /**
- * Partido del torneo. homeGoals / awayGoals son null mientras el partido no
- * haya terminado (status !== 'finished').
+ * Tournament match. homeGoals / awayGoals are null until the match has
+ * finished (status !== 'finished').
  */
 export interface Fixture {
   id: number
   homeTeamId: number
   awayTeamId: number
-  /** Hora de inicio en UTC, ISO 8601. */
+  /** Kickoff time in UTC, ISO 8601. */
   kickoffUtc: string
   status: FixtureStatus
-  /** null hasta que el partido empieza/termina y se conoce el marcador. */
+  /** null until the match starts/finishes and the score is known. */
   homeGoals: number | null
   awayGoals: number | null
-  /** Fase / ronda: 'group', 'round_of_32', ... Opcional. */
+  /** Stage / round: 'group', 'round_of_32', ... Optional. */
   round: string | null
 }
 
 /**
- * Estadísticas agregadas de un equipo en un partido concreto. Alimenta los
- * modelos de corners y tarjetas (regresión sobre promedios históricos).
- * Una fila por (fixtureId, teamId): dos filas por partido.
+ * Aggregated stats for a team in a specific match. Feeds the corners and
+ * cards models (regression over historical averages).
+ * One row per (fixtureId, teamId): two rows per match.
  */
 export interface MatchStats {
   fixtureId: number
@@ -212,13 +212,13 @@ export interface MatchStats {
   yellowCards: number | null
   redCards: number | null
   shotsOnTarget: number | null
-  /** Posesión en porcentaje [0, 100]. */
+  /** Possession as a percentage [0, 100]. */
   possession: number | null
 }
 
 /**
- * Evento individual de un partido (timeline). playerId es null para eventos
- * sin jugador identificado (p. ej. dato incompleto de la API).
+ * Individual match event (timeline). playerId is null for events without
+ * an identified player (e.g. incomplete data from the API).
  */
 export interface MatchEvent {
   id: number
@@ -226,6 +226,6 @@ export interface MatchEvent {
   type: MatchEventType
   teamId: number
   playerId: number | null
-  /** Minuto del partido [1, 120]. */
+  /** Match minute [1, 120]. */
   minute: number
 }

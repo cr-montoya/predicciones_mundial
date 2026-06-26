@@ -1,24 +1,24 @@
-# Requirements: Fase 14 - Sistema visual con agente Design
+# Requirements: Phase 14 - Visual System with Design Agent
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Consolidar sistema visual broadcast y agregar agente Design al harness.
+Consolidate the broadcast visual system and add the Design agent to the harness.
 
-## Requerimientos
+## Requirements
 
-1. Crear `.claude/agents/design.md`.
-2. Definir tokens visuales globales.
-3. Redisenar UI con look broadcast consistente.
-4. Mejorar responsive.
-5. Mantener contratos estadisticos sin cambios.
-6. Integrar Design al flujo de verificacion.
+1. Create `.claude/agents/design.md`.
+2. Define global visual tokens.
+3. Redesign UI with a consistent broadcast look.
+4. Improve responsive behavior.
+5. Keep statistical contracts unchanged.
+6. Integrate Design into the verification flow.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Design aprobado sin bloqueantes.
-2. UI coherente entre home, fixtures, grupos y detalle.
-3. `pnpm build` y `pnpm test` pasan.
+1. Design approved without blockers.
+2. UI is coherent across home, fixtures, groups, and detail.
+3. `pnpm build` and `pnpm test` pass.

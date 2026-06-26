@@ -25,65 +25,63 @@ completed
 
 ## Objective
 
-Corregir dos problemas de visualización de banderas en la app:
+Fix two flag display problems in the app:
 
-1. **Jugadores con bandera**: los candidatos a la Bota de Oro muestran la bandera de
-   su país junto al nombre. Los jugadores no deben tener bandera; la bandera aplica
-   solo a equipos/selecciones.
-2. **Países sin bandera**: Cabo Verde (Cape Verde Islands), Jordan y Congo DR aparecen
-   sin bandera porque sus nombres en `teams-seed.ts` no coinciden con las entradas de
-   `lib/utils/flags.ts` o directamente no existen.
+1. **Players with flag**: Golden Boot candidates show their country flag next to the name.
+   Players should not have a flag; flags apply only to teams/national sides.
+2. **Countries without flag**: Cape Verde Islands, Jordan, and Congo DR appear without
+   a flag because their names in `teams-seed.ts` do not match entries in
+   `lib/utils/flags.ts` or simply do not exist there.
 
-## Contexto
+## Context
 
-`lib/utils/flags.ts` define el mapa `FLAGS` que incluye tanto nombres de selecciones
-como nombres de jugadores individuales (Mbappé, Messi, Ronaldo, etc.).
+`lib/utils/flags.ts` defines the `FLAGS` map which includes both national team names
+and individual player names (Mbappé, Messi, Ronaldo, etc.).
 
-El componente `components/candidates.tsx` llama `getFlag(name)` con el nombre del
-jugador para mostrar la bandera en la sección "Candidatos a Bota de Oro". Esto hace
-que jugadores conocidos muestren la bandera de su país, lo que es incorrecto: el ranking
-es de jugadores individuales, no de selecciones.
+The component `components/candidates.tsx` calls `getFlag(name)` with the player name
+to show the flag in the "Golden Boot Candidates" section. This causes well-known players
+to show their country flag, which is incorrect: the ranking is of individual players,
+not national sides.
 
-Respecto a los países sin bandera, el nombre canónico en `teams-seed.ts` es:
-- `"Cape Verde Islands"` → FLAGS tiene `"Cape Verde"` (mismatch)
-- `"Jordan"` → no existe en FLAGS
-- `"Congo DR"` → no existe en FLAGS
+Regarding countries without flags, the canonical name in `teams-seed.ts` is:
+- `"Cape Verde Islands"` → FLAGS has `"Cape Verde"` (mismatch)
+- `"Jordan"` → does not exist in FLAGS
+- `"Congo DR"` → does not exist in FLAGS
 
 ## Scope
 
-- Eliminar todas las entradas de jugadores individuales del mapa FLAGS en
-  `lib/utils/flags.ts`.
-- Agregar entrada `"Cape Verde Islands": '🇨🇻'` a FLAGS (o corregir la existente).
-- Agregar entrada `"Jordan": '🇯🇴'` a FLAGS.
-- Agregar entrada `"Congo DR": '🇨🇩'` a FLAGS.
+- Remove all individual player entries from the FLAGS map in `lib/utils/flags.ts`.
+- Add entry `"Cape Verde Islands": '🇨🇻'` to FLAGS (or fix the existing one).
+- Add entry `"Jordan": '🇯🇴'` to FLAGS.
+- Add entry `"Congo DR": '🇨🇩'` to FLAGS.
 
 ## Out of Scope
 
-- Cambiar la lógica de cómo se muestra la bandera en `candidates.tsx` (solo se
-  beneficia del fix al eliminar entradas de jugadores en FLAGS).
-- Agregar banderas a componentes que hoy no las muestran.
-- Arreglar nombres de equipos en otras partes del código.
+- Changing the flag display logic in `candidates.tsx` (it simply benefits from the fix
+  when player entries are removed from FLAGS).
+- Adding flags to components that do not show them today.
+- Fixing team names in other parts of the code.
 
 ## Requirements
 
-1. Ningún jugador individual aparece con bandera en la sección "Candidatos a Bota
-   de Oro" de la home.
-2. Cabo Verde (Cape Verde Islands), Jordan y Congo DR muestran su bandera correcta
-   en la tabla de grupos y en la lista de fixtures.
-3. El resto de las banderas existentes no se ven afectadas.
+1. No individual player appears with a flag in the "Golden Boot Candidates" section
+   of the home.
+2. Cape Verde Islands, Jordan, and Congo DR show their correct flag in the groups
+   table and in the fixtures list.
+3. All other existing flags are not affected.
 
 ## Acceptance Criteria
 
-- [ ] Candidatos a Bota de Oro: ningún jugador muestra bandera.
-- [ ] Tabla de grupos grupo H: Cape Verde Islands muestra 🇨🇻.
-- [ ] Tabla de grupos grupo J: Jordan muestra 🇯🇴.
-- [ ] Tabla de grupos grupo K: Congo DR muestra 🇨🇩.
-- [ ] `pnpm tsc --noEmit` pasa.
-- [ ] `pnpm test` pasa.
+- [ ] Golden Boot Candidates: no player shows a flag.
+- [ ] Group table group H: Cape Verde Islands shows 🇨🇻.
+- [ ] Group table group J: Jordan shows 🇯🇴.
+- [ ] Group table group K: Congo DR shows 🇨🇩.
+- [ ] `pnpm tsc --noEmit` passes.
+- [ ] `pnpm test` passes.
 
 ## Risks and Assumptions
 
-- Eliminar las entradas de jugadores de FLAGS no afecta nada más; `candidates.tsx`
-  simplemente no renderizará el `<span>` de bandera cuando `flag` sea `''`.
-- Si en el futuro se quiere agregar banderas a jugadores, se debe hacer desde el
-  componente que los muestra (pasando el teamId del jugador), no desde FLAGS.
+- Removing player entries from FLAGS does not affect anything else; `candidates.tsx`
+  simply will not render the flag `<span>` when `flag` is `''`.
+- If in the future flags are desired for players, it must be done from the component
+  that displays them (passing the player's teamId), not from FLAGS.

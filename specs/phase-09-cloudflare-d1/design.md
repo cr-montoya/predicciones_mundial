@@ -1,6 +1,6 @@
-# Design: Fase 9 - Cloudflare D1
+# Design: Phase 9 - Cloudflare D1
 
-## Arquitectura historica propuesta
+## Historical Proposed Architecture
 
 ```
 Next.js
@@ -9,19 +9,19 @@ Next.js
    -> wrangler secrets
 ```
 
-## Componentes historicos
+## Historical Components
 
 - `wrangler.toml`.
 - `CLOUDFLARE_DEPLOYMENT.md`.
 - `data/mundial-seed.sql`.
-- Binding `DB`.
+- `DB` binding.
 
-## Nota vigente
+## Current Note
 
-Produccion actual vive en Vercel ISR. D1/Workers queda como opcion futura si se decide volver a Cloudflare runtime.
+Current production lives on Vercel ISR. D1/Workers remains as a future option if a return to Cloudflare runtime is decided.
 
-## Riesgos historicos
+## Historical Risks
 
-- Incompatibilidad con filesystem.
-- Duplicidad entre SQLite local y D1.
-- Complejidad innecesaria para una app mayormente ISR.
+- Incompatibility with filesystem.
+- Duplication between local SQLite and D1.
+- Unnecessary complexity for an app that is mostly ISR-based.

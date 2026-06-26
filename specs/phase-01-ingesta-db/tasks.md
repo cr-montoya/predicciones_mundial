@@ -1,20 +1,20 @@
-# Tasks: Fase 1 - Ingesta y DB
+# Tasks: Phase 1 - Ingestion and DB
 
 ## Developer
 
-- [x] Crear schema SQLite.
-- [x] Implementar providers de datos.
-- [x] Implementar normalizadores.
-- [x] Crear seed de equipos.
-- [x] Crear scripts de seed/refresh inicial.
+- [x] Create SQLite schema.
+- [x] Implement data providers.
+- [x] Implement normalizers.
+- [x] Create team seed.
+- [x] Create initial seed/refresh scripts.
 
 ## QA
 
-- [x] Tests de normalizadores.
-- [x] Tests de fallback.
-- [x] Tests de seed de equipos.
+- [x] Tests for normalizers.
+- [x] Tests for fallback.
+- [x] Tests for team seed.
 
 ## Reviewer
 
-- [x] Confirmar que modelos no importan providers.
-- [x] Confirmar que secrets no estan hardcodeados.
+- [x] Confirm models do not import providers.
+- [x] Confirm secrets are not hardcoded.

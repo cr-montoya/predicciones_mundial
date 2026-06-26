@@ -1,17 +1,17 @@
-# Tasks: Fase 3 - Refresh bajo demanda
+# Tasks: Phase 3 - On-Demand Refresh
 
 ## Developer
 
-- [x] Crear `scripts/refresh.ts`.
-- [x] Reutilizar logica de agents.
-- [x] Agregar guarda de frescura.
-- [x] Registrar timestamp de actualizacion.
+- [x] Create `scripts/refresh.ts`.
+- [x] Reuse agent logic.
+- [x] Add freshness guard.
+- [x] Record update timestamp.
 
 ## QA
 
-- [x] Validar refresh sin llamadas excesivas.
-- [x] Validar outputs luego de refresh.
+- [x] Validate refresh without excessive calls.
+- [x] Validate outputs after refresh.
 
 ## Reviewer
 
-- [x] Confirmar que I/O vive en agents/scripts.
+- [x] Confirm I/O lives in agents/scripts.

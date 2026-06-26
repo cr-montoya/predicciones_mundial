@@ -2,48 +2,48 @@
 
 ## Context
 
-`better-sqlite3` es una dependencia nativa (requiere compilación con `node-gyp`) que solo
-se usa en scripts locales (`scripts/*.ts`). Está en `dependencies`, lo que hace que Vercel
-la instale y ejecute su postinstall, emitiendo un warning de deprecación de Node.js.
+`better-sqlite3` is a native dependency (requires compilation with `node-gyp`) that is only
+used in local scripts (`scripts/*.ts`). It is in `dependencies`, which causes Vercel to
+install it and run its postinstall, emitting a Node.js deprecation warning.
 
-Según CLAUDE.md: "SQLite/better-sqlite3 queda para scripts locales e historia del proyecto;
-no debe entrar al runtime de Vercel."
+According to CLAUDE.md: "SQLite/better-sqlite3 is for local scripts and project history;
+it must not enter Vercel's runtime."
 
 ## Architecture
 
-- **Config/Build**: cambio en `package.json` únicamente.
-- Ninguna capa del harness (Skills, Models, Agents, UI) se toca.
+- **Config/Build**: change in `package.json` only.
+- No layer of the harness (Skills, Models, Agents, UI) is touched.
 
-## Cambio requerido
+## Required Change
 
-En `package.json`, mover de `dependencies` → `devDependencies`:
+In `package.json`, move from `dependencies` → `devDependencies`:
 
 ```json
 "better-sqlite3": "^12.10.0",
 "@types/better-sqlite3": "^7.6.13"
 ```
 
-## Verificación pre-commit
+## Pre-commit Verification
 
 ```bash
 grep -r "better-sqlite3" app/ components/ lib/agents/ lib/model/ lib/skills/ lib/data/
 ```
 
-Debe retornar vacío. Si hay imports, resolverlos antes de mover.
+Must return empty. If there are imports, resolve them before moving.
 
-## Alternativa si el warning persiste en Vercel
+## Alternative If Warning Persists in Vercel
 
-Agregar a `next.config.ts`:
+Add to `next.config.ts`:
 
 ```ts
 serverExternalPackages: ['better-sqlite3']
 ```
 
-Esto excluye el paquete del bundle aunque esté instalado.
+This excludes the package from the bundle even if installed.
 
 ## Testing Strategy
 
-- `pnpm tsc --noEmit` — scripts locales siguen tipando correctamente
-- `pnpm test` — tests no dependen de `better-sqlite3`
-- `pnpm build` — build de Next.js pasa sin el paquete en `dependencies`
-- Verificar en log de preview de Vercel que el warning desaparece
+- `pnpm tsc --noEmit` — local scripts continue to type correctly
+- `pnpm test` — tests do not depend on `better-sqlite3`
+- `pnpm build` — Next.js build passes without the package in `dependencies`
+- Verify in Vercel preview log that the warning disappears

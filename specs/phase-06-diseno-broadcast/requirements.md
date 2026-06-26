@@ -1,23 +1,23 @@
-# Requirements: Fase 6 - Diseno Broadcast
+# Requirements: Phase 6 - Broadcast Design
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Mover la UI hacia una direccion visual de terminal deportiva/broadcast.
+Move the UI toward a sports terminal/broadcast visual direction.
 
-## Requerimientos
+## Requirements
 
-1. La UI debe priorizar datos y numeros grandes.
-2. Home debe mostrar partidos del dia.
-3. Home debe mostrar top mercados recomendados.
-4. Candidatos a campeon y Bota de Oro quedan presentes pero secundarios.
-5. Evitar apariencia generica de landing page.
+1. The UI must prioritize data and large numbers.
+2. Home must show today's matches.
+3. Home must show top recommended markets.
+4. Championship and Golden Boot candidates remain present but secondary.
+5. Avoid a generic landing page appearance.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Home es escaneable para contenido.
-2. Mercados destacados son claros.
-3. La paleta no depende de gradientes genericos.
+1. Home is scannable for content.
+2. Featured markets are clear.
+3. The palette does not depend on generic gradients.

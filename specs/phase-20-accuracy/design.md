@@ -1,94 +1,94 @@
 # phase-20-accuracy — Design
 
-## Arquitectura de capas
+## Layer Architecture
 
 ```
 UI (Server Components)
-  ↓ lee: Fixture[] + computePredictionsRetroactive()
-  ↓ llama: resolveModelVerdict, computeAccuracyStats (skills puras)
-  ↓ renderiza: ModelResultCard, AccuracyWidget
+  ↓ reads: Fixture[] + computePredictionsRetroactive()
+  ↓ calls: resolveModelVerdict, computeAccuracyStats (pure skills)
+  ↓ renders: ModelResultCard, AccuracyWidget
 ```
 
-No hay agents nuevos. Todo se resuelve en server components con las skills puras y
-la función retroactiva del model.
+No new agents. Everything is resolved in server components with pure skills and
+the retroactive model function.
 
-## Archivos nuevos
+## New Files
 
-| Archivo | Capa | Descripción |
+| File | Layer | Description |
 |---|---|---|
-| `lib/skills/accuracy.ts` | Skill | `deriveActualOutcome`, `topModelCall`, `resolveModelVerdict`, `computeAccuracyStats`. Funciones puras. |
-| `components/model-result-card.tsx` | UI | Server Component. Muestra predicción retroactiva + veredicto en fixture finalizado. |
-| `components/accuracy-widget.tsx` | UI | Server Component. Widget de acierto global en la home. |
+| `lib/skills/accuracy.ts` | Skill | `deriveActualOutcome`, `topModelCall`, `resolveModelVerdict`, `computeAccuracyStats`. Pure functions. |
+| `components/model-result-card.tsx` | UI | Server Component. Shows retroactive prediction + verdict on finished fixture. |
+| `components/accuracy-widget.tsx` | UI | Server Component. Global accuracy widget on the home. |
 
-## Archivos modificados
+## Modified Files
 
-| Archivo | Cambio |
+| File | Change |
 |---|---|
-| `lib/agents/live-loader.ts` | Extraer `computePredictionsRetroactive(fixture, byId)` sin la guarda de `finished`. |
-| `app/fixtures/[id]/page.tsx` | Si `finished`, usar `computePredictionsRetroactive` y renderizar `<ModelResultCard>`. |
-| `app/page.tsx` | Calcular `AccuracyStats` y renderizar `<AccuracyWidget>` si `total >= 3`. |
+| `lib/agents/live-loader.ts` | Extract `computePredictionsRetroactive(fixture, byId)` without the `finished` guard. |
+| `app/fixtures/[id]/page.tsx` | If `finished`, use `computePredictionsRetroactive` and render `<ModelResultCard>`. |
+| `app/page.tsx` | Calculate `AccuracyStats` and render `<AccuracyWidget>` if `total >= 3`. |
 
-## Cambio en `live-loader.ts`
+## Change in `live-loader.ts`
 
 ```ts
-// Función existente: solo para partidos no finalizados (sin cambio)
+// Existing function: only for non-finished matches (unchanged)
 export function computePredictionsForFixture(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
   if (fixture.status === 'finished') return []
-  // ... misma lógica
+  // ... same logic
 }
 
-// Nueva función: sin guarda de status
+// New function: without status guard
 export function computePredictionsRetroactive(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
-  // misma lógica que computePredictionsForFixture pero sin el guard de finished
+  // same logic as computePredictionsForFixture but without the finished guard
 }
 ```
 
-La función existente no cambia para no afectar el live loading. La nueva solo se
-llama desde `app/fixtures/[id]/page.tsx` cuando `fixture.status === 'finished'`.
+The existing function does not change to avoid affecting live loading. The new one is
+only called from `app/fixtures/[id]/page.tsx` when `fixture.status === 'finished'`.
 
-## Diseño visual de `ModelResultCard`
-
-```
-┌────────────────────────────────────────────────────┐
-│  PREDICCIÓN DE LA IA  ·  ✓ ACERTÓ                │
-│                                                    │
-│  Local   ██████████░░░░░░  62%   ← top-1          │
-│  Empate  ████░░░░░░░░░░░░  24%                    │
-│  Visita  ██░░░░░░░░░░░░░░  14%                    │
-│                                                    │
-│  Resultado real: 2 - 1  (Local ganó)              │
-└────────────────────────────────────────────────────┘
-```
-
-- Barra top-1 en acento dorado `#FFDB00`.
-- Las otras barras en `rgba(255,255,255,0.15)`.
-- Veredicto ✓ en verde `#22c55e` / ✗ en rojo `#ef4444`.
-- Si veredicto es `✗`, mostrar qué outcome era el correcto.
-
-## Diseño visual de `AccuracyWidget` (home)
+## Visual Design of `ModelResultCard`
 
 ```
 ┌────────────────────────────────────────────────────┐
-│  PRECISIÓN DEL MODELO                             │
+│  AI PREDICTION  ·  ✓ CORRECT                      │
 │                                                    │
-│  14 / 20 partidos                  70%            │
-│  ████████████████░░░░░░░░          ↑ barra        │
+│  Home    ██████████░░░░░░  62%   ← top-1           │
+│  Draw    ████░░░░░░░░░░░░  24%                     │
+│  Away    ██░░░░░░░░░░░░░░  14%                     │
 │                                                    │
-│  Resultado 1X2 · Solo partidos finalizados        │
+│  Actual result: 2 - 1  (Home won)                 │
 └────────────────────────────────────────────────────┘
 ```
 
-- Barra de progreso en `#FFDB00` sobre fondo `rgba(255,255,255,0.05)`.
-- El porcentaje va en número grande a la derecha (misma jerarquía visual que la
-  home usa para probabilidades).
-- Si total < 3: no renderizar el widget.
+- Top-1 bar in gold accent `#FFDB00`.
+- Other bars in `rgba(255,255,255,0.15)`.
+- Verdict ✓ in green `#22c55e` / ✗ in red `#ef4444`.
+- If verdict is `✗`, show which outcome was correct.
 
-## Posición en la home
+## Visual Design of `AccuracyWidget` (home)
 
-`<AccuracyWidget>` va debajo de `<Candidates>` (proyecciones del torneo) y antes de
-cualquier sección de fixtures, como cierre de la sección de análisis global.
+```
+┌────────────────────────────────────────────────────┐
+│  MODEL ACCURACY                                    │
+│                                                    │
+│  14 / 20 matches                   70%            │
+│  ████████████████░░░░░░░░          ↑ bar          │
+│                                                    │
+│  1X2 Result · Finished matches only               │
+└────────────────────────────────────────────────────┘
+```
 
-## Tests mínimos en Vitest
+- Progress bar in `#FFDB00` over background `rgba(255,255,255,0.05)`.
+- The percentage is displayed as a large number on the right (same visual hierarchy the
+  home uses for probabilities).
+- If total < 3: do not render the widget.
+
+## Position on the Home
+
+`<AccuracyWidget>` goes below `<Candidates>` (tournament projections) and before
+any fixtures section, closing the global analysis section.
+
+## Minimum Tests in Vitest
 
 ```ts
 describe('accuracy skills', () => {

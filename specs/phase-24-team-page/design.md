@@ -1,69 +1,69 @@
 # phase-24-team-page — Design
 
-## Ruta
+## Route
 
 `app/teams/[id]/page.tsx` — Server Component, `revalidate = 3600`.
 
-## Arquitectura
+## Architecture
 
 ```
 app/teams/[id]/page.tsx  (Server Component)
   ↓ buildStaticTeams() → teamMap → team
-  ↓ loadFixtures() → filtra por homeTeamId | awayTeamId
-  ↓ squadsByTeamId[id] → squad top
+  ↓ loadFixtures() → filter by homeTeamId | awayTeamId
+  ↓ squadsByTeamId[id] → top squad
   → <TeamHeader> <ModelRatingBars> <TeamFixtures> <SquadTop>
 ```
 
-## Archivos nuevos
+## New Files
 
-| Archivo | Descripción |
+| File | Description |
 |---|---|
-| `app/teams/[id]/page.tsx` | Página principal del equipo |
-| `components/model-rating-bars.tsx` | Visualización de attackStrength / defenseStrength |
-| `components/team-fixtures.tsx` | Lista de partidos del equipo con resultado/predicción |
-| `components/squad-top.tsx` | Top jugadores del equipo según el modelo |
+| `app/teams/[id]/page.tsx` | Main team page |
+| `components/model-rating-bars.tsx` | Visualization of attackStrength / defenseStrength |
+| `components/team-fixtures.tsx` | List of team matches with result/prediction |
+| `components/squad-top.tsx` | Top players of the team by model |
 
-## Archivos modificados
+## Modified Files
 
-| Archivo | Cambio |
+| File | Change |
 |---|---|
-| `app/fixtures/[id]/page.tsx` | Nombres de equipo pasan a ser links a `/teams/[id]` |
-| `app/groups/page.tsx` | Nombres de equipo en tabla linkean a `/teams/[id]` |
+| `app/fixtures/[id]/page.tsx` | Team names become links to `/teams/[id]` |
+| `app/groups/page.tsx` | Team names in table link to `/teams/[id]` |
 
-## Diseño visual
+## Visual Design
 
 ### ModelRatingBars
 
 ```
-RATING DEL MODELO
-Ataque   ████████░░  1.32  (arriba del promedio)
-Defensa  █████░░░░░  0.88  (mejor que el promedio)
+MODEL RATING
+Attack   ████████░░  1.32  (above average)
+Defense  █████░░░░░  0.88  (better than average)
 ```
 
-- Barra relativa: `(strength / 2.0) * 100%` para escala visual 0–2.
-- Color: dorado `#FFDB00` si > 1.0, gris si ≤ 1.0.
-- Subtexto: "arriba del promedio" / "promedio" / "por debajo del promedio".
+- Relative bar: `(strength / 2.0) * 100%` for visual scale 0–2.
+- Color: gold `#FFDB00` if > 1.0, grey if ≤ 1.0.
+- Subtext: "above average" / "average" / "below average".
 
 ### TeamFixtures
 
-Lista de partidos del equipo ordenados cronológicamente:
-- Scheduled: hora + rival + predicción top-1 del modelo.
-- Finished: marcador real + W/D/L badge.
+List of team matches sorted chronologically:
+- Scheduled: time + opponent + model top-1 prediction.
+- Finished: actual score + W/D/L badge.
 
 ### SquadTop
 
-Grid de jugadores (máx. 8): nombre + posición + tasa de goles por 90 min.
-Solo FW y MF con `goalsPerMinute > 0`.
+Player grid (max. 8): name + position + goals per 90 min rate.
+Only FW and MF with `goalsPerMinute > 0`.
 
 ## Security and Runtime
 
-- Server Component con ISR `revalidate = 3600`. Sin secrets al cliente.
-- `FOOTBALLDATA_KEY` no se usa en esta página (todos los datos son estáticos).
-- `notFound()` para IDs inválidos; sin exposición de datos internos.
+- Server Component with ISR `revalidate = 3600`. No secrets to client.
+- `FOOTBALLDATA_KEY` not used on this page (all data is static).
+- `notFound()` for invalid IDs; no internal data exposed.
 
 ## Testing Strategy
 
-- `notFound()` para ID inexistente: `/teams/9999` → 404.
-- Equipo sin squad en squads.json → `<SquadTop>` no se renderiza.
-- Links desde fixture y grupos → navegan correctamente.
-- `pnpm build` es gate principal.
+- `notFound()` for non-existent ID: `/teams/9999` → 404.
+- Team without squad in squads.json → `<SquadTop>` not rendered.
+- Links from fixture and groups → navigate correctly.
+- `pnpm build` is the main gate.

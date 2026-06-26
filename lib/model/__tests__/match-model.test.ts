@@ -4,7 +4,7 @@ import { sanityCheck, type Team, type Fixture } from '@/lib/types'
 import { buildScoreMatrix } from '@/lib/model/skills/score-matrix'
 import { deriveTeamTotal, deriveWinToNil } from '@/lib/model/skills/derive-markets'
 
-// Datos sinteticos, sin DB, sin imports externos
+// Synthetic data, no DB, no external imports
 const strongTeam: Team = {
   id: 1,
   name: 'Brazil',
@@ -162,26 +162,26 @@ describe('computeMatchOutputs — Fase 16: count y sanity de nuevos mercados', (
   })
 })
 
-describe('computeMatchOutputs — Fase 16: confidence rules de team total', () => {
-  it('home team goals 0.5: confidence high cuando lambdaHome=3.0 (p(over) muy alto)', () => {
-    // Con lambdaHome=3.0 el equipo local anota en casi todos los partidos
+describe('computeMatchOutputs — Phase 16: team total confidence rules', () => {
+  it('home team goals 0.5: confidence high when lambdaHome=3.0 (p(over) very high)', () => {
+    // With lambdaHome=3.0, the home team scores in almost every match
     const matrix = buildScoreMatrix(3.0, 1.0)
     const { over } = deriveTeamTotal(matrix, 'home', 0.5)
-    // Verificar que el over supera el umbral de 0.70 que activa 'high'
+    // Verify that over exceeds the 0.70 threshold that activates 'high'
     expect(over).toBeGreaterThanOrEqual(0.70)
   })
 
-  it('away team goals 0.5: confidence high cuando lambdaAway=3.0', () => {
+  it('away team goals 0.5: confidence high when lambdaAway=3.0', () => {
     const matrix = buildScoreMatrix(1.0, 3.0)
     const { over } = deriveTeamTotal(matrix, 'away', 0.5)
     expect(over).toBeGreaterThanOrEqual(0.70)
   })
 
-  it('win_to_nil: confidence low cuando lambdas iguales y moderados (1.35, 1.35)', () => {
+  it('win_to_nil: confidence low when lambdas are equal and moderate (1.35, 1.35)', () => {
     const matrix = buildScoreMatrix(1.35, 1.35)
     const winNilProbs = deriveWinToNil(matrix)
     const pMax = Math.max(winNilProbs.home, winNilProbs.away)
-    // Con equipos iguales y moderados, pMax debe ser < 0.30 (umbral de 'medium')
+    // With equal, moderate teams, pMax must be < 0.30 (the 'medium' threshold)
     expect(pMax).toBeLessThan(0.30)
   })
 })

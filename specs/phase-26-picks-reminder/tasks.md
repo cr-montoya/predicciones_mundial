@@ -6,36 +6,36 @@ in_review
 
 ## Tasks
 
-### Pre-implementación
-- [x] 1. `spec-review` — passed (decisión A: badge vía localStorage compartido).
-- [x] 2. Design: aprobar diseño del banner y badge — passed.
-- [x] 3. Confirmar que phase-19 está implementado — confirmado (pick_${id} en localStorage).
+### Pre-implementation
+- [x] 1. `spec-review` — passed (decision A: badge via shared localStorage).
+- [x] 2. Design: approve banner and badge design — passed.
+- [x] 3. Confirm phase-19 is implemented — confirmed (pick_${id} in localStorage).
 
-### Implementación
-- [x] 4. Crear `components/picks-reminder-banner.tsx`.
-- [x] 5. Crear `components/fixtures-nav-badge.tsx`.
-- [x] 6. Integrar banner en `app/page.tsx` pasando fixtures como prop.
-- [x] 7. Badge integrado en `components/nav.tsx` (no en layout.tsx — decisión A).
-- [x] 8. Extraer `UPCOMING_UNPICKED_COUNT_KEY` como constante compartida (Code Quality fix).
+### Implementation
+- [x] 4. Create `components/picks-reminder-banner.tsx`.
+- [x] 5. Create `components/fixtures-nav-badge.tsx`.
+- [x] 6. Integrate banner in `app/page.tsx` passing fixtures as prop.
+- [x] 7. Badge integrated in `components/nav.tsx` (not in layout.tsx — decision A).
+- [x] 8. Extract `UPCOMING_UNPICKED_COUNT_KEY` as shared constant (Code Quality fix).
 
-### Verificación
+### Verification
 - [x] 9. `pnpm tsc --noEmit` — PASS.
 - [x] 10. `pnpm test` — 361/361 PASS.
 - [x] 11. `pnpm build` — PASS.
-- [x] 12. QA: SSR safe (count=0 inicial, useEffect monta en cliente) — PASS.
-- [x] 13. QA: dismiss persiste date-scoped en localStorage — PASS.
-- [x] 14. Code Quality — PASS (sin blockers).
-- [x] 15. Reviewer — PASS (harness conforme).
+- [x] 12. QA: SSR safe (count=0 initial, useEffect mounts on client) — PASS.
+- [x] 13. QA: dismiss persists date-scoped in localStorage — PASS.
+- [x] 14. Code Quality — PASS (no blockers).
+- [x] 15. Reviewer — PASS (harness compliant).
 
-### Cierre
-- [x] 16. `spec-closeout` — in_review, PR pendiente.
-- [x] 17. PR #19 aprobado y mergeado por owner.
-- [x] 18. Marcar `completed` post-merge.
+### Closeout
+- [x] 16. `spec-closeout` — in_review, PR pending.
+- [x] 17. PR #19 approved and merged by owner.
+- [x] 18. Mark `completed` post-merge.
 
 ## Definition of Done
 
-- [ ] Banner aparece correctamente y se puede cerrar.
-- [ ] Badge en nav muestra conteo correcto.
-- [ ] Sin flash de contenido en SSR.
-- [ ] `pnpm tsc --noEmit` pasa.
-- [ ] Preview de Vercel revisado.
+- [ ] Banner appears correctly and can be closed.
+- [ ] Badge in nav shows correct count.
+- [ ] No content flash during SSR.
+- [ ] `pnpm tsc --noEmit` passes.
+- [ ] Vercel preview reviewed.

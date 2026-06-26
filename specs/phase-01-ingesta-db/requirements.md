@@ -1,24 +1,24 @@
-# Requirements: Fase 1 - Ingesta y DB
+# Requirements: Phase 1 - Ingestion and DB
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Crear la capa de datos para fixtures, equipos, eventos, estadisticas y predicciones.
+Create the data layer for fixtures, teams, events, statistics, and predictions.
 
-## Requerimientos
+## Requirements
 
-1. Debe existir schema para equipos, fixtures, eventos, stats y predicciones.
-2. Debe existir provider de API-Football con retry/cache.
-3. Debe existir fallback de football-data.org.
-4. Debe existir seed de selecciones del Mundial 2026.
-5. Los providers deben normalizar respuestas externas a tipos internos.
-6. La UI no debe consumir respuestas crudas de APIs externas.
+1. A schema must exist for teams, fixtures, events, stats, and predictions.
+2. An API-Football provider with retry/cache must exist.
+3. A football-data.org fallback must exist.
+4. A seed of World Cup 2026 national teams must exist.
+5. Providers must normalize external responses to internal types.
+6. The UI must not consume raw responses from external APIs.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Los scripts locales pueden poblar datos base.
-2. Los providers devuelven fixtures normalizados.
-3. Tests de normalizacion pasan.
+1. Local scripts can populate base data.
+2. Providers return normalized fixtures.
+3. Normalization tests pass.

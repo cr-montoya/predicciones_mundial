@@ -6,32 +6,32 @@ pending
 
 ## Tasks
 
-### Pre-implementación
+### Pre-implementation
 - [ ] 1. `spec-review`.
-- [ ] 2. `data-contract`: confirmar interfaz de squad top y cómo se filtran los jugadores.
-- [ ] 3. Design: aprobar layout de la página y las barras de rating.
+- [ ] 2. `data-contract`: confirm top squad interface and how players are filtered.
+- [ ] 3. Design: approve page layout and rating bars.
 - [ ] 4. Grill.
 
-### Implementación
-- [ ] 5. Crear `app/teams/[id]/page.tsx` con `notFound()` para IDs inválidos.
-- [ ] 6. Crear `components/model-rating-bars.tsx`.
-- [ ] 7. Crear `components/team-fixtures.tsx`.
-- [ ] 8. Crear `components/squad-top.tsx`.
-- [ ] 9. Agregar links a `/teams/[id]` en headers de fixture y tabla de grupos.
+### Implementation
+- [ ] 5. Create `app/teams/[id]/page.tsx` with `notFound()` for invalid IDs.
+- [ ] 6. Create `components/model-rating-bars.tsx`.
+- [ ] 7. Create `components/team-fixtures.tsx`.
+- [ ] 8. Create `components/squad-top.tsx`.
+- [ ] 9. Add links to `/teams/[id]` in fixture headers and groups table.
 
-### Verificación
-- [ ] 10. `pnpm tsc --noEmit` y `pnpm build`.
-- [ ] 11. QA: probar con equipos con y sin datos de squad.
-- [ ] 12. QA: link inválido (`/teams/9999`) hace notFound.
-- [ ] 13. Code Quality y Reviewer.
+### Verification
+- [ ] 10. `pnpm tsc --noEmit` and `pnpm build`.
+- [ ] 11. QA: test with teams with and without squad data.
+- [ ] 12. QA: invalid link (`/teams/9999`) calls notFound.
+- [ ] 13. Code Quality and Reviewer.
 
-### Cierre
-- [ ] 14. `spec-closeout` y PR.
+### Closeout
+- [ ] 14. `spec-closeout` and PR.
 
 ## Definition of Done
 
-- [ ] `/teams/[id]` renderiza para todos los equipos del torneo.
-- [ ] Rating, fixtures y squad top visibles.
-- [ ] Links desde fixture y grupos funcionan.
-- [ ] `pnpm build` pasa.
-- [ ] Preview de Vercel revisado.
+- [ ] `/teams/[id]` renders for all tournament teams.
+- [ ] Rating, fixtures, and top squad visible.
+- [ ] Links from fixtures and groups work.
+- [ ] `pnpm build` passes.
+- [ ] Vercel preview reviewed.

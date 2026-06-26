@@ -1,78 +1,78 @@
-# Tasks: Vercel env vars y CSP
+# Tasks: Vercel env vars and CSP
 
 ## 1. Developer
 
-- [ ] Crear rama desde `main`: `fix/vercel-env-csp`.
-- [ ] Confirmar provider activo en `lib/data/fallback.ts`.
-- [ ] Confirmar nombre exacto de env var requerido:
+- [ ] Create branch from `main`: `fix/vercel-env-csp`.
+- [ ] Confirm active provider in `lib/data/fallback.ts`.
+- [ ] Confirm exact env var name required:
   - [ ] `FOOTBALLDATA_KEY`
   - [ ] `RAPIDAPI_KEY`
   - [ ] `API_KEY`
-- [ ] Quitar `output: 'export'` si el objetivo es runtime/ISR en Vercel.
-- [ ] Ajustar scripts de build para Vercel si siguen orientados a export estático.
-- [ ] Crear helper server-only para validar env vars sin exponer valores.
-- [ ] Usar el helper en providers de API.
-- [ ] Revisar `middleware.ts` y actualizar CSP.
-- [ ] Desactivar o documentar desactivación de Cloudflare Rocket Loader.
-- [ ] Asegurar que ningún client component importa providers/API/server env.
+- [ ] Remove `output: 'export'` if the objective is runtime/ISR on Vercel.
+- [ ] Adjust build scripts for Vercel if they are still oriented to static export.
+- [ ] Create server-only helper to validate env vars without exposing values.
+- [ ] Use the helper in API providers.
+- [ ] Review `middleware.ts` and update CSP.
+- [ ] Disable or document the disabling of Cloudflare Rocket Loader.
+- [ ] Ensure no client component imports providers/API/server env.
 
-## 2. Vercel configuration
+## 2. Vercel Configuration
 
-- [ ] Configurar `FOOTBALLDATA_KEY` en Vercel Project Settings.
-- [ ] Habilitar la variable para Production.
-- [ ] Habilitar la variable para Preview.
-- [ ] Habilitar la variable para Development si se usa `vercel dev`.
-- [ ] Redeploy después de crear/editar env vars.
-- [ ] Confirmar en build/runtime logs que la variable existe sin imprimir su valor.
+- [ ] Configure `FOOTBALLDATA_KEY` in Vercel Project Settings.
+- [ ] Enable the variable for Production.
+- [ ] Enable the variable for Preview.
+- [ ] Enable the variable for Development if using `vercel dev`.
+- [ ] Redeploy after creating/editing env vars.
+- [ ] Confirm in build/runtime logs that the variable exists without printing its value.
 
-## 3. Cloudflare configuration
+## 3. Cloudflare Configuration
 
-- [ ] Confirmar si el dominio sigue pasando por Cloudflare proxy.
-- [ ] Desactivar Rocket Loader para la app.
-- [ ] Desactivar Browser Insights si no se necesita.
-- [ ] Si se mantiene Browser Insights, permitir `https://static.cloudflareinsights.com` en CSP.
-- [ ] Evitar `unsafe-inline` en producción.
+- [ ] Confirm whether the domain is still going through Cloudflare proxy.
+- [ ] Disable Rocket Loader for the app.
+- [ ] Disable Browser Insights if not needed.
+- [ ] If Browser Insights is kept, allow `https://static.cloudflareinsights.com` in CSP.
+- [ ] Avoid `unsafe-inline` in production.
 
 ## 4. QA
 
 - [ ] `pnpm tsc --noEmit`.
 - [ ] `pnpm test`.
 - [ ] `pnpm build`.
-- [ ] Deploy preview en Vercel.
-- [ ] Revisar `/`.
-- [ ] Revisar `/fixtures`.
-- [ ] Revisar `/fixtures/[id]`.
-- [ ] Revisar `/groups`.
-- [ ] Confirmar fixtures/resultados reales.
-- [ ] Confirmar DevTools Console sin errores CSP críticos.
-- [ ] Confirmar DevTools Network sin llamadas browser a football-data.org.
+- [ ] Deploy preview on Vercel.
+- [ ] Review `/`.
+- [ ] Review `/fixtures`.
+- [ ] Review `/fixtures/[id]`.
+- [ ] Review `/groups`.
+- [ ] Confirm real fixtures/results.
+- [ ] Confirm DevTools Console without critical CSP errors.
+- [ ] Confirm DevTools Network without browser calls to football-data.org.
 
 ## 5. Reviewer
 
-- [ ] Secrets solo se leen en server code.
-- [ ] Ninguna variable sensible tiene prefijo `NEXT_PUBLIC_`.
-- [ ] CSP no usa `unsafe-inline` en producción salvo excepción documentada.
-- [ ] No hay imports de providers/server env en client components.
-- [ ] El build ya no depende de export estático si se requiere auto-refresh.
+- [ ] Secrets are only read in server code.
+- [ ] No sensitive variable has the `NEXT_PUBLIC_` prefix.
+- [ ] CSP does not use `unsafe-inline` in production unless documented as an exception.
+- [ ] No imports of providers/server env in client components.
+- [ ] Build no longer depends on static export if auto-refresh is required.
 
 ## 6. Security
 
-- [ ] API key no aparece en archivos commiteados.
-- [ ] API key no aparece en logs.
-- [ ] API key no aparece en bundle cliente.
-- [ ] CSP mantiene `frame-ancestors 'none'` o `X-Frame-Options: DENY`.
-- [ ] Cloudflare scripts permitidos solo si son necesarios.
+- [ ] API key does not appear in committed files.
+- [ ] API key does not appear in logs.
+- [ ] API key does not appear in the client bundle.
+- [ ] CSP keeps `frame-ancestors 'none'` or `X-Frame-Options: DENY`.
+- [ ] Cloudflare scripts allowed only if necessary.
 
-## 7. Owner review
+## 7. Owner Review
 
-- [ ] Revisar preview de Vercel.
-- [ ] Validar que los datos cargan correctamente.
-- [ ] Validar consola limpia o con warnings aceptados.
-- [ ] Aprobar PR antes del merge a `main`.
+- [ ] Review Vercel preview.
+- [ ] Validate that data loads correctly.
+- [ ] Validate clean console or with accepted warnings.
+- [ ] Approve PR before merge to `main`.
 
 ## 8. Rollback
 
-- [ ] Revertir PR si Vercel production falla.
-- [ ] Restaurar CSP anterior si una integración crítica falla.
-- [ ] Desactivar temporalmente Cloudflare proxy para aislar si el problema viene de inyección.
-- [ ] Redeploy último deployment estable desde Vercel.
+- [ ] Revert PR if Vercel production fails.
+- [ ] Restore previous CSP if a critical integration fails.
+- [ ] Temporarily disable Cloudflare proxy to isolate if the problem comes from injection.
+- [ ] Redeploy last stable deployment from Vercel.

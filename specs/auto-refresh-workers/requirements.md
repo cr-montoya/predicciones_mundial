@@ -1,41 +1,44 @@
-# Requirements: Auto-refresh con Vercel
+# Requirements: Auto-refresh with Vercel
 
-## Problema
+## Problem
 
-La app está desplegada como export estático en Cloudflare Pages. Los datos vienen de
-`lib/data/fixtures-cache.json`, un archivo JSON commiteado en el repo. Cuando termina
-un partido, los resultados no aparecen hasta que alguien corre `pnpm refresh-fixtures`
-manualmente, commitea el JSON y pushea.
+The app is deployed as a static export on Cloudflare Pages. Data comes from
+`lib/data/fixtures-cache.json`, a JSON file committed to the repo. When a match ends,
+results do not appear until someone manually runs `pnpm refresh-fixtures`, commits the
+JSON, and pushes.
 
-Esto hace la app inservible como predictor en vivo durante el torneo.
+This makes the app unusable as a live predictor during the tournament.
 
-## Objetivo
+## Objective
 
-Migrar de export estático a **Next.js en Vercel** con ISR nativo.
-La app debe actualizar resultados sola, sin intervención manual, llamando a la API de
-football-data.org desde el servidor y usando el cache ISR de Vercel para no agotar la cuota.
+Migrate from static export to **Next.js on Vercel** with native ISR.
+The app must update results on its own, without manual intervention, calling the
+football-data.org API from the server and using Vercel's ISR cache to avoid
+exhausting the quota.
 
-## Requerimientos funcionales
+## Functional Requirements
 
-1. La home debe mostrar fixtures/resultados frescos sin requerir commits manuales del JSON.
-2. Las páginas `/fixtures`, `/fixtures/[id]` y `/groups` deben consumir el mismo origen fresco de fixtures.
-3. El cache ISR de Vercel debe limitar las llamadas a football-data.org a máximo una por hora por ruta.
-4. `tournament-prediction.json` se mantiene precomputado porque Monte Carlo es costoso.
-5. La API key de football-data.org debe usarse solo en servidor, nunca en el browser.
-6. La app debe poder validarse en preview deployment antes de mergear a `main`.
+1. The home must show fresh fixtures/results without requiring manual JSON commits.
+2. The `/fixtures`, `/fixtures/[id]`, and `/groups` pages must consume the same
+   fresh fixture source.
+3. Vercel's ISR cache must limit calls to football-data.org to at most one per hour
+   per route.
+4. `tournament-prediction.json` remains precomputed because Monte Carlo is expensive.
+5. The football-data.org API key must be used only on the server, never in the browser.
+6. The app must be validatable in a preview deployment before merging to `main`.
 
-## Requerimientos no funcionales
+## Non-Functional Requirements
 
-1. Mantener el harness de capas: UI no llama APIs externas directamente.
-2. Compatibilidad con Vercel Hobby plan (sin funciones de pago).
-3. No reintroducir D1 ni cron para esta fase.
-4. No depender de filesystem persistente en runtime.
-5. El cambio debe preservar los tests de modelo existentes.
+1. Maintain the layer harness: UI does not directly call external APIs.
+2. Compatibility with the Vercel Hobby plan (no paid features).
+3. Do not reintroduce D1 or cron for this phase.
+4. Do not depend on a persistent filesystem at runtime.
+5. The change must preserve existing model tests.
 
-## Criterio de éxito
+## Success Criteria
 
-1. `pnpm test` pasa sin cambios en la lógica estadística.
-2. `pnpm build` completa sin errores.
-3. En preview de Vercel, `/` muestra los partidos de hoy con resultados reales.
-4. Después de 1 hora, una nueva visita refleja resultados actualizados sin intervención manual.
-5. `lib/data/fixtures-cache.json` ya no es necesario actualizar manualmente.
+1. `pnpm test` passes without changes to the statistical logic.
+2. `pnpm build` completes without errors.
+3. In the Vercel preview, `/` shows today's matches with real results.
+4. After 1 hour, a new visit reflects updated results without manual intervention.
+5. `lib/data/fixtures-cache.json` no longer needs to be updated manually.

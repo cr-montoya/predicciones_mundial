@@ -1,14 +1,13 @@
 # fix-flags-display — Design
 
-## Cambios en `lib/utils/flags.ts`
+## Changes in `lib/utils/flags.ts`
 
-### Eliminar entradas de jugadores (líneas 84–101)
+### Remove player entries (lines 84–101)
 
-El bloque `// Known golden boot candidates` contiene estas entradas que deben
-eliminarse:
+The `// Known golden boot candidates` block contains these entries that must be removed:
 
 ```ts
-// ELIMINAR:
+// REMOVE:
 'Kylian Mbappé': '🇫🇷',
 'Erling Haaland': '🇳🇴',
 'Lionel Messi': '🇦🇷',
@@ -29,23 +28,23 @@ Richarlison: '🇧🇷',
 'Memphis Depay': '🇳🇱',
 ```
 
-### Agregar/corregir entradas de países
+### Add/fix country entries
 
 ```ts
-// CAMBIAR "Cape Verde" por:
+// CHANGE "Cape Verde" to:
 'Cape Verde Islands': '🇨🇻',
 
-// AGREGAR:
+// ADD:
 Jordan: '🇯🇴',
 'Congo DR': '🇨🇩',
 ```
 
-## Impacto en componentes
+## Impact on Components
 
-`components/candidates.tsx` line 60: `const flag = getFlag(name)`. Cuando `name` es
-un jugador, `FLAGS` ya no tendrá esa entrada → `getFlag` devuelve `''` → el bloque
-`{flag && <span>...</span>}` no se renderiza. Sin cambios en el componente.
+`components/candidates.tsx` line 60: `const flag = getFlag(name)`. When `name` is
+a player, `FLAGS` will no longer have that entry → `getFlag` returns `''` → the
+`{flag && <span>...</span>}` block is not rendered. No changes to the component.
 
-`app/groups/page.tsx` y `app/fixtures/page.tsx` y `components/fixtures-today.tsx`
-llaman `getFlag(team.name)`. Ahora Cape Verde Islands, Jordan y Congo DR devolverán
-su emoji correcto.
+`app/groups/page.tsx`, `app/fixtures/page.tsx`, and `components/fixtures-today.tsx`
+call `getFlag(team.name)`. Now Cape Verde Islands, Jordan, and Congo DR will return
+their correct emoji.

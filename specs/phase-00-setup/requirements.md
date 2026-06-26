@@ -1,24 +1,24 @@
-# Requirements: Fase 0 - Setup
+# Requirements: Phase 0 - Setup
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Crear la base técnica del proyecto con Next.js, TypeScript, Tailwind, estructura de capas y herramientas de prueba.
+Create the technical foundation of the project with Next.js, TypeScript, Tailwind, a layered architecture, and testing tools.
 
-## Requerimientos
+## Requirements
 
-1. La app debe usar Next.js App Router con TypeScript.
-2. Debe existir estructura base `app/`, `lib/data/`, `lib/model/`, `lib/db/` y `scripts/`.
-3. Debe existir soporte local para SQLite con DB gitignored.
-4. Debe existir configuración de estilos con Tailwind.
-5. Debe existir tooling de tests con Vitest.
-6. Debe existir plantilla de variables de entorno para API keys.
+1. The app must use Next.js App Router with TypeScript.
+2. A base directory structure must exist: `app/`, `lib/data/`, `lib/model/`, `lib/db/`, and `scripts/`.
+3. Local SQLite support must exist with the DB gitignored.
+4. Style configuration with Tailwind must exist.
+5. Test tooling with Vitest must exist.
+6. An environment variable template for API keys must exist.
 
-## Criterios de éxito
+## Success Criteria
 
-1. `pnpm dev` levanta la app local.
-2. `pnpm test` corre Vitest.
-3. La estructura permite separar UI, agents, models y skills.
+1. `pnpm dev` starts the app locally.
+2. `pnpm test` runs Vitest.
+3. The structure allows separating UI, agents, models, and skills.

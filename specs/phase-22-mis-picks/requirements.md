@@ -25,61 +25,60 @@ pending
 
 ## Objective
 
-Página `/mis-picks` donde el usuario ve un resumen de todos sus picks: pendientes,
-acertados y fallados, con su contador personal de aciertos. Cierra el loop de la
-feature de picks (phase-19) dando al usuario un lugar donde ver su historial completo.
+`/my-picks` page where the user sees a summary of all their picks: pending,
+correct, and wrong, with their personal accuracy counter. Closes the loop of the
+picks feature (phase-19) by giving the user a place to see their complete history.
 
-## Contexto
+## Context
 
-Phase-19 agrega picks 1X2 guardados en localStorage. Una vez hecho el pick en la
-página de cada partido, el usuario no tiene forma de ver todos sus picks juntos ni
-saber su récord personal. `/mis-picks` resuelve eso.
+Phase-19 adds 1X2 picks saved in localStorage. Once a pick is made on each match's
+page, the user has no way to see all their picks together or know their personal record.
+`/my-picks` solves that.
 
-**Depende de phase-19** (picks en localStorage deben estar implementados antes).
+**Depends on phase-19** (picks in localStorage must be implemented first).
 
 ## Scope
 
-- Ruta `/mis-picks` (Client Component que lee localStorage al montar).
-- Tres secciones: picks pendientes (partido no empezado), en curso (live), resueltos
-  (finished con veredicto).
-- Contador personal: X acertados / Y resueltos (Z%).
-- Cada pick muestra: equipos, mi elección, resultado real si disponible, veredicto.
-- Link desde la home o el nav.
-- Estado vacío si no hay ningún pick guardado.
+- `/my-picks` route (Client Component that reads localStorage on mount).
+- Three sections: pending picks (match not started), in-progress (live), resolved
+  (finished with verdict).
+- Personal counter: X correct / Y resolved (Z%).
+- Each pick shows: teams, my choice, actual result if available, verdict.
+- Link from the home or nav.
+- Empty state if no picks are saved.
 
 ## Out of Scope
 
-- Persistencia en base de datos o sync entre dispositivos.
-- Leaderboard o comparación con otros usuarios.
-- Picks de otros mercados (goleadores, goles). Solo resultado 1X2.
-- Exportar o compartir el historial completo (puede ser fase 23 para cards individuales).
+- Persistence in a database or sync between devices.
+- Leaderboard or comparison with other users.
+- Picks for other markets (top scorers, goals). Only 1X2 result.
+- Exporting or sharing the complete history (may be phase 23 for individual cards).
 
 ## Requirements
 
-1. La ruta `/mis-picks` es accesible y carga los picks desde localStorage.
-2. Los picks se muestran agrupados: pendientes / en curso / resueltos.
-3. El contador personal de aciertos es visible y correcto.
-4. Cada pick resuelto muestra veredicto ✓/✗ y el resultado real del partido.
-5. Si no hay picks, se muestra un estado vacío con CTA a ver fixtures.
-6. La página es Client Component (necesita localStorage); el layout general es
-   Server Component.
+1. The `/my-picks` route is accessible and loads picks from localStorage.
+2. Picks are shown grouped: pending / in-progress / resolved.
+3. The personal accuracy counter is visible and correct.
+4. Each resolved pick shows ✓/✗ verdict and the actual match result.
+5. If no picks exist, an empty state with CTA to view fixtures is shown.
+6. The page is a Client Component (needs localStorage); the general layout is
+   a Server Component.
 
 ## Acceptance Criteria
 
-- [ ] `/mis-picks` renderiza sin errores con y sin picks en localStorage.
-- [ ] Estado vacío muestra CTA a `/fixtures`.
-- [ ] Picks pendientes y en curso se listan correctamente.
-- [ ] Picks resueltos muestran veredicto y resultado real.
-- [ ] Contador personal de aciertos es correcto.
-- [ ] `pnpm tsc --noEmit` pasa.
+- [ ] `/my-picks` renders without errors with and without picks in localStorage.
+- [ ] Empty state shows CTA to `/fixtures`.
+- [ ] Pending and in-progress picks are listed correctly.
+- [ ] Resolved picks show verdict and actual result.
+- [ ] Personal accuracy counter is correct.
+- [ ] `pnpm tsc --noEmit` passes.
 
 ## Risks and Assumptions
 
-- **Depende de phase-19**: sin picks en localStorage, la página muestra estado
-  vacío. Se puede implementar después de phase-19 o en paralelo con estado vacío
-  como MVP.
-- localStorage puede estar vacío en SSR; el componente debe usar `useEffect` o
-  `'use client'` con hidratación segura para evitar mismatch.
-- Los datos del fixture (equipos, scores) deben cargarse desde el servidor para
-  enriquecer cada pick. Se puede resolver con una llamada al API de fixtures desde
-  el client o pasando los datos como props desde un Server Component padre.
+- **Depends on phase-19**: without picks in localStorage, the page shows the
+  empty state. Can be implemented after phase-19 or in parallel with empty state as MVP.
+- localStorage may be empty during SSR; the component must use `useEffect` or
+  `'use client'` with safe hydration to avoid mismatch.
+- Fixture data (teams, scores) must be loaded from the server to enrich each pick.
+  This can be resolved with a fixtures API call from the client, or by passing data
+  as props from a Server Component parent.

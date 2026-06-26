@@ -1,8 +1,8 @@
-# Design: Fase 13 - Predicciones en fixture cards
+# Design: Phase 13 - Predictions in Fixture Cards
 
-## Datos
+## Data
 
-`FixtureWithTeams` incluye un campo `prediction` con:
+`FixtureWithTeams` includes a `prediction` field with:
 
 - `winner`.
 - `winnerProb`.
@@ -10,10 +10,10 @@
 
 ## UI
 
-La card muestra equipos, horario/estado y una linea compacta de prediccion.
+The card shows teams, time/status, and a compact prediction line.
 
-## Riesgos
+## Risks
 
-- Sobrecargar la card.
-- Mostrar predicciones de partidos finalizados.
-- Recalcular demasiado en render.
+- Overloading the card.
+- Showing predictions for finished matches.
+- Recalculating too much on render.

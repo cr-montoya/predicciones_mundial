@@ -1,24 +1,24 @@
-# Requirements: Fase 11 - Deploy y Vercel ISR
+# Requirements: Phase 11 - Deploy and Vercel ISR
 
-## Estado
+## Status
 
-Completada. Produccion actual en Vercel ISR.
+Completed. Current production on Vercel ISR.
 
-## Objetivo
+## Objective
 
-Desplegar la app con runtime Next.js e ISR para obtener fixtures frescos sin commits manuales.
+Deploy the app with Next.js runtime and ISR to get fresh fixtures without manual commits.
 
-## Requerimientos
+## Requirements
 
-1. `next.config.ts` no debe usar `output: 'export'`.
-2. Build debe ser `next build`.
-3. Vercel debe manejar previews por PR.
-4. Variables server-side deben estar configuradas en Vercel.
-5. Páginas principales deben usar `revalidate = 3600`.
-6. API keys no deben exponerse al cliente.
+1. `next.config.ts` must not use `output: 'export'`.
+2. Build must use `next build`.
+3. Vercel must handle PR previews.
+4. Server-side variables must be configured in Vercel.
+5. Main pages must use `revalidate = 3600`.
+6. API keys must not be exposed to the client.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Preview de Vercel carga `/`, `/fixtures`, `/fixtures/[id]` y `/groups`.
-2. Produccion despliega desde `main`.
-3. Runtime logs permiten diagnosticar env/API.
+1. Vercel preview loads `/`, `/fixtures`, `/fixtures/[id]`, and `/groups`.
+2. Production deploys from `main`.
+3. Runtime logs allow diagnosing env/API issues.

@@ -1,47 +1,47 @@
-# Requirements: Fase 16 — Goleadores y mercados extendidos
+# Requirements: Phase 16 — Top Scorers and Extended Markets
 
-## Problema
+## Problem
 
-La página de detalle de partido todavía ofrece pocos mercados para contenido. Hay buenas
-predicciones base de resultado y goles, pero falta enriquecer la experiencia con goleadores
-y mercados derivados que hagan cada partido más útil y atractivo.
+The match detail page still offers few markets for content. There are good base predictions
+for result and goals, but the experience needs to be enriched with top scorers and derived
+markets that make each match more useful and attractive.
 
-## Objetivo
+## Objective
 
-Agregar predicciones de goleadores y más mercados derivados por partido, manteniendo
-Vercel ISR, el harness de capas y la seguridad de API keys server-side.
+Add top scorer predictions and more derived markets per match, maintaining Vercel ISR,
+the layer harness, and server-side API key security.
 
-## Requerimientos funcionales
+## Functional Requirements
 
-1. La página de detalle debe mostrar más mercados por partido.
-2. Debe existir soporte para mercados de goles por equipo:
-   - Local más de 0.5 / 1.5 / 2.5 goles.
-   - Visitante más de 0.5 / 1.5 / 2.5 goles.
-3. Debe existir soporte para combinados simples:
-   - Resultado + ambos marcan.
-   - Resultado + más de 1.5 / 2.5 goles.
-   - Gana a cero.
-4. Debe existir una primera versión de mercado de goleadores:
-   - Goleador en cualquier momento.
-   - Primer goleador si hay datos suficientes.
-5. Si no hay datos confiables de jugadores, la UI debe mostrar mercado no disponible o
-   confianza baja, no inventar precisión.
-6. Todos los nuevos outputs deben tener `confidence`, `modelVersion` y `computedAt`.
+1. The detail page must show more markets per match.
+2. Team goals markets must exist:
+   - Home over 0.5 / 1.5 / 2.5 goals.
+   - Away over 0.5 / 1.5 / 2.5 goals.
+3. Simple combo markets must exist:
+   - Result + both teams score.
+   - Result + over 1.5 / 2.5 goals.
+   - Win to nil.
+4. A first version of the top scorer market must exist:
+   - Anytime scorer.
+   - First scorer if sufficient data is available.
+5. If there is no reliable player data, the UI must show market unavailable or
+   low confidence, not invent precision.
+6. All new outputs must have `confidence`, `modelVersion`, and `computedAt`.
 
-## Requerimientos no funcionales
+## Non-Functional Requirements
 
-1. Models y skills no llaman APIs externas.
-2. Agents/providers son los únicos responsables de traer datos externos.
-3. Client components no importan modelos ni providers.
-4. La API key no debe llegar al browser.
-5. Los cálculos deben ser baratos para runtime ISR.
-6. Monte Carlo de torneo sigue precomputado.
+1. Models and skills do not call external APIs.
+2. Agents/providers are the only ones responsible for fetching external data.
+3. Client components do not import models or providers.
+4. The API key must not reach the browser.
+5. Calculations must be cheap for ISR runtime.
+6. Tournament Monte Carlo remains precomputed.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Los nuevos mercados aparecen en fixture detail sin romper la home.
-2. Fixture detail renderiza con y sin datos de jugadores.
-3. Probabilidades derivadas se mantienen entre 0 y 1.
-4. Tests cubren mercados nuevos y edge cases.
-5. `pnpm test` y `pnpm build` pasan.
-6. Preview de Vercel aprobado por owner antes de merge.
+1. New markets appear in fixture detail without breaking the home.
+2. Fixture detail renders with and without player data.
+3. Derived probabilities stay between 0 and 1.
+4. Tests cover new markets and edge cases.
+5. `pnpm test` and `pnpm build` pass.
+6. Vercel preview approved by owner before merge.

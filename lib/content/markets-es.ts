@@ -173,7 +173,7 @@ export function translateOutcome(market: string, outcome: string): string {
     if (outcome === 'over') return `Más de ${line}`
     if (outcome === 'under') return `Menos de ${line}`
   }
-  // Outcomes dinámicos de tarjetas y esquinas: over_3.5, under_10.5, etc.
+  // Dynamic outcomes for cards and corners markets: over_3.5, under_10.5, etc.
   const dynOver = outcome.match(/^over_(\d+(?:\.\d+)?)$/)
   if (dynOver) return `Más de ${dynOver[1]}`
   const dynUnder = outcome.match(/^under_(\d+(?:\.\d+)?)$/)

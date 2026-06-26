@@ -1,67 +1,67 @@
-# Design: Fase 16 — Goleadores y mercados extendidos
+# Design: Phase 16 — Top Scorers and Extended Markets
 
-## Enfoque
+## Approach
 
-Derivar tantos mercados como sea posible desde la matriz de marcador existente. Esto evita
-agregar complejidad innecesaria y mantiene el modelo barato para Vercel ISR.
+Derive as many markets as possible from the existing score matrix. This avoids
+adding unnecessary complexity and keeps the model cheap for Vercel ISR.
 
-Los mercados de goleadores son más inciertos. Deben tener un contrato separado y degradar
-con elegancia cuando falten datos de titulares, minutos o jugadores.
+Top scorer markets are more uncertain. They must have a separate contract and degrade
+gracefully when player data, minutes, or starters are missing.
 
-## Arquitectura propuesta
+## Proposed Architecture
 
 ```
 lib/model/skills/derive-markets.ts
-   -> mercados derivados desde score matrix
+   -> derived markets from score matrix
 
 lib/model/scorers.ts
-   -> goleadores desde lambda del equipo + player rates
+   -> top scorers from team lambda + player rates
 
 lib/agents/live-loader.ts
-   -> fixtures runtime + predicciones baratas
+   -> runtime fixtures + cheap predictions
 
 app/fixtures/[id]/page.tsx
-   -> detalle enriquecido
+   -> enriched detail
 
 components/market-section.tsx
 components/player-scorers.tsx
-   -> UI de mercados y goleadores
+   -> market and top scorer UI
 ```
 
-## Mercados derivados desde matriz de marcador
+## Markets Derived from Score Matrix
 
-La matriz exact score permite derivar sin datos extra:
+The exact score matrix allows deriving without extra data:
 
 - 1X2.
-- Over/Under goles.
+- Over/Under goals.
 - BTTS.
 - Team totals.
-- Resultado + BTTS.
-- Resultado + Over.
+- Result + BTTS.
+- Result + Over.
 - Clean sheet.
-- Gana a cero.
-- Margen de victoria simple.
+- Win to nil.
+- Simple win margin.
 
-Estas derivaciones deben vivir en skills puras.
+These derivations must live in pure skills.
 
-## Team totals
+## Team Totals
 
-Para cada equipo:
+For each team:
 
 ```ts
 P(homeGoals > line)
 P(awayGoals > line)
 ```
 
-Líneas iniciales:
+Initial lines:
 
 - 0.5
 - 1.5
 - 2.5
 
-## Combinados
+## Combos
 
-Ejemplos:
+Examples:
 
 - `home_win_btts_yes`
 - `draw_over_1_5`
@@ -69,11 +69,11 @@ Ejemplos:
 - `home_win_to_nil`
 - `away_win_to_nil`
 
-Evitar demasiados combinados visibles. La UI debe priorizar top mercados por score/confianza.
+Avoid too many visible combos. The UI should prioritize top markets by score/confidence.
 
-## Goleadores
+## Top Scorers
 
-Input mínimo sugerido:
+Suggested minimum input:
 
 ```ts
 interface PlayerScorerInput {
@@ -87,72 +87,72 @@ interface PlayerScorerInput {
 }
 ```
 
-Modelo:
+Model:
 
-1. Calcular participación ofensiva esperada del jugador.
-2. Asignar porción del lambda del equipo.
-3. Convertir a probabilidad de anotar con Poisson:
+1. Calculate the player's expected offensive participation.
+2. Assign a portion of the team lambda.
+3. Convert to scoring probability with Poisson:
 
 ```txt
 P(score anytime) = 1 - exp(-playerLambda)
 ```
 
-Primer goleador debe ser opcional y solo mostrarse si hay suficiente data.
+First scorer should be optional and only shown if there is sufficient data.
 
-## Datos de jugadores
+## Player Data
 
-Fuente preferida:
+Preferred source:
 
 - API-Football player stats.
-- Lineups/minutos recientes si están disponibles.
+- Recent lineups/minutes if available.
 
 Fallback:
 
-- Dataset manual/precomputado por jugador.
-- Si no hay data: no mostrar goleadores o marcar confianza baja.
+- Manual/precomputed dataset per player.
+- If no data: do not show top scorers or mark low confidence.
 
-No bloquear el detalle del partido por falta de jugadores.
+Do not block the match detail because of missing players.
 
 ## UI
 
-Orden sugerido del fixture detail:
+Suggested fixture detail order:
 
-1. Hero del partido.
-2. Mercado principal: resultado / probabilidad dominante.
-3. Goles esperados y team totals.
-4. Top combinados.
-5. Tarjetas/corners.
-6. Goleadores, si hay datos.
-7. Disclaimer y timestamp.
+1. Match hero.
+2. Main market: result / dominant probability.
+3. Expected goals and team totals.
+4. Top combos.
+5. Cards/corners.
+6. Top scorers, if data available.
+7. Disclaimer and timestamp.
 
-Mantener 3-5 mercados principales visibles y el resto en secciones expandibles.
+Keep 3–5 main markets visible and the rest in expandable sections.
 
 ## Performance
 
-Los mercados derivados desde matriz son baratos. Goleadores pueden ser más caros si hay
-muchos jugadores; limitar a top N por equipo.
+Derived markets from the matrix are cheap. Top scorers may be more expensive if there
+are many players; limit to top N per team.
 
-Recomendación inicial:
+Initial recommendation:
 
-- Top 5 goleadores por equipo.
-- No calcular primer goleador si faltan titulares/minutos.
+- Top 5 top scorers per team.
+- Do not calculate first scorer if starters/minutes are missing.
 
-## Riesgos
+## Risks
 
-### Falsa precisión en goleadores
+### False Precision in Top Scorers
 
-Sin datos de alineación, el mercado puede parecer más confiable de lo que es.
+Without lineup data, the market may appear more reliable than it is.
 
-Mitigación: confianza baja y copy claro.
+Mitigation: low confidence and clear copy.
 
-### Demasiados mercados
+### Too Many Markets
 
-La página puede saturarse.
+The page may become saturated.
 
-Mitigación: ranking visual, secciones plegables y top markets.
+Mitigation: visual ranking, collapsible sections, and top markets.
 
-### API rate limit
+### API Rate Limit
 
-Traer stats de jugadores por partido puede aumentar llamadas.
+Fetching player stats per match may increase calls.
 
-Mitigación: cache ISR, fallback precomputado y no bloquear render.
+Mitigation: ISR cache, precomputed fallback, and do not block render.

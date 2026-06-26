@@ -2,13 +2,13 @@ import type Database from 'better-sqlite3'
 import type { Team } from '@/lib/types'
 
 /**
- * Inserta los equipos del seed en la tabla teams.
- * Usa INSERT OR IGNORE para que corridas sucesivas sean idempotentes:
- * nunca sobreescribe filas existentes, preservando attack_strength y
- * defense_strength ya calibrados por el refresh agent.
+ * Inserts seed teams into the teams table.
+ * Uses INSERT OR IGNORE so successive runs are idempotent:
+ * never overwrites existing rows, preserving attack_strength and
+ * defense_strength already calibrated by the refresh agent.
  *
- * Recibe la instancia de Database como parámetro para evitar el ciclo
- * circular client -> seed -> client.
+ * Receives the Database instance as a parameter to avoid the
+ * circular dependency client -> seed -> client.
  */
 export function seedTeams(
   instance: Database.Database,

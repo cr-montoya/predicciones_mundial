@@ -1,16 +1,16 @@
-# Design: Fase 1 - Ingesta y DB
+# Design: Phase 1 - Ingestion and DB
 
-## Flujo
+## Flow
 
 ```
-Provider externo
-   -> normalizador
-   -> tipos internos
-   -> DB/cache local
-   -> agents/modelos
+External provider
+   -> normalizer
+   -> internal types
+   -> DB/local cache
+   -> agents/models
 ```
 
-## Componentes
+## Components
 
 - `lib/data/providers/api-football.ts`
 - `lib/data/providers/football-data.ts`
@@ -19,14 +19,14 @@ Provider externo
 - `lib/db/client.ts`
 - `lib/data/teams-seed.ts`
 
-## Decisiones
+## Decisions
 
-- Mantener providers fuera de modelos.
-- Normalizar IDs/equipos antes de pasar a predicciones.
-- Conservar fallback para proteger disponibilidad.
+- Keep providers out of models.
+- Normalize IDs/teams before passing to predictions.
+- Preserve fallback to protect availability.
 
-## Riesgos
+## Risks
 
-- Diferencias de IDs entre providers.
-- APIs con campos nulos o incompletos.
-- Cuotas limitadas de planes gratuitos.
+- ID differences between providers.
+- APIs with null or incomplete fields.
+- Limited quotas on free plans.

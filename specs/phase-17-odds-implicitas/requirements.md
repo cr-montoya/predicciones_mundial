@@ -17,51 +17,50 @@ gates:
   reviewer: passed
 ---
 
-# Requirements: Fase 17 - Probabilidades implicitas de casas de apuestas
+# Requirements: Phase 17 - Implicit Bookmaker Probabilities
 
-## Estado
+## Status
 
-Pendiente.
+Pending.
 
-## Problema
+## Problem
 
-El modelo propio genera probabilidades, pero el usuario no tiene contexto de mercado para
-entender si la IA esta alineada o discrepa con las casas de apuestas. La comparacion
-"modelo vs mercado" es un hook fuerte para contenido, siempre que se presente como
-referencia informativa y no como recomendacion.
+The proprietary model generates probabilities, but the user has no market context to
+understand whether the AI aligns with or diverges from bookmakers. The "model vs market"
+comparison is a strong content hook, as long as it is presented as informational
+reference and not as a recommendation.
 
-## Objetivo
+## Objective
 
-Integrar probabilidades implicitas de bookmakers via The Odds API y mostrar, para mercados
-MVP, el diferencial entre la probabilidad del modelo y la probabilidad implicita del
-mercado.
+Integrate implicit bookmaker probabilities via The Odds API and show, for MVP markets,
+the differential between the model probability and the implied market probability.
 
-## Requerimientos funcionales
+## Functional Requirements
 
-1. Consumir odds desde The Odds API con API key server-side.
-2. Normalizar odds decimales a probabilidades implicitas.
-3. Ajustar overround para que cada mercado comparable sume 1.
-4. Calcular diferencial modelo vs mercado.
-5. Etiquetar diferencial como `VALOR+`, `VALOR-` o `NEUTRO`.
-6. Mostrar odds/probabilidad implicita como referencia informativa en UI.
-7. MVP limitado a:
+1. Consume odds from The Odds API with a server-side API key.
+2. Normalize decimal odds to implicit probabilities.
+3. Adjust overround so each comparable market sums to 1.
+4. Calculate model vs market differential.
+5. Label differential as `VALOR+`, `VALOR-`, or `NEUTRO`.
+6. Show odds/implied probability as informational reference in UI.
+7. MVP limited to:
    - 1X2.
    - Over/Under 2.5.
-8. Mantener disclaimer de entretenimiento visible.
+8. Keep the entertainment disclaimer visible.
 
-## Requerimientos no funcionales
+## Non-Functional Requirements
 
-1. La API key de The Odds API no debe llegar al browser.
-2. Los calculos de valor deben vivir en skills puras.
-3. El agent de odds debe estar separado de modelos/UI.
-4. Debe respetarse la cuota free de 500 req/mes.
-5. El sistema debe degradar si no hay odds disponibles para un partido.
-6. No usar copy tipo "apuesta a", "seguro" o "garantizado".
+1. The Odds API key must not reach the browser.
+2. Value calculations must live in pure skills.
+3. The odds agent must be separate from models/UI.
+4. The free quota of 500 req/month must be respected.
+5. The system must degrade if no odds are available for a match.
+6. Do not use copy like "bet on", "sure", or "guaranteed".
 
-## Criterios de exito
+## Success Criteria
 
-1. Odds implicitas brutas suman el overround (tipicamente 1.04–1.08, no ~1) antes del ajuste, y exactamente 1.0 despues del ajuste por mercado.
-2. Diferencial queda en rango [-1, 1].
-3. UI muestra diferencial sin parecer recomendacion financiera.
-4. `pnpm test` y `pnpm build` pasan.
-5. Preview de Vercel aprobado por owner antes de merge.
+1. Raw implied odds sum the overround (typically 1.04–1.08, not ~1) before adjustment, and exactly 1.0 after per-market adjustment.
+2. Differential falls in range [-1, 1].
+3. UI shows differential without appearing to be a financial recommendation.
+4. `pnpm test` and `pnpm build` pass.
+5. Vercel preview approved by owner before merge.

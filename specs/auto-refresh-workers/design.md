@@ -1,60 +1,60 @@
-# Design: Auto-refresh con Vercel
+# Design: Auto-refresh with Vercel
 
-## Estado actual
+## Current State
 
 ```
 scripts/refresh-fixtures.ts
-   -> llama football-data.org manualmente
-   -> escribe lib/data/fixtures-cache.json (commiteado)
+   -> manually calls football-data.org
+   -> writes lib/data/fixtures-cache.json (committed)
 
 lib/agents/live-loader.ts
    -> import fixturesCache from '@/lib/data/fixtures-cache.json'
-   -> lee tournamentPrediction del JSON precomputado
+   -> reads tournamentPrediction from precomputed JSON
 
 app/page.tsx + app/fixtures/page.tsx + app/groups/page.tsx
    -> export const revalidate = 3600
-   -> ignorado en static export
+   -> ignored in static export
 
 next.config.ts
    -> output: 'export'
 
 package.json build
    -> "next build && node scripts/make-out.mjs"
-   -> genera out/ con HTML estático
+   -> generates out/ with static HTML
 
 Cloudflare Pages
-   -> sirve out/ como archivos estáticos
+   -> serves out/ as static files
 ```
 
-## Estado objetivo
+## Target State
 
 ```
 lib/agents/live-loader.ts
-   -> llama fetchFixtures() en runtime (football-data.org)
-   -> tournament-prediction.json sigue precomputado
+   -> calls fetchFixtures() at runtime (football-data.org)
+   -> tournament-prediction.json remains precomputed
 
 app/page.tsx + app/fixtures/page.tsx + app/groups/page.tsx
    -> export const revalidate = 3600
-   -> funciona nativo con ISR de Vercel
+   -> works natively with Vercel ISR
 
 next.config.ts
-   -> sin output: 'export'
+   -> without output: 'export'
 
 package.json build
-   -> next build (Vercel lo detecta automáticamente)
+   -> next build (Vercel detects automatically)
 
 Vercel
-   -> sirve la app como Next.js con ISR nativo
-   -> Vercel cachea cada página en el edge según revalidate
-   -> al expirar, la próxima request regenera la página desde el servidor
-   -> el servidor llama a la API y sirve datos frescos
+   -> serves the app as Next.js with native ISR
+   -> Vercel caches each page on the edge based on revalidate
+   -> on expiry, the next request regenerates the page from the server
+   -> the server calls the API and serves fresh data
 ```
 
-## Cambios técnicos
+## Technical Changes
 
 ### `next.config.ts`
 
-Quitar `output: 'export'`.
+Remove `output: 'export'`.
 
 ```ts
 import type { NextConfig } from 'next'
@@ -66,21 +66,20 @@ export default nextConfig
 
 ### `package.json`
 
-Actualizar script de build:
+Update build script:
 
 ```json
 "build": "next build"
 ```
 
-Eliminar `scripts/make-out.mjs` y su invocación. Vercel no necesita
-script de post-build.
+Remove `scripts/make-out.mjs` and its invocation. Vercel does not need a
+post-build script.
 
 ### `lib/agents/live-loader.ts`
 
-Cambio central: reemplazar el import estático del JSON por una llamada
-en runtime a la API.
+Central change: replace the static JSON import with a runtime API call.
 
-Antes:
+Before:
 
 ```ts
 import fixturesCache from '@/lib/data/fixtures-cache.json'
@@ -90,7 +89,7 @@ export function loadFixtures(): Fixture[] {
 }
 ```
 
-Después:
+After:
 
 ```ts
 import { fetchFixtures } from '@/lib/data/api-football'
@@ -103,105 +102,102 @@ export async function loadFixtures(): Promise<Fixture[]> {
 }
 ```
 
-`loadFixtures` pasa de síncrona a `async`. Todos los llamadores
-deben agregar `await`.
+`loadFixtures` changes from synchronous to `async`. All callers must add `await`.
 
 ### `middleware.ts` → `proxy.ts`
 
-Next.js 16 depreca `middleware.ts` en favor de `proxy.ts`. Vercel
-soporta la nueva convención plenamente. Renombrar el archivo y
-exportar `proxy` en lugar de `middleware`.
+Next.js 16 deprecates `middleware.ts` in favor of `proxy.ts`. Vercel
+fully supports the new convention. Rename the file and export `proxy`
+instead of `middleware`.
 
 ```ts
 export function proxy(request: NextRequest) { ... }
 ```
 
-La configuración `config.matcher` no cambia.
+The `config.matcher` configuration does not change.
 
 ### `tournament-prediction.json`
 
-No cambia: el Monte Carlo se sigue precomputando con `pnpm precompute`
-y se commitea cuando se quiere una proyección fresca.
+No change: the Monte Carlo remains precomputed with `pnpm precompute`
+and committed when a fresh projection is desired.
 
-### Variables de entorno
+### Environment Variables
 
-La API key de football-data.org debe estar como variable de entorno
-en Vercel:
+The football-data.org API key must be set as an environment variable in Vercel:
 
 ```
-FOOTBALLDATA_KEY=<valor>
+FOOTBALLDATA_KEY=<value>
 ```
 
-Configurar en: Vercel dashboard → proyecto → Settings → Environment Variables.
+Configure in: Vercel dashboard → project → Settings → Environment Variables.
 
-Verificar que `lib/data/providers/football-data.ts` lee la key desde
+Verify that `lib/data/providers/football-data.ts` reads the key from
 `process.env.FOOTBALLDATA_KEY`.
 
-### Archivos eliminables después de validar
+### Files Removable After Validation
 
 - `scripts/make-out.mjs`
 - `lib/data/fixtures-cache.json`
-- `wrangler.toml` (o conservar para referencia local con Wrangler)
-- `out/`, si existiera trackeado por error
+- `wrangler.toml` (or keep for local reference with Wrangler)
+- `out/`, if accidentally tracked
 
-## Flujo de datos
+## Data Flow
 
 ```
-Usuario visita /
+User visits /
 
-Vercel Edge cache HIT (< 1 hora desde última generación)
-   -> sirve HTML cacheado inmediatamente
+Vercel Edge cache HIT (< 1 hour since last generation)
+   -> serves cached HTML immediately
 
-Vercel Edge cache MISS (> 1 hora o primer request)
-   -> activa el servidor Next.js
-   -> ejecuta app/page.tsx (Server Component)
-   -> live-loader.ts llama fetchFixtures() -> football-data.org
-   -> modelos corren en memoria
-   -> servidor devuelve HTML + headers de revalidación
-   -> Vercel cachea la respuesta según revalidate = 3600
-   -> usuario recibe HTML fresco
+Vercel Edge cache MISS (> 1 hour or first request)
+   -> activates Next.js server
+   -> executes app/page.tsx (Server Component)
+   -> live-loader.ts calls fetchFixtures() -> football-data.org
+   -> models run in memory
+   -> server returns HTML + revalidation headers
+   -> Vercel caches the response based on revalidate = 3600
+   -> user receives fresh HTML
 ```
 
-Resultado: resultados actualizados automáticamente, máximo 1 hora de retraso.
-Sin commits manuales. Sin deploy manual.
+Result: results updated automatically, maximum 1 hour delay.
+No manual commits. No manual deploys.
 
-## Riesgos y compatibilidad
+## Risks and Compatibility
 
 ### `better-sqlite3`
 
-Estado: devDependency. `lib/db/client.ts` lo importa con lazy `require()`.
+Status: devDependency. `lib/db/client.ts` imports it with lazy `require()`.
 
-Riesgo: si alguna página importa `lib/db/client.ts` en runtime, falla
-en producción porque Vercel serverless no tiene filesystem persistente.
+Risk: if any page imports `lib/db/client.ts` at runtime, it will fail
+in production because Vercel serverless does not have a persistent filesystem.
 
-Acción: verificar con grep que ninguna página del App Router importa `lib/db/`.
+Action: verify with grep that no App Router page imports `lib/db/`.
 
 ### `jsonwebtoken`
 
-Estado: dependency de producción. Usado en `lib/auth/jwt.ts`.
+Status: production dependency. Used in `lib/auth/jwt.ts`.
 
-Riesgo bajo: `jsonwebtoken` usa `crypto` de Node.js. En el runtime
-serverless de Vercel (Node.js), esto funciona sin problema.
-Solo sería un issue si se moviera a Edge runtime, lo cual no aplica aquí.
+Low risk: `jsonwebtoken` uses Node.js `crypto`. In Vercel's serverless
+runtime (Node.js), this works without issue. It would only be a problem if
+moved to Edge runtime, which does not apply here.
 
 ### `framer-motion`
 
-Estado: dependency de producción. Usada en `components/fade-in.tsx` y
-`components/bounce-number.tsx` como client components.
+Status: production dependency. Used in `components/fade-in.tsx` and
+`components/bounce-number.tsx` as client components.
 
-Riesgo bajo: framer-motion corre en el browser. Verificar que los
-componentes tienen `'use client'`. Si falla el build, usar
+Low risk: framer-motion runs in the browser. Verify that the components
+have `'use client'`. If the build fails, use
 `dynamic(() => import(...), { ssr: false })`.
 
-### `fetchFixtures` y rate limiting en build
+### `fetchFixtures` and Rate Limiting During Build
 
-Durante `next build`, Vercel pre-renderiza las páginas con ISR. Para
-`/fixtures/[id]`, `generateStaticParams` genera todas las rutas en
-paralelo, lo que puede agotar el rate limit de football-data (10 req/min).
+During `next build`, Vercel pre-renders ISR pages. For
+`/fixtures/[id]`, `generateStaticParams` generates all routes in
+parallel, which may exhaust the football-data rate limit (10 req/min).
 
-Comportamiento esperado: las páginas que no se pre-renderizan en build
-por rate limit se generan on-demand en el primer request. El ISR
-de 1h aplica igualmente a todas.
+Expected behavior: pages not pre-rendered in build due to rate limits
+are generated on-demand on the first request. The 1h ISR applies equally to all.
 
-Acción: no requiere cambio; el fallback a mock data durante build es
-aceptable. En runtime solo se llama una vez por ventana de 1 hora por ruta.
+Action: no change required; the fallback to mock data during build is
+acceptable. At runtime, the API is called only once per 1-hour window per route.

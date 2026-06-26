@@ -25,67 +25,63 @@ pending
 
 ## Objective
 
-Permitir compartir la predicción de un partido como imagen en redes sociales y
-grupos de chat. Es el vector de viralidad más directo: "la IA dice Argentina 65%,
-le mando esto al grupo".
+Allow sharing a match prediction as an image on social media and chat groups.
+This is the most direct virality vector: "the AI says Argentina 65%, I'm sending this
+to the group chat".
 
-## Contexto
+## Context
 
-La app ya tiene predicciones ricas para cada partido. Hoy el único vector de
-compartir es copiar la URL. Una card visual con equipos, probabilidades y branding
-de la app es compartible directamente a WhatsApp, Instagram Stories, Twitter/X.
+The app already has rich predictions for each match. Today the only sharing vector
+is copying the URL. A visual card with teams, probabilities, and app branding is
+shareable directly to WhatsApp, Instagram Stories, Twitter/X.
 
-Next.js soporta OG images dinámicas via `next/og` (`ImageResponse`) en route
-handlers. Esto genera una imagen PNG server-side sin canvas en el cliente y sin
-dependencias pesadas.
+Next.js supports dynamic OG images via `next/og` (`ImageResponse`) in route
+handlers. This generates a server-side PNG without canvas on the client and without
+heavy dependencies.
 
 ## Scope
 
-- Route handler `app/og/fixture/[id]/route.tsx` que genera una imagen PNG con:
-  - Nombre de los equipos y banderas emoji.
-  - Probabilidades del modelo para `result_1x2` (home / draw / away) con barras.
-  - Branding: nombre de la app + logo/texto.
-  - Fondo oscuro, acento dorado, tipografía broadcast.
-- Meta tags OG en `app/fixtures/[id]/page.tsx` apuntando a la imagen generada.
-- Botón "Compartir predicción" en la página de fixture que:
-  - En dispositivos con `navigator.share`: llama la API nativa de compartir con
-    URL + texto.
-  - En desktop: copia la URL al portapapeles con feedback visual.
+- Route handler `app/og/fixture/[id]/route.tsx` that generates a PNG image with:
+  - Team names and flag emojis.
+  - Model probabilities for `result_1x2` (home / draw / away) with bars.
+  - Branding: app name + logo/text.
+  - Dark background, gold accent, broadcast typography.
+- OG meta tags in `app/fixtures/[id]/page.tsx` pointing to the generated image.
+- "Share prediction" button on the fixture page that:
+  - On devices with `navigator.share`: calls the native sharing API with URL + text.
+  - On desktop: copies the URL to the clipboard with visual feedback.
 
 ## Out of Scope
 
-- Card de tournament (campeón / bota de oro).
-- Card de pick personal del usuario.
-- Descarga directa de la imagen como archivo.
-- Soporte para todos los mercados; solo `result_1x2` en esta fase.
+- Tournament card (champion / Golden Boot).
+- Personal user pick card.
+- Direct image download as a file.
+- Support for all markets; only `result_1x2` in this phase.
 
 ## Requirements
 
-1. `GET /og/fixture/[id]` devuelve una imagen PNG válida con las probabilidades
-   del partido.
-2. La imagen tiene al menos: nombres de equipos, porcentajes 1X2, nombre de la app.
-3. `app/fixtures/[id]/page.tsx` incluye `<meta property="og:image">` apuntando a
-   la URL del route handler.
-4. La página de fixture muestra un botón "Compartir" que usa `navigator.share` o
-   copia la URL.
-5. El route handler no expone API keys ni datos sensibles.
+1. `GET /og/fixture/[id]` returns a valid PNG image with match probabilities.
+2. The image has at minimum: team names, 1X2 percentages, app name.
+3. `app/fixtures/[id]/page.tsx` includes `<meta property="og:image">` pointing to
+   the route handler URL.
+4. The fixture page shows a "Share" button that uses `navigator.share` or copies the URL.
+5. The route handler does not expose API keys or sensitive data.
 
 ## Acceptance Criteria
 
-- [ ] `GET /og/fixture/[id]` devuelve `Content-Type: image/png` con una imagen válida.
-- [ ] Compartir desde móvil abre el sheet nativo de compartir.
-- [ ] Compartir desde desktop copia la URL con feedback "¡Copiado!".
-- [ ] OG image se ve correctamente al pegar la URL en WhatsApp o Twitter.
-- [ ] `pnpm tsc --noEmit` pasa.
-- [ ] `pnpm build` pasa (el route handler compila sin errores en el edge runtime).
+- [ ] `GET /og/fixture/[id]` returns `Content-Type: image/png` with a valid image.
+- [ ] Sharing from mobile opens the native share sheet.
+- [ ] Sharing from desktop copies the URL with "Copied!" feedback.
+- [ ] OG image displays correctly when pasting the URL in WhatsApp or Twitter.
+- [ ] `pnpm tsc --noEmit` passes.
+- [ ] `pnpm build` passes (the route handler compiles without errors on edge runtime).
 
 ## Risks and Assumptions
 
-- `next/og` usa edge runtime. Los fonts custom deben cargarse como `ArrayBuffer`
-  desde el sistema de archivos o una URL, no desde `node_modules`. Se debe
-  verificar que la fuente que usa la app esté disponible en el edge.
-- Los emoji de banderas pueden no renderizar igual en todos los sistemas en el
-  contexto del OG renderer. Si hay problemas se reemplaza con el nombre del país
-  en texto.
-- WhatsApp scrapeará la URL para obtener la OG image; requiere que la ruta sea
-  pública (sin auth). Confirmado: la app no tiene auth por ruta.
+- `next/og` uses edge runtime. Custom fonts must be loaded as `ArrayBuffer`
+  from the filesystem or a URL, not from `node_modules`. Must verify that the font
+  used by the app is available in the edge.
+- Flag emojis may not render the same on all systems in the OG renderer context.
+  If there are issues, replace with the country name in text.
+- WhatsApp will scrape the URL to get the OG image; requires the route to be
+  public (no auth). Confirmed: the app has no per-route auth.

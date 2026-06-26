@@ -6,15 +6,15 @@ completed
 
 ## Tasks
 
-- [x] 1. Verificar que ningún archivo del runtime importa `better-sqlite3` directamente.
-- [x] 2. Mover `better-sqlite3` y `@types/better-sqlite3` a `devDependencies` en `package.json`. (ya estaba, no requirió cambio)
-- [x] 3. Correr `pnpm install` para actualizar el lockfile. (lockfile ya consistente)
-- [x] 4. Correr `pnpm tsc --noEmit`, `pnpm test`, `pnpm build`.
-- [x] 5. Agregar `better-sqlite3` a `serverExternalPackages` en `next.config.ts` (acción preventiva).
+- [x] 1. Verify that no runtime file imports `better-sqlite3` directly.
+- [x] 2. Move `better-sqlite3` and `@types/better-sqlite3` to `devDependencies` in `package.json`. (was already there, no change required)
+- [x] 3. Run `pnpm install` to update the lockfile. (lockfile already consistent)
+- [x] 4. Run `pnpm tsc --noEmit`, `pnpm test`, `pnpm build`.
+- [x] 5. Add `better-sqlite3` to `serverExternalPackages` in `next.config.ts` (preventive action).
 
 ## Definition of Done
 
-- [x] `pnpm tsc --noEmit`, `pnpm test` y `pnpm build` pasan.
-- [x] `pnpm spec:check` pasa (sin errores).
-- [x] `specs/README.md` actualizado.
-- [x] Warning DEP0176 no aparece en log del preview de Vercel.
+- [x] `pnpm tsc --noEmit`, `pnpm test`, and `pnpm build` pass.
+- [x] `pnpm spec:check` passes (no errors).
+- [x] `specs/README.md` updated.
+- [x] DEP0176 warning no longer appears in Vercel preview log.

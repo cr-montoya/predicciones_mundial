@@ -1,32 +1,32 @@
 # phase-26-picks-reminder — Design
 
-## Archivos nuevos
+## New Files
 
-| Archivo | Descripción |
+| File | Description |
 |---|---|
-| `components/picks-reminder-banner.tsx` | Client Component: banner en home |
-| `components/fixtures-nav-badge.tsx` | Client Component: badge inline en nav |
+| `components/picks-reminder-banner.tsx` | Client Component: banner on home |
+| `components/fixtures-nav-badge.tsx` | Client Component: inline badge in nav |
 
-## Archivos modificados
+## Modified Files
 
-| Archivo | Cambio |
+| File | Change |
 |---|---|
-| `app/page.tsx` | Pasar `fixtures={fixturesToday.map(f => f.fixture)}` al banner |
-| `components/nav.tsx` | Agregar `<FixturesNavBadge />` inline después del label en el tab de `/fixtures` |
+| `app/page.tsx` | Pass `fixtures={fixturesToday.map(f => f.fixture)}` to the banner |
+| `components/nav.tsx` | Add `<FixturesNavBadge />` inline after the label in the `/fixtures` tab |
 
-## Data contract
+## Data Contract
 
-`app/page.tsx` ya tiene `fixturesToday: FixtureWithTeams[]` de `loadHomeData()`.
-El banner recibe la lista de fixtures planos:
+`app/page.tsx` already has `fixturesToday: FixtureWithTeams[]` from `loadHomeData()`.
+The banner receives the flat fixture list:
 
 ```ts
-// en app/page.tsx
+// in app/page.tsx
 <PicksReminderBanner fixtures={fixturesToday.map(f => f.fixture)} />
 ```
 
-Prop del banner: `{ fixtures: Fixture[] }`.
+Banner prop: `{ fixtures: Fixture[] }`.
 
-## Lógica de detección (Client Component, `useEffect`)
+## Detection Logic (Client Component, `useEffect`)
 
 ```ts
 function getUnpickedSoon(fixtures: Fixture[]): Fixture[] {
@@ -49,27 +49,27 @@ const today = new Date().toISOString().slice(0, 10)  // 'YYYY-MM-DD'
 const dismissed = localStorage.getItem(DISMISS_KEY) === today
 ```
 
-Al cerrar el banner: `localStorage.setItem(DISMISS_KEY, today)` — persiste hasta el día siguiente (date-scoped).
+On close: `localStorage.setItem(DISMISS_KEY, today)` — persists until the next day (date-scoped).
 
-## Comunicación banner → badge vía localStorage
+## Banner → Badge Communication via localStorage
 
-Cuando el banner detecta el count (en `useEffect`):
+When the banner detects the count (in `useEffect`):
 ```ts
 localStorage.setItem('upcoming_unpicked_count', String(count))
 ```
 
-`FixturesNavBadge` lee `Number(localStorage.getItem('upcoming_unpicked_count')) || 0` en su propio `useEffect`. No requiere cambios en `app/layout.tsx`.
+`FixturesNavBadge` reads `Number(localStorage.getItem('upcoming_unpicked_count')) || 0` in its own `useEffect`. Does not require changes to `app/layout.tsx`.
 
-## Diseño visual — PicksReminderBanner
+## Visual Design — PicksReminderBanner
 
-**Nota: el codebase usa inline `style` objects, NO clases de Tailwind.**
+**Note: the codebase uses inline `style` objects, NOT Tailwind classes.**
 
-Punto de inserción en `app/page.tsx`: entre `<Hero>` y el bloque de `<LastUpdated>`.
-Envolver en `<FadeIn>` (componente existente).
+Insertion point in `app/page.tsx`: between `<Hero>` and the `<LastUpdated>` block.
+Wrap in `<FadeIn>` (existing component).
 
-Render `null` si `count === 0 || dismissed` (seguro en SSR — el estado arranca en `{count:0,dismissed:false}` hasta que corre `useEffect`).
+Render `null` if `count === 0 || dismissed` (safe in SSR — state starts at `{count:0,dismissed:false}` until `useEffect` runs).
 
-### Contenedor externo (dentro de FadeIn)
+### Outer container (inside FadeIn)
 
 ```ts
 style={{
@@ -86,25 +86,25 @@ style={{
 }}
 ```
 
-### Bloque izquierdo (icono + texto)
+### Left block (icon + text)
 
 ```ts
 style={{ display: 'flex', alignItems: 'center', gap: 10, flex: '1 1 240px', minWidth: 0 }}
 ```
 
-- Dot pulsante: `width:8, height:8, borderRadius:'50%', background:'#FFDB00', flexShrink:0`
-  Con `animation: 'pulseGlow 2s infinite'` (keyframe ya existe en `globals.css`).
-- Texto: `fontSize:13, fontWeight:600, color:'#f0ece4', lineHeight:1.3`.
-  El número va en `<strong style={{ color:'#FFDB00' }}>`.
+- Pulsing dot: `width:8, height:8, borderRadius:'50%', background:'#FFDB00', flexShrink:0`
+  With `animation: 'pulseGlow 2s infinite'` (keyframe already in `globals.css`).
+- Text: `fontSize:13, fontWeight:600, color:'#f0ece4', lineHeight:1.3`.
+  The number goes in `<strong style={{ color:'#FFDB00' }}>`.
 
 ### Copy (singular/plural)
 
-- 1 partido: `Tienes 1 partido próximo sin pick · Haz tu predicción`
-- N partidos: `Tienes {n} partidos próximos sin pick · Haz tu predicción`
+- 1 match: `You have 1 upcoming match without a pick · Make your prediction`
+- N matches: `You have {n} upcoming matches without a pick · Make your prediction`
 
-No usar "hoy" ni exclamaciones. Tono sobrio, consistente con el resto de la app.
+Do not use exclamation marks. Sober tone, consistent with the rest of the app.
 
-### Bloque derecho (CTA + cierre)
+### Right block (CTA + close)
 
 ```ts
 style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 8 }}
@@ -119,9 +119,9 @@ style={{
   borderRadius: 6, textDecoration: 'none', whiteSpace: 'nowrap',
 }}
 ```
-Label: `VER PARTIDOS →`
+Label: `VIEW MATCHES →`
 
-Botón de cierre:
+Close button:
 ```ts
 style={{
   width: 28, height: 28, flexShrink: 0,
@@ -129,14 +129,14 @@ style={{
   background: 'transparent', border: '1px solid rgba(255,255,255,0.08)',
   borderRadius: 6, color: '#6b6d75', fontSize: 16, lineHeight: 1, cursor: 'pointer',
 }}
-aria-label="Cerrar aviso"
+aria-label="Close notice"
 ```
-Contenido: `×`. onClick: `setDismissed(true)` + `localStorage.setItem(DISMISS_KEY, today)`.
+Content: `×`. onClick: `setDismissed(true)` + `localStorage.setItem(DISMISS_KEY, today)`.
 
-## Diseño visual — FixturesNavBadge
+## Visual Design — FixturesNavBadge
 
-Badge inline, inmediatamente después del label "Partidos" en `nav.tsx`.
-`nav.tsx` ya es Client Component — solo agregar import y renderizado condicional.
+Inline badge, immediately after the "Fixtures" label in `nav.tsx`.
+`nav.tsx` is already a Client Component — just add import and conditional rendering.
 
 ```ts
 style={{
@@ -148,7 +148,7 @@ style={{
   padding: '0 5px',
   marginLeft: 6,
   borderRadius: 8,
-  background: '#E5342B',   // rojo — distingue de los accents dorados
+  background: '#E5342B',   // red — distinguishes from gold accents
   color: '#fff',
   fontSize: 10,
   fontWeight: 700,
@@ -158,21 +158,21 @@ style={{
 }}
 ```
 
-Mostrar `9+` cuando count > 9. Ocultar (`return null`) cuando count === 0.
+Show `9+` when count > 9. Hide (`return null`) when count === 0.
 
-## Hidratación segura
+## Safe Hydration
 
-Ambos componentes renderizan `null` en SSR. Estado inicial: `count = 0`, `dismissed = false`.
-`useEffect` corre solo en el cliente después del montaje. El banner aparece ~100ms después del montaje — aceptable para un recordatorio.
+Both components render `null` in SSR. Initial state: `count = 0`, `dismissed = false`.
+`useEffect` runs only on the client after mounting. The banner appears ~100ms after mounting — acceptable for a reminder.
 
 ## Security and Runtime
 
-- Sin secrets. Fixtures se pasan como props desde el Server Component padre.
-- `localStorage` solo contiene IDs de fixtures y fecha de dismiss — sin PII.
+- No secrets. Fixtures are passed as props from the Server Component parent.
+- `localStorage` only contains fixture IDs and the dismiss date — no PII.
 
 ## Testing Strategy
 
-- Sin partidos próximos → banner y badge no se renderizan.
-- Con partidos próximos sin pick → banner visible, badge con conteo correcto.
-- Dismiss → banner oculto hasta el día siguiente.
-- Sin hydration mismatch: SSR renderiza `null`, cliente monta con count correcto.
+- No upcoming matches → banner and badge not rendered.
+- With upcoming matches without pick → banner visible, badge with correct count.
+- Dismiss → banner hidden until next day.
+- No hydration mismatch: SSR renders `null`, client mounts with correct count.

@@ -1,19 +1,19 @@
-# Tasks: Fase 9 - Cloudflare D1
+# Tasks: Phase 9 - Cloudflare D1
 
-## Historico
+## Historical
 
-- [x] Investigar Cloudflare Pages/D1.
-- [x] Crear documentacion de despliegue.
-- [x] Preparar seed SQL.
-- [x] Revisar secrets en Wrangler.
+- [x] Research Cloudflare Pages/D1.
+- [x] Create deployment documentation.
+- [x] Prepare SQL seed.
+- [x] Review secrets in Wrangler.
 
-## Estado actual
+## Current Status
 
-- [x] Marcar fase como historica.
-- [x] Sustituir arquitectura vigente por Vercel ISR.
+- [x] Mark phase as historical.
+- [x] Replace current architecture with Vercel ISR.
 
-## Si se retoma en el futuro
+## If Resumed in the Future
 
-- [ ] Crear nueva spec de re-migracion a Workers/D1.
-- [ ] Validar compatibilidad Next.js actual.
-- [ ] Definir estrategia de datos y rollback.
+- [ ] Create new re-migration spec for Workers/D1.
+- [ ] Validate compatibility with current Next.js.
+- [ ] Define data and rollback strategy.

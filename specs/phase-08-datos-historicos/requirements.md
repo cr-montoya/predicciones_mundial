@@ -1,23 +1,23 @@
-# Requirements: Fase 8 - Datos historicos
+# Requirements: Phase 8 - Historical Data
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Calibrar fuerzas de equipos con datos historicos para evitar probabilidades uniformes.
+Calibrate team strengths with historical data to avoid uniform probabilities.
 
-## Requerimientos
+## Requirements
 
-1. Crear `lib/data/historical-stats.json`.
-2. Incluir fuerza ofensiva y defensiva por equipo.
-3. Usar competiciones recientes y relevantes.
-4. Integrar stats historicos en recomputo de fuerzas.
-5. Mejorar distribucion de probabilidades de campeon.
+1. Create `lib/data/historical-stats.json`.
+2. Include offensive and defensive strength per team.
+3. Use recent and relevant competitions.
+4. Integrate historical stats into strength recomputation.
+5. Improve championship probability distribution.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Favoritos suben por encima de equipos debiles.
-2. Equipos muy debiles quedan por debajo de 1%.
-3. Tests de tournament prediction pasan.
+1. Favorites rise above weaker teams.
+2. Very weak teams fall below 1%.
+3. Tournament prediction tests pass.

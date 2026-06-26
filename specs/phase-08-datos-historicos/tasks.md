@@ -1,17 +1,17 @@
-# Tasks: Fase 8 - Datos historicos
+# Tasks: Phase 8 - Historical Data
 
 ## Analyst
 
-- [x] Definir fuentes historicas.
-- [x] Definir ponderacion inicial.
+- [x] Define historical sources.
+- [x] Define initial weighting.
 
 ## Developer
 
-- [x] Crear `historical-stats.json`.
-- [x] Integrar stats en strengths.
-- [x] Regenerar prediccion de torneo.
+- [x] Create `historical-stats.json`.
+- [x] Integrate stats into strengths.
+- [x] Regenerate tournament prediction.
 
 ## QA
 
-- [x] Validar favoritos vs equipos debiles.
-- [x] Tests de prediccion de torneo.
+- [x] Validate favorites vs weak teams.
+- [x] Tournament prediction tests.

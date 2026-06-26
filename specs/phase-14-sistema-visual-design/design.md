@@ -1,25 +1,25 @@
-# Design: Fase 14 - Sistema visual con agente Design
+# Design: Phase 14 - Visual System with Design Agent
 
-## Direccion
+## Direction
 
-- Broadcast deportivo.
-- Datos y probabilidades como protagonistas.
-- Outfit/tokens dorados segun implementacion final.
-- Layout denso y escaneable.
-- Sin cards decorativas innecesarias.
+- Sports broadcast.
+- Data and probabilities as protagonists.
+- Outfit/golden tokens per final implementation.
+- Dense and scannable layout.
+- No unnecessary decorative cards.
 
-## Agente Design
+## Design Agent
 
-El agente revisa:
+The agent reviews:
 
-- Jerarquia visual.
-- Responsive.
-- Consistencia de componentes.
-- Modo captura.
-- Estados vacios.
+- Visual hierarchy.
+- Responsive behavior.
+- Component consistency.
+- Capture mode.
+- Empty states.
 
-## Riesgos
+## Risks
 
-- Refactor visual rompiendo datos.
-- Texto solapado en mobile.
-- Inconsistencia entre pantallas.
+- Visual refactor breaking data display.
+- Text overlap on mobile.
+- Inconsistency between screens.

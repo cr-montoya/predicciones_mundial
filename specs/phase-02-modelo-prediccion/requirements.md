@@ -1,24 +1,24 @@
-# Requirements: Fase 2 - Modelo de prediccion
+# Requirements: Phase 2 - Prediction Model
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Implementar el modelo estadistico base para proyectar mercados de partido y torneo.
+Implement the base statistical model to project match and tournament markets.
 
-## Requerimientos
+## Requirements
 
-1. Debe existir distribucion Poisson para goles esperados.
-2. Debe existir matriz de marcador exacto.
-3. Deben derivarse mercados 1X2, over/under, BTTS y marcador exacto.
-4. Deben existir modelos de tarjetas, corners, goleadores y Monte Carlo.
-5. Los modelos deben ser puros respecto a red/DB.
-6. Las probabilidades deben pasar sanity checks.
+1. A Poisson distribution for expected goals must exist.
+2. An exact score matrix must exist.
+3. Markets must be derived: 1X2, over/under, BTTS, and exact score.
+4. Models for cards, corners, top scorers, and Monte Carlo must exist.
+5. Models must be pure with respect to network/DB.
+6. Probabilities must pass sanity checks.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Probabilidades suman 1.0 donde aplique.
-2. Tests de skills/modelos pasan.
-3. Inputs fuertes producen resultados estadisticamente coherentes.
+1. Probabilities sum to 1.0 where applicable.
+2. Tests for skills/models pass.
+3. Strong inputs produce statistically coherent results.

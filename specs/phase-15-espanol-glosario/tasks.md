@@ -1,59 +1,59 @@
-# Tasks: Fase 15 — Español LATAM y glosario de mercados
+# Tasks: Phase 15 — Latin American Spanish and Market Glossary
 
 ## 1. Design
 
-- [ ] Definir patrón visual del botón de info.
-- [ ] Definir comportamiento desktop/mobile.
-- [ ] Validar que el glosario no compita con los números principales.
-- [ ] Revisar disclaimer de entretenimiento en páginas clave.
+- [ ] Define the visual pattern for the info button.
+- [ ] Define desktop/mobile behavior.
+- [ ] Validate that the glossary does not compete with the main numbers.
+- [ ] Review the entertainment disclaimer on key pages.
 
 ## 2. Analyst
 
-- [ ] Validar descripciones de mercados.
-- [ ] Validar ejemplos de lectura de probabilidades.
-- [ ] Marcar mercados con confianza naturalmente baja: tarjetas, corners, goleadores.
-- [ ] Confirmar que el copy no sugiere asesoría financiera.
+- [ ] Validate market descriptions.
+- [ ] Validate probability reading examples.
+- [ ] Flag markets with naturally low confidence: cards, corners, top scorers.
+- [ ] Confirm copy does not suggest financial advice.
 
 ## 3. Developer
 
-- [ ] Crear rama desde `main`: `phase/15-spanish-market-info`.
-- [ ] Crear `lib/content/markets-es.ts`.
-- [ ] Crear helper tipado `getMarketCopy`.
-- [ ] Crear componente `MarketInfo`.
-- [ ] Conectar glosario en secciones de mercado.
-- [ ] Traducir home, fixtures, grupos, candidatos, estados vacíos y errores visibles.
-- [ ] Normalizar fechas, horas y porcentajes.
-- [ ] Mantener client components pequeños y aislados.
+- [ ] Create branch from `main`: `phase/15-spanish-market-info`.
+- [ ] Create `lib/content/markets-es.ts`.
+- [ ] Create typed helper `getMarketCopy`.
+- [ ] Create `MarketInfo` component.
+- [ ] Connect glossary to market sections.
+- [ ] Translate home, fixtures, groups, candidates, empty states, and visible errors.
+- [ ] Normalize dates, times, and percentages.
+- [ ] Keep client components small and isolated.
 
 ## 4. QA
 
 - [ ] `pnpm tsc --noEmit`.
 - [ ] `pnpm test`.
 - [ ] `pnpm build`.
-- [ ] Revisar `/`.
-- [ ] Revisar `/fixtures`.
-- [ ] Revisar `/fixtures/[id]`.
-- [ ] Revisar `/groups`.
-- [ ] Buscar strings críticos en inglés.
-- [ ] Probar info buttons en desktop.
-- [ ] Probar info buttons en mobile.
+- [ ] Review `/`.
+- [ ] Review `/fixtures`.
+- [ ] Review `/fixtures/[id]`.
+- [ ] Review `/groups`.
+- [ ] Search for critical English strings.
+- [ ] Test info buttons on desktop.
+- [ ] Test info buttons on mobile.
 
 ## 5. Reviewer
 
-- [ ] No hay strings de mercado duplicados innecesariamente.
-- [ ] No hay providers/API/server env en client components.
-- [ ] La UI mantiene el harness de capas.
-- [ ] Los componentes nuevos son pequeños y reutilizables.
+- [ ] No market strings are unnecessarily duplicated.
+- [ ] No providers/API/server env in client components.
+- [ ] UI maintains the layer harness.
+- [ ] New components are small and reusable.
 
 ## 6. Security
 
-- [ ] No se exponen secrets.
-- [ ] No se usa `dangerouslySetInnerHTML`.
-- [ ] Popover/dialog no introduce URLs externas inseguras.
+- [ ] No secrets exposed.
+- [ ] No `dangerouslySetInnerHTML` used.
+- [ ] Popover/dialog does not introduce unsafe external URLs.
 
-## 7. Owner review
+## 7. Owner Review
 
-- [ ] Revisar preview de Vercel.
-- [ ] Validar tono LATAM.
-- [ ] Validar comprensión de mercados.
-- [ ] Aprobar PR antes de merge.
+- [ ] Review Vercel preview.
+- [ ] Validate LATAM tone.
+- [ ] Validate market comprehension.
+- [ ] Approve PR before merge.

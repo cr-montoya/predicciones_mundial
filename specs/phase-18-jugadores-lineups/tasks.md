@@ -1,58 +1,58 @@
-# Tasks: Fase 18 - Datos de jugadores enriquecidos
+# Tasks: Phase 18 - Enriched Player Data
 
 ## 1. Analyst
 
-- [x] Redefinir contrato de `scorers.ts` con `starterProbability`.
-- [x] Validar valores para lesionado/duda/suspendido.
-- [x] Definir reglas de confidence.
-- [x] Validar efecto de lineup en probabilidades.
+- [x] Redefine `scorers.ts` contract with `starterProbability`.
+- [x] Validate values for injured/doubtful/suspended.
+- [x] Define confidence rules.
+- [x] Validate effect of lineup on probabilities.
 
 ## 2. Design
 
-- [x] Definir badge de lineup confirmado.
-- [x] Definir estado `Datos limitados`.
-- [x] Definir timestamp visual.
-- [x] Revisar mobile en fixture detail.
+- [x] Define confirmed lineup badge.
+- [x] Define `Limited data` state.
+- [x] Define visual timestamp.
+- [x] Review mobile in fixture detail.
 
 ## 3. Developer
 
-- [x] Crear rama desde `main`: `phase/18-jugadores-lineups`.
-- [x] Crear `lib/agents/lineups-loader.ts`.
-- [x] Normalizar lineups por `fixtureId`.
-- [x] Integrar injuries/suspensions si fuente disponible.
-- [x] Actualizar contrato de `scorers.ts`.
-- [ ] Agregar Server Action manual near-kickoff — DEFERRED: On-Demand Revalidation queda para fase futura.
-- [x] Actualizar UI de goleadores.
-- [x] Agregar fallback sin lineup.
+- [x] Create branch from `main`: `phase/18-jugadores-lineups`.
+- [x] Create `lib/agents/lineups-loader.ts`.
+- [x] Normalize lineups per `fixtureId`.
+- [x] Integrate injuries/suspensions if source available.
+- [x] Update `scorers.ts` contract.
+- [ ] Add manual near-kickoff Server Action — DEFERRED: On-Demand Revalidation left for a future phase.
+- [x] Update top scorer UI.
+- [x] Add no-lineup fallback.
 
 ## 4. QA
 
 - [x] `pnpm tsc --noEmit` — PASS.
 - [x] `pnpm test` — 361/361 PASS.
 - [x] `pnpm build` — PASS.
-- [x] Test lineup completo.
-- [x] Test sin lineup.
-- [x] Test jugador lesionado.
-- [x] Test jugador suspendido.
-- [ ] Smoke test fixture detail near-kickoff — pendiente de preview Vercel.
+- [x] Complete lineup test.
+- [x] No lineup test.
+- [x] Injured player test.
+- [x] Suspended player test.
+- [ ] Smoke test fixture detail near-kickoff — pending Vercel preview.
 
 ## 5. Reviewer
 
-- [x] Agents concentran llamadas externas.
-- [x] Models/skills siguen puros.
-- [x] Server Action protegida si existe — N/A (diferida).
-- [x] UI no importa providers.
+- [x] Agents concentrate external calls.
+- [x] Models/skills remain pure.
+- [x] Server Action protected if exists — N/A (deferred).
+- [x] UI does not import providers.
 
 ## 6. Security
 
-- [x] API key solo server-side.
-- [x] Rate limit en refresh manual — N/A (Server Action diferida).
-- [x] No logs de payloads sensibles.
-- [x] No endpoint público sin protección para quemar cuota.
+- [x] API key only server-side.
+- [x] Rate limit on manual refresh — N/A (Server Action deferred).
+- [x] No logs of sensitive payloads.
+- [x] No unprotected public endpoint that burns quota.
 
-## 7. Owner review
+## 7. Owner Review
 
-- [ ] Revisar preview de Vercel.
-- [ ] Validar copy de confianza.
-- [ ] Validar que lineup mejora se entiende.
-- [ ] Aprobar PR antes de merge.
+- [ ] Review Vercel preview.
+- [ ] Validate confidence copy.
+- [ ] Validate that lineup improvement is understood.
+- [ ] Approve PR before merge.

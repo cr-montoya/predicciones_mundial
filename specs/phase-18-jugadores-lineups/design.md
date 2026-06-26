@@ -1,42 +1,42 @@
-# Design: Fase 18 - Datos de jugadores enriquecidos
+# Design: Phase 18 - Enriched Player Data
 
-## Enfoque
+## Approach
 
-Mantener el modelo de goleadores como funcion pura que recibe datos de jugadores ya
-normalizados. Los agents se encargan de traer lineups/lesiones y convertirlos a inputs.
+Keep the top scorer model as a pure function that receives already normalized player data.
+Agents handle fetching lineups/injuries and converting them to inputs.
 
-## Arquitectura propuesta
+## Proposed Architecture
 
 ```
 API-Football lineups/injuries
    -> lib/agents/lineups-loader.ts
-   -> normalizacion por fixtureId
-   -> cache JSON/server
+   -> normalization per fixtureId
+   -> JSON/server cache
    -> lib/model/scorers.ts
-   -> UI goleadores
+   -> top scorers UI
 ```
 
-## Agent de lineups
+## Lineups Agent
 
 `lib/agents/lineups-loader.ts`:
 
-- Recibe `fixtureId` y kickoff.
-- Solo consulta si el partido esta a menos de 2 horas o ya empezo.
-- Retorna `null` si no hay lineup.
-- Retorna titulares/suplentes si hay lineup.
-- Adjunta timestamp de fuente.
+- Receives `fixtureId` and kickoff.
+- Only queries if the match is less than 2 hours away or has already started.
+- Returns `null` if no lineup exists.
+- Returns starters/substitutes if a lineup exists.
+- Attaches source timestamp.
 
 ## Injuries
 
-Si el endpoint de injuries esta disponible:
+If the injuries endpoint is available:
 
 - `out`: `starterProbability = 0`.
 - `doubtful`: `starterProbability = 0.2`.
 - `suspended`: `starterProbability = 0`.
 
-Analyst puede ajustar valores.
+Analyst may adjust values.
 
-## Contrato de scorer actualizado
+## Updated Scorer Contract
 
 ```ts
 interface PlayerScorerInput {
@@ -53,66 +53,66 @@ interface PlayerScorerInput {
 
 ## Confidence
 
-- Lineup confirmado: `medium`.
-- Sin lineup: `low`.
-- Lesiones claras: jugador excluido o probabilidad casi cero.
-- `high` queda reservado para una fase futura con datos mas robustos.
+- Confirmed lineup: `medium`.
+- No lineup: `low`.
+- Clear injuries: player excluded or probability near zero.
+- `high` reserved for a future phase with more robust data.
 
-## Refresh near-kickoff
+## Near-Kickoff Refresh
 
-ISR de 1 hora puede no ser suficiente para alineaciones que salen 1 hora antes.
+1-hour ISR may not be sufficient for lineups that come out 1 hour before kickoff.
 
 MVP:
 
-- Server Action manual "Actualizar alineaciones".
-- Protegida por auth/rate limit.
-- Solo disponible cerca del kickoff.
+- Manual Server Action "Update lineups".
+- Protected by auth/rate limit.
+- Only available near kickoff.
 
-Futuro:
+Future:
 
 - On-Demand Revalidation.
-- Cron externo.
+- External cron.
 
 ## UI
 
-En seccion GOLEADORES:
+In the TOP SCORERS section:
 
-- Badge `Alineacion confirmada` cuando aplique.
-- Timestamp pequeño.
-- Si no hay lineup: `Datos limitados`.
-- Si jugador esta out: no mostrarlo como candidato principal.
+- `Lineup confirmed` badge when applicable.
+- Small timestamp.
+- If no lineup: `Limited data`.
+- If player is out: do not show them as a main candidate.
 
-## Riesgos
+## Risks
 
-### Plan de API requerido
+### Required API Plan
 
-API-Football (RapidAPI) en plan gratuito no tiene acceso a temporada 2026.
-football-data.org en tier gratuito no expone endpoint de lineups.
+API-Football (RapidAPI) on the free plan does not have access to the 2026 season.
+football-data.org on the free tier does not expose a lineups endpoint.
 
-Mientras no se upgradee un plan, el badge siempre mostrará "DATOS LIMITADOS" y
-el modelo usará fallback por posición histórica. El código está listo para activarse
-automáticamente cuando haya acceso.
+Until a plan is upgraded, the badge will always show "LIMITED DATA" and
+the model will use the historical position-based fallback. The code is ready to activate
+automatically when access is available.
 
-Para usar API-Football: upgradar a plan de pago en RapidAPI y correr `pnpm map-fixtures`
-para generar `lib/data/fixture-id-map.json` (mapa FD fixture ID → AF fixture ID).
+To use API-Football: upgrade to a paid plan on RapidAPI and run `pnpm map-fixtures`
+to generate `lib/data/fixture-id-map.json` (FD fixture ID → AF fixture ID map).
 
-### Rate limit
+### Rate Limit
 
-Lineups por fixture pueden aumentar consumo.
+Lineups per fixture may increase consumption.
 
-Mitigacion: consultar solo near-kickoff y cachear.
+Mitigation: query only near-kickoff and cache.
 
-### Datos tardios
+### Late Data
 
-La fuente puede no publicar alineaciones a tiempo.
+The source may not publish lineups in time.
 
-Mitigacion: fallback historico y confianza baja.
+Mitigation: historical fallback and low confidence.
 
-### Complejidad UI
+### UI Complexity
 
-Demasiadas etiquetas pueden saturar.
+Too many labels may saturate the view.
 
-Mitigacion: badge compacto y detalles en info tooltip.
+Mitigation: compact badge and details in info tooltip.
 
 ---
 
@@ -127,8 +127,8 @@ Agent — `lib/agents/lineups-loader.ts`
 #### Source
 
 - Provider/file: API-Football RapidAPI — `GET /fixtures/lineups?fixture={fixtureId}`
-- Runtime: server-side only; env vars `API_KEY` / `RAPIDAPI_KEY` y `API_HOST` / `RAPIDAPI_HOST`
-- Cache/ISR: en memoria por `fixtureId` durante la vida del proceso; ISR no aplica (near-kickoff window)
+- Runtime: server-side only; env vars `API_KEY` / `RAPIDAPI_KEY` and `API_HOST` / `RAPIDAPI_HOST`
+- Cache/ISR: in-memory per `fixtureId` for the life of the process; ISR does not apply (near-kickoff window)
 
 #### Input Shape
 
@@ -154,7 +154,7 @@ interface ApiLineupTeam {
 }
 
 interface ApiLineupsResponse {
-  response: ApiLineupTeam[]   // len 0 si no hay lineup; len 2 si confirmado
+  response: ApiLineupTeam[]   // len 0 if no lineup; len 2 if confirmed
   errors?: Record<string, string>
 }
 ```
@@ -173,36 +173,36 @@ interface LineupPlayer {
 
 interface FixtureLineupData {
   fixtureId: number
-  confirmedAt: string         // ISO 8601 — timestamp de la respuesta API
-  players: LineupPlayer[]     // titulares y suplentes de ambos equipos
+  confirmedAt: string         // ISO 8601 — API response timestamp
+  players: LineupPlayer[]     // starters and substitutes from both teams
 }
 ```
 
 #### Nullability and Fallbacks
 
-- Retorna `null` si el kickoff es más de 2h en el futuro.
-- Retorna `null` si la API responde con `response.length === 0`.
-- Retorna `null` si la API lanza error o supera rate limit.
-- Con `null`, `scorers.ts` aplica fallback historico: `starterProbability` estimado por posicion (`FW=0.7`, `MF=0.5`, `DF=0.3`, `GK=0`), confidence `'low'`.
+- Returns `null` if kickoff is more than 2h in the future.
+- Returns `null` if API responds with `response.length === 0`.
+- Returns `null` if API throws error or exceeds rate limit.
+- With `null`, `scorers.ts` applies historical fallback: `starterProbability` estimated by position (`FW=0.7`, `MF=0.5`, `DF=0.3`, `GK=0`), confidence `'low'`.
 
 #### Errors
 
-- Rate limit superado: retorna `null`; loguea warning.
-- API key ausente: lanza en `getEnvVars()` — el agent captura y retorna `null`.
-- Timeout/red: capturado en bloque try/catch; retorna `null`.
-- No se loguean payloads completos de la respuesta en produccion.
+- Rate limit exceeded: returns `null`; logs warning.
+- API key absent: throws in `getEnvVars()` — agent catches and returns `null`.
+- Timeout/network: caught in try/catch; returns `null`.
+- Full response payloads are not logged in production.
 
 #### Security
 
-- Secrets: `API_KEY`/`RAPIDAPI_KEY` solo en env server-side; nunca `NEXT_PUBLIC_`.
-- Client exposure: `lineups-loader.ts` vive en `lib/agents/`; Client Components no lo importan.
-- Quotas: el `RateLimiter` existente (`95 req/day`) cubre esta llamada. Llamar solo near-kickoff para no agotar cuota.
+- Secrets: `API_KEY`/`RAPIDAPI_KEY` only in server-side env; never `NEXT_PUBLIC_`.
+- Client exposure: `lineups-loader.ts` lives in `lib/agents/`; Client Components do not import it.
+- Quotas: the existing `RateLimiter` (`95 req/day`) covers this call. Call only near-kickoff to avoid exhausting the quota.
 
 #### Validation
 
-- `response.length` debe ser exactamente 0 o 2; cualquier otro valor logueado como anomalia.
-- `startXI.length` esperado entre 10 y 11; fuera de rango logueado como warning.
-- Tests: lineup completo (2 equipos, 11 titulares c/u), lineup vacío (0 equipos), API error.
+- `response.length` must be exactly 0 or 2; any other value logged as anomaly.
+- `startXI.length` expected between 10 and 11; out of range logged as warning.
+- Tests: complete lineup (2 teams, 11 starters each), empty lineup (0 teams), API error.
 
 ---
 
@@ -210,13 +210,13 @@ interface FixtureLineupData {
 
 #### Owner Layer
 
-Agent — `lib/agents/lineups-loader.ts` (mismo loader, llamada opcional)
+Agent — `lib/agents/lineups-loader.ts` (same loader, optional call)
 
 #### Source
 
 - Provider/file: API-Football RapidAPI — `GET /injuries?fixture={fixtureId}`
 - Runtime: server-side only
-- Cache/ISR: bundled junto al lineup por `fixtureId`
+- Cache/ISR: bundled with lineup per `fixtureId`
 
 #### Raw API Response Shape
 
@@ -244,26 +244,26 @@ interface PlayerInjuryData {
   playerName: string
   teamId: number
   injuryType: InjuryType
-  starterProbabilityOverride: number  // 0 para out/suspended; 0.2 para doubtful
+  starterProbabilityOverride: number  // 0 for out/suspended; 0.2 for doubtful
 }
 ```
 
 #### Nullability and Fallbacks
 
-- Retorna `[]` si la API no responde, retorna array vacio, o no hay datos de lesiones.
-- No bloquea el render: el modelo opera sin datos de injuries si no estan disponibles.
+- Returns `[]` if API does not respond, returns empty array, or no injury data exists.
+- Does not block render: model operates without injury data if unavailable.
 
 #### Errors
 
-- Mismos patrones que el endpoint de lineups: try/catch → `[]`.
+- Same patterns as the lineups endpoint: try/catch → `[]`.
 
 #### Security
 
-- Misma API key que lineups. Un solo proveedor, un solo rate limit compartido.
+- Same API key as lineups. Single provider, single shared rate limit.
 
 #### Validation
 
-- Tests: jugador `out`, jugador `doubtful`, jugador `suspended`, array vacio.
+- Tests: player `out`, player `doubtful`, player `suspended`, empty array.
 
 ---
 
@@ -275,8 +275,8 @@ Model — `lib/model/scorers.ts`
 
 #### Source
 
-- Datos normalizados por `lib/agents/lineups-loader.ts` + squad historico (`lib/data/squads`)
-- No llama APIs; recibe input ya preparado
+- Data normalized by `lib/agents/lineups-loader.ts` + historical squad (`lib/data/squads`)
+- Does not call APIs; receives already prepared input
 
 #### Input Shape
 
@@ -285,43 +285,43 @@ interface PlayerScorerInput {
   playerId: number
   playerName: string
   teamId: number
-  goalsPerMinute: number           // historico; > 0
-  starterProbability: number       // [0, 1]; 1.0 si titular confirmado; estimado si sin lineup
+  goalsPerMinute: number           // historical; > 0
+  starterProbability: number       // [0, 1]; 1.0 if confirmed starter; estimated if no lineup
   lineupStatus: LineupStatus       // 'confirmed_starter' | 'bench' | 'unknown' | 'out'
-  penaltyShare?: number            // opcional; [0, 1]
+  penaltyShare?: number            // optional; [0, 1]
 }
 ```
 
-#### Mapping desde Player y FixtureLineupData
+#### Mapping from Player and FixtureLineupData
 
-| Escenario | starterProbability | lineupStatus |
+| Scenario | starterProbability | lineupStatus |
 |---|---|---|
-| Titular confirmado | 1.0 | `'confirmed_starter'` |
-| Suplente confirmado | 0.1 | `'bench'` |
-| Sin lineup — FW | 0.7 | `'unknown'` |
-| Sin lineup — MF | 0.5 | `'unknown'` |
-| Sin lineup — DF | 0.3 | `'unknown'` |
-| Sin lineup — GK | 0.0 | `'unknown'` |
-| Lesionado / suspendido | 0.0 | `'out'` |
-| Duda (`doubtful`) | 0.2 | `'unknown'` |
+| Confirmed starter | 1.0 | `'confirmed_starter'` |
+| Confirmed substitute | 0.1 | `'bench'` |
+| No lineup — FW | 0.7 | `'unknown'` |
+| No lineup — MF | 0.5 | `'unknown'` |
+| No lineup — DF | 0.3 | `'unknown'` |
+| No lineup — GK | 0.0 | `'unknown'` |
+| Injured / suspended | 0.0 | `'out'` |
+| Doubtful | 0.2 | `'unknown'` |
 
 #### Output Shape
 
-Sin cambio en `ModelOutput`; confidence cambia segun disponibilidad:
+No change to `ModelOutput`; confidence changes based on availability:
 
-- Lineup confirmado: `'medium'`
-- Sin lineup: `'low'`
-- `'high'` reservado para fase futura con xG por partido
+- Confirmed lineup: `'medium'`
+- No lineup: `'low'`
+- `'high'` reserved for a future phase with per-match xG data
 
 #### Nullability and Fallbacks
 
-- Jugadores con `lineupStatus === 'out'` o `starterProbability === 0` son excluidos del ranking.
-- Si no hay ningún `PlayerScorerInput`, `buildScorerOutputs` retorna `emptyOutput` (comportamiento ya existente).
+- Players with `lineupStatus === 'out'` or `starterProbability === 0` are excluded from ranking.
+- If there are no `PlayerScorerInput` entries, `buildScorerOutputs` returns `emptyOutput` (existing behavior).
 
 #### Validation
 
-- `starterProbability` debe estar en `[0, 1]`; fuera de rango es error en sanity check.
-- Tests: todos titulares, todos sin lineup, un jugador lesionado.
+- `starterProbability` must be in `[0, 1]`; out of range is an error in sanity check.
+- Tests: all starters, all without lineup, one injured player.
 
 ---
 
@@ -337,16 +337,16 @@ Agent — `lib/agents/lineups-loader.ts`
 interface LineupsLoaderOutput {
   lineup: FixtureLineupData | null
   injuries: PlayerInjuryData[]
-  scorerInputs: PlayerScorerInput[]  // listo para pasar a scorers.ts
+  scorerInputs: PlayerScorerInput[]  // ready to pass to scorers.ts
 }
 ```
 
 #### Cache
 
-- Cache en memoria por `fixtureId` dentro del proceso ISR.
-- Near-kickoff window: solo consulta la API si `now >= kickoffUtc - 2h`.
-- Sin cache externo en MVP; On-Demand Revalidation queda para fase futura.
+- In-memory cache per `fixtureId` within the ISR process.
+- Near-kickoff window: only queries API if `now >= kickoffUtc - 2h`.
+- No external cache in MVP; On-Demand Revalidation left for a future phase.
 
-#### ADR relacionado
+#### Related ADR
 
-Ver `docs/adr/0002-api-football-lineups-near-kickoff.md`.
+See `docs/adr/0002-api-football-lineups-near-kickoff.md`.

@@ -1,22 +1,22 @@
-# Tasks: Fase 14 - Sistema visual con agente Design
+# Tasks: Phase 14 - Visual System with Design Agent
 
 ## Design
 
-- [x] Crear checklist visual.
-- [x] Definir direccion y tokens.
-- [x] Revisar resultado UI.
+- [x] Create visual checklist.
+- [x] Define direction and tokens.
+- [x] Review UI result.
 
 ## Developer
 
-- [x] Crear agente design.
-- [x] Actualizar `CLAUDE.md` y plan.
-- [x] Refactor visual de componentes principales.
+- [x] Create design agent.
+- [x] Update `CLAUDE.md` and plan.
+- [x] Visual refactor of main components.
 
 ## QA
 
-- [x] Verificar rutas principales.
-- [x] Verificar build/tests.
+- [x] Verify main routes.
+- [x] Verify build/tests.
 
 ## Reviewer
 
-- [x] Confirmar harness sin cambios indebidos.
+- [x] Confirm harness without improper changes.

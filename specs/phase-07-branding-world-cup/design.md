@@ -1,21 +1,21 @@
-# Design: Fase 7 - Branding World Cup 2026
+# Design: Phase 7 - World Cup 2026 Branding
 
-## Paleta
+## Palette
 
-- Rojo.
-- Verde Mexico.
-- Azul Canada.
-- Navy oscuro.
+- Red.
+- Mexico Green.
+- Canada Blue.
+- Dark Navy.
 
 ## UI
 
-- Badge del torneo.
-- Franja o acentos de color.
-- Hero con conteo de partidos.
-- Candidatos con lista expandible.
+- Tournament badge.
+- Color stripe or accents.
+- Hero with match count.
+- Candidates with expandable list.
 
-## Riesgos
+## Risks
 
-- Parecer sitio oficial sin serlo.
-- Sobrecargar la UI con decoracion.
-- Bajar legibilidad de probabilidades.
+- Appearing to be the official site without being it.
+- Overloading the UI with decoration.
+- Reducing readability of probabilities.

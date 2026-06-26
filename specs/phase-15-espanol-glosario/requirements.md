@@ -1,48 +1,48 @@
-# Requirements: Fase 15 — Español LATAM y glosario de mercados
+# Requirements: Phase 15 — Latin American Spanish and Market Glossary
 
-## Problema
+## Problem
 
-La app ya tiene una base visual fuerte, pero todavía hay textos mezclados, labels técnicos
-o mercados que pueden ser confusos para una audiencia latinoamericana que no conoce todos
-los términos de apuestas deportivas.
+The app already has a strong visual base, but there are still mixed texts, technical labels,
+or markets that can be confusing for a Latin American audience that is not familiar with all
+sports betting terms.
 
-El objetivo no es convertir la app en casa de apuestas. La experiencia debe explicar
-probabilidades como análisis estadístico de entretenimiento.
+The objective is not to turn the app into a sportsbook. The experience should explain
+probabilities as statistical entertainment analysis.
 
-## Objetivo
+## Objective
 
-Traducir y normalizar toda la experiencia a español latinoamericano, y agregar un glosario
-de mercados con botones de info que expliquen qué significa cada mercado, cómo leer su
-probabilidad y qué tan confiable es.
+Translate and normalize the entire experience to Latin American Spanish, and add a market
+glossary with info buttons that explain what each market means, how to read its probability,
+and how reliable it is.
 
-## Requerimientos funcionales
+## Functional Requirements
 
-1. La UI visible debe estar en español latinoamericano.
-2. Debe existir un diccionario tipado de mercados en `lib/content/markets-es.ts`.
-3. Cada mercado visible debe tener:
-   - Label corto.
-   - Descripción clara.
-   - Ejemplo de lectura.
-   - Nota de confianza o limitación si aplica.
-4. Las secciones de mercados deben incluir un botón/icono de info.
-5. El botón de info debe abrir tooltip, popover o panel compacto sin romper mobile.
-6. El disclaimer de entretenimiento debe estar visible en páginas de mercados o predicciones.
-7. Fechas, horas y porcentajes deben usar formato regional consistente (`es-CO` o `es-419`).
-8. Los estados vacíos y errores deben ser claros, cortos y en español.
+1. The visible UI must be in Latin American Spanish.
+2. A typed market dictionary must exist in `lib/content/markets-es.ts`.
+3. Each visible market must have:
+   - Short label.
+   - Clear description.
+   - Reading example.
+   - Confidence note or limitation if applicable.
+4. Market sections must include an info button/icon.
+5. The info button must open a tooltip, popover, or compact panel without breaking mobile.
+6. The entertainment disclaimer must be visible on market or prediction pages.
+7. Dates, times, and percentages must use consistent regional formatting (`es-CO` or `es-419`).
+8. Empty states and errors must be clear, short, and in Spanish.
 
-## Requerimientos no funcionales
+## Non-Functional Requirements
 
-1. No duplicar strings de mercados en múltiples componentes.
-2. Mantener componentes server por defecto; usar client components pequeños solo para interacción.
-3. No exponer secrets ni mover lógica de providers al cliente.
-4. Mantener el look broadcast definido en Fase 14.
-5. No usar lenguaje de promesa financiera ni recomendación de apuesta.
-6. Mantener Vercel ISR y no romper `revalidate`.
+1. Do not duplicate market strings across multiple components.
+2. Keep server components as default; use small client components only for interaction.
+3. Do not expose secrets or move provider logic to the client.
+4. Maintain the broadcast look defined in Phase 14.
+5. Do not use financial promise or betting recommendation language.
+6. Maintain Vercel ISR and do not break `revalidate`.
 
-## Criterios de éxito
+## Success Criteria
 
-1. No quedan strings críticos de UI en inglés.
-2. Todos los mercados visibles están cubiertos por el glosario.
-3. Los botones de info funcionan en desktop y mobile.
-4. `pnpm test` y `pnpm build` pasan.
-5. Preview de Vercel aprobado por owner antes de merge.
+1. No critical UI strings remain in English.
+2. All visible markets are covered by the glossary.
+3. Info buttons work on desktop and mobile.
+4. `pnpm test` and `pnpm build` pass.
+5. Vercel preview approved by owner before merge.

@@ -1,71 +1,71 @@
 # phase-22-mis-picks — Design
 
-## Ruta
+## Route
 
-`app/mis-picks/page.tsx` — layout Server Component + inner Client Component que
-lee localStorage.
+`app/mis-picks/page.tsx` — Server Component layout + inner Client Component that
+reads localStorage.
 
-## Arquitectura
+## Architecture
 
 ```
 app/mis-picks/page.tsx  (Server Component)
-  ↓ loadFixtures() → pasa fixtures como prop
+  ↓ loadFixtures() → passes fixtures as prop
   → <MisPicksClient fixtures={fixtures} />  (Client Component)
-      ↓ lee localStorage: pick_${id} para cada fixture
-      → agrupa en: pendientes / en curso / resueltos
-      → renderiza secciones + contador
+      ↓ reads localStorage: pick_${id} for each fixture
+      → groups into: pending / in-progress / resolved
+      → renders sections + counter
 ```
 
-Pasar los fixtures desde el servidor evita una llamada extra desde el cliente y
-mantiene el API key server-side.
+Passing fixtures from the server avoids an extra call from the client and
+keeps the API key server-side.
 
-## Archivos nuevos
+## New Files
 
-| Archivo | Descripción |
+| File | Description |
 |---|---|
-| `app/mis-picks/page.tsx` | Shell Server Component |
-| `components/mis-picks-client.tsx` | Client Component con lógica de localStorage |
-| `components/pick-result-row.tsx` | Fila individual de pick con veredicto |
+| `app/mis-picks/page.tsx` | Server Component shell |
+| `components/mis-picks-client.tsx` | Client Component with localStorage logic |
+| `components/pick-result-row.tsx` | Individual pick row with verdict |
 
-## Diseño visual
+## Visual Design
 
-### Contador
+### Counter
 ```
 ┌──────────────────────────────────────┐
-│  MIS PICKS                           │
-│  7 acertados / 10 resueltos  → 70%  │
+│  MY PICKS                            │
+│  7 correct / 10 resolved  → 70%     │
 │  ████████████████░░░░░░              │
 └──────────────────────────────────────┘
 ```
 
-### Fila de pick resuelto
+### Resolved pick row
 ```
 Argentina vs France  ·  2-1
-Mi pick: Local  →  ✓ ACERTASTE
+My pick: Home  →  ✓ CORRECT
 ```
 
-### Estado vacío
+### Empty state
 ```
-Aún no tienes picks guardados.
-[ Ver partidos → ]
+You have no saved picks yet.
+[ View matches → ]
 ```
 
-## Reutilización
+## Reuse
 
-`resolveModelVerdict` de `lib/skills/accuracy.ts` (phase-20) puede reutilizarse
-para el veredicto, pero el veredicto del pick del usuario es `resolveVerdict` de
-`lib/skills/picks.ts` (phase-19). Son funciones distintas — una para el modelo,
-otra para el usuario.
+`resolveModelVerdict` from `lib/skills/accuracy.ts` (phase-20) can be reused
+for the verdict, but the user's pick verdict is `resolveVerdict` from
+`lib/skills/picks.ts` (phase-19). They are different functions — one for the model,
+one for the user.
 
 ## Security and Runtime
 
-- Sin secrets en Client Component. Los fixtures se pasan como props desde el
-  Server Component padre — el API key nunca llega al cliente.
-- localStorage no es cifrado; los picks son datos de entretenimiento, sin PII.
+- No secrets in Client Component. Fixtures are passed as props from the
+  Server Component parent — the API key never reaches the client.
+- localStorage is not encrypted; picks are entertainment data, without PII.
 
 ## Testing Strategy
 
-- Hidratación: renderizar con SSR → sin mismatch (null server-side, montar client-side).
-- Estado vacío: sin picks en localStorage → CTA visible.
-- Veredictos: picks resueltos con resultado correcto/incorrecto → veredicto correcto.
-- Contador: `7/10 = 70%` debe ser exacto.
+- Hydration: render with SSR → no mismatch (null server-side, mount client-side).
+- Empty state: no picks in localStorage → CTA visible.
+- Verdicts: resolved picks with correct/incorrect result → correct verdict.
+- Counter: `7/10 = 70%` must be exact.

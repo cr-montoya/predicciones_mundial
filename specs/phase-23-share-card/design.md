@@ -1,19 +1,19 @@
 # phase-23-share-card — Design
 
-## Archivos nuevos
+## New Files
 
-| Archivo | Descripción |
+| File | Description |
 |---|---|
-| `app/og/fixture/[id]/route.tsx` | Route handler edge: genera PNG con `ImageResponse` |
-| `components/share-button.tsx` | Client Component: botón compartir con `navigator.share` |
+| `app/og/fixture/[id]/route.tsx` | Edge route handler: generates PNG with `ImageResponse` |
+| `components/share-button.tsx` | Client Component: share button with `navigator.share` |
 
-## Archivos modificados
+## Modified Files
 
-| Archivo | Cambio |
+| File | Change |
 |---|---|
-| `app/fixtures/[id]/page.tsx` | Agregar `<meta og:image>` y `<ShareButton>` |
+| `app/fixtures/[id]/page.tsx` | Add `<meta og:image>` and `<ShareButton>` |
 
-## Route handler (`next/og`)
+## Route Handler (`next/og`)
 
 ```ts
 // app/og/fixture/[id]/route.tsx
@@ -22,32 +22,32 @@ import { ImageResponse } from 'next/og'
 export const runtime = 'edge'
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
-  // Cargar fixture + teams desde los datos estáticos
-  // Computar result_1x2
-  // Retornar ImageResponse con el diseño de la card
+  // Load fixture + teams from static data
+  // Compute result_1x2
+  // Return ImageResponse with the card design
 }
 ```
 
-## Diseño visual de la OG image (1200×630)
+## OG Image Visual Design (1200×630)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  predicciones-mundial.vercel.app             [logo/texto]   │
+│  predicciones-mundial.vercel.app             [logo/text]    │
 │                                                             │
 │        Argentina           vs          France               │
 │         🇦🇷                              🇫🇷                  │
 │                                                             │
-│    LOCAL  ████████████  62%                                 │
-│    EMPATE ████         22%                                  │
-│    VISITA ███          16%                                  │
+│    HOME   ████████████  62%                                 │
+│    DRAW   ████         22%                                  │
+│    AWAY   ███          16%                                  │
 │                                                             │
-│               Así predice la IA el Mundial                  │
+│               This is how AI predicts the World Cup         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-- Fondo: `#0a0a0f` (misma base que la app).
-- Acento: `#FFDB00`.
-- Tipografía: Inter o sistema — cargar desde Google Fonts como ArrayBuffer.
+- Background: `#0a0a0f` (same base as the app).
+- Accent: `#FFDB00`.
+- Typography: Inter or system — load from Google Fonts as ArrayBuffer.
 
 ## `ShareButton` (Client Component)
 
@@ -57,30 +57,30 @@ async function handleShare() {
     await navigator.share({ title, text, url })
   } else {
     await navigator.clipboard.writeText(url)
-    setFeedback('¡Copiado!')
+    setFeedback('Copied!')
   }
 }
 ```
 
-## Meta tags en fixture page
+## Meta Tags on Fixture Page
 
 ```html
 <meta property="og:image" content="/og/fixture/[id]" />
-<meta property="og:title" content="Argentina vs France — Predicción IA" />
-<meta property="og:description" content="Local 62% · Empate 22% · Visita 16%" />
+<meta property="og:title" content="Argentina vs France — AI Prediction" />
+<meta property="og:description" content="Home 62% · Draw 22% · Away 16%" />
 ```
 
 ## Security and Runtime
 
-- Route handler en **Node.js runtime** (sin `export const runtime = 'edge'`).
-  Decisión: edge runtime no puede usar `fetch` con env vars ni `loadFixtures()`.
-  Node.js es consistente con el resto de la app y más simple.
-- Sin secrets expuestos al cliente — `FOOTBALLDATA_KEY` permanece server-side.
-- La imagen es pública (sin auth). Aceptable: es contenido de entretenimiento.
+- Route handler in **Node.js runtime** (without `export const runtime = 'edge'`).
+  Decision: edge runtime cannot use `fetch` with env vars or `loadFixtures()`.
+  Node.js is consistent with the rest of the app and simpler.
+- No secrets exposed to client — `FOOTBALLDATA_KEY` remains server-side.
+- The image is public (no auth). Acceptable: it is entertainment content.
 
 ## Testing Strategy
 
-- `GET /og/fixture/[id]` → response con `Content-Type: image/png` y status 200.
-- `GET /og/fixture/9999` → 404 o imagen de error genérica.
-- Manual: pegar URL en WhatsApp Web → OG image visible.
-- `pnpm build` verifica que el edge route compila.
+- `GET /og/fixture/[id]` → response with `Content-Type: image/png` and status 200.
+- `GET /og/fixture/9999` → 404 or generic error image.
+- Manual: paste URL in WhatsApp Web → OG image visible.
+- `pnpm build` verifies that the edge route compiles.

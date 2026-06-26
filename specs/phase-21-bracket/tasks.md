@@ -6,33 +6,33 @@ pending
 
 ## Tasks
 
-### Pre-implementación
+### Pre-implementation
 - [ ] 1. `spec-review`.
-- [ ] 2. Analyst: validar uso de `ROUND_INTENSITY` para probabilidades en eliminatorias.
-- [ ] 3. `data-contract`: confirmar formato de `round` strings del API y normalización.
-- [ ] 4. Design: aprobar layout de bracket en móvil y desktop.
+- [ ] 2. Analyst: validate use of `ROUND_INTENSITY` for knockout probabilities.
+- [ ] 3. `data-contract`: confirm `round` string format from the API and normalization.
+- [ ] 4. Design: approve bracket layout on mobile and desktop.
 - [ ] 5. Grill.
 
-### Implementación
-- [ ] 6. Crear `app/bracket/page.tsx` con carga de fixtures de eliminatorias.
-- [ ] 7. Crear `components/bracket-matchup.tsx`.
-- [ ] 8. Crear `components/bracket-view.tsx` con layout por ronda.
-- [ ] 9. Agregar link "BRACKET" al nav en `app/layout.tsx`.
+### Implementation
+- [ ] 6. Create `app/bracket/page.tsx` with knockout fixture loading.
+- [ ] 7. Create `components/bracket-matchup.tsx`.
+- [ ] 8. Create `components/bracket-view.tsx` with layout by round.
+- [ ] 9. Add "BRACKET" link to nav in `app/layout.tsx`.
 
-### Verificación
-- [ ] 10. `pnpm tsc --noEmit` y `pnpm build`.
-- [ ] 11. QA: verificar slots vacíos, partidos jugados y pendientes.
-- [ ] 12. Code Quality y Reviewer.
+### Verification
+- [ ] 10. `pnpm tsc --noEmit` and `pnpm build`.
+- [ ] 11. QA: verify empty slots, played matches, and pending matches.
+- [ ] 12. Code Quality and Reviewer.
 - [ ] 13. Grill re-check.
 
-### Cierre
-- [ ] 14. `spec-closeout` y PR.
+### Closeout
+- [ ] 14. `spec-closeout` and PR.
 
 ## Definition of Done
 
-- [ ] `/bracket` renderiza sin errores.
-- [ ] Cruces con resultado real los muestran; pendientes muestran probabilidades.
-- [ ] Slots vacíos con "Por definir".
-- [ ] Nav actualizado.
-- [ ] `pnpm build` pasa.
-- [ ] Preview de Vercel revisado.
+- [ ] `/bracket` renders without errors.
+- [ ] Matchups with actual result show it; pending ones show probabilities.
+- [ ] Empty slots with "To be determined".
+- [ ] Nav updated.
+- [ ] `pnpm build` passes.
+- [ ] Vercel preview reviewed.

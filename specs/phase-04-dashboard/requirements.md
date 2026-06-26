@@ -1,23 +1,23 @@
-# Requirements: Fase 4 - Dashboard
+# Requirements: Phase 4 - Dashboard
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Crear la UI principal para visualizar proyecciones del torneo, grupos y partidos.
+Create the main UI to visualize tournament projections, groups, and matches.
 
-## Requerimientos
+## Requirements
 
-1. Home debe mostrar candidato a campeon y Bota de Oro.
-2. Debe existir vista de grupos.
-3. Debe existir vista de partido.
-4. Los mercados deben mostrarse con probabilidad clara.
-5. La UI debe priorizar lectura rapida.
+1. Home must show the championship candidate and Golden Boot.
+2. A groups view must exist.
+3. A match view must exist.
+4. Markets must display probability clearly.
+5. The UI must prioritize quick reading.
 
-## Criterios de éxito
+## Success Criteria
 
-1. `/` renderiza datos principales.
-2. `/groups` muestra tablas.
-3. `/fixtures` y detalle de partido son navegables.
+1. `/` renders main data.
+2. `/groups` shows standings tables.
+3. `/fixtures` and match detail are navigable.

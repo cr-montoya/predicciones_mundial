@@ -1,24 +1,24 @@
-# Requirements: Fase 10 - Hardening y autenticacion
+# Requirements: Phase 10 - Hardening and Authentication
 
-## Estado
+## Status
 
-Completada como base. Ajustes posteriores de CSP/env vars se manejan en fixes especificos.
+Completed as a base. Subsequent CSP/env var adjustments are handled in specific fixes.
 
-## Objetivo
+## Objective
 
-Asegurar la app con rate limiting, autenticacion simple y headers de seguridad.
+Secure the app with rate limiting, simple authentication, and security headers.
 
-## Requerimientos
+## Requirements
 
-1. Implementar rate limit por IP.
-2. Crear soporte de usuarios y password hash.
-3. Emitir JWT en cookie httpOnly.
-4. Proteger operaciones sensibles.
-5. Agregar security headers.
-6. Evitar exposicion de secrets.
+1. Implement rate limiting by IP.
+2. Create user support and password hashing.
+3. Issue JWT in an httpOnly cookie.
+4. Protect sensitive operations.
+5. Add security headers.
+6. Avoid secret exposure.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Tests de auth/rate limit pasan.
-2. Security no reporta criticos.
-3. Headers principales presentes.
+1. Auth/rate limit tests pass.
+2. Security reports no criticals.
+3. Main headers are present.

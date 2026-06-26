@@ -1,19 +1,19 @@
-# Design: Fase 5 - Pulido
+# Design: Phase 5 - Polish
 
-## Elementos
+## Elements
 
 - `DisclaimerBanner`.
 - `LastUpdated`.
 - `CaptureWrapper`.
-- Animaciones con framer-motion en componentes client aislados.
+- Animations with framer-motion in isolated client components.
 
-## Decisiones
+## Decisions
 
-- Mantener animaciones como mejora, no requisito de lectura.
-- Disclaimer con tono claro: entretenimiento, no asesoria.
-- Modo captura reduce ruido visual.
+- Keep animations as an enhancement, not a reading requirement.
+- Disclaimer with a clear tone: entertainment, not advice.
+- Capture mode reduces visual noise.
 
-## Riesgos
+## Risks
 
-- Animaciones afectando SSR/hidratacion.
-- Disclaimer demasiado invasivo.
+- Animations affecting SSR/hydration.
+- Disclaimer being too invasive.

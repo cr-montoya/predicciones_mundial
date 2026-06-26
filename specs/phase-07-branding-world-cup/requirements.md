@@ -1,23 +1,23 @@
-# Requirements: Fase 7 - Branding World Cup 2026
+# Requirements: Phase 7 - World Cup 2026 Branding
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Incorporar senales visuales del Mundial 2026 sin depender de assets oficiales riesgosos.
+Incorporate World Cup 2026 visual signals without relying on risky official assets.
 
-## Requerimientos
+## Requirements
 
-1. Usar paleta inspirada en rojo, verde, azul y navy.
-2. Mejorar header/hero con identidad de torneo.
-3. Agregar badge FIFA World Cup.
-4. Refinar layout del hero.
-5. Permitir candidatos expandibles.
+1. Use a palette inspired by red, green, blue, and navy.
+2. Improve header/hero with tournament identity.
+3. Add a FIFA World Cup badge.
+4. Refine the hero layout.
+5. Allow expandable candidates.
 
-## Criterios de éxito
+## Success Criteria
 
-1. La marca/torneo se reconoce en el primer viewport.
-2. No se rompe el lenguaje broadcast.
-3. El hero sigue priorizando datos.
+1. The brand/tournament is recognizable in the first viewport.
+2. The broadcast language is not broken.
+3. The hero continues to prioritize data.

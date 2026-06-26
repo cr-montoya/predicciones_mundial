@@ -1,17 +1,17 @@
-# Tasks: Fase 12 - Datos historicos enriquecidos
+# Tasks: Phase 12 - Enriched Historical Data
 
 ## Analyst
 
-- [x] Validar fuentes.
-- [x] Validar ponderacion.
+- [x] Validate sources.
+- [x] Validate weighting.
 
 ## Developer
 
-- [x] Enriquecer `historical-stats.json`.
-- [x] Actualizar strengths si aplica.
-- [x] Regenerar torneo si aplica.
+- [x] Enrich `historical-stats.json`.
+- [x] Update strengths if applicable.
+- [x] Regenerate tournament if applicable.
 
 ## QA
 
-- [x] Validar coherencia estadistica.
-- [x] Ejecutar tests.
+- [x] Validate statistical coherence.
+- [x] Run tests.

@@ -1,26 +1,26 @@
-# Design: Fase 0 - Setup
+# Design: Phase 0 - Setup
 
-## Arquitectura base
+## Base Architecture
 
 ```
-app/       -> rutas Next.js
-components/ -> UI reutilizable
-lib/data/ -> providers y normalizacion
-lib/model/ -> modelos estadisticos
-lib/db/    -> schema, cliente y escritura local
-scripts/   -> tareas locales
+app/       -> Next.js routes
+components/ -> reusable UI
+lib/data/ -> providers and normalization
+lib/model/ -> statistical models
+lib/db/    -> schema, client, and local writes
+scripts/   -> local tasks
 ```
 
-## Decisiones
+## Decisions
 
-- Next.js App Router como framework principal.
-- TypeScript estricto para contratos entre capas.
-- Tailwind para diseño rapido y consistente.
-- Vitest para pruebas unitarias de skills/modelos.
-- SQLite local para desarrollo inicial.
+- Next.js App Router as the main framework.
+- Strict TypeScript for contracts between layers.
+- Tailwind for fast and consistent design.
+- Vitest for unit tests of skills/models.
+- Local SQLite for initial development.
 
-## Riesgos
+## Risks
 
-- Acoplar UI con DB/modelos demasiado pronto.
-- Mezclar secretos en archivos commiteados.
-- Crear estructura sin tests desde el inicio.
+- Coupling UI with DB/models too early.
+- Mixing secrets into committed files.
+- Creating structure without tests from the start.

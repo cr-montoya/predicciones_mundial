@@ -25,53 +25,50 @@ in_review
 
 ## Objective
 
-Permitir que cualquier visitante de la app haga picks de resultado (1X2) antes de
-cada partido y vea si acertó o no una vez que el partido termine. El foco es la
-experiencia personal de "apoyo mi criterio vs la IA" sin necesidad de cuenta ni
-backend.
+Allow any visitor to the app to make result picks (1X2) before each match and see
+whether they got it right once the match finishes. The focus is the personal experience
+of "my judgment vs the AI" without needing an account or backend.
 
-## Contexto
+## Context
 
-La app ya muestra predicciones de la IA (probabilidades de resultado, goleadores,
-corners, etc.). El paso natural es que el usuario pueda contrastar su intuición con
-la proyección: elegir el resultado antes del partido y ver el veredicto después.
+The app already shows AI predictions (result probabilities, top scorers, corners, etc.).
+The natural next step is for the user to contrast their intuition against the projection:
+choose the result before the match and see the verdict afterward.
 
-Los datos necesarios ya están en el modelo: `Fixture.status` distingue `scheduled`,
-`live` y `finished`; `homeGoals`/`awayGoals` dan el resultado final. No se necesita
-backend nuevo.
+The necessary data is already in the model: `Fixture.status` distinguishes `scheduled`,
+`live`, and `finished`; `homeGoals`/`awayGoals` give the final result. No new backend is needed.
 
-## Decisión de storage
+## Storage Decision
 
-**localStorage** por las siguientes razones:
+**localStorage** for the following reasons:
 
-- Cero fricción: no requiere cuenta, auth ni servicio externo.
-- Alineado con el framing de entretenimiento: el pick es personal al dispositivo.
-- El stack Vercel + ISR no tiene runtime de DB; agregar uno solo para picks es
-  sobredimensionado para MVP.
-- Si en el futuro se quiere persistencia multi-device o leaderboard, el contrato de
-  picks es migrable sin cambiar la UI ni la lógica de verificación.
+- Zero friction: no account, auth, or external service required.
+- Aligned with the entertainment framing: the pick is personal to the device.
+- The Vercel + ISR stack has no DB runtime; adding one just for picks is
+  over-engineered for MVP.
+- If multi-device persistence or a leaderboard is desired in the future, the picks
+  contract is migratable without changing the UI or verification logic.
 
 ## Scope
 
-- Botón 1X2 en la vista de cada partido (`app/fixtures/[id]`) antes del inicio.
-- Pick guardado en localStorage con clave `pick_<fixtureId>`.
-- Pick bloqueado cuando `status === 'live' || status === 'finished'`.
-- Veredicto (✓ Acertaste / ✗ Fallaste) visible cuando `status === 'finished'` y
-  hay pick guardado.
-- Badge de pick en las tarjetas de la lista de fixtures (`app/fixtures`) para
-  identificar rápido en qué partidos ya se hizo pick.
+- 1X2 button in each match view (`app/fixtures/[id]`) before kickoff.
+- Pick saved in localStorage with key `pick_<fixtureId>`.
+- Pick locked when `status === 'live' || status === 'finished'`.
+- Verdict (✓ Correct / ✗ Wrong) visible when `status === 'finished'` and a pick is saved.
+- Pick badge on fixture list cards (`app/fixtures`) to quickly identify which matches
+  already have a pick.
 
 ## Out of Scope
 
-- Picks de goleadores, marcador exacto u otros mercados (fase futura).
-- Persistencia en base de datos o cuenta de usuario.
-- Ranking o comparación entre usuarios.
-- Notificaciones push de resultado.
+- Picks for top scorers, exact score, or other markets (future phase).
+- Persistence in a database or user account.
+- Ranking or comparison between users.
+- Push notifications of results.
 
-## Modelo de datos (localStorage)
+## Data Model (localStorage)
 
 ```ts
-// Clave: `pick_${fixtureId}`  — string
+// Key: `pick_${fixtureId}`  — string
 type PickOutcome = 'home' | 'draw' | 'away'
 
 interface StoredPick {
@@ -81,7 +78,7 @@ interface StoredPick {
 }
 ```
 
-### Resolución del veredicto
+### Verdict Resolution
 
 ```ts
 function resolveVerdict(
@@ -97,38 +94,37 @@ function resolveVerdict(
 }
 ```
 
-Esta lógica va en `lib/skills/picks.ts` como función pura.
+This logic goes in `lib/skills/picks.ts` as a pure function.
 
 ## Requirements
 
-1. En la vista de detalle de fixture, el usuario puede elegir home / empate / away
-   antes de que el partido comience.
-2. El pick queda bloqueado (no editable) en cuanto el partido pasa a `live` o
+1. In the fixture detail view, the user can choose home / draw / away
+   before the match begins.
+2. The pick is locked (not editable) as soon as the match goes to `live` or
    `finished`.
-3. Al terminar el partido, se muestra un veredicto claro: acertó o falló.
-4. La elección persiste entre recargas del mismo dispositivo (localStorage).
-5. En la lista de fixtures, cada tarjeta muestra un indicador de si ya hay pick.
-6. No se requiere login para hacer un pick.
+3. When the match finishes, a clear verdict is shown: correct or wrong.
+4. The choice persists between reloads on the same device (localStorage).
+5. In the fixture list, each card shows an indicator of whether a pick was made.
+6. Login is not required to make a pick.
 
 ## Acceptance Criteria
 
-- [ ] Partido scheduled: botones 1X2 activos, pick se guarda y persiste al recargar.
-- [ ] Partido live: botones deshabilitados, pick guardado se muestra en estado
-      bloqueado.
-- [ ] Partido finished + pick correcto: veredicto ✓ visible con el score final.
-- [ ] Partido finished + pick incorrecto: veredicto ✗ visible con el score final.
-- [ ] Partido finished sin pick: no se muestra sección de picks.
-- [ ] Lista de fixtures: tarjeta con pick muestra badge diferenciador.
-- [ ] `pnpm tsc --noEmit` pasa.
-- [ ] `pnpm test` pasa (skill `resolveVerdict` cubierta por tests unitarios).
+- [ ] Scheduled match: 1X2 buttons active, pick is saved and persists on reload.
+- [ ] Live match: buttons disabled, saved pick shown in locked state.
+- [ ] Finished match + correct pick: ✓ verdict visible with final score.
+- [ ] Finished match + incorrect pick: ✗ verdict visible with final score.
+- [ ] Finished match without pick: picks section not shown.
+- [ ] Fixture list: card with pick shows differentiating badge.
+- [ ] `pnpm tsc --noEmit` passes.
+- [ ] `pnpm test` passes (skill `resolveVerdict` covered by unit tests).
 
 ## Risks and Assumptions
 
-- localStorage puede ser borrado por el usuario o el navegador. El diseño asume que
-  eso es aceptable en un contexto de entretenimiento.
-- El pick se basa en la hora de kickoff del servidor; si el usuario tiene el horario
-  del dispositivo desfasado, el lock puede no coincidir exactamente. Aceptable para
-  MVP — la fuente de verdad es `fixture.status` del API, no el reloj del cliente.
-- Los picks son Client Components (necesitan acceso a localStorage), pero el resto
-  de la página de fixture sigue siendo Server Component. El bloque de picks se
-  aisla como componente cliente pequeño que recibe el fixture como prop.
+- localStorage can be cleared by the user or browser. The design assumes this
+  is acceptable in an entertainment context.
+- The pick is based on the kickoff time from the server; if the user's device
+  time is offset, the lock may not coincide exactly. Acceptable for MVP — the
+  source of truth is `fixture.status` from the API, not the client clock.
+- Picks are Client Components (they need access to localStorage), but the rest
+  of the fixture page remains a Server Component. The picks block is
+  isolated as a small client component that receives the fixture as a prop.

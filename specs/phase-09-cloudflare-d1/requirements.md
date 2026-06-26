@@ -1,27 +1,27 @@
-# Requirements: Fase 9 - Cloudflare D1
+# Requirements: Phase 9 - Cloudflare D1
 
-## Estado
+## Status
 
-Historica / sustituida por Vercel ISR. Se conserva para auditoria de decisiones.
+Historical / replaced by Vercel ISR. Kept for decision audit.
 
-## Objetivo original
+## Original Objective
 
-Migrar a Cloudflare Pages con D1 para runtime serverless y persistencia.
+Migrate to Cloudflare Pages with D1 for serverless runtime and persistence.
 
-## Requerimientos originales
+## Original Requirements
 
-1. Configurar `wrangler.toml`.
-2. Crear binding D1.
-3. Migrar schema y seed a D1.
-4. Mantener desarrollo local con SQLite.
-5. Evitar secrets hardcodeados.
+1. Configure `wrangler.toml`.
+2. Create D1 binding.
+3. Migrate schema and seed to D1.
+4. Maintain local development with SQLite.
+5. Avoid hardcoded secrets.
 
-## Resultado
+## Outcome
 
-La estrategia fue reemplazada por Vercel ISR. No debe usarse como guia vigente para fases nuevas.
+The strategy was replaced by Vercel ISR. This should not be used as a current guide for new phases.
 
-## Criterios historicos
+## Historical Criteria
 
-1. Documentar setup Cloudflare.
-2. Verificar seguridad de secrets.
-3. Mantener como referencia, no como arquitectura activa.
+1. Document Cloudflare setup.
+2. Verify secrets security.
+3. Maintain as reference, not as active architecture.

@@ -22,17 +22,17 @@ function makeTeam(overrides: Partial<Team> & { id: number }): Team {
   }
 }
 
-// Equipo fuerte: 2.0 goles a favor, 0.7 en contra
+// Strong team: 2.0 goals scored, 0.7 conceded
 const strongTeam = makeTeam({ id: 1, name: 'Strong', avgGoalsScored: 2.0, avgGoalsConceded: 0.7 })
-// Equipo medio: igual a la media hipotetica
+// Average team: exactly at the hypothetical mean
 const avgTeam = makeTeam({ id: 2, name: 'Average', avgGoalsScored: 1.35, avgGoalsConceded: 1.35 })
-// Equipo debil: 0.7 goles a favor, 2.0 en contra
+// Weak team: 0.7 goals scored, 2.0 conceded
 const weakTeam = makeTeam({ id: 3, name: 'Weak', avgGoalsScored: 0.7, avgGoalsConceded: 2.0 })
 
 const sampleTeams = [strongTeam, avgTeam, weakTeam]
 
-describe('computeStrengths - pureza funcional', () => {
-  it('no muta el array de entrada', () => {
+describe('computeStrengths - functional purity', () => {
+  it('does not mutate the input array', () => {
     const original = sampleTeams.map(t => ({ ...t }))
     computeStrengths(sampleTeams)
     for (let i = 0; i < sampleTeams.length; i++) {
@@ -41,7 +41,7 @@ describe('computeStrengths - pureza funcional', () => {
     }
   })
 
-  it('no muta los objetos originales (los ids se conservan)', () => {
+  it('does not mutate original objects (ids are preserved)', () => {
     const input = sampleTeams.map(t => ({ ...t }))
     const result = computeStrengths(input)
     for (let i = 0; i < result.length; i++) {
@@ -50,38 +50,38 @@ describe('computeStrengths - pureza funcional', () => {
     }
   })
 
-  it('devuelve el mismo numero de equipos que recibe', () => {
+  it('returns the same number of teams as received', () => {
     const result = computeStrengths(sampleTeams)
     expect(result).toHaveLength(sampleTeams.length)
   })
 })
 
-describe('computeStrengths - ordenacion por fuerza', () => {
-  it('equipo con mayor avgGoalsScored tiene mayor attackStrength', () => {
+describe('computeStrengths - strength ordering', () => {
+  it('team with higher avgGoalsScored has higher attackStrength', () => {
     const result = computeStrengths(sampleTeams)
     const strong = result.find(t => t.id === 1)!
     const weak = result.find(t => t.id === 3)!
     expect(strong.attackStrength).toBeGreaterThan(weak.attackStrength)
   })
 
-  it('equipo con mayor avgGoalsConceded tiene mayor defenseStrength (peor defensa)', () => {
+  it('team with higher avgGoalsConceded has higher defenseStrength (worse defense)', () => {
     const result = computeStrengths(sampleTeams)
-    const strong = result.find(t => t.id === 1)! // concede 0.7 (buena defensa)
-    const weak = result.find(t => t.id === 3)!   // concede 2.0 (mala defensa)
+    const strong = result.find(t => t.id === 1)! // concedes 0.7 (good defense)
+    const weak = result.find(t => t.id === 3)!   // concedes 2.0 (bad defense)
     expect(weak.defenseStrength).toBeGreaterThan(strong.defenseStrength)
   })
 
-  it('equipo con avgGoalsScored igual a la media tiene attackStrength ~1.0', () => {
-    // Si el equipo promedio tiene exactamente la media, su ratio es 1.0
-    // La media de [2.0, 1.35, 0.7] = 4.05/3 = 1.35
+  it('team with avgGoalsScored equal to the mean has attackStrength ~1.0', () => {
+    // If the average team is exactly at the mean, its ratio is 1.0
+    // Mean of [2.0, 1.35, 0.7] = 4.05/3 = 1.35
     const result = computeStrengths(sampleTeams)
     const avg = result.find(t => t.id === 2)!
     expect(avg.attackStrength).toBeCloseTo(1.0, 5)
   })
 })
 
-describe('computeStrengths - valores dentro de [STRENGTH_MIN, STRENGTH_MAX]', () => {
-  it('attackStrength de todos los equipos esta en [STRENGTH_MIN, STRENGTH_MAX]', () => {
+describe('computeStrengths - values within [STRENGTH_MIN, STRENGTH_MAX]', () => {
+  it('attackStrength for all teams is in [STRENGTH_MIN, STRENGTH_MAX]', () => {
     const result = computeStrengths(sampleTeams)
     for (const team of result) {
       expect(team.attackStrength).toBeGreaterThanOrEqual(STRENGTH_MIN)
@@ -89,7 +89,7 @@ describe('computeStrengths - valores dentro de [STRENGTH_MIN, STRENGTH_MAX]', ()
     }
   })
 
-  it('defenseStrength de todos los equipos esta en [STRENGTH_MIN, STRENGTH_MAX]', () => {
+  it('defenseStrength for all teams is in [STRENGTH_MIN, STRENGTH_MAX]', () => {
     const result = computeStrengths(sampleTeams)
     for (const team of result) {
       expect(team.defenseStrength).toBeGreaterThanOrEqual(STRENGTH_MIN)
@@ -97,14 +97,14 @@ describe('computeStrengths - valores dentro de [STRENGTH_MIN, STRENGTH_MAX]', ()
     }
   })
 
-  it('un equipo extremadamente fuerte queda clamped a STRENGTH_MAX', () => {
+  it('an extremely strong team is clamped to STRENGTH_MAX', () => {
     const extremeTeam = makeTeam({ id: 99, name: 'Extreme', avgGoalsScored: 100.0, avgGoalsConceded: 0.1 })
     const result = computeStrengths([strongTeam, weakTeam, extremeTeam])
     const extreme = result.find(t => t.id === 99)!
     expect(extreme.attackStrength).toBeLessThanOrEqual(STRENGTH_MAX)
   })
 
-  it('un equipo extremadamente debil queda clamped a STRENGTH_MIN', () => {
+  it('an extremely weak team is clamped to STRENGTH_MIN', () => {
     const extremeWeak = makeTeam({ id: 98, name: 'Terrible', avgGoalsScored: 0.01, avgGoalsConceded: 100.0 })
     const result = computeStrengths([strongTeam, weakTeam, extremeWeak])
     const weak = result.find(t => t.id === 98)!
@@ -112,50 +112,50 @@ describe('computeStrengths - valores dentro de [STRENGTH_MIN, STRENGTH_MAX]', ()
   })
 })
 
-describe('computeStrengths - edge cases con null', () => {
-  it('equipo con avgGoalsScored null recibe attackStrength = 1.0', () => {
+describe('computeStrengths - edge cases with null', () => {
+  it('team with avgGoalsScored null receives attackStrength = 1.0', () => {
     const teamWithNull = makeTeam({ id: 10, name: 'NullScored', avgGoalsScored: null, avgGoalsConceded: 1.2 })
     const result = computeStrengths([strongTeam, weakTeam, teamWithNull])
     const nullTeam = result.find(t => t.id === 10)!
     expect(nullTeam.attackStrength).toBe(1.0)
   })
 
-  it('equipo con avgGoalsConceded null recibe defenseStrength = 1.0', () => {
+  it('team with avgGoalsConceded null receives defenseStrength = 1.0', () => {
     const teamWithNull = makeTeam({ id: 11, name: 'NullConceded', avgGoalsScored: 1.5, avgGoalsConceded: null })
     const result = computeStrengths([strongTeam, weakTeam, teamWithNull])
     const nullTeam = result.find(t => t.id === 11)!
     expect(nullTeam.defenseStrength).toBe(1.0)
   })
 
-  it('si todos los equipos tienen avgGoalsScored null, devuelve el array sin cambios en attackStrength', () => {
+  it('if all teams have avgGoalsScored null, returns array unchanged in attackStrength', () => {
     const allNull = [
       makeTeam({ id: 20, avgGoalsScored: null, avgGoalsConceded: null }),
       makeTeam({ id: 21, avgGoalsScored: null, avgGoalsConceded: null }),
     ]
     const result = computeStrengths(allNull)
-    // No hay valores validos -> la funcion retorna el array tal cual
+    // No valid values — function returns the array as-is
     expect(result).toHaveLength(2)
     expect(result[0].attackStrength).toBe(1.0)
     expect(result[1].attackStrength).toBe(1.0)
   })
 
-  it('array vacio devuelve array vacio', () => {
+  it('empty array returns empty array', () => {
     const result = computeStrengths([])
     expect(result).toHaveLength(0)
   })
 
-  it('un solo equipo recibe attackStrength = 1.0 (ratio contra si mismo)', () => {
+  it('single team receives attackStrength = 1.0 (ratio against itself)', () => {
     const single = makeTeam({ id: 30, avgGoalsScored: 2.5, avgGoalsConceded: 0.8 })
     const result = computeStrengths([single])
-    // media de [2.5] = 2.5; ratio = 2.5/2.5 = 1.0
+    // mean of [2.5] = 2.5; ratio = 2.5/2.5 = 1.0
     expect(result[0].attackStrength).toBeCloseTo(1.0, 5)
     expect(result[0].defenseStrength).toBeCloseTo(1.0, 5)
   })
 })
 
-describe('computeStrengths - calculo numerico correcto', () => {
-  it('attackStrength es avgGoalsScored / mean(avgGoalsScored) para todos los equipos con datos', () => {
-    // media de [2.0, 1.35, 0.7] = 4.05 / 3 = 1.35
+describe('computeStrengths - correct numerical calculation', () => {
+  it('attackStrength is avgGoalsScored / mean(avgGoalsScored) for all teams with data', () => {
+    // mean of [2.0, 1.35, 0.7] = 4.05 / 3 = 1.35
     const meanScored = (2.0 + 1.35 + 0.7) / 3
     const result = computeStrengths(sampleTeams)
 
@@ -168,14 +168,14 @@ describe('computeStrengths - calculo numerico correcto', () => {
     expect(weak.attackStrength).toBeCloseTo(0.7 / meanScored, 5)
   })
 
-  it('defenseStrength es avgGoalsConceded / mean(avgGoalsConceded)', () => {
-    // media de [0.7, 1.35, 2.0] = 4.05 / 3 = 1.35
+  it('defenseStrength is avgGoalsConceded / mean(avgGoalsConceded)', () => {
+    // mean of [0.7, 1.35, 2.0] = 4.05 / 3 = 1.35
     const meanConceded = (0.7 + 1.35 + 2.0) / 3
     const result = computeStrengths(sampleTeams)
 
-    const strong = result.find(t => t.id === 1)!  // concede 0.7
-    const avg = result.find(t => t.id === 2)!     // concede 1.35
-    const weak = result.find(t => t.id === 3)!    // concede 2.0
+    const strong = result.find(t => t.id === 1)!  // concedes 0.7
+    const avg = result.find(t => t.id === 2)!     // concedes 1.35
+    const weak = result.find(t => t.id === 3)!    // concedes 2.0
 
     expect(strong.defenseStrength).toBeCloseTo(0.7 / meanConceded, 5)
     expect(avg.defenseStrength).toBeCloseTo(1.35 / meanConceded, 5)

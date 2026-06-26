@@ -1,62 +1,62 @@
-# Tasks: Fase 16 — Goleadores y mercados extendidos
+# Tasks: Phase 16 — Top Scorers and Extended Markets
 
 ## 1. Analyst
 
-- [ ] Definir contrato de team totals.
-- [ ] Definir contrato de combinados simples.
-- [ ] Definir contrato mínimo de goleadores.
-- [ ] Definir umbrales de confidence.
-- [ ] Confirmar qué mercados se muestran en MVP.
+- [ ] Define team totals contract.
+- [ ] Define simple combos contract.
+- [ ] Define minimum top scorer contract.
+- [ ] Define confidence thresholds.
+- [ ] Confirm which markets are shown in MVP.
 
 ## 2. Design
 
-- [ ] Definir jerarquía visual del fixture detail enriquecido.
-- [ ] Definir patrón para secciones plegables.
-- [ ] Definir UI para confianza baja/no disponible.
-- [ ] Validar mobile y modo captura.
+- [ ] Define visual hierarchy for the enriched fixture detail.
+- [ ] Define pattern for collapsible sections.
+- [ ] Define UI for low confidence/unavailable.
+- [ ] Validate mobile and capture mode.
 
 ## 3. Developer
 
-- [ ] Crear rama desde `main`: `phase/16-scorers-extended-markets`.
-- [ ] Agregar skills puras para team totals.
-- [ ] Agregar skills puras para combinados.
-- [ ] Extender `computeMatchOutputs` con nuevos mercados.
-- [ ] Agregar modelo/skill de goleadores si hay dataset disponible.
-- [ ] Crear fallback de "goleadores no disponibles" si no hay datos.
-- [ ] Actualizar fixture detail.
-- [ ] Conectar copy de mercados desde `markets-es.ts`.
-- [ ] Mantener cálculos en server/runtime ISR.
+- [ ] Create branch from `main`: `phase/16-scorers-extended-markets`.
+- [ ] Add pure skills for team totals.
+- [ ] Add pure skills for combos.
+- [ ] Extend `computeMatchOutputs` with new markets.
+- [ ] Add scorer model/skill if dataset is available.
+- [ ] Create "top scorers unavailable" fallback if no data.
+- [ ] Update fixture detail.
+- [ ] Connect market copy from `markets-es.ts`.
+- [ ] Keep calculations on server/ISR runtime.
 
 ## 4. QA
 
 - [ ] `pnpm tsc --noEmit`.
 - [ ] `pnpm test`.
 - [ ] `pnpm build`.
-- [ ] Tests de team totals.
-- [ ] Tests de combinados.
-- [ ] Tests de goleadores con datos completos.
-- [ ] Tests de goleadores sin datos.
-- [ ] Fixture detail renderiza con partido scheduled.
-- [ ] Fixture detail renderiza con partido finished.
+- [ ] Team totals tests.
+- [ ] Combos tests.
+- [ ] Top scorer tests with complete data.
+- [ ] Top scorer tests without data.
+- [ ] Fixture detail renders with scheduled match.
+- [ ] Fixture detail renders with finished match.
 
 ## 5. Reviewer
 
-- [ ] Skills sin imports de DB/API/fetch.
-- [ ] Models sin llamadas externas.
-- [ ] Client components sin imports de model/provider.
-- [ ] `modelVersion` actualizado si cambia contrato.
-- [ ] No hay saturación de mercados en UI.
+- [ ] Skills without DB/API/fetch imports.
+- [ ] Models without external calls.
+- [ ] Client components without model/provider imports.
+- [ ] `modelVersion` updated if contract changes.
+- [ ] No market saturation in UI.
 
 ## 6. Security
 
-- [ ] API keys solo server-side.
-- [ ] No hay logs de payloads sensibles.
-- [ ] No se agregan endpoints públicos innecesarios.
-- [ ] Rate limit/API quota considerada.
+- [ ] API keys only server-side.
+- [ ] No logs of sensitive payloads.
+- [ ] No unnecessary public endpoints added.
+- [ ] Rate limit/API quota considered.
 
-## 7. Owner review
+## 7. Owner Review
 
-- [ ] Revisar preview de Vercel.
-- [ ] Validar claridad de mercados nuevos.
-- [ ] Validar que goleadores no prometen precisión falsa.
-- [ ] Aprobar PR antes de merge.
+- [ ] Review Vercel preview.
+- [ ] Validate clarity of new markets.
+- [ ] Validate that top scorers do not promise false precision.
+- [ ] Approve PR before merge.

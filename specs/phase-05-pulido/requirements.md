@@ -1,23 +1,23 @@
-# Requirements: Fase 5 - Pulido
+# Requirements: Phase 5 - Polish
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Pulir experiencia visual y comunicacion legal/operativa.
+Polish the visual experience and legal/operational communication.
 
-## Requerimientos
+## Requirements
 
-1. Agregar animaciones sutiles.
-2. Mostrar disclaimer de entretenimiento.
-3. Agregar modo captura para clips.
-4. Mostrar indicador de ultima actualizacion.
-5. Mantener la UI legible y rapida.
+1. Add subtle animations.
+2. Show an entertainment disclaimer.
+3. Add capture mode for clips.
+4. Show a last-updated indicator.
+5. Keep the UI readable and fast.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Disclaimer visible donde hay predicciones.
-2. Timestamp de frescura disponible.
-3. Modo captura no rompe layout.
+1. Disclaimer visible where predictions appear.
+2. Freshness timestamp available.
+3. Capture mode does not break layout.

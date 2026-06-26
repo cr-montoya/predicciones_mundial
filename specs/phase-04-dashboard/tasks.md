@@ -1,17 +1,17 @@
-# Tasks: Fase 4 - Dashboard
+# Tasks: Phase 4 - Dashboard
 
 ## Developer
 
-- [x] Crear home.
-- [x] Crear pagina de grupos.
-- [x] Crear fixtures y detalle.
-- [x] Crear componentes de mercado/probabilidad.
+- [x] Create home.
+- [x] Create groups page.
+- [x] Create fixtures and detail.
+- [x] Create market/probability components.
 
 ## Design
 
-- [x] Validar jerarquia visual inicial.
+- [x] Validate initial visual hierarchy.
 
 ## QA
 
-- [x] Verificar rutas principales.
-- [x] Verificar render con datos disponibles y vacios.
+- [x] Verify main routes.
+- [x] Verify render with available and empty data.

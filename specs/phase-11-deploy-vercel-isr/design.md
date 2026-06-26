@@ -1,6 +1,6 @@
-# Design: Fase 11 - Deploy y Vercel ISR
+# Design: Phase 11 - Deploy and Vercel ISR
 
-## Arquitectura vigente
+## Current Architecture
 
 ```
 Vercel request
@@ -10,20 +10,20 @@ Vercel request
    -> render UI
 ```
 
-## Configuracion
+## Configuration
 
-- `next.config.ts` sin static export.
-- `package.json` con `build: next build`.
-- Env vars en Vercel Production/Preview.
-- PR previews como gate antes de merge.
+- `next.config.ts` without static export.
+- `package.json` with `build: next build`.
+- Env vars in Vercel Production/Preview.
+- PR previews as a gate before merge.
 
-## Relacion con specs infra
+## Relationship with Infrastructure Specs
 
-- `specs/auto-refresh-workers/` documenta exploracion Workers.
-- `specs/vercel-env-csp/` documenta fixes de env/CSP para Vercel.
+- `specs/auto-refresh-workers/` documents Workers exploration.
+- `specs/vercel-env-csp/` documents env/CSP fixes for Vercel.
 
-## Riesgos
+## Risks
 
-- Env vars configuradas solo en production y no preview.
-- CSP incompatible con Next/Vercel.
-- Cloudflare proxy inyectando scripts.
+- Env vars configured only for production and not preview.
+- CSP incompatible with Next/Vercel.
+- Cloudflare proxy injecting scripts.

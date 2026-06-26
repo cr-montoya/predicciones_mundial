@@ -1,17 +1,17 @@
-# Design: Fase 2 - Modelo de prediccion
+# Design: Phase 2 - Prediction Model
 
-## Capas
+## Layers
 
 ```
-skills puras
+pure skills
    -> score matrix / poisson / confidence
 models
-   -> outputs por mercado
+   -> outputs per market
 agents
-   -> proveen fixtures/equipos/stats normalizados
+   -> provide normalized fixtures/teams/stats
 ```
 
-## Componentes
+## Components
 
 - `lib/model/skills/poisson.ts`
 - `lib/model/skills/score-matrix.ts`
@@ -20,12 +20,12 @@ agents
 - `lib/model/montecarlo.ts`
 - `lib/model/sanity.ts`
 
-## Contrato
+## Contract
 
-Cada salida relevante debe incluir mercado, probabilidades, confianza, version y timestamp.
+Each relevant output must include market, probabilities, confidence, version, and timestamp.
 
-## Riesgos
+## Risks
 
-- Probabilidades degeneradas.
-- Lambdas fuera de rango.
-- Mezclar I/O con math.
+- Degenerate probabilities.
+- Lambdas out of range.
+- Mixing I/O with math.

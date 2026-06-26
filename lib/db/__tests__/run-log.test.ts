@@ -1,15 +1,15 @@
 /**
- * Tests de integracion para insertRunLog / updateRunLog con status 'running'.
+ * Integration tests for insertRunLog / updateRunLog with status 'running'.
  *
- * Contexto: la DB en disco podia tener el CHECK constraint antiguo
- * (status IN ('ok', 'error')) y la funcion migrateRunLog lo arregla.
- * Aqui no testeamos la migracion directamente (es interna y no exportada),
- * sino el comportamiento observable: que el ciclo running -> ok | error
- * funciona sin lanzar excepciones.
+ * Background: the on-disk DB could have the old CHECK constraint
+ * (status IN ('ok', 'error')); migrateRunLog fixes it.
+ * These tests don't test the migration directly (it is internal and not
+ * exported) — they test the observable behavior: that the running -> ok | error
+ * cycle works without throwing exceptions.
  *
- * Usamos una DB en memoria (':memory:') construida desde el schema real
- * para no depender de la DB en disco ni de la conexion singleton.
- * No hay mocks de better-sqlite3: el harness los prohibe.
+ * An in-memory DB (':memory:') built from the real schema is used so
+ * tests don't depend on the on-disk DB or the singleton connection.
+ * No better-sqlite3 mocks: the harness prohibits them.
  */
 
 import { describe, it, expect, beforeEach } from 'vitest'
@@ -19,7 +19,7 @@ import { join } from 'path'
 
 const SCHEMA_PATH = join(process.cwd(), 'lib', 'db', 'schema.sql')
 
-// Helpers que replican la logica de write.ts pero sobre una DB en memoria aislada.
+// Helpers that mirror the write.ts logic but against an isolated in-memory DB.
 
 function makeDb(): Database.Database {
   const instance = new Database(':memory:')

@@ -1,21 +1,21 @@
-# Tasks: Fase 2 - Modelo de prediccion
+# Tasks: Phase 2 - Prediction Model
 
 ## Analyst
 
-- [x] Definir mercados base.
-- [x] Definir sanity checks.
-- [x] Validar enfoque Poisson/Monte Carlo.
+- [x] Define base markets.
+- [x] Define sanity checks.
+- [x] Validate Poisson/Monte Carlo approach.
 
 ## Developer
 
-- [x] Implementar skills de Poisson.
-- [x] Implementar matriz de marcador.
-- [x] Implementar derivacion de mercados.
-- [x] Implementar simulacion de torneo.
+- [x] Implement Poisson skills.
+- [x] Implement score matrix.
+- [x] Implement market derivation.
+- [x] Implement tournament simulation.
 
 ## QA
 
-- [x] Tests de Poisson.
-- [x] Tests de score matrix.
-- [x] Tests de derive markets.
-- [x] Tests de match model.
+- [x] Tests for Poisson.
+- [x] Tests for score matrix.
+- [x] Tests for derive markets.
+- [x] Tests for match model.

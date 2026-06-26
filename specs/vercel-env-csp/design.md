@@ -1,22 +1,22 @@
-# Design: Vercel env vars y CSP
+# Design: Vercel env vars and CSP
 
-## Diagnóstico esperado
+## Expected Diagnosis
 
-Hay dos problemas distintos que pueden verse al mismo tiempo:
+There are two distinct problems that may appear at the same time:
 
-1. **Env var no disponible en runtime/build de Vercel**.
-2. **CSP bloqueando scripts inyectados por Cloudflare**.
+1. **Env var not available in Vercel runtime/build**.
+2. **CSP blocking scripts injected by Cloudflare**.
 
-Los errores de CSP del navegador no prueban por sí solos que la API key falte. La API key
-se lee en servidor mediante `process.env.FOOTBALLDATA_KEY`, así que el diagnóstico real
-debe venir de logs de Vercel o de un endpoint/server component que valide presencia sin
-exponer el valor.
+Browser CSP errors do not by themselves prove that the API key is missing. The API key
+is read server-side via `process.env.FOOTBALLDATA_KEY`, so the real diagnosis must come
+from Vercel logs or an endpoint/server component that validates presence without exposing
+the value.
 
-## Estado actual relevante
+## Relevant Current State
 
 ### CSP
 
-`middleware.ts` define en producción:
+`middleware.ts` defines in production:
 
 ```txt
 default-src 'self';
@@ -25,20 +25,20 @@ style-src 'self' 'unsafe-inline';
 img-src 'self' data: https:;
 ```
 
-Esto bloquea:
+This blocks:
 
 - `https://static.cloudflareinsights.com/beacon.min.js`
-- Inline scripts que Rocket Loader intenta ejecutar.
+- Inline scripts that Rocket Loader tries to execute.
 
 ### Env vars
 
-`lib/data/providers/football-data.ts` lee:
+`lib/data/providers/football-data.ts` reads:
 
 ```ts
 const key = process.env.FOOTBALLDATA_KEY
 ```
 
-Si la variable no existe, lanza:
+If the variable does not exist, it throws:
 
 ```txt
 Missing required environment variable: FOOTBALLDATA_KEY
@@ -46,36 +46,36 @@ Missing required environment variable: FOOTBALLDATA_KEY
 
 ### Runtime
 
-Si la app sigue con `output: 'export'`, no hay runtime server en Vercel para refrescar
-datos por request. En export estático, los datos y env vars usados por server code quedan
-resueltos durante build. Para auto-refresh en Vercel, la app debe correr como Next server
-runtime o ISR, no como export estático puro.
+If the app still has `output: 'export'`, there is no server runtime in Vercel to refresh
+data per request. In static export, data and env vars used by server code are resolved
+during build. For auto-refresh in Vercel, the app must run as Next server runtime or ISR,
+not as a pure static export.
 
-## Diseño de solución
+## Solution Design
 
-### 1. Confirmar el provider y nombre exacto de variable
+### 1. Confirm the provider and exact variable name
 
-Validar cuál provider está activo:
+Validate which provider is active:
 
-- `FootballDataProvider` requiere `FOOTBALLDATA_KEY`.
-- `ApiFootballProvider` requiere `API_KEY` o `RAPIDAPI_KEY`.
+- `FootballDataProvider` requires `FOOTBALLDATA_KEY`.
+- `ApiFootballProvider` requires `API_KEY` or `RAPIDAPI_KEY`.
 
-La variable configurada en Vercel debe coincidir exactamente con el provider usado por
+The variable configured in Vercel must match exactly the provider used by
 `lib/data/fallback.ts`.
 
-### 2. Configurar Vercel env vars por ambiente
+### 2. Configure Vercel env vars by environment
 
-En Vercel Project Settings -> Environment Variables:
+In Vercel Project Settings -> Environment Variables:
 
-- `FOOTBALLDATA_KEY`: Production, Preview y Development si se usarán los tres.
-- `RAPIDAPI_KEY` o `API_KEY`: solo si el fallback/provider lo necesita.
+- `FOOTBALLDATA_KEY`: Production, Preview, and Development if all three will be used.
+- `RAPIDAPI_KEY` or `API_KEY`: only if the fallback/provider needs it.
 
-Después de crear o editar env vars, redeploy obligatorio. Vercel no inyecta cambios de
-env en deployments ya construidos.
+After creating or editing env vars, a redeploy is mandatory. Vercel does not inject env
+changes into already built deployments.
 
-### 3. Agregar verificación server-side sin exponer secrets
+### 3. Add server-side verification without exposing secrets
 
-Crear una utilidad server-only:
+Create a server-only utility:
 
 ```ts
 export function requireServerEnv(name: string): string {
@@ -87,52 +87,52 @@ export function requireServerEnv(name: string): string {
 }
 ```
 
-Usarla en providers para estandarizar errores. No retornar valores al cliente.
+Use it in providers to standardize errors. Do not return values to the client.
 
-Opcional para diagnóstico temporal:
+Optional for temporary diagnosis:
 
-- Loguear solo presencia y longitud de la variable en server logs.
-- Eliminar el log después de validar.
-- Nunca loguear el valor.
+- Log only the presence and length of the variable in server logs.
+- Remove the log after validation.
+- Never log the value.
 
-### 4. Decidir runtime en Vercel
+### 4. Decide runtime in Vercel
 
-Si se quiere auto-refresh con ISR/runtime:
+If auto-refresh with ISR/runtime is desired:
 
-- Quitar `output: 'export'` de `next.config.ts`.
-- Quitar scripts custom de export estático si siguen activos.
-- Usar `export const revalidate = 3600` en páginas server.
-- Asegurar que `loadFixtures()` corre en server y no en client components.
+- Remove `output: 'export'` from `next.config.ts`.
+- Remove custom static export scripts if still active.
+- Use `export const revalidate = 3600` on server pages.
+- Ensure that `loadFixtures()` runs on the server, not in client components.
 
-Si se quiere mantener export estático:
+If keeping static export:
 
-- La API key solo se usa en build.
-- Cada cambio de datos requiere redeploy.
-- No hay auto-refresh real.
+- The API key is only used in build.
+- Each data change requires a redeploy.
+- There is no real auto-refresh.
 
-Para el objetivo actual, la opción correcta es runtime/ISR en Vercel.
+For the current objective, the correct option is runtime/ISR on Vercel.
 
-### 5. Arreglar CSP sin abrir demasiado
+### 5. Fix CSP without opening too wide
 
-Opción recomendada si Cloudflare solo apunta al dominio de Vercel:
+Recommended option if Cloudflare only points to the Vercel domain:
 
-- Desactivar Rocket Loader para este sitio/ruta.
-- Desactivar Cloudflare Browser Insights si no es necesario.
-- Mantener CSP estricta.
+- Disable Rocket Loader for this site/route.
+- Disable Cloudflare Browser Insights if not needed.
+- Keep strict CSP.
 
-Opción alternativa si se quieren mantener Cloudflare scripts:
+Alternative option if Cloudflare scripts are to be kept:
 
 ```txt
 script-src 'self' https://static.cloudflareinsights.com;
 connect-src 'self' https://vitals.vercel-insights.com https://api.football-data.org;
 ```
 
-No recomendar `unsafe-inline` en producción. Rocket Loader depende de inline scripts, así
-que permitirlo debilita CSP. Es mejor desactivar Rocket Loader.
+Do not recommend `unsafe-inline` in production. Rocket Loader depends on inline scripts,
+so allowing it weakens CSP. It is better to disable Rocket Loader.
 
-### 6. CSP compatible con Vercel
+### 6. Vercel-compatible CSP
 
-Agregar como mínimo:
+Add at minimum:
 
 ```txt
 default-src 'self';
@@ -145,44 +145,44 @@ base-uri 'self';
 form-action 'self';
 ```
 
-Si la app hace fetch directo desde browser a algún dominio externo, ese dominio debe ir
-en `connect-src`. La API de football-data no debería estar en browser; si aparece en
-Network del cliente, hay una fuga de arquitectura.
+If the app makes direct browser fetch to any external domain, that domain must be in
+`connect-src`. The football-data API should not be in the browser; if it appears in the
+client Network tab, there is an architecture leak.
 
-### 7. Validación en Vercel
+### 7. Validation in Vercel
 
-Usar preview deployment del PR:
+Use the PR preview deployment:
 
-1. Revisar Vercel build logs.
-2. Revisar runtime logs al cargar `/`.
-3. Confirmar que `FOOTBALLDATA_KEY` existe sin mostrar valor.
-4. Abrir DevTools -> Network y confirmar que la API externa no se llama desde browser.
-5. Abrir DevTools -> Console y confirmar que no hay CSP bloqueando scripts necesarios.
+1. Review Vercel build logs.
+2. Review runtime logs when loading `/`.
+3. Confirm that `FOOTBALLDATA_KEY` exists without showing its value.
+4. Open DevTools -> Network and confirm that the external API is not called from the browser.
+5. Open DevTools -> Console and confirm no CSP blocking necessary scripts.
 
-## Riesgos
+## Risks
 
-### Cloudflare delante de Vercel
+### Cloudflare in front of Vercel
 
-Si Cloudflare sigue proxying el dominio, puede inyectar scripts aunque la app esté en
-Vercel. Rocket Loader puede romper Next.js y CSP.
+If Cloudflare continues proxying the domain, it can inject scripts even though the app is on
+Vercel. Rocket Loader can break Next.js and CSP.
 
-Mitigación: crear Page Rule/Configuration Rule para desactivar Rocket Loader en el dominio
-o cambiar el registro a DNS only si no se necesita proxy.
+Mitigation: create a Page Rule/Configuration Rule to disable Rocket Loader on the domain
+or change the record to DNS only if the proxy is not needed.
 
-### Env vars solo en Production
+### Env vars only in Production
 
-Si la variable está marcada solo para Production, los previews fallan.
+If the variable is marked only for Production, previews fail.
 
-Mitigación: habilitar la variable también para Preview.
+Mitigation: enable the variable for Preview as well.
 
 ### Static export
 
-Si `output: 'export'` sigue activo, no hay runtime server para auto-refresh.
+If `output: 'export'` is still active, there is no server runtime for auto-refresh.
 
-Mitigación: migrar a Next runtime/ISR en Vercel.
+Mitigation: migrate to Next runtime/ISR on Vercel.
 
-### Secrets expuestos por accidente
+### Accidentally exposed secrets
 
-Usar `NEXT_PUBLIC_FOOTBALLDATA_KEY` expondría la key al browser.
+Using `NEXT_PUBLIC_FOOTBALLDATA_KEY` would expose the key to the browser.
 
-Mitigación: mantener secrets sin `NEXT_PUBLIC_` y consumirlos solo desde server code.
+Mitigation: keep secrets without `NEXT_PUBLIC_` and consume them only from server code.

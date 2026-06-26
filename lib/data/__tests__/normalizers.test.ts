@@ -1,25 +1,25 @@
 /**
- * Tests de normalización para ambos proveedores de datos.
- * Son tests puros: usan fixtures JSON estáticos, sin red.
+ * Normalization tests for both data providers.
+ * Pure tests: use static JSON fixtures, no network.
  */
 
 import { describe, it, expect } from 'vitest'
 import type { Fixture, MatchStats, MatchEvent } from '@/lib/types'
 
 // ---------------------------------------------------------------------------
-// Fixtures JSON estáticos
+// Static JSON fixtures
 // ---------------------------------------------------------------------------
 
 import apiFbRaw from '@/lib/data/__fixtures__/api-football/fixtures.json'
 import fdRaw from '@/lib/data/__fixtures__/football-data/matches.json'
 
 // ---------------------------------------------------------------------------
-// Re-exportamos las funciones privadas vía su lógica inline para testar
-// normalización sin red. En lugar de invocar el provider (que necesita API key),
-// replicamos los normalizadores a partir del código fuente tal como están.
+// Private functions re-implemented inline for testing normalization without
+// a network. Rather than invoking the provider (which requires an API key),
+// we replicate the normalizers from source as-is.
 // ---------------------------------------------------------------------------
 
-// ---- API-Football normalizer (inline, idéntico al provider) ----
+// ---- API-Football normalizer (inline, identical to the provider) ----
 
 type FixtureStatus = 'scheduled' | 'live' | 'finished'
 

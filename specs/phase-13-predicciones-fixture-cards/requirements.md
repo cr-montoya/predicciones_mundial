@@ -1,23 +1,23 @@
-# Requirements: Fase 13 - Predicciones en fixture cards
+# Requirements: Phase 13 - Predictions in Fixture Cards
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Mostrar prediccion principal y goles esperados directamente en cards de partidos.
+Show the main prediction and expected goals directly on match cards.
 
-## Requerimientos
+## Requirements
 
-1. Las cards deben mostrar ganador predicho o empate.
-2. Deben mostrar probabilidad del resultado principal.
-3. Deben mostrar goles esperados.
-4. Deben enlazar al detalle del partido.
-5. El calculo debe reutilizar predicciones existentes.
+1. Cards must show the predicted winner or draw.
+2. They must show the probability of the main result.
+3. They must show expected goals.
+4. They must link to the match detail.
+5. The calculation must reuse existing predictions.
 
-## Criterios de éxito
+## Success Criteria
 
-1. Home informa mas sin entrar al detalle.
-2. Cards siguen siendo escaneables.
-3. Tests de live-loader pasan.
+1. Home provides more information without entering the detail.
+2. Cards remain scannable.
+3. live-loader tests pass.

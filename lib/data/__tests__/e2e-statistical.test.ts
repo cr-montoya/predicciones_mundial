@@ -1,7 +1,7 @@
 /**
- * Tests end-to-end estadísticos.
- * Sin red: usa mockTeams/mockFixtures + datos sintéticos de football-data.
- * Valida lambdas en rango, probabilidades suman 1.0±0.001, confidence válido.
+ * End-to-end statistical tests.
+ * No network: uses mockTeams/mockFixtures + synthetic football-data stats.
+ * Validates lambdas are in range, probabilities sum to 1.0±0.001, valid confidence.
  */
 
 import { describe, it, expect } from 'vitest'
@@ -15,8 +15,8 @@ import { LAMBDA_MIN, LAMBDA_MAX } from '@/lib/model/constants'
 import { mockTeams } from '@/lib/data/fixtures-mock'
 
 // ---------------------------------------------------------------------------
-// Equipos sintéticos que simulan datos provenientes de football-data.org
-// (misma forma normalizada que produciría el provider tras FD_TEAM_MAP)
+// Synthetic teams simulating data from football-data.org
+// (same normalized shape that the provider would produce after FD_TEAM_MAP)
 // ---------------------------------------------------------------------------
 
 const brazil: Team = mockTeams.find(t => t.id === 6)!
@@ -45,48 +45,48 @@ const fixture: Fixture = {
 }
 
 // ---------------------------------------------------------------------------
-// 1. Lambdas en rango [0.2, 4.5]
+// 1. Lambdas in range [0.2, 4.5]
 // ---------------------------------------------------------------------------
 
-describe('E2E estadístico - Brasil vs México - lambdas', () => {
+describe('E2E statistical - Brazil vs Mexico - lambdas', () => {
   const { lambdaHome, lambdaAway } = computeLambdas(brazil, mexico)
 
-  it('lambdaHome está en [LAMBDA_MIN, LAMBDA_MAX]', () => {
+  it('lambdaHome is in [LAMBDA_MIN, LAMBDA_MAX]', () => {
     expect(lambdaHome).toBeGreaterThanOrEqual(LAMBDA_MIN)
     expect(lambdaHome).toBeLessThanOrEqual(LAMBDA_MAX)
   })
 
-  it('lambdaAway está en [LAMBDA_MIN, LAMBDA_MAX]', () => {
+  it('lambdaAway is in [LAMBDA_MIN, LAMBDA_MAX]', () => {
     expect(lambdaAway).toBeGreaterThanOrEqual(LAMBDA_MIN)
     expect(lambdaAway).toBeLessThanOrEqual(LAMBDA_MAX)
   })
 
-  it('lambdaHome > lambdaAway (Brasil más fuerte que México)', () => {
+  it('lambdaHome > lambdaAway (Brazil stronger than Mexico)', () => {
     expect(lambdaHome).toBeGreaterThan(lambdaAway)
   })
 })
 
 // ---------------------------------------------------------------------------
-// 2. Probabilidades suman 1.0 ± 0.001
+// 2. Probabilities sum to 1.0 ± 0.001
 // ---------------------------------------------------------------------------
 
-describe('E2E estadístico - Brasil vs México - sanity checks', () => {
+describe('E2E statistical - Brazil vs Mexico - sanity checks', () => {
   const { lambdaHome, lambdaAway } = computeLambdas(brazil, mexico)
   const matrix = buildScoreMatrix(lambdaHome, lambdaAway)
 
-  it('result_1x2 suma 1.0 ± 0.001', () => {
+  it('result_1x2 sums to 1.0 ± 0.001', () => {
     const probs = deriveResult1x2(matrix)
     const sum = Object.values(probs).reduce((a, b) => a + b, 0)
     expect(Math.abs(sum - 1.0)).toBeLessThanOrEqual(0.001)
   })
 
-  it('over_under_2_5 suma 1.0 ± 0.001', () => {
+  it('over_under_2_5 sums to 1.0 ± 0.001', () => {
     const probs = deriveOverUnder(matrix, 2.5)
     const sum = Object.values(probs).reduce((a, b) => a + b, 0)
     expect(Math.abs(sum - 1.0)).toBeLessThanOrEqual(0.001)
   })
 
-  it('btts suma 1.0 ± 0.001', () => {
+  it('btts sums to 1.0 ± 0.001', () => {
     const probs = deriveBtts(matrix)
     const sum = Object.values(probs).reduce((a, b) => a + b, 0)
     expect(Math.abs(sum - 1.0)).toBeLessThanOrEqual(0.001)
@@ -94,10 +94,10 @@ describe('E2E estadístico - Brasil vs México - sanity checks', () => {
 })
 
 // ---------------------------------------------------------------------------
-// 3. computeMatchOutputs completo pasa sanityCheck
+// 3. Full computeMatchOutputs passes sanityCheck
 // ---------------------------------------------------------------------------
 
-describe('E2E estadístico - computeMatchOutputs completo', () => {
+describe('E2E statistical - full computeMatchOutputs', () => {
   const input: MatchInput = {
     fixture,
     home: brazil,
@@ -108,24 +108,24 @@ describe('E2E estadístico - computeMatchOutputs completo', () => {
   }
   const outputs = computeMatchOutputs(input)
 
-  it('devuelve al menos 5 outputs (resultado + markets + cards + corners)', () => {
+  it('returns at least 5 outputs (result + markets + cards + corners)', () => {
     expect(outputs.length).toBeGreaterThanOrEqual(5)
   })
 
-  it('confidence es high|medium|low en todos los outputs', () => {
+  it('confidence is high|medium|low in all outputs', () => {
     const valid = new Set(['high', 'medium', 'low'])
     for (const o of outputs) {
       expect(valid.has(o.confidence)).toBe(true)
     }
   })
 
-  it('result_1x2: Brasil (home) tiene prob > 0.50 contra México', () => {
+  it('result_1x2: Brazil (home) has prob > 0.50 against Mexico', () => {
     const r = outputs.find(o => o.market === 'result_1x2')
     expect(r).toBeDefined()
     expect(r!.probabilities['home']).toBeGreaterThan(0.5)
   })
 
-  it('ninguna probabilidad individual fuera de [0, 1]', () => {
+  it('no individual probability outside [0, 1]', () => {
     for (const o of outputs) {
       for (const [, p] of Object.entries(o.probabilities)) {
         expect(p).toBeGreaterThanOrEqual(0)
@@ -136,11 +136,11 @@ describe('E2E estadístico - computeMatchOutputs completo', () => {
 })
 
 // ---------------------------------------------------------------------------
-// 4. Detección de avgGoals out-of-range provenientes de football-data
+// 4. Detection of out-of-range avgGoals from football-data
 // ---------------------------------------------------------------------------
 
-describe('E2E estadístico - detección de avgGoals out-of-range', () => {
-  it('equipo con avgGoalsScored muy alto (>4) produce lambda clampada a LAMBDA_MAX', () => {
+describe('E2E statistical - out-of-range avgGoals detection', () => {
+  it('team with very high attackStrength (>3.5) produces lambda clamped to LAMBDA_MAX', () => {
     const outlierTeam: Team = {
       ...brazil,
       attackStrength: 3.5,
@@ -151,7 +151,7 @@ describe('E2E estadístico - detección de avgGoals out-of-range', () => {
     expect(lambdaHome).toBeLessThanOrEqual(LAMBDA_MAX)
   })
 
-  it('equipo con avgGoalsScored muy bajo produce lambda clampada a LAMBDA_MIN', () => {
+  it('team with very low attackStrength produces lambda clamped to LAMBDA_MIN', () => {
     const weakAttack: Team = {
       ...mexico,
       attackStrength: 0.1,
@@ -163,17 +163,17 @@ describe('E2E estadístico - detección de avgGoals out-of-range', () => {
 })
 
 // ---------------------------------------------------------------------------
-// 5. Football-data con avgGoals distintos que API-Football
-// (Simula que football-data devuelve stats diferentes: modelo aún es válido)
+// 5. football-data with different avgGoals than API-Football
+// (Simulates football-data returning different stats: model is still valid)
 // ---------------------------------------------------------------------------
 
-describe('E2E estadístico - convergencia con stats de football-data', () => {
-  it('stats ligeramente distintas producen lambdas igualmente en rango y outputs válidos', () => {
-    // Simula un equipo cuyas stats vienen de football-data (valores levemente distintos)
+describe('E2E statistical - convergence with football-data stats', () => {
+  it('slightly different stats produce lambdas still in range and valid outputs', () => {
+    // Simulate a team whose stats come from football-data (slightly different values)
     const brazilFD: Team = {
       ...brazil,
-      avgGoalsScored: 1.6,   // FD puede dar distinto a API-Football (1.9)
-      avgGoalsConceded: 0.9, // FD puede dar distinto a API-Football (0.75)
+      avgGoalsScored: 1.6,   // FD may return different value than API-Football (1.9)
+      avgGoalsConceded: 0.9, // FD may return different value than API-Football (0.75)
       attackStrength: 1.15,
       defenseStrength: 0.95,
     }

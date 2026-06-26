@@ -25,48 +25,48 @@ completed
 
 ## Objective
 
-Eliminar el warning de deprecación que emite `better-sqlite3` durante el build de Vercel
-moviendo el paquete a `devDependencies`, donde pertenece según la política de CLAUDE.md.
+Eliminate the deprecation warning emitted by `better-sqlite3` during the Vercel build
+by moving the package to `devDependencies`, where it belongs according to the CLAUDE.md policy.
 
-## Contexto
+## Context
 
-Durante el build de Vercel aparece:
+During the Vercel build the following appears:
 
 ```
 [DEP0176] DeprecationWarning: fs.R_OK is deprecated, use fs.constants.R_OK instead
 ```
 
-Este warning proviene del script de postinstall de `better-sqlite3`, que se ejecuta porque
-el paquete está en `dependencies` y Vercel lo instala. Según CLAUDE.md, `better-sqlite3`
-queda exclusivamente para scripts locales y no debe entrar al runtime de Vercel.
+This warning comes from the postinstall script of `better-sqlite3`, which runs because
+the package is in `dependencies` and Vercel installs it. According to CLAUDE.md,
+`better-sqlite3` is exclusively for local scripts and must not enter Vercel's runtime.
 
 ## Scope
 
-- Mover `better-sqlite3` y `@types/better-sqlite3` de `dependencies` a `devDependencies` en `package.json`.
-- Verificar que ningún archivo del runtime de Next.js importa `better-sqlite3` directamente.
+- Move `better-sqlite3` and `@types/better-sqlite3` from `dependencies` to `devDependencies` in `package.json`.
+- Verify that no Next.js runtime file directly imports `better-sqlite3`.
 
 ## Out of Scope
 
-- Cambiar la versión de `better-sqlite3`.
-- Eliminar `better-sqlite3` del proyecto.
-- Modificar los scripts locales que usan `better-sqlite3`.
+- Changing the version of `better-sqlite3`.
+- Removing `better-sqlite3` from the project.
+- Modifying local scripts that use `better-sqlite3`.
 
 ## Requirements
 
-1. `better-sqlite3` y `@types/better-sqlite3` deben estar en `devDependencies`.
-2. El runtime de Vercel (Next.js App Router) no debe importar `better-sqlite3`.
-3. Los scripts locales que usan `better-sqlite3` deben seguir funcionando.
-4. `pnpm build` debe pasar sin el warning de DEP0176.
+1. `better-sqlite3` and `@types/better-sqlite3` must be in `devDependencies`.
+2. The Vercel runtime (Next.js App Router) must not import `better-sqlite3`.
+3. Local scripts that use `better-sqlite3` must continue to work.
+4. `pnpm build` must pass without the DEP0176 warning.
 
 ## Acceptance Criteria
 
-- [ ] `better-sqlite3` aparece en `devDependencies` en `package.json`.
-- [ ] `grep -r "better-sqlite3" app/ components/ lib/agents/ lib/model/ lib/skills/` retorna vacío.
-- [ ] `pnpm tsc --noEmit` pasa.
-- [ ] `pnpm test` pasa.
-- [ ] `pnpm build` pasa sin el warning DEP0176 (verificar en log de preview de Vercel).
+- [ ] `better-sqlite3` appears in `devDependencies` in `package.json`.
+- [ ] `grep -r "better-sqlite3" app/ components/ lib/agents/ lib/model/ lib/skills/` returns empty.
+- [ ] `pnpm tsc --noEmit` passes.
+- [ ] `pnpm test` passes.
+- [ ] `pnpm build` passes without the DEP0176 warning (verify in Vercel preview log).
 
 ## Risks and Assumptions
 
-- Si algún archivo del runtime importa `better-sqlite3`, el build de Vercel fallará tras el cambio. El grep previo al commit es el guard.
-- Vercel instala `devDependencies` durante el build por defecto. Si el warning persiste, el fix definitivo es agregar `better-sqlite3` a `serverExternalPackages` en `next.config.ts`.
+- If any runtime file imports `better-sqlite3`, the Vercel build will fail after the change. The grep before commit is the guard.
+- Vercel installs `devDependencies` during the build by default. If the warning persists, the definitive fix is adding `better-sqlite3` to `serverExternalPackages` in `next.config.ts`.

@@ -6,9 +6,9 @@ import { computeStrengths } from '@/lib/model/skills/strengths'
 type HistoricalEntry = { avgGoalsScored: number; avgGoalsConceded: number }
 
 /**
- * Construye los 48 equipos del Mundial con sus fuerzas calculadas, usando solo
- * datos estaticos commiteados (teams-seed + historical-stats.json). No toca DB
- * ni red, asi que corre igual en build, en runtime Workers y en scripts.
+ * Builds the 48 World Cup teams with computed strengths, using only committed
+ * static data (teams-seed + historical-stats.json). No DB or network access,
+ * so it runs identically at build time, in the Workers runtime, and in scripts.
  */
 export function buildStaticTeams(): Team[] {
   const statsMap = historicalStats.teams as Record<string, HistoricalEntry>

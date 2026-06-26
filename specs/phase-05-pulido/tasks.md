@@ -1,17 +1,17 @@
-# Tasks: Fase 5 - Pulido
+# Tasks: Phase 5 - Polish
 
 ## Developer
 
-- [x] Agregar banner legal.
-- [x] Agregar timestamp.
-- [x] Agregar modo captura.
-- [x] Aislar animaciones en client components.
+- [x] Add legal banner.
+- [x] Add timestamp.
+- [x] Add capture mode.
+- [x] Isolate animations in client components.
 
 ## QA
 
-- [x] Verificar build.
-- [x] Verificar captura y rutas principales.
+- [x] Verify build.
+- [x] Verify capture and main routes.
 
 ## Security
 
-- [x] Confirmar que disclaimer no reemplaza controles de seguridad.
+- [x] Confirm disclaimer does not replace security controls.

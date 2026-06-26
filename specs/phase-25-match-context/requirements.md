@@ -26,74 +26,71 @@ completed
 
 ## Objective
 
-Mostrar contexto pre-partido en la página de cada fixture: los últimos resultados
-de cada equipo en el torneo y el historial head-to-head entre ambos. Hace que la
-predicción se sienta más fundamentada y da al usuario más motivos para leer antes
-de apostar su opinión.
+Show pre-match context on each fixture page: each team's recent results in the
+tournament and the head-to-head history between both teams. Makes the prediction feel
+more grounded and gives the user more reasons to read before committing their opinion.
 
-## Contexto
+## Context
 
-La página de fixture hoy muestra directamente probabilidades y mercados, pero no
-hay contexto narrativo. Un usuario que llega sin saber nada de los equipos no tiene
-forma de calibrar la predicción. El contexto de forma reciente y H2H es el estándar
-en cualquier análisis deportivo.
+The fixture page today shows probabilities and markets directly, but there is no
+narrative context. A user arriving without knowing the teams has no way to calibrate
+the prediction. Recent form and H2H context is the standard in any sports analysis.
 
-Los datos de forma reciente dentro del torneo están disponibles en los fixtures ya
-cargados (`loadFixtures()`). El H2H histórico requeriría una llamada adicional a
-football-data.org (`/teams/{id}/matches`) — esto se puede limitar a partidos de
-Mundiales anteriores usando el parámetro `competitions=WC`.
+Recent tournament form data is available in already-loaded fixtures (`loadFixtures()`).
+Historical H2H would require an additional call to football-data.org
+(`/teams/{id}/matches`) — this can be limited to previous World Cup matches using
+the `competitions=WC` parameter.
 
 ## Scope
 
-- Sección "CONTEXTO" en `app/fixtures/[id]/page.tsx` encima de los mercados.
-- **Forma en el torneo**: últimos N partidos del Mundial 2026 de cada equipo
-  (W/D/L badges), solo si ya jugaron algún partido.
-- **Encuentros en este Mundial**: partidos entre los dos equipos en el WC 2026,
-  desde football-data.org (`/teams/{id}/matches?competitions=WC`).
-  - Si la llamada falla o no hay datos: omitir la subsección silenciosamente.
-  - Nota de diseño: en fase de grupos los equipos aún no se han cruzado →
-    subsección H2H se omite. Útil principalmente en octavos en adelante.
-- Ambas subsecciones son opcionales: si un equipo no ha jugado aún y no hay H2H,
-  la sección "CONTEXTO" no se renderiza.
+- "CONTEXT" section in `app/fixtures/[id]/page.tsx` above the markets.
+- **Tournament form**: last N World Cup 2026 matches for each team
+  (W/D/L badges), only if they have already played.
+- **Meetings in this World Cup**: matches between the two teams in WC 2026,
+  from football-data.org (`/teams/{id}/matches?competitions=WC`).
+  - If the call fails or there is no data: silently omit the subsection.
+  - Design note: in the group stage teams have not yet faced each other →
+    H2H subsection is omitted. Mainly useful from the Round of 16 onward.
+- Both subsections are optional: if a team has not played yet and there is no H2H,
+  the "CONTEXT" section is not rendered.
 
 ## Out of Scope
 
-- Forma fuera del torneo (ligas nacionales, amistosos).
-- Stats avanzadas del torneo (posesión, tiros, etc.).
-- Contexto narrativo generado por IA (texto automático).
-- Lesiones o ausencias (requiere API-Football con lineup data — fase 18).
+- Form outside the tournament (national leagues, friendlies).
+- Advanced tournament stats (possession, shots, etc.).
+- AI-generated narrative context (automated text).
+- Injuries or absences (requires API-Football with lineup data — phase 18).
 
 ## Requirements
 
-1. La sección de forma muestra los partidos ya jugados del torneo para cada equipo,
-   con badge W/D/L y marcador.
-2. La sección H2H muestra los últimos enfrentamientos en Mundiales anteriores, si
-   están disponibles.
-3. Si no hay datos de contexto, la sección no se renderiza.
-4. La llamada H2H tiene un timeout o fallback silencioso para no bloquear el render
-   de la página si el API no responde.
-5. Los datos de forma se derivan de fixtures ya cargados (sin llamada extra).
+1. The form section shows already-played tournament matches for each team,
+   with W/D/L badge and score.
+2. The H2H section shows the latest clashes in previous World Cups, if available.
+3. If there is no context data, the section is not rendered.
+4. The H2H call has a timeout or silent fallback to not block page render if the API
+   does not respond.
+5. Form data is derived from already-loaded fixtures (no extra call).
 
-## Decisión de diseño: scope del H2H
+## Design Decision: H2H Scope
 
-El endpoint `/teams/{id}/matches?competitions=WC` devuelve solo la temporada activa
-(WC 2026). Se decidió acotar el H2H a "encuentros en este Mundial" en lugar de
-consultar temporadas anteriores (WC 2022, 2018) con múltiples llamadas adicionales.
-La subsección H2H se omite silenciosamente cuando no hay encuentros (fase de grupos).
+The `/teams/{id}/matches?competitions=WC` endpoint returns only the active season
+(WC 2026). The decision was to limit H2H to "meetings in this World Cup" instead of
+querying previous seasons (WC 2022, 2018) with multiple additional calls.
+The H2H subsection is omitted silently when there are no meetings (group stage).
 
 ## Acceptance Criteria
 
-- [ ] Fixture entre dos equipos que ya jugaron: muestra forma de ambos.
-- [ ] H2H: si hay datos (encuentros previos en WC 2026), se muestran hasta 5 partidos con fecha y resultado.
-- [ ] H2H: si la llamada falla, la sección se omite sin error visible.
-- [ ] Fixture entre dos equipos sin partidos previos: sección CONTEXTO oculta.
-- [ ] `pnpm tsc --noEmit` pasa.
+- [ ] Fixture between two teams that have already played: shows form for both.
+- [ ] H2H: if there is data (previous meetings in WC 2026), show up to 5 matches with date and result.
+- [ ] H2H: if the call fails, the section is omitted without a visible error.
+- [ ] Fixture between two teams without previous matches: CONTEXT section hidden.
+- [ ] `pnpm tsc --noEmit` passes.
 
 ## Risks and Assumptions
 
-- La llamada H2H agrega latencia a la página. Debe correr con `Promise.race` o
-  timeout de ~2s para no degradar el TTI del fixture.
-- football-data.org puede limitar el H2H por plan de API. Si no está disponible
-  en el plan actual, el H2H se marca como `deferred` y solo se muestra la forma.
-- "Forma en el torneo" tiene datos limitados en la primera jornada (un partido
-  por equipo). El diseño debe funcionar bien con 1, 2 o 3 partidos mostrados.
+- The H2H call adds latency to the page. Must run with `Promise.race` or a
+  ~2s timeout to not degrade the fixture TTI.
+- football-data.org may limit H2H by API plan. If not available on the current
+  plan, H2H is marked as `deferred` and only form is shown.
+- "Tournament form" has limited data in the first matchday (one match per team).
+  The design must work well with 1, 2, or 3 matches shown.

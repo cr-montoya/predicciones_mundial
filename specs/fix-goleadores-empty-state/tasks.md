@@ -6,19 +6,19 @@ completed
 
 ## Tasks
 
-- [x] 1. Agregar guarda `scorerMarkets.length > 0` y filtro de `probabilities` vacío en `app/fixtures/[id]/page.tsx`.
-- [x] 2. Crear `lib/data/squads.ts` con los top goleadores de los 32 equipos (goalsScored, minutesPlayed, goalsPerMinute).
-- [x] 3. Actualizar `lib/agents/live-loader.ts` para inyectar `homePlayers` y `awayPlayers` desde `squads.ts`.
-- [x] 4. Fix `translateOutcome` en `markets-es.ts` para renderizar solo el nombre sin el prefijo de ID.
-- [x] 5. Correr `pnpm tsc --noEmit` y `pnpm test`.
-- [x] 6. Verificar en local que la sección GOLEADORES muestra jugadores con probabilidades.
-- [x] 7. Verificar en preview de Vercel — PR #10 desplegado y revisado.
+- [x] 1. Add `scorerMarkets.length > 0` guard and filter for empty `probabilities` in `app/fixtures/[id]/page.tsx`.
+- [x] 2. Create `lib/data/squads.ts` with the top scorers for all 32 teams (goalsScored, minutesPlayed, goalsPerMinute).
+- [x] 3. Update `lib/agents/live-loader.ts` to inject `homePlayers` and `awayPlayers` from `squads.ts`.
+- [x] 4. Fix `translateOutcome` in `markets-es.ts` to render only the name without the ID prefix.
+- [x] 5. Run `pnpm tsc --noEmit` and `pnpm test`.
+- [x] 6. Verify locally that the SCORERS section shows players with probabilities.
+- [x] 7. Verify in Vercel preview — PR #10 deployed and reviewed.
 
 ## Definition of Done
 
-- [x] Sección GOLEADORES muestra jugadores reales con probabilidades en todos los partidos no finalizados.
-- [x] Badge "DATOS LIMITADOS" sigue presente.
-- [x] `pnpm tsc --noEmit` y `pnpm test` pasan.
-- [x] `pnpm spec:check` pasa.
-- [x] `specs/README.md` actualizado.
-- [x] Preview de Vercel confirmado por owner.
+- [x] SCORERS section shows real players with probabilities in all unfinished matches.
+- [x] "LIMITED DATA" badge still present.
+- [x] `pnpm tsc --noEmit` and `pnpm test` pass.
+- [x] `pnpm spec:check` passes.
+- [x] `specs/README.md` updated.
+- [x] Vercel preview confirmed by owner.

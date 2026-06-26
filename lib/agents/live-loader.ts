@@ -77,17 +77,17 @@ function buildInitialCandidates(probabilities: Record<string, number>): Candidat
   }))
 }
 
-/** Prediccion del torneo precomputada (Monte Carlo estatico, ver script). */
+/** Precomputed tournament prediction (static Monte Carlo — see precompute script). */
 function tournamentOutputs(): { winner: ModelOutput; goldenBoot: ModelOutput } {
   return tournamentPrediction as unknown as { winner: ModelOutput; goldenBoot: ModelOutput }
 }
 
-/** Todos los fixtures del Mundial desde la API en runtime. */
+/** All World Cup fixtures fetched from the API at runtime. */
 export async function loadFixtures(): Promise<Fixture[]> {
   return fetchFixtures(WC_LEAGUE_ID, WC_SEASON)
 }
 
-/** Squad de un equipo desde los datos precomputados. */
+/** Squad for a team from the precomputed data. */
 export function getSquadForTeam(teamId: number) {
   return squadsByTeamId[teamId] ?? []
 }
@@ -111,8 +111,8 @@ function predictionsForTeams(fixture: Fixture, byId: Map<number, Team>): ModelOu
 }
 
 /**
- * Predicciones de un partido calculadas al vuelo (Poisson, barato). Solo para
- * partidos no finalizados — los finalizados usan computePredictionsRetroactive.
+ * Match predictions computed on the fly (Poisson, cheap). Only for non-finished
+ * fixtures — finished ones use computePredictionsRetroactive.
  */
 export function computePredictionsForFixture(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
   if (fixture.status === 'finished') return []
@@ -120,9 +120,9 @@ export function computePredictionsForFixture(fixture: Fixture, byId: Map<number,
 }
 
 /**
- * Misma lógica que computePredictionsForFixture pero sin la guarda de 'finished'.
- * Usar en fixture detail de partidos finalizados para mostrar la predicción
- * retroactiva del modelo.
+ * Same logic as computePredictionsForFixture but without the 'finished' guard.
+ * Use in fixture detail for finished matches to show the model's retroactive
+ * prediction.
  */
 export function computePredictionsRetroactive(fixture: Fixture, byId: Map<number, Team>): ModelOutput[] {
   return predictionsForTeams(fixture, byId)

@@ -1,28 +1,28 @@
 /**
- * Tests del RateLimiter.
- * Ventana diaria (RapidAPI) y deslizante (football-data).
- * Sin setTimeout real: se inyecta getNow() para simular tiempo.
+ * RateLimiter tests.
+ * Daily window (RapidAPI) and sliding window (football-data).
+ * No real setTimeout: getNow() is injected to simulate time.
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { RateLimiter } from '@/lib/data/rate-limiter'
 
 // ---------------------------------------------------------------------------
-// Ventana diaria (RapidAPI style)
+// Daily window (RapidAPI style)
 // ---------------------------------------------------------------------------
 
-describe('RateLimiter - ventana diaria', () => {
-  it('permite hasta maxRequests llamadas en el mismo día', () => {
+describe('RateLimiter - daily window', () => {
+  it('allows up to maxRequests calls on the same day', () => {
     const limiter = new RateLimiter({ maxRequests: 5, windowType: 'daily' })
 
-    // Llama check() + record() 5 veces sin lanzar
+    // Call check() + record() 5 times without throwing
     for (let i = 0; i < 5; i++) {
       expect(() => limiter.check()).not.toThrow()
       limiter.record()
     }
   })
 
-  it('la petición 96 lanza RateLimitError tras 95 exitosas (maxRequests=95)', () => {
+  it('request 96 throws RateLimitError after 95 successful ones (maxRequests=95)', () => {
     const limiter = new RateLimiter({ maxRequests: 95, windowType: 'daily' })
 
     for (let i = 0; i < 95; i++) {
@@ -33,7 +33,7 @@ describe('RateLimiter - ventana diaria', () => {
     expect(() => limiter.check()).toThrow(/Daily rate limit reached/)
   })
 
-  it('el error menciona el límite máximo configurado', () => {
+  it('error message mentions the configured maximum limit', () => {
     const limiter = new RateLimiter({ maxRequests: 3, windowType: 'daily' })
     for (let i = 0; i < 3; i++) {
       limiter.check()
@@ -42,39 +42,39 @@ describe('RateLimiter - ventana diaria', () => {
     expect(() => limiter.check()).toThrow(/3/)
   })
 
-  it('después de medianoche el contador se resetea', () => {
-    // Simulamos cambio de día mockeando Date
+  it('after midnight the counter resets', () => {
+    // Simulate a day change by mocking Date
     const originalDate = Date
 
-    // Día 1: rellenamos el cupo
+    // Day 1: fill the quota
     const limiter = new RateLimiter({ maxRequests: 3, windowType: 'daily' })
     for (let i = 0; i < 3; i++) {
       limiter.check()
       limiter.record()
     }
-    // Debería lanzar
+    // Should throw
     expect(() => limiter.check()).toThrow(/Daily rate limit reached/)
 
-    // Avanzamos al día siguiente mockeando Date.prototype.toDateString
+    // Advance to the next day by mocking Date.prototype.toDateString
     const tomorrow = 'Tomorrow Jan 01 2030'
     vi.spyOn(Date.prototype, 'toDateString').mockReturnValue(tomorrow)
 
-    // Ahora el check debe pasar (reset por cambio de día)
+    // Now check must pass (reset due to day change)
     expect(() => limiter.check()).not.toThrow()
     limiter.record()
 
     vi.restoreAllMocks()
   })
 
-  it('record() solo incrementa en éxito: sin record() el contador no avanza', () => {
+  it('record() only increments on success: without record() the counter does not advance', () => {
     const limiter = new RateLimiter({ maxRequests: 2, windowType: 'daily' })
 
-    // check sin record 10 veces: no debe lanzar
+    // call check without record 10 times: must not throw
     for (let i = 0; i < 10; i++) {
       expect(() => limiter.check()).not.toThrow()
     }
 
-    // Si hacemos record 2 veces, la tercera check lanza
+    // After 2 records the third check throws
     limiter.check()
     limiter.record()
     limiter.check()
@@ -84,12 +84,12 @@ describe('RateLimiter - ventana diaria', () => {
 })
 
 // ---------------------------------------------------------------------------
-// Ventana deslizante (football-data style)
-// Se inyecta getNow() simulado porque RateLimiter usa Date.now() internamente.
-// Como RateLimiter no acepta getNow(), mockeamos Date.now directamente.
+// Sliding window (football-data style)
+// getNow() is simulated because RateLimiter uses Date.now() internally.
+// Since RateLimiter does not accept getNow(), we mock Date.now directly.
 // ---------------------------------------------------------------------------
 
-describe('RateLimiter - ventana deslizante', () => {
+describe('RateLimiter - sliding window', () => {
   let nowMs = 1_000_000
 
   beforeEach(() => {
@@ -101,7 +101,7 @@ describe('RateLimiter - ventana deslizante', () => {
     vi.restoreAllMocks()
   })
 
-  it('permite hasta maxRequests en la ventana', () => {
+  it('allows up to maxRequests within the window', () => {
     const limiter = new RateLimiter({
       maxRequests: 10,
       windowType: 'sliding',
@@ -114,7 +114,7 @@ describe('RateLimiter - ventana deslizante', () => {
     }
   })
 
-  it('la petición 11 lanza cuando hay 10 en la ventana de 60s', () => {
+  it('request 11 throws when 10 are in the 60s window', () => {
     const limiter = new RateLimiter({
       maxRequests: 10,
       windowType: 'sliding',
@@ -129,67 +129,67 @@ describe('RateLimiter - ventana deslizante', () => {
     expect(() => limiter.check()).toThrow(/Rate limit reached/)
   })
 
-  it('después de que expira la ventana, el contador se resetea y se permiten nuevas peticiones', () => {
+  it('after the window expires, the counter resets and new requests are allowed', () => {
     const limiter = new RateLimiter({
       maxRequests: 5,
       windowType: 'sliding',
       windowMs: 60_000,
     })
 
-    // Registramos 5 peticiones en t=1_000_000
+    // Record 5 requests at t=1_000_000
     for (let i = 0; i < 5; i++) {
       limiter.check()
       limiter.record()
     }
     expect(() => limiter.check()).toThrow(/Rate limit reached/)
 
-    // Avanzamos 61 segundos (fuera de ventana)
+    // Advance 61 seconds (outside the window)
     nowMs += 61_000
 
-    // Ahora debe pasar
+    // Now it must pass
     expect(() => limiter.check()).not.toThrow()
     limiter.record()
   })
 
-  it('ventana deslizante: peticiones antiguas expiran pero las nuevas cuentan', () => {
+  it('sliding window: old requests expire but new ones count', () => {
     const limiter = new RateLimiter({
       maxRequests: 3,
       windowType: 'sliding',
       windowMs: 60_000,
     })
 
-    // t=0: 3 peticiones
+    // t=0: 3 requests
     for (let i = 0; i < 3; i++) {
       limiter.check()
       limiter.record()
     }
 
-    // t=65s: las 3 primeras expiraron
+    // t=65s: the first 3 have expired
     nowMs += 65_000
 
-    // Ahora podemos hacer 3 más
+    // Now we can make 3 more
     for (let i = 0; i < 3; i++) {
       expect(() => limiter.check()).not.toThrow()
       limiter.record()
     }
 
-    // La 4a en este segundo window debe lanzar
+    // The 4th in this second window must throw
     expect(() => limiter.check()).toThrow(/Rate limit reached/)
   })
 
-  it('record() solo incrementa en éxito: check sin record no consume cuota', () => {
+  it('record() only increments on success: check without record does not consume quota', () => {
     const limiter = new RateLimiter({
       maxRequests: 3,
       windowType: 'sliding',
       windowMs: 60_000,
     })
 
-    // check 10 veces sin record
+    // check 10 times without record
     for (let i = 0; i < 10; i++) {
       expect(() => limiter.check()).not.toThrow()
     }
 
-    // record 3 veces -> cupo lleno
+    // record 3 times -> quota full
     limiter.record()
     limiter.record()
     limiter.record()
@@ -197,7 +197,7 @@ describe('RateLimiter - ventana deslizante', () => {
     expect(() => limiter.check()).toThrow(/Rate limit reached/)
   })
 
-  it('el error menciona el límite y la ventana configurados', () => {
+  it('error mentions the configured limit and window', () => {
     const limiter = new RateLimiter({
       maxRequests: 2,
       windowType: 'sliding',

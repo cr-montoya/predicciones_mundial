@@ -25,76 +25,75 @@ completed
 
 ## Objective
 
-Mostrar en la sección "Candidatos a Bota de Oro" los goles reales actuales del torneo
-junto a la probabilidad predicha por el modelo, y mantener la lista de candidatos
-sincronizada con los goleadores reales del Mundial 2026. Hoy el JSON precomputado
-nunca se actualiza en runtime, por lo que jugadores con goles reales (ej. Messi con 5
-goles) no aparecen o aparecen con datos desactualizados.
+Show the current real goals in the tournament in the "Golden Boot Candidates" section
+alongside the probability predicted by the model, and keep the candidate list
+synchronized with the actual World Cup 2026 top scorers. Today the precomputed JSON
+is never updated at runtime, so players with real goals (e.g., Messi with 5 goals)
+do not appear or appear with outdated data.
 
 ## Scope
 
-- Fetch en runtime (ISR) de los goleadores actuales del Mundial 2026 desde
+- Runtime (ISR) fetch of current World Cup 2026 top scorers from
   `football-data.org /v4/competitions/WC/scorers`.
-- Mostrar goles reales actuales junto a la probabilidad % del modelo para cada
-  candidato visible.
-- Combinar candidatos del JSON precomputado (por probabilidad) con los líderes reales
-  del torneo (por goles), priorizando a jugadores con goles reales cuando hay conflicto.
-- Actualizar `squads.json` y re-correr el Monte Carlo (`pnpm precompute`) como parte del
-  despliegue o de un proceso manual documentado, para reflejar goles reales en las
-  probabilidades.
-- Fallback: si el fetch de scorers falla, mostrar candidatos del JSON precomputado sin
-  columna de goles.
+- Show current real goals alongside the model's % probability for each
+  visible candidate.
+- Combine candidates from the precomputed JSON (by probability) with real tournament
+  leaders (by goals), prioritizing players with real goals when there is a conflict.
+- Update `squads.json` and re-run the Monte Carlo (`pnpm precompute`) as part of the
+  deployment or a documented manual process to reflect real goals in the probabilities.
+- Fallback: if the scorers fetch fails, show candidates from the precomputed JSON without
+  the goals column.
 
 ## Out of Scope
 
-- Cron job automático en Vercel para disparar `pnpm precompute` (puede ser fase futura).
-- Mostrar asistencias o estadísticas adicionales.
-- Re-correr el Monte Carlo en tiempo de request (demasiado costoso para ISR).
-- Cambiar el modelo matemático de distribución de goles.
+- Automatic cron job in Vercel to trigger `pnpm precompute` (may be a future phase).
+- Showing assists or additional statistics.
+- Re-running the Monte Carlo at request time (too costly for ISR).
+- Changing the mathematical model for goal distribution.
 
 ## Requirements
 
-1. El agente `live-loader` (o un agente nuevo `scorers-loader`) debe obtener los
-   goleadores reales del torneo en runtime con caché ISR de 3600 s.
-2. El fetch debe usar `FOOTBALLDATA_KEY` server-side; nunca exponer la key al cliente.
-3. La respuesta debe normalizarse en un tipo `LiveScorer` con campos:
+1. The `live-loader` agent (or a new `scorers-loader` agent) must fetch the real
+   tournament top scorers at runtime with a 3600s ISR cache.
+2. The fetch must use `FOOTBALLDATA_KEY` server-side; never expose the key to the client.
+3. The response must be normalized into a `LiveScorer` type with fields:
    `playerId`, `playerName`, `teamId`, `goals`, `assists`.
-4. La lista de candidatos visible debe fusionar:
-   a. Los candidatos del JSON precomputado (ordenados por probabilidad).
-   b. Los goleadores reales del torneo ordenados por goles actuales.
-   La fusión prioriza mostrar a los líderes reales incluso si tienen probabilidad
-   predicha baja o nula en el JSON.
-5. Cada fila de candidato debe mostrar el conteo de goles reales actual (o `—` si no
-   tiene goles registrados) y la probabilidad del modelo.
-6. Si el endpoint falla o devuelve lista vacía, la UI muestra la lista de candidatos del
-   JSON precomputado sin columna de goles (degradación sin error visible).
-7. El precompute script debe documentarse como paso periódico durante el torneo para
-   mantener las probabilidades sincronizadas con los goles reales.
-8. `pnpm tsc --noEmit`, `pnpm test` y `pnpm build` deben pasar sin errores.
+4. The visible candidate list must merge:
+   a. Candidates from the precomputed JSON (sorted by probability).
+   b. Real tournament top scorers sorted by current goals.
+   The merge prioritizes showing real leaders even if their predicted probability
+   in the JSON is low or null.
+5. Each candidate row must show the current real goal count (or `—` if no goals
+   registered) and the model probability.
+6. If the endpoint fails or returns an empty list, the UI shows the precomputed JSON
+   candidate list without the goals column (degradation without visible error).
+7. The precompute script must be documented as a periodic step during the tournament to
+   keep probabilities synchronized with real goals.
+8. `pnpm tsc --noEmit`, `pnpm test`, and `pnpm build` must pass without errors.
 
 ## Acceptance Criteria
 
-- [ ] La sección Candidatos a Bota de Oro muestra goles reales actuales para cada jugador.
-- [ ] Jugadores con goles reales (ej. Messi) aparecen aunque no estén en el top de
-      probabilidades precomputadas.
-- [ ] La columna de goles muestra `—` para candidatos sin goles registrados en el torneo.
-- [ ] Si `football-data.org` falla, la sección sigue mostrando candidatos (sin goles).
-- [ ] La API key no es visible en el bundle del cliente.
-- [ ] TypeScript compila sin errores.
-- [ ] Tests pasan.
-- [ ] Build de producción pasa.
-- [ ] Preview de Vercel revisado y sección visible correctamente.
+- [ ] The Golden Boot Candidates section shows current real goals for each player.
+- [ ] Players with real goals (e.g., Messi) appear even if they are not in the top
+      precomputed probabilities.
+- [ ] The goals column shows `—` for candidates with no goals registered in the tournament.
+- [ ] If `football-data.org` fails, the section still shows candidates (without goals).
+- [ ] The API key is not visible in the client bundle.
+- [ ] TypeScript compiles without errors.
+- [ ] Tests pass.
+- [ ] Production build passes.
+- [ ] Vercel preview reviewed and section visible correctly.
 
 ## Risks and Assumptions
 
-- `football-data.org /v4/competitions/WC/scorers` puede estar disponible con el tier
-  gratuito/básico; verificar límite de requests y plan activo.
-- El torneo puede estar en fase de grupos, octavos, cuartos, etc.; el endpoint debe
-  devolver scorers acumulados del torneo completo, no solo la última fase.
-- La normalización de nombres entre la API y `squads.json` puede tener inconsistencias
-  (acentos, apellidos compuestos); usar el mismo algoritmo que ya usa `mergeWCScorers()`.
-- Si el JSON precomputado está muy desactualizado, las probabilidades pueden no reflejar
-  la realidad actual; documentar cuándo fue el último precompute en la UI (campo
-  `computedAt` del JSON).
-- El candidato con más goles reales puede no estar entre los top por probabilidad; la
-  fusión debe ser explícita para evitar listas confusas.
+- `football-data.org /v4/competitions/WC/scorers` may be available with the free/basic
+  tier; verify request limits and active plan.
+- The tournament may be in the group stage, round of 16, quarters, etc.; the endpoint must
+  return accumulated scorers for the entire tournament, not just the last phase.
+- Name normalization between the API and `squads.json` may have inconsistencies
+  (accents, compound surnames); use the same algorithm already used by `mergeWCScorers()`.
+- If the precomputed JSON is very outdated, the probabilities may not reflect current
+  reality; document when the last precompute ran in the UI (the `computedAt` field from
+  the JSON).
+- The candidate with the most real goals may not be among the top by probability; the
+  merge must be explicit to avoid confusing lists.

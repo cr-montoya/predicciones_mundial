@@ -1,23 +1,23 @@
-# Requirements: Fase 12 - Datos historicos enriquecidos
+# Requirements: Phase 12 - Enriched Historical Data
 
-## Estado
+## Status
 
-Completada.
+Completed.
 
-## Objetivo
+## Objective
 
-Enriquecer `historical-stats.json` para diferenciar mejor selecciones de fuerza similar.
+Enrich `historical-stats.json` to better differentiate teams of similar strength.
 
-## Requerimientos
+## Requirements
 
-1. Agregar competiciones y años adicionales.
-2. Evaluar ponderacion por tipo de competicion.
-3. Mantener contrato de `computeStrengths`.
-4. Validar que favoritos mejoren probabilidad.
-5. Evitar que equipos debiles queden sobreponderados.
+1. Add additional competitions and years.
+2. Evaluate weighting by competition type.
+3. Maintain the `computeStrengths` contract.
+4. Validate that favorites improve probability.
+5. Avoid weaker teams being overweighted.
 
-## Criterios de éxito
+## Success Criteria
 
-1. France/Spain/Argentina suben respecto a baseline.
-2. Haiti queda por debajo de 1%.
-3. Tests estadisticos pasan.
+1. France/Spain/Argentina rise relative to the baseline.
+2. Haiti stays below 1%.
+3. Statistical tests pass.

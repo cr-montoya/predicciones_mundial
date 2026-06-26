@@ -1,16 +1,16 @@
-# Tasks: Fase 13 - Predicciones en fixture cards
+# Tasks: Phase 13 - Predictions in Fixture Cards
 
 ## Analyst
 
-- [x] Definir mercado principal para card.
+- [x] Define main market for card.
 
 ## Developer
 
-- [x] Extender `FixtureWithTeams`.
-- [x] Calcular prediccion en `live-loader`.
-- [x] Actualizar `FixturesToday`.
+- [x] Extend `FixtureWithTeams`.
+- [x] Calculate prediction in `live-loader`.
+- [x] Update `FixturesToday`.
 
 ## QA
 
-- [x] Tests de live-loader predictions.
-- [x] Verificar home con y sin fixtures.
+- [x] live-loader prediction tests.
+- [x] Verify home with and without fixtures.

@@ -1,23 +1,23 @@
-# Requirements: Fase 3 - Refresh bajo demanda
+# Requirements: Phase 3 - On-Demand Refresh
 
-## Estado
+## Status
 
-Completada historicamente. Parte del flujo fue sustituido luego por Vercel ISR para fixtures.
+Historically completed. Part of the flow was later replaced by Vercel ISR for fixtures.
 
-## Objetivo
+## Objective
 
-Permitir actualizar datos y predicciones manualmente sin proceso 24/7.
+Allow updating data and predictions manually without a 24/7 process.
 
-## Requerimientos
+## Requirements
 
-1. Debe existir script `pnpm refresh`.
-2. El refresh debe traer fixtures/resultados nuevos.
-3. El refresh debe recalcular predicciones.
-4. Debe existir guarda de frescura para proteger cuota de API.
-5. No debe existir scheduler obligatorio.
+1. A `pnpm refresh` script must exist.
+2. The refresh must fetch new fixtures/results.
+3. The refresh must recalculate predictions.
+4. A freshness guard must exist to protect the API quota.
+5. No mandatory scheduler must exist.
 
-## Criterios de éxito
+## Success Criteria
 
-1. El refresh corre localmente.
-2. La cuota API queda protegida.
-3. La logica reusable queda en agents/scripts, no en UI.
+1. The refresh runs locally.
+2. The API quota is protected.
+3. Reusable logic lives in agents/scripts, not in the UI.

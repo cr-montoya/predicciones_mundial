@@ -1,28 +1,28 @@
 # Specs
 
-Este directorio guarda las specs del proyecto en formato SDD. Cada fase o fix relevante
-debe tener una carpeta con tres archivos:
+This directory holds the project specs in SDD format. Each phase or relevant fix
+must have a folder with three files:
 
 ```txt
-specs/<nombre>/
+specs/<name>/
   requirements.md
   design.md
   tasks.md
 ```
 
-## Estados
+## Statuses
 
-- `pending`: todavía no implementado.
-- `active`: en implementación.
-- `blocked`: falta una decisión, dato, API, diseño o contrato para poder avanzar.
-- `in_review`: implementación lista, esperando gates, PR o revisión humana.
-- `completed`: cerrado y validado.
-- `deferred`: aplazado conscientemente sin cerrarse como completado.
-- `historical`: se conserva como memoria de decisiones, pero no representa arquitectura vigente.
+- `pending`: not yet implemented.
+- `active`: currently being implemented.
+- `blocked`: waiting on a decision, data, API, design, or contract to proceed.
+- `in_review`: implementation complete, waiting on gates, PR, or human review.
+- `completed`: closed and validated.
+- `deferred`: intentionally postponed without being closed as completed.
+- `historical`: kept as decision memory; does not represent current architecture.
 
-## Metadata recomendada
+## Recommended Metadata
 
-Las specs nuevas deben iniciar `requirements.md` con frontmatter:
+New specs must start `requirements.md` with frontmatter:
 
 ```yaml
 ---
@@ -45,31 +45,31 @@ gates:
 ---
 ```
 
-Valores válidos para `status`: `pending`, `active`, `blocked`, `in_review`,
+Valid values for `status`: `pending`, `active`, `blocked`, `in_review`,
 `completed`, `deferred`, `historical`.
 
-Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
+Valid values for gates: `pending`, `passed`, `failed`, `blocked`,
 `not_applicable`.
 
-## Cómo usar una spec
+## How to Use a Spec
 
-1. Leer `requirements.md` para entender problema, objetivo y criterios de éxito.
-2. Leer `design.md` para entender arquitectura, contratos, riesgos y decisiones.
-3. Ejecutar `tasks.md` como checklist por agente.
-4. Enlazar la spec en el PR.
-5. Copiar o resumir los acceptance criteria en el PR template.
-6. Actualizar estado/tareas si el alcance cambia durante la implementación.
-7. Actualizar este README si se crea, renombra, cierra o cambia de estado una spec.
-8. Ejecutar `pnpm spec:check` antes de abrir PR.
+1. Read `requirements.md` to understand the problem, objective, and success criteria.
+2. Read `design.md` to understand architecture, contracts, risks, and decisions.
+3. Execute `tasks.md` as an agent-by-agent checklist.
+4. Link the spec in the PR.
+5. Copy or summarize the acceptance criteria in the PR template.
+6. Update status/tasks if scope changes during implementation.
+7. Update this README if a spec is created, renamed, closed, or changes status.
+8. Run `pnpm spec:check` before opening a PR.
 
-## Índice de fases
+## Phase Index
 
-| Fase | Spec | Estado |
+| Phase | Spec | Status |
 | --- | --- | --- |
 | 0 | `phase-00-setup` | completed |
 | 1 | `phase-01-ingesta-db` | completed |
 | 2 | `phase-02-modelo-prediccion` | completed |
-| 3 | `phase-03-refresh-demanda` | completed / historical parcial |
+| 3 | `phase-03-refresh-demanda` | completed / partial historical |
 | 4 | `phase-04-dashboard` | completed |
 | 5 | `phase-05-pulido` | completed |
 | 6 | `phase-06-diseno-broadcast` | completed |
@@ -94,26 +94,28 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | 25 | `phase-25-match-context` | completed |
 | 26 | `phase-26-picks-reminder` | completed |
 | 27 | `phase-27-live-top-scorers` | completed |
+| 28 | `phase-28-i18n` | pending |
+| 29 | `phase-29-portfolio-rebrand` | pending |
 
-## Specs de infraestructura/fixes
+## Infrastructure / Fix Specs
 
-| Spec | Estado | Descripción |
+| Spec | Status | Description |
 | --- | --- | --- |
-| `auto-refresh-workers` | historical | Exploración histórica de Cloudflare Workers/next-on-pages. |
-| `vercel-env-csp` | historical | Diagnóstico y fixes de env vars/CSP en Vercel. |
-| `fix-better-sqlite3-devdep` | completed | Agregar serverExternalPackages para eliminar warning DEP0176 en Vercel. |
-| `fix-goleadores-empty-state` | completed | Mostrar goleadores reales con squads estáticos de los 32 equipos. |
-| `fix-flags-display` | completed | Quitar banderas de jugadores en Bota de Oro; agregar banderas faltantes (Cape Verde Islands, Jordan, Congo DR). |
+| `auto-refresh-workers` | historical | Historical exploration of Cloudflare Workers / next-on-pages. |
+| `vercel-env-csp` | historical | Diagnosis and fixes for env vars / CSP issues on Vercel. |
+| `fix-better-sqlite3-devdep` | completed | Add serverExternalPackages to eliminate DEP0176 warning on Vercel. |
+| `fix-goleadores-empty-state` | completed | Show real scorers with static squads for all 32 teams. |
+| `fix-flags-display` | completed | Remove player flags in Golden Boot; add missing flags (Cape Verde Islands, Jordan, Congo DR). |
 
-## Reglas
+## Rules
 
-- No implementar una fase nueva sin spec enlazada.
-- No usar una spec histórica como guía vigente sin crear una nueva spec de reactivación.
-- Si el PR se desvía de la spec, actualizar la spec o explicar el cambio en el PR.
-- Si cambia el estado de una spec, actualizar este README en el mismo PR.
-- Si se agrega una fase/spec nueva, agregarla al índice en este README antes de pedir review.
-- Las specs no reemplazan tests ni review; son contrato de intención y aceptación.
-- Las specs nuevas deben usar metadata YAML.
-- `completed` implica tasks cerradas o excepciones documentadas.
-- `blocked` debe incluir el bloqueo concreto y quién/qué lo desbloquea.
-- `in_review` significa que la implementación terminó y faltan gates, preview o PR.
+- Do not implement a new phase without a linked spec.
+- Do not use a historical spec as current guidance without creating a new reactivation spec.
+- If the PR deviates from the spec, update the spec or explain the change in the PR.
+- If a spec's status changes, update this README in the same PR.
+- If a new phase/spec is added, add it to the index in this README before requesting review.
+- Specs do not replace tests or review; they are an intent and acceptance contract.
+- New specs must use YAML metadata.
+- `completed` implies tasks are closed or exceptions are documented.
+- `blocked` must include the specific blocker and who/what unblocks it.
+- `in_review` means implementation is finished and gates, preview, or PR are still pending.

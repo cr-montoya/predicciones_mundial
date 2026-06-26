@@ -17,44 +17,44 @@ gates:
   reviewer: passed
 ---
 
-# Requirements: Fase 18 - Datos de jugadores enriquecidos
+# Requirements: Phase 18 - Enriched Player Data
 
-## Problema
+## Problem
 
-Los mercados de goleadores tienen confianza baja porque usan tasas historicas sin saber si
-el jugador sera titular, suplente, lesionado o suspendido. La distribucion cambia mucho
-cuando hay alineaciones confirmadas.
+Top scorer markets have low confidence because they use historical rates without knowing
+whether a player will start, come off the bench, be injured, or be suspended. The distribution
+changes significantly when confirmed lineups are available.
 
-## Objetivo
+## Objective
 
-Incorporar lineups confirmados y datos de lesiones/suspensiones para mejorar la confianza
-de los mercados de goleadores, sin exponer API keys al cliente y sin romper Vercel ISR.
+Incorporate confirmed lineups and injury/suspension data to improve the confidence of
+top scorer markets, without exposing API keys to the client and without breaking Vercel ISR.
 
-## Requerimientos funcionales
+## Functional Requirements
 
-1. Obtener lineups desde API-Football cuando el partido este cerca del kickoff.
-2. Obtener lesiones/suspensiones cuando la fuente lo permita.
-3. Guardar/cachear lineups por `fixtureId`.
-4. Pasar lineup opcional al modelo de goleadores.
-5. Si hay lineup confirmado, filtrar titulares y usar `starterProbability = 1.0`.
-6. Si no hay lineup, usar fallback historico con `starterProbability` estimada.
-7. Si un jugador esta lesionado/suspendido, bajar o anular su probabilidad.
-8. Mostrar en UI si la alineacion esta confirmada y timestamp.
+1. Fetch lineups from API-Football when the match is close to kickoff.
+2. Fetch injuries/suspensions when the source allows it.
+3. Store/cache lineups per `fixtureId`.
+4. Pass optional lineup to the top scorer model.
+5. If there is a confirmed lineup, filter starters and use `starterProbability = 1.0`.
+6. If there is no lineup, use historical fallback with estimated `starterProbability`.
+7. If a player is injured/suspended, lower or zero out their probability.
+8. Show in UI whether the lineup is confirmed and timestamp.
 
-## Requerimientos no funcionales
+## Non-Functional Requirements
 
-1. API-Football solo debe llamarse desde server/agents.
-2. Client components no importan providers ni env vars.
-3. El mercado de goleadores debe degradar sin bloquear la pagina.
-4. Debe respetarse cuota de API.
-5. La confianza debe reflejar calidad de datos.
-6. Manual refresh/Server Action near-kickoff debe estar protegido.
+1. API-Football must only be called from server/agents.
+2. Client components do not import providers or env vars.
+3. The top scorer market must degrade without blocking the page.
+4. API quota must be respected.
+5. Confidence must reflect data quality.
+6. Near-kickoff manual refresh/Server Action must be protected.
 
-## Criterios de exito
+## Success Criteria
 
-1. Con lineup confirmado, goleadores usan solo titulares confirmados.
-2. Sin lineup, la UI muestra confianza baja o datos limitados.
-3. Con lesion/suspension, jugador afectado no aparece como pick fuerte.
-4. Tests cubren lineup completo, sin lineup y jugador lesionado.
-5. `pnpm test` y `pnpm build` pasan.
-6. Preview de Vercel aprobado por owner antes de merge.
+1. With confirmed lineup, top scorers use only confirmed starters.
+2. Without lineup, UI shows low confidence or limited data.
+3. With injury/suspension, affected player does not appear as a strong pick.
+4. Tests cover complete lineup, no lineup, and injured player scenarios.
+5. `pnpm test` and `pnpm build` pass.
+6. Vercel preview approved by owner before merge.

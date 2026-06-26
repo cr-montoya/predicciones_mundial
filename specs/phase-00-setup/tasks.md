@@ -1,19 +1,19 @@
-# Tasks: Fase 0 - Setup
+# Tasks: Phase 0 - Setup
 
 ## Developer
 
-- [x] Crear proyecto Next.js con TypeScript.
-- [x] Configurar Tailwind.
-- [x] Agregar Vitest.
-- [x] Crear estructura `app/`, `lib/` y `scripts/`.
-- [x] Configurar DB local gitignored.
-- [x] Crear `.env.example` o equivalente para API keys.
+- [x] Create Next.js project with TypeScript.
+- [x] Configure Tailwind.
+- [x] Add Vitest.
+- [x] Create `app/`, `lib/`, and `scripts/` directory structure.
+- [x] Configure local gitignored DB.
+- [x] Create `.env.example` or equivalent for API keys.
 
 ## QA
 
-- [x] Verificar que la app compila.
-- [x] Verificar que Vitest corre.
+- [x] Verify the app compiles.
+- [x] Verify Vitest runs.
 
 ## Reviewer
 
-- [x] Confirmar estructura compatible con harness.
+- [x] Confirm structure is compatible with the harness.

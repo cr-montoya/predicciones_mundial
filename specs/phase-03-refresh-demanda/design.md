@@ -1,23 +1,23 @@
-# Design: Fase 3 - Refresh bajo demanda
+# Design: Phase 3 - On-Demand Refresh
 
-## Flujo historico
+## Historical Flow
 
 ```
 pnpm refresh
-   -> provider externo
-   -> normalizacion
-   -> DB/cache local
-   -> recomputo de predicciones
-   -> timestamp de frescura
+   -> external provider
+   -> normalization
+   -> DB/local cache
+   -> prediction recompute
+   -> freshness timestamp
 ```
 
-## Decisiones
+## Decisions
 
-- Refresh manual para controlar consumo de API.
-- Sin cron ni procesos persistentes.
-- Agents concentran I/O.
+- Manual refresh to control API consumption.
+- No cron or persistent processes.
+- Agents concentrate I/O.
 
-## Nota actual
+## Current Note
 
-En la arquitectura vigente, fixtures se actualizan mediante Vercel ISR en runtime server.
-El refresh local sigue siendo util para scripts y datos precomputados.
+In the current architecture, fixtures are updated via Vercel ISR at server runtime.
+The local refresh remains useful for scripts and precomputed data.

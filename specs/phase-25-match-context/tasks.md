@@ -6,37 +6,37 @@ pending
 
 ## Tasks
 
-### Pre-implementación
+### Pre-implementation
 - [x] 1. `spec-review`.
-- [x] 2. Analyst: validar que mostrar contexto H2H no implica cambio en el modelo.
-- [x] 3. `data-contract`: formalizar `H2HMatch` y endpoint de football-data.org a usar.
-- [x] 4. Design: aprobar diseño de forma y H2H.
-- [x] 5. Grill: verificar disponibilidad del endpoint H2H en el plan actual de la API.
+- [x] 2. Analyst: validate that showing H2H context does not imply a model change.
+- [x] 3. `data-contract`: formalize `H2HMatch` and the football-data.org endpoint to use.
+- [x] 4. Design: approve form and H2H design.
+- [x] 5. Grill: verify H2H endpoint availability on the current API plan.
 
-### Implementación
-- [x] 6. Extraer `WdlBadge` a `components/wdl-badge.tsx` (shared); actualizar team-fixtures.tsx.
-- [x] 7. Crear `lib/agents/h2h-loader.ts` con timeout y fallback vacío.
-- [x] 8. Crear `components/form-strip.tsx`.
-- [x] 9. Crear `components/match-context.tsx`.
-- [x] 10. Integrar `<MatchContext>` en `app/fixtures/[id]/page.tsx`.
+### Implementation
+- [x] 6. Extract `WdlBadge` to `components/wdl-badge.tsx` (shared); update team-fixtures.tsx.
+- [x] 7. Create `lib/agents/h2h-loader.ts` with timeout and empty fallback.
+- [x] 8. Create `components/form-strip.tsx`.
+- [x] 9. Create `components/match-context.tsx`.
+- [x] 10. Integrate `<MatchContext>` in `app/fixtures/[id]/page.tsx`.
 
-### Verificación
+### Verification
 - [x] 11. `pnpm tsc --noEmit` — PASS.
 - [x] 12. `pnpm test` — 361/361 PASS.
 - [x] 13. `pnpm build` — PASS.
-- [x] 14. QA manual: h2h catch all errors → `[]`, filtros FINISHED+null guard+opponent, posición MatchContext.
-- [x] 15. Code Quality — PASS (sin blockers).
+- [x] 14. QA manual: h2h catch all errors → `[]`, FINISHED+null guard+opponent filters, MatchContext position.
+- [x] 15. Code Quality — PASS (no blockers).
 - [x] 16. Reviewer — PASS (harness compliant).
 
-### Cierre
-- [x] 17. `spec-closeout` — in_review, PR pendiente.
-- [x] 18. PR #18 aprobado y mergeado por owner.
-- [x] 19. Marcar `completed` post-merge.
+### Closeout
+- [x] 17. `spec-closeout` — in_review, PR pending.
+- [x] 18. PR #18 approved and merged by owner.
+- [x] 19. Mark `completed` post-merge.
 
 ## Definition of Done
 
-- [ ] Forma reciente visible cuando hay partidos jugados.
-- [ ] H2H visible si hay datos; omitido silenciosamente si falla.
-- [ ] Sin degradación de performance (timeout H2H ≤ 2s).
-- [ ] `pnpm tsc --noEmit` pasa.
-- [ ] Preview de Vercel revisado.
+- [ ] Recent form visible when matches have been played.
+- [ ] H2H visible if there is data; silently omitted if it fails.
+- [ ] No performance degradation (H2H timeout ≤ 2s).
+- [ ] `pnpm tsc --noEmit` passes.
+- [ ] Vercel preview reviewed.

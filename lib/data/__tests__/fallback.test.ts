@@ -1,6 +1,6 @@
 /**
- * Tests del orquestador de fallback.
- * Usa providers mockeados para evitar red, sin DB.
+ * Tests for the fallback orchestrator.
+ * Uses mocked providers to avoid network calls; no DB.
  */
 
 import { describe, it, expect, vi } from 'vitest'
@@ -37,11 +37,11 @@ function makeProvider(name: string, overrides: Partial<DataProvider> = {}): Data
 }
 
 // ---------------------------------------------------------------------------
-// Tests: flujo de fallback para fetchFixtures
+// Tests: fetchFixtures fallback flow
 // ---------------------------------------------------------------------------
 
 describe('fallback orchestrator - fetchFixtures', () => {
-  it('primario OK -> usa primario, no llama al fallback', async () => {
+  it('primary OK -> uses primary, does not call fallback', async () => {
     const primary = makeProvider('primary', {
       fetchFixtures: vi.fn(async () => makeFixtures(1)),
     })
@@ -55,7 +55,7 @@ describe('fallback orchestrator - fetchFixtures', () => {
     expect(secondary.fetchFixtures).not.toHaveBeenCalled()
   })
 
-  it('primario lanza error -> intenta fallback, fallback OK -> usa fallback', async () => {
+  it('primary throws -> tries fallback, fallback OK -> uses fallback', async () => {
     const primary = makeProvider('primary', {
       fetchFixtures: vi.fn(async () => { throw new Error('API down') }),
     })
@@ -71,7 +71,7 @@ describe('fallback orchestrator - fetchFixtures', () => {
     expect(secondary.fetchFixtures).toHaveBeenCalledOnce()
   })
 
-  it('primario devuelve [] (vacio) -> intenta fallback, no salta a mock directamente', async () => {
+  it('primary returns [] (empty) -> tries fallback, does not skip to mock directly', async () => {
     const primary = makeProvider('primary', {
       fetchFixtures: vi.fn(async () => []),
     })
@@ -89,7 +89,7 @@ describe('fallback orchestrator - fetchFixtures', () => {
     expect(tertiary.fetchFixtures).not.toHaveBeenCalled()
   })
 
-  it('ambos fallan -> cae al ultimo proveedor (mock)', async () => {
+  it('both fail -> falls through to last provider (mock)', async () => {
     const primary = makeProvider('primary', {
       fetchFixtures: vi.fn(async () => { throw new Error('primary down') }),
     })
@@ -106,29 +106,29 @@ describe('fallback orchestrator - fetchFixtures', () => {
     expect(result[0].id).toBe(99)
     expect(primary.fetchFixtures).toHaveBeenCalledOnce()
     expect(secondary.fetchFixtures).toHaveBeenCalledOnce()
-    // mock se llama en la iteracion normal tras los fallos y quizas una vez extra
+    // mock is called in the normal iteration after the failures
     expect(mock.fetchFixtures).toHaveBeenCalled()
   })
 
-  it('primario [] y secundario [] -> cae al ultimo proveedor (mock) con fixtures', async () => {
+  it('primary [] and secondary [] -> falls through to last provider (mock) with fixtures', async () => {
     const primary = makeProvider('primary')
     const secondary = makeProvider('secondary')
     const mock = makeProvider('mock', {
       fetchFixtures: vi.fn(async () => makeFixtures(88)),
     })
 
-    // Con 3 providers donde todos los primeros devuelven []
-    // el orquestador agota primary y secondary (ambos vacíos), luego invoca mock
+    // With 3 providers where the first two return []
+    // the orchestrator exhausts primary and secondary (both empty), then invokes mock
     const result = await fetchFixtures(1, 2026, [primary, secondary, mock])
 
     expect(mock.fetchFixtures).toHaveBeenCalled()
-    // El resultado debe ser de mock dado que los otros dos devuelven vacío
-    // (withFallback cae al último proveedor al agotar todos)
+    // Result must be from mock since the other two returned empty
+    // (withFallback falls to the last provider after exhausting all)
   })
 })
 
 describe('fallback orchestrator - fetchTeamStats', () => {
-  it('primario devuelve stats completas -> usa primario', async () => {
+  it('primary returns complete stats -> uses primary', async () => {
     const primary = makeProvider('primary', {
       fetchTeamStats: vi.fn(async () => ({ avgGoalsScored: 1.8, avgGoalsConceded: 0.9 })),
     })
@@ -141,7 +141,7 @@ describe('fallback orchestrator - fetchTeamStats', () => {
     expect(secondary.fetchTeamStats).not.toHaveBeenCalled()
   })
 
-  it('primario devuelve {} (football-data free tier) -> intenta secundario', async () => {
+  it('primary returns {} (football-data free tier) -> tries secondary', async () => {
     const primary = makeProvider('primary', {
       fetchTeamStats: vi.fn(async () => ({})),
     })
@@ -158,7 +158,7 @@ describe('fallback orchestrator - fetchTeamStats', () => {
 })
 
 describe('fallback orchestrator - fetchMatchStats', () => {
-  it('primario OK con stats -> no llama al secundario', async () => {
+  it('primary OK with stats -> does not call secondary', async () => {
     const stats: MatchStats[] = [{
       fixtureId: 9001, teamId: 1001, corners: 5,
       yellowCards: 2, redCards: 0, shotsOnTarget: 4, possession: 52,
@@ -174,7 +174,7 @@ describe('fallback orchestrator - fetchMatchStats', () => {
     expect(secondary.fetchMatchStats).not.toHaveBeenCalled()
   })
 
-  it('primario lanza -> secundario sirve la respuesta', async () => {
+  it('primary throws -> secondary serves the response', async () => {
     const stats: MatchStats[] = [{
       fixtureId: 9001, teamId: 1001, corners: null,
       yellowCards: null, redCards: null, shotsOnTarget: null, possession: null,
@@ -194,7 +194,7 @@ describe('fallback orchestrator - fetchMatchStats', () => {
 })
 
 describe('fallback orchestrator - fetchMatchEvents', () => {
-  it('primario OK -> no llama al secundario', async () => {
+  it('primary OK -> does not call secondary', async () => {
     const events: MatchEvent[] = [{
       id: 1, fixtureId: 9001, type: 'goal', teamId: 1001, playerId: null, minute: 23,
     }]
@@ -210,8 +210,8 @@ describe('fallback orchestrator - fetchMatchEvents', () => {
   })
 })
 
-describe('fallback orchestrator - console log del proveedor que sirvió', () => {
-  it('registra en console el proveedor que sirvió la corrida', async () => {
+describe('fallback orchestrator - console log of the serving provider', () => {
+  it('logs the provider that served the run', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     const primary = makeProvider('test-primary', {
       fetchFixtures: vi.fn(async () => makeFixtures(1)),

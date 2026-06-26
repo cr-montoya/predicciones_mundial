@@ -1,22 +1,22 @@
-# Design: Fase 12 - Datos historicos enriquecidos
+# Design: Phase 12 - Enriched Historical Data
 
-## Flujo
+## Flow
 
 ```
-fuentes historicas ampliadas
+expanded historical sources
    -> historical-stats.json
    -> computeStrengths
    -> tournament-prediction.json
 ```
 
-## Decisiones
+## Decisions
 
-- Mantener JSON versionado.
-- Cambiar formulas solo si Analyst aprueba contrato.
-- Validar outputs con sanity estadistico.
+- Keep JSON versioned.
+- Change formulas only if Analyst approves the contract.
+- Validate outputs with a statistical sanity check.
 
-## Riesgos
+## Risks
 
-- Sesgo por competiciones con nivel desigual.
-- Datos viejos con peso excesivo.
-- Cambios de probabilidades sin explicacion.
+- Bias from competitions with unequal level.
+- Old data with excessive weight.
+- Probability changes without explanation.

@@ -1,33 +1,33 @@
 # phase-19-picks — Design
 
-## Arquitectura de capas
+## Layer Architecture
 
 ```
 UI (Client Component: PickPanel)
-  ↓ recibe: Fixture (prop desde Server Component padre)
-  ↓ lee/escribe: localStorage
-  ↓ llama: resolveVerdict (skill pura)
+  ↓ receives: Fixture (prop from Server Component parent)
+  ↓ reads/writes: localStorage
+  ↓ calls: resolveVerdict (pure skill)
 ```
 
-No hay agent ni model nuevos. La skill es pura, sin red ni storage.
+No new agent or model. The skill is pure, with no network or storage.
 
-## Archivos nuevos
+## New Files
 
-| Archivo | Capa | Descripción |
+| File | Layer | Description |
 |---|---|---|
-| `lib/skills/picks.ts` | Skill | `resolveVerdict`, `deriveOutcome`. Funciones puras. |
-| `components/pick-panel.tsx` | UI | Client Component. Botones 1X2, estado bloqueado, veredicto. |
-| `components/pick-badge.tsx` | UI | Client Component pequeño. Badge "ya hiciste pick" en tarjetas. |
+| `lib/skills/picks.ts` | Skill | `resolveVerdict`, `deriveOutcome`. Pure functions. |
+| `components/pick-panel.tsx` | UI | Client Component. 1X2 buttons, locked state, verdict. |
+| `components/pick-badge.tsx` | UI | Small Client Component. "Pick made" badge on fixture cards. |
 
-## Archivos modificados
+## Modified Files
 
-| Archivo | Cambio |
+| File | Change |
 |---|---|
-| `app/fixtures/[id]/page.tsx` | Incluir `<PickPanel fixture={fixture} />` sobre las predicciones. |
-| `app/fixtures/page.tsx` | Incluir `<PickBadge fixtureId={f.id} />` en cada tarjeta. |
-| `lib/skills/picks.ts` | Nuevo — ver contrato abajo. |
+| `app/fixtures/[id]/page.tsx` | Include `<PickPanel fixture={fixture} />` above the predictions. |
+| `app/fixtures/page.tsx` | Include `<PickBadge fixtureId={f.id} />` on each card. |
+| `lib/skills/picks.ts` | New — see contract below. |
 
-## Contrato de Skill (`lib/skills/picks.ts`)
+## Skill Contract (`lib/skills/picks.ts`)
 
 ```ts
 export type PickOutcome = 'home' | 'draw' | 'away'
@@ -38,14 +38,14 @@ export interface StoredPick {
   pickedAt: string
 }
 
-/** Convierte el marcador final en el outcome real del partido. */
+/** Converts the final score to the actual match outcome. */
 export function deriveOutcome(homeGoals: number, awayGoals: number): PickOutcome {
   if (homeGoals > awayGoals) return 'home'
   if (awayGoals > homeGoals) return 'away'
   return 'draw'
 }
 
-/** Compara el pick del usuario con el resultado real. */
+/** Compares the user's pick with the actual result. */
 export function resolveVerdict(
   pick: PickOutcome,
   homeGoals: number,
@@ -55,82 +55,82 @@ export function resolveVerdict(
 }
 ```
 
-## Diseño visual de `PickPanel`
+## Visual Design of `PickPanel`
 
-### Estado scheduled (pick pendiente)
-
-```
-┌─────────────────────────────────────────────┐
-│  TU PICK                                    │
-│                                             │
-│  [ 🏠 Local ]  [ = Empate ]  [ ✈ Visita ]  │
-│                                             │
-│  Elige antes de que empiece el partido      │
-└─────────────────────────────────────────────┘
-```
-
-### Estado scheduled (pick hecho)
+### Scheduled state (no pick)
 
 ```
 ┌─────────────────────────────────────────────┐
-│  TU PICK                                    │
+│  YOUR PICK                                  │
 │                                             │
-│  [ 🏠 Local ✓ ]  [ = Empate ]  [ ✈ Visita] │
+│  [ 🏠 Home ]  [ = Draw ]  [ ✈ Away ]       │
 │                                             │
-│  Puedes cambiar hasta el inicio             │
+│  Choose before the match starts             │
 └─────────────────────────────────────────────┘
 ```
 
-### Estado live (bloqueado)
+### Scheduled state (pick made)
 
 ```
 ┌─────────────────────────────────────────────┐
-│  TU PICK  · EN CURSO                        │
+│  YOUR PICK                                  │
 │                                             │
-│  [ 🏠 Local ✓ ]  (bloqueado)               │
+│  [ 🏠 Home ✓ ]  [ = Draw ]  [ ✈ Away ]     │
+│                                             │
+│  You can change until kickoff               │
 └─────────────────────────────────────────────┘
 ```
 
-### Estado finished — pick correcto
+### Live state (locked)
 
 ```
 ┌─────────────────────────────────────────────┐
-│  TU PICK  · ✓ ACERTASTE                    │
+│  YOUR PICK  · IN PROGRESS                  │
 │                                             │
-│  Elegiste: Local  →  Resultado: 2-1        │
+│  [ 🏠 Home ✓ ]  (locked)                  │
 └─────────────────────────────────────────────┘
 ```
 
-### Estado finished — pick incorrecto
+### Finished state — correct pick
 
 ```
 ┌─────────────────────────────────────────────┐
-│  TU PICK  · ✗ FALLASTE                     │
+│  YOUR PICK  · ✓ CORRECT                    │
 │                                             │
-│  Elegiste: Empate  →  Resultado: 2-1       │
+│  You chose: Home  →  Result: 2-1           │
 └─────────────────────────────────────────────┘
 ```
 
-### Estado finished sin pick
+### Finished state — incorrect pick
 
-No se renderiza el componente.
+```
+┌─────────────────────────────────────────────┐
+│  YOUR PICK  · ✗ WRONG                      │
+│                                             │
+│  You chose: Draw  →  Result: 2-1           │
+└─────────────────────────────────────────────┘
+```
 
-## Paleta
+### Finished state without pick
 
-- Botón sin seleccionar: fondo `rgba(255,255,255,0.04)`, borde `rgba(255,255,255,0.08)`
-- Botón seleccionado: borde `#FFDB00`, fondo `rgba(255,219,0,0.08)`
-- Veredicto correcto: acento verde `#22c55e`
-- Veredicto incorrecto: acento rojo `#ef4444`
-- Badge en tarjeta: punto dorado `#FFDB00` + texto "Pick hecho"
+Component is not rendered.
 
-## localStorage key
+## Palette
+
+- Unselected button: background `rgba(255,255,255,0.04)`, border `rgba(255,255,255,0.08)`
+- Selected button: border `#FFDB00`, background `rgba(255,219,0,0.08)`
+- Correct verdict: green accent `#22c55e`
+- Incorrect verdict: red accent `#ef4444`
+- Badge on card: gold dot `#FFDB00` + "Pick made" text
+
+## localStorage Key
 
 ```
 `pick_${fixtureId}` → JSON.stringify(StoredPick)
 ```
 
-## Posición en `app/fixtures/[id]/page.tsx`
+## Position in `app/fixtures/[id]/page.tsx`
 
-`<PickPanel>` va entre el header del partido (equipos + hora) y la sección de
-predicciones de la IA. El usuario ve primero su pick, luego lo contrasta con las
-probabilidades del modelo.
+`<PickPanel>` goes between the match header (teams + time) and the
+AI predictions section. The user sees their pick first, then contrasts it
+against the model probabilities.

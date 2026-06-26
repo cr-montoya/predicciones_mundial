@@ -1,40 +1,40 @@
 # phase-21-bracket — Design
 
-## Ruta
+## Route
 
 `app/bracket/page.tsx` — Server Component, `revalidate = 3600`.
 
-## Arquitectura
+## Architecture
 
 ```
 app/bracket/page.tsx  (Server Component)
-  ↓ loadFixtures() → filtra por round !== 'group'
+  ↓ loadFixtures() → filters by round !== 'group'
   ↓ buildStaticTeams() → teamMap
-  ↓ computePredictionsForFixture() → result_1x2 por cruce
+  ↓ computePredictionsForFixture() → result_1x2 per matchup
   → <BracketView rounds={...} />  (Server Component)
       → <BracketRound> → <BracketMatchup>
 ```
 
-## Estructura de rondas (WC 2026)
+## Round Structure (WC 2026)
 
 ```
-Round of 32 (16 partidos)
-  → Round of 16 (8 partidos)
-    → Quarter Finals (4 partidos)
-      → Semi Finals (2 partidos)
-        → Final (1 partido)
-        → 3rd Place (1 partido)
+Round of 32 (16 matches)
+  → Round of 16 (8 matches)
+    → Quarter Finals (4 matches)
+      → Semi Finals (2 matches)
+        → Final (1 match)
+        → 3rd Place (1 match)
 ```
 
-## Archivos nuevos
+## New Files
 
-| Archivo | Descripción |
+| File | Description |
 |---|---|
-| `app/bracket/page.tsx` | Server Component principal |
-| `components/bracket-view.tsx` | Layout visual del cuadro completo |
-| `components/bracket-matchup.tsx` | Cruce individual: equipos + probs + resultado |
+| `app/bracket/page.tsx` | Main Server Component |
+| `components/bracket-view.tsx` | Visual layout of the full bracket |
+| `components/bracket-matchup.tsx` | Individual matchup: teams + probs + result |
 
-## Diseño visual de `BracketMatchup`
+## Visual Design of `BracketMatchup`
 
 ```
 ┌──────────────────────────────┐
@@ -44,28 +44,28 @@ Round of 32 (16 partidos)
 └──────────────────────────────┘
 ```
 
-- Partido jugado: mostrar marcador real, ganador en acento dorado.
-- Partido pendiente: mostrar probabilidades del modelo con barra.
-- Slot vacío: `Por definir` en color muted.
+- Played match: show actual score, winner in gold accent.
+- Pending match: show model probabilities with bar.
+- Empty slot: `To be determined` in muted color.
 
-## Layout en móvil
+## Mobile Layout
 
-Scroll horizontal con una columna por ronda. En desktop: grid de columnas con
-líneas conectoras SVG simples entre cruces.
+Horizontal scroll with one column per round. On desktop: column grid with
+simple SVG connector lines between matchups.
 
 ## Nav
 
-Agregar link "BRACKET" en `app/layout.tsx` junto a GRUPOS y FIXTURES.
+Add "BRACKET" link in `app/layout.tsx` alongside GROUPS and FIXTURES.
 
 ## Security and Runtime
 
-- Server Component con ISR `revalidate = 3600`. Sin secrets expuestos al cliente.
-- `FOOTBALLDATA_KEY` solo en el agent (`live-loader`), nunca en UI.
-- Los fixtures de eliminatorias pueden estar vacíos; manejar array vacío sin error.
+- Server Component with ISR `revalidate = 3600`. No secrets exposed to the client.
+- `FOOTBALLDATA_KEY` only in the agent (`live-loader`), never in UI.
+- Knockout fixtures may be empty; handle empty array without errors.
 
 ## Testing Strategy
 
-- No hay nueva lógica matemática — el modelo existente ya está testeado.
-- Test manual: verificar que slots vacíos no rompen el render.
-- Test manual: verificar partidos jugados muestran marcador; pendientes muestran probs.
-- `pnpm build` es el gate principal (verifica que el Server Component compila).
+- No new mathematical logic — the existing model is already tested.
+- Manual test: verify empty slots do not break the render.
+- Manual test: verify played matches show score; pending ones show probabilities.
+- `pnpm build` is the main gate (verifies the Server Component compiles).

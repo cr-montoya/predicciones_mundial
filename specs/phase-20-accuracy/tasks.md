@@ -6,41 +6,41 @@ in_review
 
 ## Tasks
 
-### Pre-implementación
-- [x] 1. `spec-review`: validar que la spec está lista.
-- [x] 2. Analyst: aprobar métrica de acierto (top-1 binario) y contrato de `AccuracyStats`.
-- [x] 3. `data-contract`: formalizar `MatchAccuracyRecord`, `AccuracyStats` y el contrato de `computePredictionsRetroactive`.
-- [x] 4. Design: aprobar wireframes de `ModelResultCard` y `AccuracyWidget`.
-- [x] 5. Grill: detectar blockers antes de arrancar.
+### Pre-implementation
+- [x] 1. `spec-review`: validate spec is ready.
+- [x] 2. Analyst: approve accuracy metric (binary top-1) and `AccuracyStats` contract.
+- [x] 3. `data-contract`: formalize `MatchAccuracyRecord`, `AccuracyStats`, and the `computePredictionsRetroactive` contract.
+- [x] 4. Design: approve wireframes for `ModelResultCard` and `AccuracyWidget`.
+- [x] 5. Grill: detect blockers before starting.
 
-### Implementación
-- [x] 6. Crear `lib/skills/accuracy.ts` con `deriveActualOutcome`, `topModelCall`, `resolveModelVerdict`, `computeAccuracyStats`.
-- [x] 7. Escribir tests unitarios en Vitest para las skills de accuracy.
-- [x] 8. Agregar `computePredictionsRetroactive` en `lib/agents/live-loader.ts` (sin guarda de finished).
-- [x] 9. Crear `components/model-result-card.tsx`.
-- [x] 10. Integrar `<ModelResultCard>` en `app/fixtures/[id]/page.tsx` para partidos finalizados.
-- [x] 11. Crear `components/accuracy-widget.tsx`.
-- [x] 12. Integrar `<AccuracyWidget>` en `app/page.tsx` (solo si `total >= 3`).
+### Implementation
+- [x] 6. Create `lib/skills/accuracy.ts` with `deriveActualOutcome`, `topModelCall`, `resolveModelVerdict`, `computeAccuracyStats`.
+- [x] 7. Write unit tests in Vitest for accuracy skills.
+- [x] 8. Add `computePredictionsRetroactive` in `lib/agents/live-loader.ts` (without finished guard).
+- [x] 9. Create `components/model-result-card.tsx`.
+- [x] 10. Integrate `<ModelResultCard>` in `app/fixtures/[id]/page.tsx` for finished matches.
+- [x] 11. Create `components/accuracy-widget.tsx`.
+- [x] 12. Integrate `<AccuracyWidget>` in `app/page.tsx` (only if `total >= 3`).
 
-### Verificación
+### Verification
 - [x] 13. `pnpm tsc --noEmit`.
 - [x] 14. `pnpm test`.
-- [x] 15. QA: verificar en fixture finalizado real que muestra predicciones + veredicto correcto.
-- [x] 16. QA: verificar widget de home con porcentaje coherente.
-- [x] 17. Code Quality sin bloqueantes. (bloqueantes corregidos: copy "apostó por" → "predijo"; "Empate ganó" → "Empate")
-- [x] 18. Reviewer sin bloqueantes.
+- [x] 15. QA: verify on a real finished fixture that it shows predictions + correct verdict.
+- [x] 16. QA: verify home widget with coherent percentage.
+- [x] 17. Code Quality without blockers. (blockers fixed: copy "apostó por" → "predijo"; "Empate ganó" → "Empate")
+- [x] 18. Reviewer without blockers.
 - [x] 19. Grill re-check.
 
-### Cierre
+### Closeout
 - [x] 20. `spec-closeout`.
-- [ ] 21. PR hacia `main`.
+- [ ] 21. PR toward `main`.
 
 ## Definition of Done
 
-- [x] Fixture finalizado muestra predicción retroactiva + veredicto del modelo.
-- [x] Home muestra widget de precisión cuando hay ≥ 3 partidos finalizados.
-- [x] Skills de accuracy cubiertas por tests unitarios.
-- [x] `pnpm tsc --noEmit` y `pnpm test` pasan.
-- [ ] `pnpm spec:check` pasa.
-- [ ] `specs/README.md` actualizado.
-- [ ] Preview de Vercel revisado por owner.
+- [x] Finished fixture shows retroactive prediction + model verdict.
+- [x] Home shows accuracy widget when ≥ 3 matches are finished.
+- [x] Accuracy skills covered by unit tests.
+- [x] `pnpm tsc --noEmit` and `pnpm test` pass.
+- [ ] `pnpm spec:check` passes.
+- [ ] `specs/README.md` updated.
+- [ ] Vercel preview reviewed by owner.

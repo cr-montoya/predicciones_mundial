@@ -1,16 +1,16 @@
-# Tasks: Fase 7 - Branding World Cup 2026
+# Tasks: Phase 7 - World Cup 2026 Branding
 
 ## Design
 
-- [x] Definir acentos visuales.
-- [x] Validar primer viewport.
+- [x] Define visual accents.
+- [x] Validate first viewport.
 
 ## Developer
 
-- [x] Agregar badge.
-- [x] Ajustar hero.
-- [x] Agregar candidatos expandibles.
+- [x] Add badge.
+- [x] Adjust hero.
+- [x] Add expandable candidates.
 
 ## QA
 
-- [x] Verificar home desktop/mobile.
+- [x] Verify home desktop/mobile.

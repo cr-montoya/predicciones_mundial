@@ -1,199 +1,139 @@
-# Predictor Mundial 2026 — IA
+# World Cup 2026 Prediction Simulator
 
-App en Next.js para proyectar mercados estadísticos del Mundial 2026 con un
-modelo propio. El framing del producto es: **"así predice la IA el Mundial"**.
+> AI-assisted statistical football analytics app
 
-Es una experiencia de análisis y entretenimiento: muestra probabilidades,
-contexto y explicaciones; no recibe apuestas, no procesa apuestas y no promete
-ganancias.
+Statistical projection engine for the 2026 FIFA World Cup. The app runs a custom
+**Poisson + Monte Carlo** model to compute match outcome probabilities, market
+projections, and tournament predictions — framed as: *"this is how the AI predicts
+the World Cup"*.
 
-## Estado actual
+It is an entertainment and analysis experience: it shows probabilities, context, and
+explanations. It does not accept or process bets, and it makes no financial promises.
 
-- Producción en **Vercel** con ISR.
-- `main` despliega producción.
-- Cada PR genera preview en Vercel.
-- Fixtures en runtime server desde `football-data.org` con `FOOTBALLDATA_KEY`.
-- API-Football/RapidAPI queda como fuente enriquecida para lineups, injuries,
-  eventos, stats y fallback cuando aplique.
-- Monte Carlo del torneo precomputado en `lib/data/tournament-prediction.json`.
-- SQLite/better-sqlite3 se conserva para scripts locales e historia del proyecto,
-  pero no debe entrar al runtime de Vercel.
+## What it does
+
+- Projects **match markets** for every World Cup fixture: 1X2 result, over/under goals,
+  both teams to score, exact score, clean sheets, cards, corners.
+- Ranks **Golden Boot candidates** combining model probability with live goal counts.
+- Simulates the **full tournament** via Monte Carlo to estimate championship probabilities.
+- Shows **implicit odds** derived from model output.
+- Tracks a user's **picks** (predictions) and measures accuracy over time.
+- Renders an interactive **bracket** and **group standings** projection.
 
 ## Stack
 
-- Next.js 16 App Router
-- React 19
-- TypeScript
-- Tailwind CSS 4
-- Vitest
-- Vercel ISR
-- Modelo propio con Poisson, derivación de mercados y Monte Carlo
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 App Router |
+| UI | React 19 + Tailwind CSS 4 |
+| Language | TypeScript |
+| Testing | Vitest |
+| Hosting | Vercel ISR |
+| Live data | football-data.org (fixtures, scorers) |
+| Enriched data | API-Football / RapidAPI (lineups, events, stats) |
+| Prediction model | Custom Poisson distribution + Monte Carlo |
 
-## Setup local
+## Local Setup
 
 ```bash
 pnpm install
-cp .env.example .env.local
+cp .env.example .env.local   # fill in your API keys
 pnpm dev
 ```
 
-Variables relevantes:
+Required environment variables (server-side only — never expose with `NEXT_PUBLIC_`):
 
-```txt
-FOOTBALLDATA_KEY=<server-side only>
-RAPIDAPI_KEY=<server-side only, si se usa API-Football>
+```
+FOOTBALLDATA_KEY=<your football-data.org key>
+RAPIDAPI_KEY=<your RapidAPI key, if using API-Football>
 ```
 
-No expongas secrets con `NEXT_PUBLIC_`.
+## Architecture
 
-## Comandos
+Dependencies flow in one direction only. No layer may import from a layer above it.
+
+```
+UI  ←  Agents  ←  Models  ←  Skills
+     (I/O)       (math)     (pure fn)
+```
+
+| Layer | Location | Responsibility |
+|---|---|---|
+| **Skills** | `lib/model/skills/` | Pure functions — no network, no DB, no env vars |
+| **Models** | `lib/model/` | Statistical logic; receives normalized data, returns typed output |
+| **Agents** | `lib/agents/`, `lib/data/` | External APIs, env vars, ISR cache, runtime I/O |
+| **UI** | `app/`, `components/` | Server Components by default; consumes ready data from agents |
+
+The tournament Monte Carlo prediction is precomputed and stored in
+`lib/data/tournament-prediction.json`. Live fixture data is fetched at runtime with
+Vercel ISR (incremental static regeneration).
+
+## Markets & Features
+
+- 1X2 result
+- Double chance
+- Over/Under goals
+- Both teams to score (BTTS)
+- Exact score
+- Clean sheet / win to nil
+- Cards and corners
+- Top scorers (Golden Boot)
+- Group stage projection
+- Champion and tournament path via Monte Carlo
+- Implicit odds
+- Player lineups and enriched squad data
+
+## Commands
 
 ```bash
-pnpm dev
-pnpm test
-pnpm tsc --noEmit
-pnpm build
-pnpm spec:check
-pnpm precompute
-pnpm refresh-fixtures
-pnpm refresh
+pnpm dev               # start local dev server
+pnpm test              # run Vitest test suite
+pnpm tsc --noEmit      # type-check without emitting
+pnpm build             # production build
+pnpm spec:check        # validate SDD spec index and structure
+pnpm precompute        # regenerate tournament Monte Carlo prediction
+pnpm refresh-fixtures  # refresh local fixture cache
 ```
 
-Notas:
+## Workflow
 
-- `pnpm precompute` regenera la predicción de torneo.
-- `pnpm refresh-fixtures` actualiza fixtures/cache local.
-- `pnpm refresh` pertenece al flujo histórico/local de refresh.
-- `pnpm spec:check` valida estructura e índice de specs.
-- Para producción, el runtime vigente es Vercel ISR.
+This repo uses **Spec Driven Development** with trunk-based development:
 
-## Arquitectura
+1. Create a short branch from `main`: `phase/<number>-<description>` or `fix/<description>`.
+2. Create or update a spec under `specs/<name>/` (see `specs/README.md`).
+3. Implement in small PRs toward `main`.
+4. Review the Vercel preview before merging.
+5. Merge only with human approval.
 
-El proyecto usa un harness de capas. Las dependencias van en una sola dirección:
+Each spec contains:
 
-```txt
-UI  <-  Agents  <-  Models  <-  Skills
-      (I/O)       (math)      (pure fn)
 ```
-
-- **Skills**: funciones puras en `lib/model/skills/`, sin red, DB, env vars ni
-  estado global.
-- **Models**: lógica estadística en `lib/model/`; reciben datos normalizados y
-  devuelven contratos verificables.
-- **Agents**: loaders, providers y scripts en `lib/agents/` y `lib/data/`; son la
-  capa autorizada para API externa, env vars server-side y cache runtime.
-- **UI**: rutas y componentes en `app/` y `components/`; consume datos listos
-  desde server loaders.
-
-## Producto
-
-Mercados y secciones actuales o planificadas:
-
-- Resultado 1X2
-- Doble oportunidad
-- Over/Under goles
-- Ambos marcan
-- Marcador exacto
-- Clean sheet / gana a cero
-- Tarjetas y corners
-- Goleadores
-- Proyección de grupos
-- Campeón y torneo vía Monte Carlo
-- Odds implícitas y datos de jugadores enriquecidos como próximas fases
-
-## Flujo de trabajo
-
-Este repo trabaja con Spec Driven Development y trunk-based development:
-
-1. Crear rama corta desde `main`: `phase/<numero>-<descripcion>` o `fix/<descripcion>`.
-2. Crear o actualizar spec en `specs/<nombre>/`.
-3. Mantener actualizado `specs/README.md`.
-4. Implementar en PRs pequeños hacia `main`.
-5. Revisar preview de Vercel antes de merge.
-6. Mergear solo con aprobación humana.
-
-Cada spec tiene:
-
-```txt
-specs/<nombre>/
+specs/<name>/
   requirements.md
   design.md
   tasks.md
 ```
 
-El flujo de harness combina skills y agentes:
-
-```txt
-spec-init
--> spec-review
--> data-contract / adr si aplica
--> grill
--> agentes pre-implementación
--> task-runner / developer
--> QA
--> Code Quality
--> Reviewer
--> Design/Security re-check si aplica
--> spec-closeout
--> grill re-check
--> pr-prep
--> commit
--> PR + Vercel preview
-```
-
-## Agentes y skills
-
-Configuración en `.claude/`:
-
-- `agents/analyst.md`: modelo, probabilidades, odds, lineups y copy técnico.
-- `agents/design.md`: UI, responsive, jerarquía visual y copy visual.
-- `agents/developer.md`: implementación siguiendo specs y harness.
-- `agents/qa.md`: tests, type-check, build y smoke de rutas.
-- `agents/code-quality.md`: buenas prácticas, mantenibilidad, typing y simplicidad.
-- `agents/reviewer.md`: harness, capas y consistencia spec-implementación.
-- `agents/security.md`: secrets, CSP, APIs, runtime y exposición de datos.
-- `skills/*`: flujo SDD, grill, PR prep y commits estándar.
-
-Más detalle en:
-
-- `CLAUDE.md`
-- `.claude/README.md`
-- `specs/README.md`
-- `plan.md`
-
-## Estructura
-
-```txt
-app/                    Next.js App Router
-components/             Componentes UI reutilizables
-lib/agents/             Loaders y orquestación server-side
-lib/data/               Providers, JSON versionados y cache local
-lib/model/              Modelo estadístico y Monte Carlo
-lib/model/skills/       Funciones puras del modelo
-lib/db/                 SQLite local/histórico y scripts relacionados
-lib/content/            Copy y diccionarios de mercados
-scripts/                Scripts locales de seed, refresh y precompute
-specs/                  Specs SDD por fase o fix
-.claude/                Agentes, skills y flujo operativo
-.github/                Template de PR
-```
-
 ## Deploy
 
-La arquitectura vigente es Vercel ISR. Las referencias a Cloudflare/D1 se
-conservan como historia técnica y contexto, pero no representan el runtime actual.
+Production runs on **Vercel ISR**. The `main` branch deploys to production automatically.
+Every PR generates a Vercel preview deployment.
 
-Checklist de deploy/PR:
+SQLite / better-sqlite3 is used only for local scripts and historical context; it does
+not enter the Vercel runtime bundle.
+
+Pre-merge checklist:
 
 - `pnpm tsc --noEmit`
 - `pnpm test`
 - `pnpm build`
 - `pnpm spec:check`
-- Spec enlazada
-- `specs/README.md` actualizado si aplica
-- PR template completo
-- Preview de Vercel revisado si toca UI, rutas, runtime, ISR o datos
+- Spec linked in PR
+- `specs/README.md` updated if a spec changed state
+- PR template complete
+- Vercel preview reviewed for UI, route, or data changes
 
-## Licencia
+## Disclaimer
 
-Proyecto de entretenimiento y análisis estadístico. Sin ánimo de lucro.
+Entertainment and statistical analysis project. Not affiliated with FIFA. Does not
+accept or process bets. Probabilities are model estimates, not guarantees.

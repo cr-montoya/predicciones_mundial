@@ -1,18 +1,18 @@
-# Tasks: Fase 6 - Diseno Broadcast
+# Tasks: Phase 6 - Broadcast Design
 
 ## Design
 
-- [x] Definir direccion broadcast.
-- [x] Definir jerarquia home.
-- [x] Definir reglas de paleta/tipografia.
+- [x] Define broadcast direction.
+- [x] Define home hierarchy.
+- [x] Define palette/typography rules.
 
 ## Developer
 
-- [x] Redisenar home.
-- [x] Agregar mercados destacados.
-- [x] Ajustar candidatos y fixtures.
+- [x] Redesign home.
+- [x] Add featured markets.
+- [x] Adjust candidates and fixtures.
 
 ## QA
 
-- [x] Verificar responsive basico.
-- [x] Verificar build.
+- [x] Verify basic responsive behavior.
+- [x] Verify build.
