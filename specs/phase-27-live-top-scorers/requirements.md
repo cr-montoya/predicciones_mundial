@@ -1,9 +1,9 @@
 ---
-status: in_review
+status: completed
 phase: 27
 owner: cristian
-branch:
-pr:
+branch: phase/27-live-top-scorers
+pr: "20"
 preview:
 gates:
   spec_review: passed
@@ -21,7 +21,7 @@ gates:
 
 ## Status
 
-in_review
+completed
 
 ## Objective
 

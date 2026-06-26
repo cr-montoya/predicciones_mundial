@@ -93,7 +93,7 @@ Valores válidos para gates: `pending`, `passed`, `failed`, `blocked`,
 | 24 | `phase-24-team-page` | completed |
 | 25 | `phase-25-match-context` | completed |
 | 26 | `phase-26-picks-reminder` | completed |
-| 27 | `phase-27-live-top-scorers` | in_review |
+| 27 | `phase-27-live-top-scorers` | completed |
 
 ## Specs de infraestructura/fixes
 
