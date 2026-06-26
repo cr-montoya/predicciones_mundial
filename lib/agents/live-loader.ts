@@ -13,9 +13,69 @@ import {
   computeAccuracyStats,
   type MatchAccuracyRecord,
 } from '@/lib/skills/accuracy'
+import {
+  normalizeName,
+  mergeScorersWithCandidates,
+  type LiveScorer,
+  type CandidateRow,
+} from '@/lib/skills/normalize-scorer-name'
+import { toCanonicalTeamId, FD_BASE_URL } from '@/lib/data/fd-team-map'
+import { apiFetch } from '@/lib/data/api-fetch'
+import { DATA_REVALIDATE_SECONDS } from '@/lib/model/constants'
 
 const WC_LEAGUE_ID = 1
 const WC_SEASON = 2026
+interface FdScorersResponse {
+  scorers?: Array<{
+    player?: { id?: number; name?: string }
+    team?: { id?: number }
+    goals?: number
+    assists?: number
+  }>
+}
+
+async function fetchLiveScorers(): Promise<LiveScorer[]> {
+  const key = process.env.FOOTBALLDATA_KEY
+  if (!key) return []
+  try {
+    const data = await apiFetch<FdScorersResponse>(
+      'v4/competitions/WC/scorers',
+      {
+        baseUrl: FD_BASE_URL,
+        headers: { 'X-Auth-Token': key },
+        params: { season: '2026', limit: '50' },
+        revalidate: DATA_REVALIDATE_SECONDS,
+      }
+    )
+    if (!Array.isArray(data?.scorers)) return []
+    return data.scorers
+      .filter(s => (s.goals ?? 0) > 0 && s.player?.name && s.team?.id)
+      .map(s => ({
+        playerId: s.player?.id ?? 0,
+        playerName: s.player!.name!,
+        teamId: toCanonicalTeamId(s.team!.id!),
+        goals: s.goals!,
+        assists: s.assists ?? 0,
+      }))
+  } catch {
+    return []
+  }
+}
+
+function buildInitialCandidates(probabilities: Record<string, number>): CandidateRow[] {
+  const nameToTeamId = new Map<string, number>()
+  for (const [tid, players] of Object.entries(squadsByTeamId)) {
+    for (const p of players) {
+      nameToTeamId.set(normalizeName(p.name), Number(tid))
+    }
+  }
+  return Object.entries(probabilities).map(([name, prob]) => ({
+    playerName: name,
+    teamId: nameToTeamId.get(normalizeName(name)) ?? null,
+    probability: prob,
+    goals: null,
+  }))
+}
 
 /** Prediccion del torneo precomputada (Monte Carlo estatico, ver script). */
 function tournamentOutputs(): { winner: ModelOutput; goldenBoot: ModelOutput } {
@@ -71,7 +131,7 @@ export function computePredictionsRetroactive(fixture: Fixture, byId: Map<number
 export async function loadHomeData(): Promise<HomeData> {
   const teams = buildStaticTeams()
   const byId = teamMap(teams)
-  const allFixtures = await loadFixtures()
+  const [allFixtures, liveScorers] = await Promise.all([loadFixtures(), fetchLiveScorers()])
 
   const { start, end } = todayBoundsUtc()
   let fixtures = allFixtures
@@ -138,6 +198,9 @@ export async function loadHomeData(): Promise<HomeData> {
   const rankedMarkets = allRankedMarkets.slice(0, 5)
 
   const { winner, goldenBoot } = tournamentOutputs()
+  const goldenBootComputedAt = goldenBoot?.computedAt ?? ''
+  const initialCandidates = goldenBoot ? buildInitialCandidates(goldenBoot.probabilities) : []
+  const candidates = mergeScorersWithCandidates(initialCandidates, liveScorers)
 
   const accuracyRecords: MatchAccuracyRecord[] = []
   for (const f of allFixtures) {
@@ -168,6 +231,8 @@ export async function loadHomeData(): Promise<HomeData> {
     allRankedMarkets,
     tournamentWinner: winner,
     goldenBoot,
+    candidates,
+    goldenBootComputedAt,
     fallbackLabel,
     generatedAt: new Date().toISOString(),
     accuracyStats,

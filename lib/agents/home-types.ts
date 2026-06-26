@@ -2,6 +2,9 @@ import type { Fixture, Team } from '@/lib/types'
 import type { RankedMarket } from '@/lib/skills/rank-markets'
 import type { ModelOutput } from '@/lib/types'
 import type { AccuracyStats } from '@/lib/skills/accuracy'
+import type { CandidateRow } from '@/lib/skills/normalize-scorer-name'
+
+export type { CandidateRow }
 
 const TZ_OFFSET_HOURS = -5
 
@@ -56,6 +59,8 @@ export interface HomeData {
   allRankedMarkets: RankedMarket[]  // all ranked markets (for expansion)
   tournamentWinner: ModelOutput | undefined
   goldenBoot: ModelOutput | undefined
+  candidates: CandidateRow[]
+  goldenBootComputedAt: string
   fallbackLabel: string | null
   /** Momento ISO en que se genero esta data (sirve para "actualizado hace X"). */
   generatedAt: string
