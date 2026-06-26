@@ -11,7 +11,7 @@ export const revalidate = 3600
 
 export default async function HomePage() {
   const data = await loadHomeData()
-  const { fixturesToday, rankedMarkets, allRankedMarkets, tournamentWinner, goldenBoot, fallbackLabel, generatedAt, accuracyStats } = data
+  const { fixturesToday, rankedMarkets, allRankedMarkets, tournamentWinner, goldenBoot, candidates, goldenBootComputedAt, fallbackLabel, generatedAt, accuracyStats } = data
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
@@ -42,7 +42,7 @@ export default async function HomePage() {
         </div>
       )}
 
-      <Candidates winner={tournamentWinner} boot={goldenBoot} />
+      <Candidates winner={tournamentWinner} boot={goldenBoot} candidates={candidates} goldenBootComputedAt={goldenBootComputedAt} />
       <AccuracyWidget stats={accuracyStats} />
     </div>
   )
