@@ -1,48 +1,48 @@
-# CLAUDE.md — Mundial 2026 IA Predictor
+# CLAUDE.md — World Cup 2026 Prediction Simulator
 
-## Qué es
+## What it is
 
-App que proyecta mercados estadísticos del Mundial 2026 con un modelo propio. Framing:
-"así predice la IA el Mundial". Es análisis de entretenimiento, no casa de apuestas:
-solo muestra probabilidades, contexto y explicaciones; no recibe ni procesa apuestas.
+An app that projects statistical markets for the 2026 World Cup using a proprietary model.
+Framing: "how AI predicts the World Cup". It is entertainment analysis, not a betting platform:
+it only shows probabilities, context, and explanations; it does not accept or process bets.
 
-## Stack vigente
+## Current stack
 
 - Next.js 16 App Router + React + TypeScript.
 - Tailwind CSS.
-- Vitest para tests.
-- Vercel ISR en producción.
-- `main` despliega producción en Vercel.
-- PRs generan previews de Vercel.
-- Fixtures en runtime server desde football-data.org mediante `FOOTBALLDATA_KEY`.
-- API-Football/RapidAPI queda para endpoints enriquecidos como lineups, injuries, eventos, stats y fallback cuando aplique.
-- Monte Carlo del torneo sigue precomputado en `lib/data/tournament-prediction.json`.
-- SQLite/better-sqlite3 queda para scripts locales e historia del proyecto; no debe entrar al runtime de Vercel.
+- Vitest for tests.
+- Vercel ISR in production.
+- `main` deploys to production on Vercel.
+- PRs generate Vercel preview deployments.
+- Fixtures loaded at server runtime from football-data.org via `FOOTBALLDATA_KEY`.
+- API-Football/RapidAPI reserved for enriched endpoints: lineups, injuries, events, stats, and fallback when applicable.
+- Tournament Monte Carlo stays precomputed in `lib/data/tournament-prediction.json`.
+- SQLite/better-sqlite3 stays for local scripts and project history; must not enter the Vercel runtime.
 
-## Harness de capas
+## Layer harness
 
-Las dependencias van en una sola dirección. Ninguna capa puede importar de la capa superior.
+Dependencies flow in one direction only. No layer may import from a layer above it.
 
 ```txt
 UI  <-  Agents  <-  Models  <-  Skills
       (I/O)       (math)      (pure fn)
 ```
 
-### Contrato de Skill
+### Skill contract
 
-- Función pura: `(input: T) => U`.
-- Sin imports de `lib/db`, `lib/data`, providers, env vars, ni red.
-- Sin `fetch`.
-- Sin estado mutable global.
-- Testeable en aislamiento con Vitest sin mocks complejos.
+- Pure function: `(input: T) => U`.
+- No imports from `lib/db`, `lib/data`, providers, env vars, or the network.
+- No `fetch`.
+- No mutable global state.
+- Testable in isolation with Vitest and no complex mocks.
 
-### Contrato de Model
+### Model contract
 
-- Recibe datos ya normalizados como argumentos.
-- Nunca llama APIs externas.
-- Nunca instancia DB.
-- Devuelve `ModelOutput` o contratos derivados documentados por Analyst.
-- Incluye sanity checks para probabilidades y rangos.
+- Receives already-normalized data as arguments.
+- Never calls external APIs.
+- Never instantiates DB.
+- Returns `ModelOutput` or derived contracts documented by Analyst.
+- Includes sanity checks for probabilities and ranges.
 
 ```ts
 interface ModelOutput {
@@ -54,186 +54,184 @@ interface ModelOutput {
 }
 ```
 
-### Contrato de Agent
+### Agent contract
 
-- Única capa autorizada para API externa, env vars server-side, cache runtime y scripts de datos.
-- Puede llamar modelos con datos normalizados.
-- Puede leer JSON precomputados si son fuente de verdad versionada.
-- Debe degradar con fallback cuando una API no responda.
-- Debe mantener API keys server-side; nunca `NEXT_PUBLIC_` para secrets.
+- The only layer authorized to call external APIs, read server-side env vars, use runtime cache, and run data scripts.
+- May call models with normalized data.
+- May read precomputed JSON if it is a versioned source of truth.
+- Must degrade gracefully with a fallback when an API does not respond.
+- Must keep API keys server-side; never use `NEXT_PUBLIC_` for secrets.
 
-### Contrato de UI
+### UI contract
 
-- Server Components por defecto.
-- Client Components solo para interacciones pequeñas.
-- Client Components no importan `lib/model`, `lib/db`, providers, ni env vars.
-- La UI consume datos listos desde agents/server loaders.
+- Server Components by default.
+- Client Components only for small interactions.
+- Client Components do not import `lib/model`, `lib/db`, providers, or env vars.
+- The UI consumes ready-to-render data from agents/server loaders.
 
-## Agentes disponibles
+## Available agents
 
-Invocar con `Agent({ subagent_type: ... })` o dejar que Claude orqueste según la tarea:
+Invoke with `Agent({ subagent_type: ... })` or let Claude orchestrate based on the task:
 
-- **analyst**: diseña contratos del modelo, valida matemáticas, probabilidades, lambdas, overround y copy técnico de mercados.
-- **design**: define y revisa dirección visual, UX, responsive, microcopy visual, jerarquía y consistencia.
-- **developer**: implementa siguiendo specs y harness.
-- **qa**: escribe/corre tests, valida sanity checks, rutas principales y build.
-- **code-quality**: revisa buenas prácticas de código, mantenibilidad, typing, simplicidad y duplicación.
-- **reviewer**: audita capas, contratos, convenciones y consistencia spec-implementación.
-- **security**: audita secrets, OWASP, CSP, runtime server, cuotas y exposición de APIs.
+- **analyst**: designs model contracts, validates math, probabilities, lambdas, overround, and market technical copy.
+- **design**: defines and reviews visual direction, UX, responsive behavior, visual microcopy, hierarchy, and consistency.
+- **developer**: implements following specs and the harness.
+- **qa**: writes/runs tests, validates sanity checks, main routes, and build.
+- **code-quality**: reviews code best practices, maintainability, typing, simplicity, and duplication.
+- **reviewer**: audits layers, contracts, conventions, and spec-to-implementation consistency.
+- **security**: audits secrets, OWASP, CSP, server runtime, quotas, and API exposure.
 
 ## Spec Driven Development
 
-Toda fase o fix relevante debe tener spec antes o durante el PR:
+Every phase or relevant fix must have a spec before or during the PR:
 
 ```txt
-specs/<nombre>/
+specs/<name>/
   requirements.md
   design.md
   tasks.md
 ```
 
-Estados usados:
+Statuses used:
 
-- `pending`: todavía no implementado.
-- `active`: en implementación.
-- `blocked`: falta una decisión, dato, API, diseño o contrato para poder avanzar.
-- `in_review`: implementación lista, esperando gates, PR o revisión humana.
-- `completed`: cerrado.
-- `deferred`: aplazado conscientemente.
-- `historical`: decisión anterior conservada como contexto, no arquitectura vigente.
+- `pending`: not yet implemented.
+- `active`: in implementation.
+- `blocked`: a decision, datum, API, design, or contract is missing before work can proceed.
+- `in_review`: implementation is ready, waiting on gates, PR, or human review.
+- `completed`: closed.
+- `deferred`: consciously postponed.
+- `historical`: a prior decision kept as context, not current architecture.
 
-El PR debe enlazar su spec y marcar los acceptance criteria revisados.
+The PR must link its spec and mark the reviewed acceptance criteria.
 
-Cuando se cree, renombre, cierre o cambie de estado una spec, actualizar siempre
-`specs/README.md` en el mismo PR. Ese README es el índice vivo del roadmap SDD.
+Whenever a spec is created, renamed, closed, or changes status, update `specs/README.md`
+in the same PR. That README is the live SDD roadmap index.
 
-Las specs nuevas deben incluir metadata YAML en `requirements.md` con status,
-owner, branch, PR, preview y estado de gates. Las specs históricas pueden migrarse
-gradualmente, pero toda spec nueva debe seguir el template de `spec-init`.
+New specs must include YAML metadata in `requirements.md` with status, owner, branch, PR,
+preview, and gate status. Historical specs may be migrated gradually, but every new spec
+must follow the `spec-init` template.
 
 ### Definition of Ready
 
-Una spec está lista para implementación cuando:
+A spec is ready for implementation when:
 
-- El objetivo, alcance y fuera de alcance son claros.
-- Los requirements son verificables.
-- Los acceptance criteria se pueden copiar o resumir en el PR.
-- Los contratos de datos están definidos si hay APIs, JSON, modelos, odds, lineups o cache.
-- Los riesgos y supuestos están documentados.
-- Los agentes obligatorios están identificados según la matriz de gates.
-- `spec-review` no tiene bloqueantes.
+- Objective, scope, and out-of-scope are clear.
+- Requirements are verifiable.
+- Acceptance criteria can be copied or summarized into the PR.
+- Data contracts are defined if there are APIs, JSON, models, odds, lineups, or cache involved.
+- Risks and assumptions are documented.
+- Required agents are identified per the gate matrix.
+- `spec-review` has no blockers.
 
 ### Definition of Done
 
-Una spec puede cerrarse cuando:
+A spec may be closed when:
 
-- Tasks y acceptance criteria están completos o explícitamente diferidos.
-- La implementación respeta `design.md` o documenta desviaciones.
-- `specs/README.md` está actualizado si cambió estado, nombre o alcance.
-- `pnpm spec:check` pasa.
-- Checks aplicables fueron ejecutados o documentados como omitidos con razón.
-- Gates aplicables están aprobados.
-- PR template está completo.
-- Preview de Vercel fue revisado si toca UI, rutas, runtime, ISR o datos.
+- Tasks and acceptance criteria are complete or explicitly deferred.
+- The implementation respects `design.md` or documents deviations.
+- `specs/README.md` is updated if status, name, or scope changed.
+- `pnpm spec:check` passes.
+- Applicable checks were executed or documented as skipped with a reason.
+- Applicable gates are approved.
+- PR template is complete.
+- Vercel preview was reviewed if the change touches UI, routes, runtime, ISR, or data.
 
-### Matriz de gates
+### Gate matrix
 
-| Tipo de cambio | Gates obligatorios |
+| Change type | Required gates |
 | --- | --- |
-| UI/copy visual | Design, QA, Code Quality, Reviewer |
-| Modelo/probabilidades | Analyst, Grill, QA, Code Quality, Reviewer |
-| API/runtime/env/cache | Data Contract, Grill, Security, QA, Reviewer |
-| Datos JSON/precompute | Analyst si cambia modelo, QA, Code Quality, Reviewer |
-| Security/CSP/auth | Security, QA, Reviewer |
-| Docs/specs only | Spec Review, `pnpm spec:check`, Reviewer opcional |
-| Fix producto | Spec Review, Grill si aplica, QA, Code Quality, Reviewer |
-| Decisión arquitectónica | ADR, Spec Review, Reviewer |
+| UI / visual copy | Design, QA, Code Quality, Reviewer |
+| Model / probabilities | Analyst, Grill, QA, Code Quality, Reviewer |
+| API / runtime / env / cache | Data Contract, Grill, Security, QA, Reviewer |
+| JSON data / precompute | Analyst if model changes, QA, Code Quality, Reviewer |
+| Security / CSP / auth | Security, QA, Reviewer |
+| Docs / specs only | Spec Review, `pnpm spec:check`, Reviewer optional |
+| Product fix | Spec Review, Grill if applicable, QA, Code Quality, Reviewer |
+| Architectural decision | ADR, Spec Review, Reviewer |
 
-ADR es obligatorio si cambia runtime, fuente de datos, storage, modelo matemático,
-cache, auth o proveedor externo.
+ADR is required if runtime, data source, storage, mathematical model, cache, auth, or
+external provider changes.
 
-### Skills SDD
+### SDD skills
 
-Usar estas skills para mantener el flujo spec-driven consistente:
+Use these skills to keep the spec-driven flow consistent:
 
-- `.claude/skills/spec-init.md`: crear o normalizar specs y actualizar `specs/README.md`.
-- `.claude/skills/spec-review.md`: revisar que la spec esté lista antes de implementar.
-- `.claude/skills/data-contract.md`: definir contratos de datos para APIs, JSON, modelos, mercados, odds, lineups e ISR.
-- `.claude/skills/adr.md`: documentar decisiones técnicas importantes en `docs/adr/`.
-- `.claude/skills/task-runner.md`: implementar una task concreta sin salirse del alcance de la spec.
-- `.claude/skills/spec-closeout.md`: cerrar una spec antes del PR.
-- `.claude/skills/pr-prep.md`: preparar el cuerpo del PR desde la spec, diff, checks y gates.
+- `.claude/skills/spec-init.md`: create or normalize specs and update `specs/README.md`.
+- `.claude/skills/spec-review.md`: review that a spec is ready before implementation.
+- `.claude/skills/data-contract.md`: define data contracts for APIs, JSON, models, markets, odds, lineups, and ISR.
+- `.claude/skills/adr.md`: document important technical decisions in `docs/adr/`.
+- `.claude/skills/task-runner.md`: implement a concrete task without exceeding the spec scope.
+- `.claude/skills/spec-closeout.md`: close a spec before the PR.
+- `.claude/skills/pr-prep.md`: prepare the PR body from the spec, diff, checks, and gates.
 
-Flujo recomendado:
+Recommended flow:
 
-1. `spec-init` cuando no exista spec o haya que normalizarla.
-2. `spec-review` antes de pasar a implementación.
-3. `data-contract` si cambian datos, APIs, modelos, mercados, odds, lineups o cache.
-4. `adr` si se toma una decisión técnica con impacto de arquitectura.
-5. `grill` antes de implementar si aplica.
-6. Agentes pre-implementación cuando apliquen: Analyst, Design y Security.
-7. `task-runner` para ejecutar una task acotada con Developer.
-8. Agentes post-implementación: QA, Code Quality, Reviewer y los re-checks de Design/Security que apliquen.
-9. `spec-closeout` cuando la implementación esté lista.
-10. `grill` re-check si aplica.
-11. `pr-prep` antes de abrir PR.
-12. `commit` cuando haya cambios listos para commitear.
+1. `spec-init` when no spec exists or needs normalizing.
+2. `spec-review` before moving to implementation.
+3. `data-contract` if data, APIs, models, markets, odds, lineups, or cache change.
+4. `adr` if a technical decision with architectural impact is made.
+5. `grill` before implementing if applicable.
+6. Pre-implementation agents when applicable: Analyst for model/probabilities/technical copy, Design for UI/UX/visual copy, Security for APIs/env vars/CSP/runtime/sensitive data.
+7. `task-runner` to execute a scoped task with Developer.
+8. Post-implementation agents: QA, Code Quality, Reviewer, and Design/Security re-checks if applicable.
+9. `spec-closeout` when the implementation is ready.
+10. `grill` re-check if applicable.
+11. `pr-prep` before opening the PR.
+12. `commit` skill to create standard commits when changes are ready.
 
-Los agentes no reemplazan las skills: las skills ordenan el proceso y los agentes
-validan calidad desde su especialidad.
+Agents do not replace skills: skills order the process; agents validate quality from their specialty.
 
 ## Grill Gate
 
-La skill `.claude/skills/grill.md` es obligatoria para fases, fixes de producto,
-mercados nuevos, cambios de modelo, APIs externas y cambios de runtime.
+The skill `.claude/skills/grill.md` is required for phases, product fixes, new markets,
+model changes, external APIs, and runtime changes.
 
-Uso recomendado:
+Recommended usage:
 
-1. **Antes de implementar**: ejecutar Grill para detectar blockers de datos, contratos,
-   harness, tests y riesgos.
-2. **Antes de abrir PR**: hacer un Grill re-check corto para confirmar que los blockers
-   quedaron resueltos o que los riesgos están documentados.
+1. **Before implementing**: run Grill to detect blockers in data, contracts, harness, tests, and risks.
+2. **Before opening a PR**: run a short Grill re-check to confirm blockers are resolved or risks are documented.
 
-Si Grill termina con `DO NOT START`, no se debe pasar a Developer hasta resolver blockers
-o actualizar la spec.
+If Grill ends with `DO NOT START`, do not pass to Developer until blockers are resolved or
+the spec is updated.
 
 ## Commit Gate
 
-La skill `.claude/skills/commit.md` es obligatoria siempre que se vaya a crear un commit.
-Todos los commits deben seguir Conventional Commits:
+The skill `.claude/skills/commit.md` is required whenever creating a commit.
+All commits must follow Conventional Commits:
 
 ```txt
-<type>(<scope>): <description>
+<type>: <description>
 ```
 
-Reglas clave:
+Key rules:
 
-- Mensaje en inglés.
-- Una sola línea.
-- Sin body, footer ni `Co-Authored-By`.
-- Tipos permitidos: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `style`, `perf`.
-- Scope por capa/directorio cuando aplique: `model`, `ui`, `agents`, `specs`, `docs`, `security`, etc.
-- La skill puede hacer `git add` y crear el commit. Debe inspeccionar `git status`/diff antes de stagear.
-- Preferir `git add <files>`; `git add -A` solo si todos los cambios revisados pertenecen al mismo pedido.
-- Nunca stagear secrets, archivos locales, caches o builds.
+- Message in English.
+- Single line.
+- No body, footer, or `Co-Authored-By`.
+- Allowed types: `feat`, `fix`, `chore`, `refactor`, `test`, `docs`, `style`, `perf`.
+- No scope (no parentheses after the type).
+- The skill may run `git add` and create the commit. It must inspect `git status`/diff before staging.
+- Prefer `git add <files>`; use `git add -A` only if all reviewed changes belong to the same request.
+- Never stage secrets, local files, caches, or builds.
 
-## Convenciones
+## Conventions
 
-- Implementar desde dentro hacia afuera: Skills -> Models -> Agents -> UI.
-- No diseñar lógica estadística en Developer sin contrato de Analyst.
-- No mezclar fases distintas en un mismo PR.
-- No usar `npm` ni `yarn`; usar `pnpm`.
-- Mantener secrets fuera del repo y del bundle cliente.
-- Cuando cambien datos precomputados, explicar qué script se corrió y por qué cambió el JSON.
-- Componentes sin estado deben ser server components.
+- Implement from the inside out: Skills → Models → Agents → UI.
+- Do not design statistical logic in Developer without an Analyst contract.
+- Do not mix different phases in the same PR.
+- Do not use `npm` or `yarn`; use `pnpm`.
+- Keep secrets out of the repo and the client bundle.
+- When precomputed data changes, explain which script was run and why the JSON changed.
+- Stateless components must be Server Components.
 
-## Diseño
+## Design
 
-La app es para contenido viral: no debe verse como template genérico. Norte visual:
-terminal de datos deportiva/broadcast, datos al frente, números grandes, fondo oscuro,
-acentos controlados, visualizaciones propias y lenguaje claro en español LATAM.
+The app targets viral content: it must not look like a generic template. Visual north:
+sports data terminal / broadcast style, data first, large numbers, dark background,
+controlled accents, custom visualizations, and clear language in Spanish LATAM.
+Phase 28 will add an English/Spanish toggle.
 
-## Comandos
+## Commands
 
 ```bash
 pnpm install
@@ -245,65 +243,64 @@ pnpm precompute
 pnpm refresh-fixtures
 ```
 
-## Verificación antes de cerrar una fase
+## Pre-close checklist for a phase
 
-1. Analyst aprobado, si cambia modelo, fórmula, probabilidades o copy técnico.
-2. Design aprobado, si cambia UI/copy visual.
-3. Grill report inicial sin blockers, o blockers resueltos en la spec.
-4. `specs/README.md` actualizado si cambió una spec o su estado.
+1. Analyst approved, if model, formula, probabilities, or technical copy changed.
+2. Design approved, if UI or visual copy changed.
+3. Grill initial report with no blockers, or blockers resolved in the spec.
+4. `specs/README.md` updated if a spec or its status changed.
 5. `pnpm tsc --noEmit`.
 6. `pnpm test`.
 7. `pnpm build`.
 8. `pnpm spec:check`.
-9. QA aprobado.
-10. Code Quality sin bloqueantes.
-11. Reviewer sin bloqueantes.
-12. Security sin críticos.
-13. Grill re-check antes del PR si hubo modelo/API/runtime/mercado nuevo.
-14. Preview de Vercel revisado por owner si toca UI, rutas, runtime, ISR o datos.
+9. QA approved.
+10. Code Quality with no blockers.
+11. Reviewer with no blockers.
+12. Security with no criticals.
+13. Grill re-check before the PR if there was a new model, API, runtime, or market.
+14. Vercel preview reviewed by the owner if the change touches UI, routes, runtime, ISR, or data.
 
-Ninguna fase se da por terminada si un gate aplicable falla.
+No phase is considered done if an applicable gate fails.
 
-## Flujo Git y producción
+## Git flow and production
 
-`main` está conectado a producción en Vercel. No trabajar fases nuevas directamente sobre
-`main`.
+`main` is connected to production on Vercel. Do not work on new phases directly on `main`.
 
-Flujo por defecto:
+Default flow:
 
-1. Actualizar `main` y crear rama corta: `phase/<numero>-<descripcion>` o `fix/<descripcion>`.
-2. Usar `spec-init` si falta spec y actualizar `specs/README.md`.
-3. Usar `spec-review` para validar que la spec está lista.
-4. Usar `data-contract` si cambian datos, APIs, modelos, mercados, odds, lineups o cache.
-5. Crear/actualizar ADR con `adr` si hay una decisión técnica relevante.
-6. Ejecutar Grill antes de implementar cuando aplique.
-7. Invocar agentes pre-implementación cuando apliquen:
-   Analyst para modelo/probabilidades/copy técnico, Design para UI/UX/copy visual,
-   Security para APIs/env vars/CSP/runtime/datos sensibles.
-8. Implementar un scope pequeño y verificable con `task-runner` y Developer.
-9. Correr gates post-implementación: QA, Code Quality, Reviewer y re-checks de Design/Security si aplican.
-10. Hacer `spec-closeout` y Grill re-check antes del PR cuando aplique.
-11. Preparar el PR con `pr-prep`.
-12. Usar la skill Commit para crear commits estándar cuando haya cambios listos.
-13. Abrir PR hacia `main` usando `.github/pull_request_template.md`.
-14. Revisar preview deployment de Vercel.
-15. Esperar aprobación humana del owner.
-16. Merge a `main`.
-17. Si producción falla, revertir PR o usar rollback de Vercel.
+1. Update `main` and create a short branch: `phase/<number>-<description>` or `fix/<description>`.
+2. Use `spec-init` if a spec is missing and update `specs/README.md`.
+3. Use `spec-review` to validate the spec is ready.
+4. Use `data-contract` if data, APIs, models, markets, odds, lineups, or cache change.
+5. Create/update ADR with `adr` if there is a relevant technical decision.
+6. Run Grill before implementing when applicable.
+7. Invoke pre-implementation agents when applicable:
+   Analyst for model/probabilities/technical copy, Design for UI/UX/visual copy,
+   Security for APIs/env vars/CSP/runtime/sensitive data.
+8. Implement a small, verifiable scope with `task-runner` and Developer.
+9. Run post-implementation gates: QA, Code Quality, Reviewer, and Design/Security re-checks if applicable.
+10. Run `spec-closeout` and Grill re-check before the PR when applicable.
+11. Prepare the PR with `pr-prep`.
+12. Use the Commit skill to create standard commits when changes are ready.
+13. Open PR toward `main` using `.github/pull_request_template.md`.
+14. Review the Vercel preview deployment.
+15. Wait for human approval from the owner.
+16. Merge to `main`.
+17. If production fails, revert the PR or use Vercel rollback.
 
-Reglas:
+Rules:
 
-- `main` debe estar siempre desplegable.
-- No hacer push directo a `main` para fases de producto.
-- No mezclar fases distintas en el mismo PR.
-- Dividir fases grandes en PRs verticales pequeños.
-- Completar el template de PR antes de pedir review.
+- `main` must always be deployable.
+- No direct pushes to `main` for product phases.
+- Do not mix different phases in the same PR.
+- Split large phases into small vertical PRs.
+- Complete the PR template before requesting review.
 
-## Ciclo de corrección
+## Correction cycle
 
-1. **QA falla**: Developer corrige si es implementación; Analyst redefine si es lógica estadística.
-2. **Design bloquea**: Developer ajusta UI/copy; QA valida que build/rutas no se rompan; Design re-valida.
-3. **Code Quality bloquea**: Developer corrige deuda o mala práctica bloqueante; Code Quality re-valida.
-4. **Reviewer bloquea**: Developer corrige violación del harness; Reviewer re-valida.
-5. **Security reporta crítico**: Developer corrige; Security re-audita.
-6. Cuando todos los gates aplicables dicen aprobado, la fase puede avanzar.
+1. **QA fails**: Developer fixes if it is an implementation issue; Analyst redefines if it is statistical logic.
+2. **Design blocks**: Developer adjusts UI/copy; QA validates that build/routes are not broken; Design re-validates.
+3. **Code Quality blocks**: Developer fixes the blocking debt or bad practice; Code Quality re-validates.
+4. **Reviewer blocks**: Developer fixes the harness violation; Reviewer re-validates.
+5. **Security reports a critical**: Developer fixes; Security re-audits.
+6. When all applicable gates say approved, the phase may advance.
