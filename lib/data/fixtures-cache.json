@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-14T08:23:24.542Z",
-  "count": 72,
+  "generatedAt": "2026-06-29T05:21:32.031Z",
+  "count": 88,
   "source": "football-data.org",
   "fixtures": [
     {
@@ -88,9 +88,9 @@
       "homeTeamId": 25,
       "awayTeamId": 617,
       "kickoffUtc": "2026-06-14T17:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 7,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -98,9 +98,9 @@
       "homeTeamId": 5,
       "awayTeamId": 21,
       "kickoffUtc": "2026-06-14T20:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -108,9 +108,9 @@
       "homeTeamId": 39,
       "awayTeamId": 128,
       "kickoffUtc": "2026-06-14T23:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -118,9 +118,9 @@
       "homeTeamId": 17,
       "awayTeamId": 33,
       "kickoffUtc": "2026-06-15T02:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 5,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -128,9 +128,9 @@
       "homeTeamId": 9,
       "awayTeamId": 206,
       "kickoffUtc": "2026-06-15T16:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -138,9 +138,9 @@
       "homeTeamId": 4,
       "awayTeamId": 37,
       "kickoffUtc": "2026-06-15T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -148,9 +148,9 @@
       "homeTeamId": 34,
       "awayTeamId": 7,
       "kickoffUtc": "2026-06-15T22:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -158,9 +158,9 @@
       "homeTeamId": 31,
       "awayTeamId": 30,
       "kickoffUtc": "2026-06-16T01:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -168,9 +168,9 @@
       "homeTeamId": 2,
       "awayTeamId": 51,
       "kickoffUtc": "2026-06-16T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -178,9 +178,9 @@
       "homeTeamId": 173,
       "awayTeamId": 119,
       "kickoffUtc": "2026-06-16T22:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 4,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -188,9 +188,9 @@
       "homeTeamId": 26,
       "awayTeamId": 46,
       "kickoffUtc": "2026-06-17T01:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -198,9 +198,9 @@
       "homeTeamId": 41,
       "awayTeamId": 172,
       "kickoffUtc": "2026-06-17T04:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -208,9 +208,9 @@
       "homeTeamId": 10,
       "awayTeamId": 69,
       "kickoffUtc": "2026-06-17T17:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -218,9 +218,9 @@
       "homeTeamId": 24,
       "awayTeamId": 3,
       "kickoffUtc": "2026-06-17T20:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 4,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -228,9 +228,9 @@
       "homeTeamId": 135,
       "awayTeamId": 22,
       "kickoffUtc": "2026-06-17T23:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -238,9 +238,9 @@
       "homeTeamId": 90,
       "awayTeamId": 20,
       "kickoffUtc": "2026-06-18T02:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 3,
       "round": "Group Stage - Matchday 1"
     },
     {
@@ -248,9 +248,9 @@
       "homeTeamId": 63,
       "awayTeamId": 56,
       "kickoffUtc": "2026-06-18T16:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -258,9 +258,9 @@
       "homeTeamId": 15,
       "awayTeamId": 92,
       "kickoffUtc": "2026-06-18T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 4,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -268,9 +268,9 @@
       "homeTeamId": 101,
       "awayTeamId": 197,
       "kickoffUtc": "2026-06-18T22:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 6,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -278,9 +278,9 @@
       "homeTeamId": 16,
       "awayTeamId": 28,
       "kickoffUtc": "2026-06-19T01:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -288,9 +288,9 @@
       "homeTeamId": 1,
       "awayTeamId": 35,
       "kickoffUtc": "2026-06-19T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -298,9 +298,9 @@
       "homeTeamId": 1179,
       "awayTeamId": 32,
       "kickoffUtc": "2026-06-19T22:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -308,9 +308,9 @@
       "homeTeamId": 6,
       "awayTeamId": 168,
       "kickoffUtc": "2026-06-20T00:30:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -318,9 +318,9 @@
       "homeTeamId": 141,
       "awayTeamId": 14,
       "kickoffUtc": "2026-06-20T03:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -328,9 +328,9 @@
       "homeTeamId": 5,
       "awayTeamId": 17,
       "kickoffUtc": "2026-06-20T17:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 5,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -338,9 +338,9 @@
       "homeTeamId": 25,
       "awayTeamId": 39,
       "kickoffUtc": "2026-06-20T20:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -348,9 +348,9 @@
       "homeTeamId": 128,
       "awayTeamId": 617,
       "kickoffUtc": "2026-06-21T00:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -358,9 +358,9 @@
       "homeTeamId": 33,
       "awayTeamId": 21,
       "kickoffUtc": "2026-06-21T04:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 4,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -368,9 +368,9 @@
       "homeTeamId": 9,
       "awayTeamId": 34,
       "kickoffUtc": "2026-06-21T16:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 4,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -378,9 +378,9 @@
       "homeTeamId": 4,
       "awayTeamId": 31,
       "kickoffUtc": "2026-06-21T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -388,9 +388,9 @@
       "homeTeamId": 7,
       "awayTeamId": 206,
       "kickoffUtc": "2026-06-21T22:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -398,9 +398,9 @@
       "homeTeamId": 30,
       "awayTeamId": 37,
       "kickoffUtc": "2026-06-22T01:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 3,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -408,9 +408,9 @@
       "homeTeamId": 26,
       "awayTeamId": 41,
       "kickoffUtc": "2026-06-22T17:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -418,9 +418,9 @@
       "homeTeamId": 2,
       "awayTeamId": 173,
       "kickoffUtc": "2026-06-22T21:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -428,9 +428,9 @@
       "homeTeamId": 119,
       "awayTeamId": 51,
       "kickoffUtc": "2026-06-23T00:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -438,9 +438,9 @@
       "homeTeamId": 172,
       "awayTeamId": 46,
       "kickoffUtc": "2026-06-23T03:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -448,9 +448,9 @@
       "homeTeamId": 10,
       "awayTeamId": 90,
       "kickoffUtc": "2026-06-23T17:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 5,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -458,9 +458,9 @@
       "homeTeamId": 24,
       "awayTeamId": 135,
       "kickoffUtc": "2026-06-23T20:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -468,9 +468,9 @@
       "homeTeamId": 22,
       "awayTeamId": 3,
       "kickoffUtc": "2026-06-23T23:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -478,9 +478,9 @@
       "homeTeamId": 20,
       "awayTeamId": 69,
       "kickoffUtc": "2026-06-24T02:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 2"
     },
     {
@@ -488,9 +488,9 @@
       "homeTeamId": 15,
       "awayTeamId": 101,
       "kickoffUtc": "2026-06-24T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -498,9 +498,9 @@
       "homeTeamId": 92,
       "awayTeamId": 197,
       "kickoffUtc": "2026-06-24T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -508,9 +508,9 @@
       "homeTeamId": 32,
       "awayTeamId": 168,
       "kickoffUtc": "2026-06-24T22:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 4,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -518,9 +518,9 @@
       "homeTeamId": 1179,
       "awayTeamId": 6,
       "kickoffUtc": "2026-06-24T22:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 3,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -528,9 +528,9 @@
       "homeTeamId": 63,
       "awayTeamId": 16,
       "kickoffUtc": "2026-06-25T01:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 3,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -538,9 +538,9 @@
       "homeTeamId": 56,
       "awayTeamId": 28,
       "kickoffUtc": "2026-06-25T01:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -548,9 +548,9 @@
       "homeTeamId": 128,
       "awayTeamId": 25,
       "kickoffUtc": "2026-06-25T20:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -558,9 +558,9 @@
       "homeTeamId": 617,
       "awayTeamId": 39,
       "kickoffUtc": "2026-06-25T20:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -568,9 +568,9 @@
       "homeTeamId": 33,
       "awayTeamId": 5,
       "kickoffUtc": "2026-06-25T23:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 3,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -578,9 +578,9 @@
       "homeTeamId": 21,
       "awayTeamId": 17,
       "kickoffUtc": "2026-06-25T23:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -588,9 +588,9 @@
       "homeTeamId": 141,
       "awayTeamId": 1,
       "kickoffUtc": "2026-06-26T02:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -598,9 +598,9 @@
       "homeTeamId": 14,
       "awayTeamId": 35,
       "kickoffUtc": "2026-06-26T02:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -608,9 +608,9 @@
       "homeTeamId": 119,
       "awayTeamId": 2,
       "kickoffUtc": "2026-06-26T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 4,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -618,9 +618,9 @@
       "homeTeamId": 51,
       "awayTeamId": 173,
       "kickoffUtc": "2026-06-26T19:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 5,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -628,9 +628,9 @@
       "homeTeamId": 7,
       "awayTeamId": 9,
       "kickoffUtc": "2026-06-27T00:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -638,9 +638,9 @@
       "homeTeamId": 206,
       "awayTeamId": 34,
       "kickoffUtc": "2026-06-27T00:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -648,9 +648,9 @@
       "homeTeamId": 30,
       "awayTeamId": 4,
       "kickoffUtc": "2026-06-27T03:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 5,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -658,9 +658,9 @@
       "homeTeamId": 37,
       "awayTeamId": 31,
       "kickoffUtc": "2026-06-27T03:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -668,9 +668,9 @@
       "homeTeamId": 22,
       "awayTeamId": 24,
       "kickoffUtc": "2026-06-27T21:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 2,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -678,9 +678,9 @@
       "homeTeamId": 3,
       "awayTeamId": 135,
       "kickoffUtc": "2026-06-27T21:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 2,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -688,9 +688,9 @@
       "homeTeamId": 20,
       "awayTeamId": 10,
       "kickoffUtc": "2026-06-27T23:30:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 0,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -698,9 +698,9 @@
       "homeTeamId": 69,
       "awayTeamId": 90,
       "kickoffUtc": "2026-06-27T23:30:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 1,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -708,9 +708,9 @@
       "homeTeamId": 172,
       "awayTeamId": 26,
       "kickoffUtc": "2026-06-28T02:00:00Z",
-      "status": "scheduled",
-      "homeGoals": null,
-      "awayGoals": null,
+      "status": "finished",
+      "homeGoals": 1,
+      "awayGoals": 3,
       "round": "Group Stage - Matchday 3"
     },
     {
@@ -718,10 +718,170 @@
       "homeTeamId": 46,
       "awayTeamId": 41,
       "kickoffUtc": "2026-06-28T02:00:00Z",
+      "status": "finished",
+      "homeGoals": 3,
+      "awayGoals": 3,
+      "round": "Group Stage - Matchday 3"
+    },
+    {
+      "id": 537417,
+      "homeTeamId": 56,
+      "awayTeamId": 101,
+      "kickoffUtc": "2026-06-28T19:00:00Z",
+      "status": "finished",
+      "homeGoals": 0,
+      "awayGoals": 1,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537423,
+      "homeTeamId": 6,
+      "awayTeamId": 21,
+      "kickoffUtc": "2026-06-29T17:00:00Z",
       "status": "scheduled",
       "homeGoals": null,
       "awayGoals": null,
-      "round": "Group Stage - Matchday 3"
+      "round": "LAST_32"
+    },
+    {
+      "id": 537415,
+      "homeTeamId": 25,
+      "awayTeamId": 14,
+      "kickoffUtc": "2026-06-29T20:30:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537418,
+      "homeTeamId": 5,
+      "awayTeamId": 32,
+      "kickoffUtc": "2026-06-30T01:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537424,
+      "homeTeamId": 39,
+      "awayTeamId": 119,
+      "kickoffUtc": "2026-06-30T17:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537416,
+      "homeTeamId": 2,
+      "awayTeamId": 17,
+      "kickoffUtc": "2026-06-30T21:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537425,
+      "homeTeamId": 16,
+      "awayTeamId": 128,
+      "kickoffUtc": "2026-07-01T01:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537426,
+      "homeTeamId": 24,
+      "awayTeamId": 69,
+      "kickoffUtc": "2026-07-01T16:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537422,
+      "homeTeamId": 4,
+      "awayTeamId": 51,
+      "kickoffUtc": "2026-07-01T20:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537421,
+      "homeTeamId": 1,
+      "awayTeamId": 92,
+      "kickoffUtc": "2026-07-02T00:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537420,
+      "homeTeamId": 9,
+      "awayTeamId": 41,
+      "kickoffUtc": "2026-07-02T19:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537419,
+      "homeTeamId": 10,
+      "awayTeamId": 3,
+      "kickoffUtc": "2026-07-02T23:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537429,
+      "homeTeamId": 15,
+      "awayTeamId": 46,
+      "kickoffUtc": "2026-07-03T03:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537428,
+      "homeTeamId": 35,
+      "awayTeamId": 37,
+      "kickoffUtc": "2026-07-03T18:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537427,
+      "homeTeamId": 26,
+      "awayTeamId": 206,
+      "kickoffUtc": "2026-07-03T22:00:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
+    },
+    {
+      "id": 537430,
+      "homeTeamId": 20,
+      "awayTeamId": 135,
+      "kickoffUtc": "2026-07-04T01:30:00Z",
+      "status": "scheduled",
+      "homeGoals": null,
+      "awayGoals": null,
+      "round": "LAST_32"
     }
   ]
 }

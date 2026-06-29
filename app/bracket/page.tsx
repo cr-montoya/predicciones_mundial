@@ -1,11 +1,12 @@
 import { loadFixtures, teamMap, computePredictionsRetroactive } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { computeGroupStandings, getGroupPosition, getBestThird } from '@/lib/skills/standings'
+import { normalizeKnockoutStage } from '@/lib/skills/bracket'
 import { ROUND_OF_32_DEFS } from '@/lib/data/wc2026-bracket-structure'
 import { BracketView } from '@/components/bracket-view'
 import type { ResolvedMatchup, ResolvedTeam } from '@/components/bracket-matchup'
 import type { BracketSlot } from '@/lib/data/wc2026-bracket-structure'
-import type { Team, ModelOutput } from '@/lib/types'
+import type { Team, ModelOutput, Fixture } from '@/lib/types'
 
 export const revalidate = 3600
 
@@ -51,35 +52,51 @@ export default async function BracketPage() {
 
   const standings = computeGroupStandings(allFixtures, teamGroups)
 
-  // Build map of confirmed knockout fixtures (API has real teams confirmed)
-  const confirmedKnockout = new Map<string, { homeGoals: number; awayGoals: number; isLive: boolean }>()
-  const confirmedTeams = new Map<string, { homeId: number; awayId: number }>()
+  // Index confirmed R32 fixtures by team ID so we can use real matchups when available.
+  // Falls back to resolveSlot (standings projection) for any slot not yet confirmed by the API.
+  const r32ByTeam = new Map<number, Fixture>()
   for (const f of allFixtures) {
-    if (!f.round || f.round.startsWith('Group Stage')) continue
-    if (f.status === 'finished' && f.homeGoals !== null && f.awayGoals !== null) {
-      confirmedKnockout.set(String(f.id), { homeGoals: f.homeGoals, awayGoals: f.awayGoals, isLive: false })
-    }
-    if (f.status === 'live') {
-      confirmedKnockout.set(String(f.id), { homeGoals: f.homeGoals ?? 0, awayGoals: f.awayGoals ?? 0, isLive: true })
-    }
-    confirmedTeams.set(String(f.id), { homeId: f.homeTeamId, awayId: f.awayTeamId })
+    if (normalizeKnockoutStage(f.round) !== 'round_of_32') continue
+    r32ByTeam.set(f.homeTeamId, f)
+    r32ByTeam.set(f.awayTeamId, f)
   }
 
   const matchups: ResolvedMatchup[] = ROUND_OF_32_DEFS.map(def => {
-    const home = resolveSlot(def.home, standings, byId)
-    const away = resolveSlot(def.away, standings, byId)
+    const projHome = resolveSlot(def.home, standings, byId)
+    const projAway = resolveSlot(def.away, standings, byId)
+
+    // Prefer confirmed API fixture over standings projection
+    const confirmedF: Fixture | null =
+      (projHome.teamId !== null ? r32ByTeam.get(projHome.teamId) : null) ??
+      (projAway.teamId !== null ? r32ByTeam.get(projAway.teamId) : null) ??
+      null
+
+    let home = projHome
+    let away = projAway
+
+    if (confirmedF !== null) {
+      const homeTeam = byId.get(confirmedF.homeTeamId)
+      const awayTeam = byId.get(confirmedF.awayTeamId)
+      // Map each projected team's position label to its teamId so the label follows
+      // the team regardless of whether the API flips home/away vs. the def order.
+      const labelByTeamId = new Map<number, string>()
+      if (projHome.teamId !== null) labelByTeamId.set(projHome.teamId, projHome.positionLabel)
+      if (projAway.teamId !== null) labelByTeamId.set(projAway.teamId, projAway.positionLabel)
+      home = { teamId: confirmedF.homeTeamId, name: homeTeam?.name ?? null, positionLabel: labelByTeamId.get(confirmedF.homeTeamId) ?? projHome.positionLabel, isProjected: false }
+      away = { teamId: confirmedF.awayTeamId, name: awayTeam?.name ?? null, positionLabel: labelByTeamId.get(confirmedF.awayTeamId) ?? projAway.positionLabel, isProjected: false }
+    }
 
     let prediction: ModelOutput | undefined
     if (home.teamId !== null && away.teamId !== null) {
       const homeTeam = byId.get(home.teamId)
       const awayTeam = byId.get(away.teamId)
       if (homeTeam && awayTeam) {
-        const fakeFixture = {
+        const fakeFixture: Fixture = {
           id: 0,
           homeTeamId: home.teamId,
           awayTeamId: away.teamId,
           kickoffUtc: '',
-          status: 'scheduled' as const,
+          status: 'scheduled',
           homeGoals: null,
           awayGoals: null,
           round: 'LAST_32',
@@ -89,11 +106,23 @@ export default async function BracketPage() {
       }
     }
 
+    const confirmedScore =
+      confirmedF !== null &&
+      (confirmedF.status === 'finished' || confirmedF.status === 'live') &&
+      confirmedF.homeGoals !== null &&
+      confirmedF.awayGoals !== null
+        ? { homeGoals: confirmedF.homeGoals, awayGoals: confirmedF.awayGoals }
+        : undefined
+
+    const isLive = confirmedF?.status === 'live' || undefined
+
     return {
       matchId: def.matchId,
       home,
       away,
       prediction,
+      confirmedScore,
+      isLive,
     }
   })
 
