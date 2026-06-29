@@ -11,7 +11,7 @@ import type { Team, ModelOutput, Fixture } from '@/lib/types'
 export const revalidate = 3600
 
 export const metadata = {
-  title: 'Bracket — Mundial 2026 IA Predictor',
+  title: 'Bracket',
 }
 
 function resolveSlot(

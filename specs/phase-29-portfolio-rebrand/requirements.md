@@ -1,27 +1,27 @@
 ---
-status: pending
+status: active
 phase: 29
 owner: cristian
 branch: phase/29-portfolio-rebrand
 pr:
 preview:
 gates:
-  spec_review: pending
-  grill: pending
+  spec_review: passed
+  grill: passed
   analyst: not_applicable
-  design: pending
+  design: passed
   data_contract: not_applicable
   security: not_applicable
-  qa: pending
-  code_quality: pending
-  reviewer: pending
+  qa: passed
+  code_quality: passed
+  reviewer: passed
 ---
 
 # Portfolio Rebrand — Requirements
 
 ## Status
 
-pending
+active
 
 ## Objective
 

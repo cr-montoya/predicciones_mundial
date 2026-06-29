@@ -2,20 +2,24 @@
 
 ## Context
 
-Fase de grupos terminada. El API de football-data.org ya devuelve los 16 fixtures de Ronda de 32 con equipos reales. El bracket solo necesita priorizar esos datos sobre las proyecciones computadas.
+Group stage is over. The football-data.org API now returns all 16 Round of 32 fixtures
+with real teams. The bracket only needs to prioritise that data over computed projections.
 
 ## Architecture
 
-- **Skills**: `computeGroupStandings`, `getGroupPosition`, `getBestThird` en `lib/skills/standings.ts` — sin cambios, siguen siendo el fallback.
-- **Models**: sin cambios.
-- **Agents**: `lib/agents/live-loader.ts` — sin cambios estructurales; ya devuelve todos los fixtures incluyendo knockout.
-- **UI**: sin cambios visuales.
-- **Page** (`app/bracket/page.tsx`): aquí vive el fix. Cambio en la lógica de resolución de equipos por matchup.
+- **Skills**: `computeGroupStandings`, `getGroupPosition`, `getBestThird` in
+  `lib/skills/standings.ts` — unchanged; they remain the fallback.
+- **Models**: unchanged.
+- **Agents**: `lib/agents/live-loader.ts` — no structural changes; already returns all
+  fixtures including knockout rounds.
+- **UI**: no visual changes.
+- **Page** (`app/bracket/page.tsx`): this is where the fix lives. Change in the team
+  resolution logic per matchup.
 
-## El Bug
+## The Bug
 
 ```typescript
-// ACTUAL (líneas 54-66): confirmedTeams se construye pero nunca se usa
+// BEFORE (lines 54-66): confirmedTeams is built but never used
 const confirmedTeams = new Map<string, { homeId: number; awayId: number }>()
 for (const f of allFixtures) {
   if (!f.round || f.round.startsWith('Group Stage')) continue
@@ -23,7 +27,7 @@ for (const f of allFixtures) {
   confirmedTeams.set(String(f.id), { homeId: f.homeTeamId, awayId: f.awayTeamId })
 }
 
-// ACTUAL (líneas 68-98): siempre usa resolveSlot (standings), ignora confirmedTeams
+// BEFORE (lines 68-98): always uses resolveSlot (standings), ignores confirmedTeams
 const matchups: ResolvedMatchup[] = ROUND_OF_32_DEFS.map(def => {
   const home = resolveSlot(def.home, standings, byId)
   const away = resolveSlot(def.away, standings, byId)
@@ -33,14 +37,14 @@ const matchups: ResolvedMatchup[] = ROUND_OF_32_DEFS.map(def => {
 
 ## Data and Contracts
 
-### Fixture shape relevante (de `lib/types.ts`)
+### Relevant Fixture shape (from `lib/types.ts`)
 
 ```typescript
 interface Fixture {
   id: number
-  homeTeamId: number    // puede ser 0 o null cuando TBD
-  awayTeamId: number    // puede ser 0 o null cuando TBD
-  round: string         // e.g. "LAST_32" para Ronda de 32
+  homeTeamId: number    // may be 0 or null when TBD
+  awayTeamId: number    // may be 0 or null when TBD
+  round: string         // e.g. "LAST_32" for Round of 32
   status: 'scheduled' | 'live' | 'finished' | 'postponed'
   homeGoals: number | null
   awayGoals: number | null
@@ -48,104 +52,131 @@ interface Fixture {
 }
 ```
 
-### Problema de mapeo matchId → fixture del API
+### matchId → API fixture mapping problem
 
-`ROUND_OF_32_DEFS` usa IDs ficticios (`M73`–`M88`) que no corresponden a IDs reales de fixture del API. La football-data.org devuelve fixtures con `id` numérico y la ronda en `round`.
+`ROUND_OF_32_DEFS` uses synthetic IDs (M73–M88) that do not correspond to real API
+fixture IDs. football-data.org returns fixtures with a numeric `id` and the round
+in the `round` field.
 
-**Estrategia**: Construir un mapa de knockout fixtures por pares de equipos (`homeTeamId, awayTeamId`) → fixture. Luego, cuando `resolveSlot` devuelva dos equipos confirmados, verificar si existe un fixture confirmado en el API con exactamente esos dos equipos (en cualquier orden) para obtener el resultado real si ya se jugó.
+**Strategy**: Build a map of knockout fixtures by team pair
+(`homeTeamId, awayTeamId`) → fixture. When `resolveSlot` returns two confirmed teams,
+check if there is a confirmed API fixture with exactly those two teams (in either order)
+to obtain the real result if already played.
 
-Pero el problema principal es distinto: cuando el API ya tiene un fixture de Ronda de 32 con equipos reales (homeTeamId y awayTeamId no-nulos, aunque el partido no se haya jugado aún), hay que usar esos equipos directamente sin esperar a que `resolveSlot` los compute desde standings.
+The core issue is different: when the API already has a Round of 32 fixture with real
+teams (homeTeamId and awayTeamId non-null, even if not yet played), those teams must
+be used directly without waiting for `resolveSlot` to compute them from standings.
 
-**Estrategia de resolución mejorada**:
+**Improved resolution strategy**:
 
-1. Construir un índice de knockout fixtures confirmados: `Map<string, Fixture>` donde la clave es `${homeTeamId}:${awayTeamId}` normalizado (ambas combinaciones).
-2. Para cada `BracketMatchupDef`, intentar primero encontrar un fixture del API en la ronda LAST_32 donde ambos equipos estén confirmados.
-3. Si no hay fixture confirmado del API, usar `resolveSlot` como fallback.
+1. Build an index of confirmed knockout fixtures:
+   `Map<string, Fixture>` keyed by `${homeTeamId}:${awayTeamId}` normalised
+   (both orderings).
+2. For each `BracketMatchupDef`, first try to find an API fixture in the LAST_32 round
+   where both teams are confirmed.
+3. If no confirmed API fixture exists, fall back to `resolveSlot`.
 
-Alternativa más simple: como el API devuelve los fixtures ordenados y con ronda, se puede crear un mapa de equipos confirmados en Ronda de 32 y para cada matchup del bracket, verificar si los equipos computados por standings coinciden con algún par confirmado, o directamente indexar por equipos.
+**Recommended strategy (simplest and most direct)**:
 
-**Estrategia recomendada (más simple y directa)**:
+Create `confirmedR32Fixtures`: array of fixtures with
+`round === 'LAST_32'` (or other round string variants) and where `homeTeamId` and
+`awayTeamId` are non-null and non-zero.
 
-Crear `confirmedR32Fixtures`: array de fixtures con `round === 'LAST_32'` (u otras variantes del string de ronda) y donde `homeTeamId` y `awayTeamId` son no-nulos y non-zero.
+For each `BracketMatchupDef`:
+1. Resolve teams from `resolveSlot` (as today).
+2. If both teams resolve, check whether a confirmed API fixture exists with those
+   two teams (order-independent, since the local bracket order may differ from the
+   real home/away order).
+3. If a confirmed fixture with a result exists (`status === 'finished'`), use that result.
+4. If the API has the same pair but with teams in a different order than `resolveSlot`
+   computed, the displayed team is still correct (only home/away labelling differs).
 
-Para cada `BracketMatchupDef`:
-1. Intentar resolver los equipos desde `resolveSlot` (como hoy).
-2. Si ambos equipos se resuelven, verificar si hay un fixture confirmado del API con esos dos equipos (sin importar el orden home/away, ya que el bracket local puede diferir del orden real).
-3. Si hay un fixture confirmado con resultado (`status === 'finished'`), usar ese resultado.
-4. Si el API tiene el mismo par pero los equipos en orden distinto al que `resolveSlot` calculó, el equipo que muestra el bracket sigue siendo correcto (solo cambia quién es "local").
-
-**Nota crítica**: El bug reportado (Colombia vs Ecuador en vez de Ghana) sugiere que `resolveSlot` está proyectando mal los standings porque `fixtures-cache.json` es stale. Refrescar la cache puede ser suficiente para el bug inmediato. El fix de código es preventivo para cuando el API ya confirme los equipos pero los standings locales sigan siendo distintos (por ejemplo, diferencias en criterios de desempate).
+**Critical note**: The reported bug (Colombia vs Ecuador instead of Ghana) suggests that
+`resolveSlot` was projecting standings incorrectly because `fixtures-cache.json` was
+stale. Refreshing the cache may be enough to fix the immediate bug. The code fix is
+preventive for when the API has already confirmed the teams but local standings still
+differ (e.g. due to tiebreaker differences).
 
 ## UX and Content
 
-Sin cambios visuales. El `positionLabel` en el bracket puede ajustarse:
-- Cuando el equipo viene de un fixture confirmado del API: el label podría mostrar el grupo real (ej. "1° Grupo K") o simplemente el nombre del equipo.
-- Actualmente `isProjected: true` siempre — si el equipo está confirmado por el API, podría ser `isProjected: false`.
+No visual changes. The `positionLabel` in the bracket may be adjusted:
+- When the team comes from a confirmed API fixture: the label could show the actual
+  group (e.g. "1st Group K") or simply the team name.
+- Currently `isProjected: true` always — if the team is confirmed by the API, it could
+  be `isProjected: false`.
 
-Esto es opcional para este fix; el objetivo es que el nombre del equipo sea correcto.
+This is optional for this fix; the goal is to get the team name right.
 
 ## Security and Runtime
 
-- No hay cambios de seguridad.
-- ISR revalidate = 3600s en `app/bracket/page.tsx` — sin cambios.
-- `pnpm refresh-fixtures` debe ejecutarse manualmente para actualizar `fixtures-cache.json` antes del deploy.
+- No security changes.
+- ISR revalidate = 3600s in `app/bracket/page.tsx` — unchanged.
+- `pnpm refresh-fixtures` must be run manually to update `fixtures-cache.json`
+  before deploy.
 
 ## Data Contract: confirmed-r32-fixtures
 
 ### Owner Layer
 
-Agent (`lib/agents/live-loader.ts` → `FootballDataProvider.fetchFixtures`) → UI Server Component (`app/bracket/page.tsx`)
+Agent (`lib/agents/live-loader.ts` → `FootballDataProvider.fetchFixtures`) → UI Server
+Component (`app/bracket/page.tsx`)
 
 ### Source
 
 - Provider: `lib/data/providers/football-data.ts` — endpoint `competitions/WC/matches`
 - Runtime: Server Component (Vercel ISR, revalidate=3600s)
-- Cache local: `lib/data/fixtures-cache.json` (actualmente stale del 14 de junio)
+- Local cache: `lib/data/fixtures-cache.json` (was stale from June 14)
 
 ### Input Shape
 
 ```ts
-// Fixture ya normalizado que llega a bracket/page.tsx via loadFixtures()
+// Normalised Fixture arriving at bracket/page.tsx via loadFixtures()
 interface Fixture {
   id: number
-  homeTeamId: number   // siempre non-null y non-zero: el provider filtra TBD
-  awayTeamId: number   // siempre non-null y non-zero: el provider filtra TBD
+  homeTeamId: number   // always non-null and non-zero: provider filters out TBD
+  awayTeamId: number   // always non-null and non-zero: provider filters out TBD
   kickoffUtc: string
   status: 'scheduled' | 'live' | 'finished'
-  homeGoals: number | null   // null si no se ha jugado
-  awayGoals: number | null   // null si no se ha jugado
-  round: string | null       // raw API stage string para knockout: 'LAST_32', 'LAST_16', etc.
-                             // 'Group Stage - Matchday N' para fase de grupos
+  homeGoals: number | null   // null if not yet played
+  awayGoals: number | null   // null if not yet played
+  round: string | null       // raw API stage string for knockout: 'LAST_32', 'LAST_16', etc.
+                             // 'Group Stage - Matchday N' for group stage
 }
 ```
 
 ### Output Shape
 
 ```ts
-// Nuevo mapa construido en bracket/page.tsx
-// Clave: "${Math.min(homeTeamId, awayTeamId)}:${Math.max(homeTeamId, awayTeamId)}"
-// Valor: Fixture confirmado del API
+// New map built in bracket/page.tsx
+// Key: "${Math.min(homeTeamId, awayTeamId)}:${Math.max(homeTeamId, awayTeamId)}"
+// Value: confirmed API fixture
 type ConfirmedR32Pairs = Map<string, Fixture>
 
-// ResolvedTeam actualizado para indicar si viene del API o de proyección
+// ResolvedTeam updated to indicate whether it comes from the API or a projection
 interface ResolvedTeam {
   teamId: number | null
   name: string | null
   positionLabel: string
-  isProjected: boolean   // false cuando el equipo viene del fixture real del API
+  isProjected: boolean   // false when team comes from the real API fixture
 }
 ```
 
-### Nullability y Fallbacks
+### Nullability and Fallbacks
 
-- `homeTeamId` / `awayTeamId`: siempre non-null en los fixtures que pasan el filtro del provider (`item.homeTeam?.id != null`). Los fixtures TBD son eliminados antes de llegar al componente.
-- `round`: puede ser null si el API no devuelve stage. La función `normalizeKnockoutStage` (de `lib/skills/bracket.ts`) retorna null para grupos y null si el string no está en `ROUND_MAP`. Para R32 devuelve `'round_of_32'`.
-- Si el API no tiene fixtures R32 aún (grupo stage no terminado o cuota excedida): `confirmedR32Pairs` queda vacío, el bracket cae a `resolveSlot` como hoy. Degradación segura.
+- `homeTeamId` / `awayTeamId`: always non-null in fixtures that pass the provider
+  filter (`item.homeTeam?.id != null`). TBD fixtures are removed before reaching
+  the component.
+- `round`: may be null if the API does not return a stage. `normalizeKnockoutStage`
+  (from `lib/skills/bracket.ts`) returns null for groups and null if the string is not
+  in `ROUND_MAP`. For Round of 32 it returns `'round_of_32'`.
+- If the API has no Round of 32 fixtures yet (group stage not finished or quota
+  exceeded): `confirmedR32Pairs` stays empty, bracket falls back to `resolveSlot` as
+  today. Safe degradation.
 
-### Clave de round para filtrar R32
+### Round key for filtering Round of 32
 
 ```ts
-// CORRECTO: usar normalizeKnockoutStage de lib/skills/bracket.ts
+// CORRECT: use normalizeKnockoutStage from lib/skills/bracket.ts
 import { normalizeKnockoutStage } from '@/lib/skills/bracket'
 
 const r32Fixtures = allFixtures.filter(
@@ -153,27 +184,34 @@ const r32Fixtures = allFixtures.filter(
 )
 ```
 
-**No usar** `f.round === 'LAST_32'` directo: el API podría enviar `'ROUND_OF_32'` u otro alias. `ROUND_MAP` en bracket.ts cubre ambos.
+**Do not** use `f.round === 'LAST_32'` directly: the API may send `'ROUND_OF_32'` or
+another alias. `ROUND_MAP` in bracket.ts covers both variants.
 
 ### Errors
 
-- API sin datos R32 (cuota excedida, API delayed): `r32Fixtures` vacío → bracket funciona con proyecciones, sin error en UI.
-- Cache stale sin resultados de grupo completos: `computeGroupStandings` computa standings incorrectos → emparejamientos proyectados erróneos (el bug actual). Se resuelve con `pnpm refresh-fixtures`.
+- API with no Round of 32 data (quota exceeded, API delayed): `r32Fixtures` is empty →
+  bracket works with projections, no UI error.
+- Stale cache without full group results: `computeGroupStandings` computes incorrect
+  standings → wrong projected matchups (the original bug). Fixed by `pnpm refresh-fixtures`.
 
 ### Security
 
-- Secrets: `FOOTBALLDATA_KEY` solo en el runtime de Vercel (variable de entorno server-side). No se expone al cliente.
-- Client exposure: ninguna. `app/bracket/page.tsx` es Server Component.
-- Quotas: 10 requests/min en el provider. Un revalidate de 1h evita rate-limiting.
+- Secrets: `FOOTBALLDATA_KEY` only in the Vercel server-side runtime environment.
+  Never exposed to the client.
+- Client exposure: none. `app/bracket/page.tsx` is a Server Component.
+- Quotas: 10 requests/min in the provider. A 1h revalidate prevents rate limiting.
 
 ### Validation
 
-- `pnpm refresh-fixtures` → verificar que `fixtures-cache.json` tiene `count > 72` y que existen fixtures con `round: 'LAST_32'`.
-- En `bracket/page.tsx`: `console.log` temporal con la cantidad de R32 fixtures confirmados encontrados.
-- Acceptance: Colombia (id: 20) y Ghana (id: 135) deben aparecer como el par en el slot M83.
+- `pnpm refresh-fixtures` → verify that `fixtures-cache.json` has `count > 72` and
+  that fixtures with `round: 'LAST_32'` exist.
+- In `bracket/page.tsx`: temporary `console.log` with the number of confirmed R32
+  fixtures found.
+- Acceptance: Colombia (id: 20) and Ghana (id: 135) must appear as the pair for M83.
 
 ## Testing Strategy
 
-1. Unit: verificar que `resolveSlot` como fallback sigue funcionando con fixtures vacíos.
-2. Manual: abrir `/bracket` en el preview de Vercel y confirmar que los 16 partidos muestran los equipos correctos (especialmente Colombia vs Ghana en M83).
-3. Build: `pnpm tsc --noEmit` y `pnpm build`.
+1. Unit: verify that `resolveSlot` fallback still works with empty fixtures.
+2. Manual: open `/bracket` on the Vercel preview and confirm that all 16 fixtures show
+   the correct teams (especially Colombia vs Ghana for M83).
+3. Build: `pnpm tsc --noEmit` and `pnpm build`.

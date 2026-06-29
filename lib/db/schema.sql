@@ -1,13 +1,13 @@
--- Mundial 2026 IA Predictor — Schema SQLite
--- DDL completo. Ejecutar con better-sqlite3 al inicializar data/mundial.db.
--- Pragmas recomendados al abrir la conexion (no van en el DDL):
+-- World Cup 2026 Prediction Simulator - SQLite schema
+-- Full DDL. Run with better-sqlite3 to initialise data/mundial.db.
+-- Recommended pragmas when opening the connection (not part of DDL):
 --   PRAGMA journal_mode = WAL;
 --   PRAGMA foreign_keys = ON;
 
 -- ---------------------------------------------------------------------------
 -- teams
--- attack_strength / defense_strength / home_advantage son los coeficientes
--- que el modelo de Poisson usa para derivar lambda. Centrados en ~1.0.
+-- attack_strength / defense_strength / home_advantage are the Poisson model
+-- coefficients used to derive lambda. Centred at ~1.0.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS teams (
   id                  INTEGER PRIMARY KEY,
@@ -26,8 +26,8 @@ CREATE INDEX IF NOT EXISTS idx_teams_group ON teams ("group");
 
 -- ---------------------------------------------------------------------------
 -- players
--- goals_per_minute almacenado para evitar divisiones por cero en el modelo
--- de goleadores. NULL cuando minutes_played = 0 (sin muestra).
+-- goals_per_minute stored to avoid division by zero in the top-scorer model.
+-- NULL when minutes_played = 0 (no sample).
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS players (
   id               INTEGER PRIMARY KEY,
@@ -44,7 +44,7 @@ CREATE INDEX IF NOT EXISTS idx_players_team_id ON players (team_id);
 
 -- ---------------------------------------------------------------------------
 -- fixtures
--- home_goals / away_goals NULL hasta que el partido termina.
+-- home_goals / away_goals are NULL until the match finishes.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS fixtures (
   id            INTEGER PRIMARY KEY,
@@ -67,8 +67,8 @@ CREATE INDEX IF NOT EXISTS idx_fixtures_away_team ON fixtures (away_team_id);
 
 -- ---------------------------------------------------------------------------
 -- match_stats
--- Una fila por (fixture_id, team_id): dos filas por partido.
--- Alimenta los modelos de corners y tarjetas.
+-- One row per (fixture_id, team_id): two rows per match.
+-- Feeds the corners and cards models.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS match_stats (
   fixture_id       INTEGER NOT NULL,
@@ -87,7 +87,7 @@ CREATE INDEX IF NOT EXISTS idx_match_stats_team ON match_stats (team_id);
 
 -- ---------------------------------------------------------------------------
 -- match_events
--- Timeline de eventos. player_id NULL si el dato viene sin jugador.
+-- Event timeline. player_id is NULL when the data arrives without a player.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS match_events (
   id          INTEGER PRIMARY KEY,
@@ -107,9 +107,9 @@ CREATE INDEX IF NOT EXISTS idx_match_events_player ON match_events (player_id);
 
 -- ---------------------------------------------------------------------------
 -- predictions
--- Un ModelOutput por (fixture_id, market). probabilities serializado como
--- JSON en TEXT. Se conserva historico: cada corrida inserta una fila nueva
--- (computed_at distingue versiones), no se hace UPDATE in-place.
+-- One ModelOutput per (fixture_id, market). probabilities serialised as JSON
+-- in TEXT. History is preserved: each run inserts a new row
+-- (computed_at distinguishes versions); no UPDATE in-place.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS predictions (
   id             INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -122,19 +122,18 @@ CREATE TABLE IF NOT EXISTS predictions (
   FOREIGN KEY (fixture_id) REFERENCES fixtures (id)
 );
 
--- Lookup mas frecuente: la prediccion vigente de un partido y mercado.
+-- Most frequent lookup: current prediction for a given fixture and market.
 CREATE INDEX IF NOT EXISTS idx_predictions_fixture_market
   ON predictions (fixture_id, market, computed_at DESC);
 
 -- ---------------------------------------------------------------------------
 -- run_log
--- Bitacora de cada corrida de un agent (script CLI o Server Action).
--- Patron insertar-al-inicio: la fila se inserta con status = 'running' al
--- arrancar el refresh y se actualiza a 'ok' / 'error' al terminar. Asi una
--- corrida que muere a mitad deja rastro (queda como 'running' huerfana).
--- finished_at / duration_ms son NULL mientras status = 'running'.
--- message: NULL cuando status IN ('ok', 'running'); texto de la excepcion
--- cuando 'error'.
+-- Audit log of each agent run (CLI script or Server Action).
+-- Insert-at-start pattern: the row is inserted with status = 'running' when
+-- the refresh starts and updated to 'ok' / 'error' when it finishes. A run
+-- that dies mid-way leaves a trace (stays as orphaned 'running').
+-- finished_at / duration_ms are NULL while status = 'running'.
+-- message: NULL when status IN ('ok', 'running'); exception text when 'error'.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS run_log (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -146,12 +145,12 @@ CREATE TABLE IF NOT EXISTS run_log (
   message      TEXT
 );
 
--- La guarda de frescura consulta la ultima corrida ok por tiempo.
+-- Freshness guard queries the last successful run by time.
 CREATE INDEX IF NOT EXISTS idx_run_log_started ON run_log (started_at DESC);
 
 -- ---------------------------------------------------------------------------
 -- users
--- Tabla para autenticación simple. password_hash es bcrypt(password, salt=10).
+-- Simple authentication table. password_hash is bcrypt(password, salt=10).
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,

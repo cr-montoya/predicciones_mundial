@@ -6,7 +6,7 @@ import type { FixtureStatus } from '@/lib/types'
 export const revalidate = 3600
 
 export const metadata = {
-  title: 'Mis Picks — Mundial 2026 IA Predictor',
+  title: 'My Picks',
 }
 
 export interface PickableFixture {

@@ -80,10 +80,10 @@ export async function GET(_req: Request, { params }: Props) {
               MUNDIAL 2026
             </span>
             <span style={{ color: MUTED, fontSize: 16, fontWeight: 400, marginLeft: 4 }}>
-              IA Predictor
+              Prediction Simulator
             </span>
           </div>
-          <span style={{ color: MUTED, fontSize: 14 }}>predicciones-mundial.vercel.app</span>
+          <span style={{ color: MUTED, fontSize: 14 }}>predicciones-mundial-topaz.vercel.app</span>
         </div>
 
         {/* Teams */}
@@ -128,7 +128,7 @@ export async function GET(_req: Request, { params }: Props) {
         {/* Footer */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <span style={{ color: MUTED, fontSize: 15, letterSpacing: 1 }}>
-            Así predice la IA el Mundial · Análisis estadístico de entretenimiento
+            AI-assisted statistical football analytics · Entertainment projections
           </span>
         </div>
       </div>

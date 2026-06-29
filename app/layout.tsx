@@ -12,8 +12,24 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
-  title: 'Mundial 2026 IA Predictor',
-  description: 'Proyecciones estadísticas del Mundial 2026 generadas por IA',
+  title: {
+    default: 'World Cup 2026 Prediction Simulator',
+    template: '%s | World Cup 2026 Prediction Simulator',
+  },
+  description:
+    'AI-assisted statistical football analytics for the 2026 FIFA World Cup. ' +
+    'Explore probabilities, market projections, and tournament predictions ' +
+    'powered by a custom Poisson + Monte Carlo model.',
+  openGraph: {
+    title: 'World Cup 2026 Prediction Simulator',
+    description: 'AI-assisted statistical football analytics for the 2026 FIFA World Cup.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'World Cup 2026 Prediction Simulator',
+    description: 'AI-assisted statistical football analytics for the 2026 FIFA World Cup.',
+  },
 }
 
 export default function RootLayout({
