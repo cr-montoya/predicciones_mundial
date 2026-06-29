@@ -1,4 +1,7 @@
+'use client'
+
 import type { AccuracyStats } from '@/lib/skills/accuracy'
+import { useTranslation } from '@/lib/i18n/hook'
 
 const MIN_MATCHES = 3
 
@@ -7,6 +10,8 @@ interface AccuracyWidgetProps {
 }
 
 export function AccuracyWidget({ stats }: AccuracyWidgetProps) {
+  const { t } = useTranslation()
+
   if (stats.total < MIN_MATCHES) return null
 
   const barWidth = `${stats.pct}%`
@@ -23,7 +28,7 @@ export function AccuracyWidget({ stats }: AccuracyWidgetProps) {
         paddingBottom: 8,
         borderBottom: '1px solid rgba(255,255,255,0.04)',
       }}>
-        Precisión del Modelo
+        {t.accuracy.sectionTitle}
       </div>
 
       <div style={{
@@ -34,7 +39,7 @@ export function AccuracyWidget({ stats }: AccuracyWidgetProps) {
       }}>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 12 }}>
           <span style={{ fontSize: 14, color: '#9ca3af' }}>
-            {stats.correct} / {stats.total} partidos
+            {stats.correct} / {stats.total} {t.accuracy.matches}
           </span>
           <span style={{ fontSize: 32, fontWeight: 800, color: '#FFDB00', letterSpacing: '-1px' }}>
             {stats.pct}%
@@ -58,7 +63,7 @@ export function AccuracyWidget({ stats }: AccuracyWidgetProps) {
         </div>
 
         <p style={{ fontSize: 11, color: '#6b6d75', margin: 0 }}>
-          Resultado 1X2 · Solo partidos finalizados
+          {t.accuracy.footer}
         </p>
       </div>
     </section>

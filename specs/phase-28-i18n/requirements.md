@@ -1,13 +1,13 @@
 ---
-status: pending
+status: active
 phase: 28
 owner: cristian
 branch: phase/28-i18n
 pr:
 preview:
 gates:
-  spec_review: pending
-  grill: pending
+  spec_review: passed
+  grill: passed
   analyst: not_applicable
   design: pending
   data_contract: not_applicable
@@ -21,7 +21,7 @@ gates:
 
 ## Status
 
-pending
+active
 
 ## Objective
 

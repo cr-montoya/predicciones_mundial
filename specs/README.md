@@ -94,7 +94,7 @@ Valid values for gates: `pending`, `passed`, `failed`, `blocked`,
 | 25 | `phase-25-match-context` | completed |
 | 26 | `phase-26-picks-reminder` | completed |
 | 27 | `phase-27-live-top-scorers` | completed |
-| 28 | `phase-28-i18n` | pending |
+| 28 | `phase-28-i18n` | active |
 | 29 | `phase-29-portfolio-rebrand` | pending |
 
 ## Infrastructure / Fix Specs

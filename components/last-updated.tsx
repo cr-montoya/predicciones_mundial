@@ -1,19 +1,23 @@
+'use client'
+
+import { useTranslation } from '@/lib/i18n/hook'
+
 interface LastUpdatedProps {
   generatedAt: string
 }
 
-function formatRelative(isoString: string): string {
+function formatRelative(isoString: string, t: { label: string; ago: string; justNow: string; minutes: (n: number) => string; hours: (n: number) => string }, locale: string): string {
   const diffMs = Date.now() - new Date(isoString).getTime()
   const diffMin = Math.floor(diffMs / 60_000)
 
-  if (diffMin < 1) return 'hace menos de 1 min'
-  if (diffMin < 60) return `hace ${diffMin} min`
+  if (diffMin < 1) return t.justNow
+  if (diffMin < 60) return `${t.ago} ${t.minutes(diffMin)}`
 
   const diffHours = Math.floor(diffMin / 60)
-  if (diffHours < 24) return `hace ${diffHours} h`
+  if (diffHours < 24) return `${t.ago} ${t.hours(diffHours)}`
 
   const d = new Date(isoString)
-  return d.toLocaleString('es-ES', {
+  return d.toLocaleString(locale === 'en' ? 'en-US' : 'es-ES', {
     day: '2-digit',
     month: 'short',
     hour: '2-digit',
@@ -22,6 +26,9 @@ function formatRelative(isoString: string): string {
 }
 
 export function LastUpdated({ generatedAt }: LastUpdatedProps) {
+  const { t, locale } = useTranslation()
+  const relative = formatRelative(generatedAt, t.lastUpdated, locale)
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20 }}>
       <div style={{
@@ -33,7 +40,7 @@ export function LastUpdated({ generatedAt }: LastUpdatedProps) {
         flexShrink: 0,
       }} />
       <span style={{ fontSize: 11, color: '#555' }}>
-        Datos actualizados {formatRelative(generatedAt)}
+        {t.lastUpdated.label} {relative}
       </span>
     </div>
   )

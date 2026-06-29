@@ -6,6 +6,7 @@ import type { StoredPick, PickOutcome } from '@/lib/skills/picks'
 import { resolveVerdict } from '@/lib/skills/picks'
 import { PickResultRow } from './pick-result-row'
 import type { PickableFixture } from '@/app/mis-picks/page'
+import { useTranslation } from '@/lib/i18n/hook'
 
 interface EnrichedPick {
   pick: StoredPick
@@ -50,6 +51,7 @@ function Section({ title, picks, accent }: { title: string; picks: EnrichedPick[
 }
 
 export function MisPicksClient({ fixtures }: { fixtures: PickableFixture[] }) {
+  const { t } = useTranslation()
   const [picks, setPicks] = useState<EnrichedPick[] | null>(null)
 
   useEffect(() => {
@@ -74,10 +76,8 @@ export function MisPicksClient({ fixtures }: { fixtures: PickableFixture[] }) {
     setPicks(enriched)
   }, [fixtures])
 
-  // Prevent SSR mismatch
   if (picks === null) return null
 
-  // Empty state
   if (picks.length === 0) {
     return (
       <div style={{
@@ -88,10 +88,10 @@ export function MisPicksClient({ fixtures }: { fixtures: PickableFixture[] }) {
       }}>
         <div style={{ fontSize: 32, marginBottom: 16 }}>🎯</div>
         <p style={{ fontSize: 16, color: '#9ca3af', marginBottom: 8 }}>
-          Aún no tienes picks guardados.
+          {t.myPicks.emptyState}
         </p>
         <p style={{ fontSize: 13, color: '#6b6d75', marginBottom: 24 }}>
-          Ve a los partidos y haz tu predicción antes de que empiecen.
+          {t.myPicks.emptyHint}
         </p>
         <Link href="/fixtures" style={{
           display: 'inline-block',
@@ -104,7 +104,7 @@ export function MisPicksClient({ fixtures }: { fixtures: PickableFixture[] }) {
           textDecoration: 'none',
           letterSpacing: '0.5px',
         }}>
-          Ver partidos →
+          {t.myPicks.viewFixtures}
         </Link>
       </div>
     )
@@ -118,7 +118,6 @@ export function MisPicksClient({ fixtures }: { fixtures: PickableFixture[] }) {
 
   return (
     <div>
-      {/* Counter */}
       {resolved.length > 0 && (
         <div style={{
           background: 'rgba(255,219,0,0.02)',
@@ -129,7 +128,7 @@ export function MisPicksClient({ fixtures }: { fixtures: PickableFixture[] }) {
         }}>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10 }}>
             <span style={{ fontSize: 14, color: '#9ca3af' }}>
-              {correct} acertados / {resolved.length} resueltos
+              {t.myPicks.accuracy(correct, resolved.length)}
             </span>
             <span style={{ fontSize: 32, fontWeight: 800, color: '#FFDB00', letterSpacing: '-1px' }}>
               {pct}%
@@ -146,9 +145,9 @@ export function MisPicksClient({ fixtures }: { fixtures: PickableFixture[] }) {
         </div>
       )}
 
-      <Section title="En Juego" picks={live} accent="#f59e0b" />
-      <Section title="Resueltos" picks={resolved} />
-      <Section title="Pendientes" picks={pending} />
+      <Section title={t.myPicks.live} picks={live} accent="#f59e0b" />
+      <Section title={t.myPicks.resolved} picks={resolved} />
+      <Section title={t.myPicks.pending} picks={pending} />
     </div>
   )
 }

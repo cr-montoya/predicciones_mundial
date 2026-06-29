@@ -1,13 +1,16 @@
+'use client'
+
 import Link from 'next/link'
 import type { FixtureWithTeams } from '@/lib/agents/home-types'
 import { getFlag } from '@/lib/utils/flags'
+import { useTranslation } from '@/lib/i18n/hook'
 
 interface FixturesTodayProps {
   fixtures: FixtureWithTeams[]
 }
 
-function formatTime(utc: string): string {
-  return new Date(utc).toLocaleTimeString('es-CO', {
+function formatTime(utc: string, locale: string): string {
+  return new Date(utc).toLocaleTimeString(locale === 'en' ? 'en-US' : 'es-CO', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
@@ -15,14 +18,16 @@ function formatTime(utc: string): string {
   })
 }
 
-function statusStyles(status: string): { bg: string; color: string; label: string } {
-  if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: 'EN VIVO' }
-  if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: 'FIN' }
-  return { bg: 'rgba(255,219,0,0.08)', color: '#D4A843', label: 'PROG' }
-}
-
 export function FixturesToday({ fixtures }: FixturesTodayProps) {
+  const { t, locale } = useTranslation()
+
   if (fixtures.length === 0) return null
+
+  function statusStyles(status: string): { bg: string; color: string; label: string } {
+    if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: t.fixturesList.statusLive }
+    if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: t.fixturesList.statusFinished }
+    return { bg: 'rgba(255,219,0,0.08)', color: '#D4A843', label: t.fixturesList.statusScheduled }
+  }
 
   return (
     <section style={{ marginBottom: 36 }}>
@@ -36,7 +41,7 @@ export function FixturesToday({ fixtures }: FixturesTodayProps) {
         paddingBottom: 8,
         borderBottom: '1px solid rgba(255,255,255,0.04)',
       }}>
-        Partidos
+        {t.home.matchesSection}
       </div>
 
       {fixtures.map(({ fixture, homeTeam, awayTeam, prediction }) => {
@@ -60,7 +65,7 @@ export function FixturesToday({ fixtures }: FixturesTodayProps) {
           >
             <div style={{ width: 56, textAlign: 'center', flexShrink: 0 }}>
               <span style={{ fontSize: 14, fontWeight: 600, color: '#f0ece4' }}>
-                {formatTime(fixture.kickoffUtc)}
+                {formatTime(fixture.kickoffUtc, locale)}
               </span>
             </div>
 
@@ -87,11 +92,11 @@ export function FixturesToday({ fixtures }: FixturesTodayProps) {
             }}>
               {homeFlag && <span style={{ fontSize: 22 }}>{homeFlag}</span>}
               <span style={{ fontSize: 15, fontWeight: 500, color: '#f0ece4' }}>
-                {homeTeam?.name ?? `Equipo ${fixture.homeTeamId}`}
+                {homeTeam?.name ?? t.myPicks.teamFallback(fixture.homeTeamId)}
               </span>
               <span style={{ fontSize: 13, color: '#6b6d75' }}>vs</span>
               <span style={{ fontSize: 15, fontWeight: 500, color: '#f0ece4' }}>
-                {awayTeam?.name ?? `Equipo ${fixture.awayTeamId}`}
+                {awayTeam?.name ?? t.myPicks.teamFallback(fixture.awayTeamId)}
               </span>
               {awayFlag && <span style={{ fontSize: 22 }}>{awayFlag}</span>}
             </div>
@@ -109,7 +114,7 @@ export function FixturesToday({ fixtures }: FixturesTodayProps) {
                     {prediction.winner} {pct}%
                   </div>
                   <div style={{ fontSize: 11, color: '#555' }}>
-                    {prediction.expectedGoals} goles esperados
+                    {t.home.expectedGoals(prediction.expectedGoals)}
                   </div>
                 </div>
               ) : null}

@@ -1,7 +1,10 @@
+'use client'
+
 import type { ResolvedMatchup } from './bracket-matchup'
 import { topModelCall } from '@/lib/skills/accuracy'
 import { getTla } from '@/lib/utils/tla'
 import { getFlag } from '@/lib/utils/flags'
+import { useTranslation } from '@/lib/i18n/hook'
 
 const LINE = 'rgba(255,219,0,0.18)'
 const CARD_W = 176
@@ -151,9 +154,10 @@ function BracketPair({
   )
 }
 
-const ROUND_LABELS = ['OCTAVOS', 'CUARTOS', 'SEMI', 'FINAL']
-
 export function BracketTree({ matchups }: { matchups: ResolvedMatchup[] }) {
+  const { t } = useTranslation()
+  const ROUND_LABELS = [t.bracket.r16, t.bracket.quarters, t.bracket.semis, t.bracket.final]
+
   // Pair R32 matches: (M73,M74) → R16_1, (M75,M76) → R16_2, …
   const pairs: Array<[ResolvedMatchup, ResolvedMatchup]> = []
   for (let i = 0; i < matchups.length - 1; i += 2) {
@@ -169,7 +173,7 @@ export function BracketTree({ matchups }: { matchups: ResolvedMatchup[] }) {
     <div style={{ overflowX: 'auto', overflowY: 'visible', paddingBottom: 8 }}>
       {/* Column headers */}
       <div style={{ display: 'flex', gap: 0, marginBottom: 12, paddingLeft: CARD_W + CONN_W }}>
-        {['RONDA 32', ...ROUND_LABELS].map((label, i) => (
+        {[t.bracket.round32, ...ROUND_LABELS].map((label, i) => (
           <div key={label} style={{
             width: i === 0 ? CARD_W + CONN_W : CARD_W + CONN_W,
             fontSize: 9,
@@ -194,7 +198,7 @@ export function BracketTree({ matchups }: { matchups: ResolvedMatchup[] }) {
               top={top}
               bottom={bottom}
               isProjected={top.home.isProjected || top.away.isProjected}
-              next={<TbdCard label="POR DEFINIR" />}
+              next={<TbdCard label={t.bracket.tbd} />}
             />
           ))}
         </div>
@@ -212,7 +216,7 @@ export function BracketTree({ matchups }: { matchups: ResolvedMatchup[] }) {
                   alignItems: 'center',
                   paddingLeft: CONN_W / 2,
                 }}>
-                  <TbdCard label="TBD" />
+                  <TbdCard label={t.bracket.tbd} />
                 </div>
               ))}
             </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { FadeIn } from '@/components/fade-in'
+import { useTranslation } from '@/lib/i18n/hook'
 
 const DISMISS_KEY = 'picks_banner_dismissed'
 export const UPCOMING_UNPICKED_COUNT_KEY = 'upcoming_unpicked_count'
@@ -34,6 +35,7 @@ interface PicksReminderBannerProps {
 }
 
 export function PicksReminderBanner({ fixtures }: PicksReminderBannerProps) {
+  const { t } = useTranslation()
   const [unpicked, setUnpicked] = useState<UpcomingFixture[]>([])
   const [dismissed, setDismissed] = useState(false)
 
@@ -57,10 +59,9 @@ export function PicksReminderBanner({ fixtures }: PicksReminderBannerProps) {
   if (count === 0 || dismissed) return null
 
   const today = new Date().toISOString().slice(0, 10)
-  const heading =
-    count === 1
-      ? 'Tienes 1 partido próximo sin pick'
-      : `Tienes ${count} partidos próximos sin pick`
+  const heading = count === 1
+    ? t.picksReminder.singleMatch
+    : t.picksReminder.multipleMatches(count)
 
   return (
     <FadeIn>
@@ -129,7 +130,7 @@ export function PicksReminderBanner({ fixtures }: PicksReminderBannerProps) {
             }
             setDismissed(true)
           }}
-          aria-label="Cerrar aviso"
+          aria-label={t.picksReminder.closeLabel}
           style={{
             width: 28,
             height: 28,
