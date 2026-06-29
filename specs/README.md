@@ -106,6 +106,7 @@ Valid values for gates: `pending`, `passed`, `failed`, `blocked`,
 | `fix-better-sqlite3-devdep` | completed | Add serverExternalPackages to eliminate DEP0176 warning on Vercel. |
 | `fix-top-scorer-empty-state` | completed | Show real scorers with static squads for all 32 teams. |
 | `fix-flags-display` | completed | Remove player flags in Golden Boot; add missing flags (Cape Verde Islands, Jordan, Congo DR). |
+| `fix-bracket-confirmed-matchups` | in_review | Bracket shows projected standings instead of confirmed API knockout matchups (e.g. Colombia vs Ecuador instead of Colombia vs Ghana). |
 
 ## Rules
 
