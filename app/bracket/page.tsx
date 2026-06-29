@@ -4,25 +4,30 @@ import { computeGroupStandings, getGroupPosition, getBestThird } from '@/lib/ski
 import { normalizeKnockoutStage } from '@/lib/skills/bracket'
 import { ROUND_OF_32_DEFS } from '@/lib/data/wc2026-bracket-structure'
 import { BracketView } from '@/components/bracket-view'
+import { getServerTranslations } from '@/lib/i18n/server'
 import type { ResolvedMatchup, ResolvedTeam } from '@/components/bracket-matchup'
 import type { BracketSlot } from '@/lib/data/wc2026-bracket-structure'
 import type { Team, ModelOutput, Fixture } from '@/lib/types'
+import type { Translations } from '@/lib/i18n/types'
 
 export const revalidate = 3600
 
 export const metadata = {
-  title: 'Bracket — Mundial 2026 IA Predictor',
+  title: 'Bracket',
 }
 
 function resolveSlot(
   slot: BracketSlot,
   standings: ReturnType<typeof computeGroupStandings>,
   byId: Map<number, Team>,
+  t: Translations,
 ): ResolvedTeam {
   if (slot.kind === 'group_pos') {
     const standing = getGroupPosition(standings, slot.group, slot.position)
     const team = standing ? byId.get(standing.teamId) : null
-    const posLabel = `${slot.position === 1 ? '1°' : '2°'} Grupo ${slot.group}`
+    const posLabel = slot.position === 1
+      ? t.bracket.posFirst(slot.group)
+      : t.bracket.posSecond(slot.group)
     return {
       teamId: team?.id ?? null,
       name: team?.name ?? null,
@@ -32,7 +37,7 @@ function resolveSlot(
   } else {
     const standing = getBestThird(standings, slot.eligibleGroups)
     const team = standing ? byId.get(standing.teamId) : null
-    const posLabel = `Mejor 3° ${slot.eligibleGroups.join('/')}`
+    const posLabel = t.bracket.bestThird(slot.eligibleGroups.join('/'))
     return {
       teamId: team?.id ?? null,
       name: team?.name ?? null,
@@ -43,12 +48,14 @@ function resolveSlot(
 }
 
 export default async function BracketPage() {
-  const allFixtures = await loadFixtures()
+  const [allFixtures, { t }] = await Promise.all([
+    loadFixtures(),
+    getServerTranslations(),
+  ])
   const teams = buildStaticTeams()
   const byId = teamMap(teams)
 
-  // Build teamId → group map for standings computation
-  const teamGroups = new Map<number, string>(teams.map(t => [t.id, t.group]))
+  const teamGroups = new Map<number, string>(teams.map(team => [team.id, team.group]))
 
   const standings = computeGroupStandings(allFixtures, teamGroups)
 
@@ -62,8 +69,8 @@ export default async function BracketPage() {
   }
 
   const matchups: ResolvedMatchup[] = ROUND_OF_32_DEFS.map(def => {
-    const projHome = resolveSlot(def.home, standings, byId)
-    const projAway = resolveSlot(def.away, standings, byId)
+    const projHome = resolveSlot(def.home, standings, byId, t)
+    const projAway = resolveSlot(def.away, standings, byId, t)
 
     // Prefer confirmed API fixture over standings projection
     const confirmedF: Fixture | null =
@@ -137,14 +144,14 @@ export default async function BracketPage() {
           margin: 0,
           marginBottom: 8,
         }}>
-          Bracket de Eliminatorias
+          {t.bracket.title}
         </h1>
         <p style={{ fontSize: 14, color: '#6b6d75', margin: 0 }}>
-          Proyecciones de la IA basadas en las standings actuales · Mundial 2026
+          {t.bracket.footer}
         </p>
       </div>
 
-      <BracketView matchups={matchups} />
+      <BracketView matchups={matchups} emptyState={t.bracket.emptyState} />
     </div>
   )
 }

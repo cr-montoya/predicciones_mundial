@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { loadFixtures } from '@/lib/agents/live-loader'
 import { buildStaticTeams } from '@/lib/agents/static-teams'
+import { getServerTranslations } from '@/lib/i18n/server'
 import { getFlag } from '@/lib/utils/flags'
 import type { Team, Fixture } from '@/lib/types'
+import type { Translations } from '@/lib/i18n/types'
 
 export const revalidate = 3600
 
@@ -56,9 +58,9 @@ function buildStandings(teams: Team[], finished: Fixture[]): Map<string, Standin
   return new Map([...groups.entries()].sort(([a], [b]) => a.localeCompare(b)))
 }
 
-const COL = { w: 26, style: { width: 26, textAlign: 'center' as const, fontSize: 12, color: '#888' } }
+const COL = { style: { width: 26, textAlign: 'center' as const, fontSize: 12, color: '#888' } }
 
-function GroupCard({ group, rows }: { group: string; rows: StandingRow[] }) {
+function GroupCard({ group, rows, t }: { group: string; rows: StandingRow[]; t: Translations }) {
   return (
     <div style={{
       background: '#12141a',
@@ -72,7 +74,7 @@ function GroupCard({ group, rows }: { group: string; rows: StandingRow[] }) {
         borderBottom: '1px solid rgba(255,219,0,0.08)',
       }}>
         <span style={{ fontSize: 13, fontWeight: 700, color: '#D4A843', letterSpacing: '0.5px' }}>
-          Grupo {group}
+          {t.groups.group(group)}
         </span>
       </div>
 
@@ -83,15 +85,15 @@ function GroupCard({ group, rows }: { group: string; rows: StandingRow[] }) {
         borderBottom: '1px solid rgba(255,255,255,0.03)',
       }}>
         <span style={{ width: 22, fontSize: 10, color: '#555', textTransform: 'uppercase' }}>#</span>
-        <span style={{ flex: 1, fontSize: 10, color: '#555', textTransform: 'uppercase' }}>Equipo</span>
-        <span style={{ ...COL.style, color: '#555' }}>PJ</span>
-        <span style={{ ...COL.style, color: '#555' }}>G</span>
-        <span style={{ ...COL.style, color: '#555' }}>E</span>
-        <span style={{ ...COL.style, color: '#555' }}>P</span>
-        <span style={{ ...COL.style, color: '#555' }}>GF</span>
-        <span style={{ ...COL.style, color: '#555' }}>GC</span>
-        <span style={{ width: 30, textAlign: 'center', fontSize: 10, color: '#555' }}>GD</span>
-        <span style={{ width: 30, textAlign: 'center', fontSize: 10, color: '#D4A843', fontWeight: 600 }}>PTS</span>
+        <span style={{ flex: 1, fontSize: 10, color: '#555', textTransform: 'uppercase' }}>{t.groups.team}</span>
+        <span style={{ ...COL.style, color: '#555' }}>{t.groups.mp}</span>
+        <span style={{ ...COL.style, color: '#555' }}>{t.groups.w}</span>
+        <span style={{ ...COL.style, color: '#555' }}>{t.groups.d}</span>
+        <span style={{ ...COL.style, color: '#555' }}>{t.groups.l}</span>
+        <span style={{ ...COL.style, color: '#555' }}>{t.groups.gf}</span>
+        <span style={{ ...COL.style, color: '#555' }}>{t.groups.ga}</span>
+        <span style={{ width: 30, textAlign: 'center', fontSize: 10, color: '#555' }}>{t.groups.gd}</span>
+        <span style={{ width: 30, textAlign: 'center', fontSize: 10, color: '#D4A843', fontWeight: 600 }}>{t.groups.pts}</span>
       </div>
 
       {rows.map((row, i) => {
@@ -149,18 +151,22 @@ function GroupCard({ group, rows }: { group: string; rows: StandingRow[] }) {
 }
 
 export default async function GroupsPage() {
+  const [allFixtures, { t }] = await Promise.all([
+    loadFixtures(),
+    getServerTranslations(),
+  ])
   const teams = buildStaticTeams()
-  const finished = (await loadFixtures()).filter((f) => f.status === 'finished')
+  const finished = allFixtures.filter(f => f.status === 'finished')
   const standings = buildStandings(teams, finished)
 
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
       <div style={{ fontSize: 28, fontWeight: 700, color: '#f0ece4', marginBottom: 24 }}>
-        Fase de Grupos
+        {t.groups.title}
       </div>
 
       {standings.size === 0 ? (
-        <p style={{ fontSize: 14, color: '#6b6d75' }}>Sin equipos registrados.</p>
+        <p style={{ fontSize: 14, color: '#6b6d75' }}>{t.groups.empty}</p>
       ) : (
         <div style={{
           display: 'grid',
@@ -168,7 +174,7 @@ export default async function GroupsPage() {
           gap: 16,
         }}>
           {[...standings.entries()].map(([group, rows]) => (
-            <GroupCard key={group} group={group} rows={rows} />
+            <GroupCard key={group} group={group} rows={rows} t={t} />
           ))}
         </div>
       )}
