@@ -3,8 +3,6 @@
 import { useTranslation } from '@/lib/i18n/hook'
 import type { Locale } from '@/lib/i18n/types'
 
-const LOCALES: Locale[] = ['ES', 'EN'] as unknown as Locale[]
-
 export function LanguageToggle() {
   const { locale, setLocale } = useTranslation()
 

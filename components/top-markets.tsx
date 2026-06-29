@@ -2,16 +2,12 @@
 
 import { useState } from 'react'
 import type { RankedMarket } from '@/lib/skills/rank-markets'
-import { MARKET_SHORT_LABELS, translateOutcome } from '@/lib/content/markets-es'
+import { getMarketContent } from '@/lib/content/get-market-content'
 import { useTranslation } from '@/lib/i18n/hook'
 
 interface TopMarketsProps {
   initial: RankedMarket[]
   all: RankedMarket[]
-}
-
-function marketLabel(market: string): string {
-  return MARKET_SHORT_LABELS[market] ?? market.replace(/_/g, ' ')
 }
 
 function pctColor(probability: number): string {
@@ -21,13 +17,14 @@ function pctColor(probability: number): string {
 }
 
 export function TopMarkets({ initial, all }: TopMarketsProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const markets = expanded ? all : initial
 
   if (initial.length === 0) return null
 
   const hasMore = all.length > initial.length
+  const { shortLabels, translateOutcome } = getMarketContent(locale)
 
   const confidenceBadge = (level: string) => {
     if (level === 'high') return { label: t.topMarkets.confidence.high, bg: 'rgba(255,219,0,0.12)', color: '#FFDB00' }
@@ -54,6 +51,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
         {markets.map((m, i) => {
           const badge = confidenceBadge(m.confidence)
           const pct = Math.round(m.topProbability * 100)
+          const marketLabel = shortLabels[m.market] ?? m.market.replace(/_/g, ' ')
           const outcomeLabel = translateOutcome(m.market, m.topOutcome)
           return (
             <div
@@ -76,7 +74,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 3, flexWrap: 'wrap' }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: '#f0ece4' }}>
-                    {marketLabel(m.market)}
+                    {marketLabel}
                   </span>
                   <span style={{
                     background: badge.bg,

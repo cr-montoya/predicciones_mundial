@@ -4,6 +4,7 @@ import { buildStaticTeams } from '@/lib/agents/static-teams'
 import { getFlag } from '@/lib/utils/flags'
 import { PickBadge } from '@/components/pick-badge'
 import type { Team } from '@/lib/types'
+import { getServerTranslations } from '@/lib/i18n/server'
 
 export const revalidate = 3600
 
@@ -15,10 +16,10 @@ function toBogotaDate(utc: string): string {
   return `${y}-${m}-${day}`
 }
 
-function formatDateHeader(dateStr: string): string {
+function formatDateHeader(dateStr: string, locale: string): string {
   const [y, mo, d] = dateStr.split('-').map(Number)
   const date = new Date(Date.UTC(y, mo - 1, d))
-  return date.toLocaleDateString('es-CO', {
+  return date.toLocaleDateString(locale === 'en' ? 'en-US' : 'es-CO', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -26,8 +27,8 @@ function formatDateHeader(dateStr: string): string {
   })
 }
 
-function formatTime(utc: string): string {
-  return new Date(utc).toLocaleTimeString('es-CO', {
+function formatTime(utc: string, locale: string): string {
+  return new Date(utc).toLocaleTimeString(locale === 'en' ? 'en-US' : 'es-CO', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
@@ -35,19 +36,26 @@ function formatTime(utc: string): string {
   })
 }
 
-function statusStyles(status: string): { bg: string; color: string; label: string } {
-  if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: 'EN VIVO' }
-  if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: 'FIN' }
-  return { bg: 'rgba(255,219,0,0.06)', color: '#6b6d75', label: 'PROG' }
-}
-
 export default async function FixturesPage() {
-  const fixtures = (await loadFixtures()).sort((a, b) => a.kickoffUtc.localeCompare(b.kickoffUtc))
-  const teams = buildStaticTeams()
-  const teamMap = new Map<number, Team>(teams.map((t) => [t.id, t]))
+  const [fixtures, { t, locale }] = await Promise.all([
+    loadFixtures(),
+    getServerTranslations(),
+  ])
 
-  const grouped = new Map<string, typeof fixtures>()
-  for (const fx of fixtures) {
+  const sorted = fixtures.sort((a, b) => a.kickoffUtc.localeCompare(b.kickoffUtc))
+  const teams = buildStaticTeams()
+  const teamById = new Map<number, Team>(teams.map((tm) => [tm.id, tm]))
+
+  const fl = t.fixturesList
+
+  function statusStyles(status: string): { bg: string; color: string; label: string } {
+    if (status === 'live') return { bg: 'rgba(220,38,38,0.15)', color: '#ef4444', label: fl.statusLive }
+    if (status === 'finished') return { bg: 'rgba(2,185,6,0.15)', color: '#02B906', label: fl.statusFinished }
+    return { bg: 'rgba(255,219,0,0.06)', color: '#6b6d75', label: fl.statusScheduled }
+  }
+
+  const grouped = new Map<string, typeof sorted>()
+  for (const fx of sorted) {
     const key = toBogotaDate(fx.kickoffUtc)
     if (!grouped.has(key)) grouped.set(key, [])
     grouped.get(key)!.push(fx)
@@ -56,11 +64,11 @@ export default async function FixturesPage() {
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '28px 28px 60px' }}>
       <div style={{ fontSize: 28, fontWeight: 700, color: '#f0ece4', marginBottom: 24 }}>
-        Partidos
+        {fl.title}
       </div>
 
       {grouped.size === 0 ? (
-        <p style={{ fontSize: 14, color: '#6b6d75' }}>Sin partidos registrados.</p>
+        <p style={{ fontSize: 14, color: '#6b6d75' }}>{fl.noFixtures}</p>
       ) : (
         [...grouped.entries()].map(([dateKey, dayFixtures]) => (
           <div key={dateKey} style={{ marginBottom: 28 }}>
@@ -74,12 +82,12 @@ export default async function FixturesPage() {
               paddingBottom: 8,
               borderBottom: '1px solid rgba(255,219,0,0.06)',
             }}>
-              {formatDateHeader(dateKey)}
+              {formatDateHeader(dateKey, locale)}
             </div>
 
             {dayFixtures.map((fx) => {
-              const home = teamMap.get(fx.homeTeamId)
-              const away = teamMap.get(fx.awayTeamId)
+              const home = teamById.get(fx.homeTeamId)
+              const away = teamById.get(fx.awayTeamId)
               const hasScore = fx.homeGoals !== null && fx.awayGoals !== null
               const st = statusStyles(fx.status)
               const homeFlag = getFlag(home?.name ?? '')
@@ -99,7 +107,7 @@ export default async function FixturesPage() {
                 >
                   <div style={{ width: 56, textAlign: 'center', flexShrink: 0 }}>
                     <span style={{ fontSize: 13, color: '#6b6d75', fontWeight: 500 }}>
-                      {formatTime(fx.kickoffUtc)}
+                      {formatTime(fx.kickoffUtc, locale)}
                     </span>
                   </div>
 
