@@ -1,6 +1,6 @@
 # World Cup 2026 Prediction Simulator
 
-> AI-assisted statistical football analytics app
+> AI-assisted statistical football analytics app &nbsp;·&nbsp; `v1.0.0`
 
 Statistical projection engine for the 2026 FIFA World Cup. The app runs a custom
 **Poisson + Monte Carlo** model to compute match outcome probabilities, market
@@ -164,6 +164,97 @@ This repo uses SDD with trunk-based development:
 
 The `specs/README.md` is the live roadmap index — every spec and its current status is
 listed there.
+
+### Agent orchestration flow
+
+Claude Code orchestrates specialized subagents for each gate. The full flow from idea
+to merged PR:
+
+```
+spec-init          create specs/<name>/{requirements,design,tasks}.md
+     ↓
+spec-review        verify the spec is ready before any code is written
+     ↓
+data-contract      define API/JSON/model shapes, nullability, fallbacks
+     ↓
+adr                document architectural decisions (when applicable)
+     ↓
+grill              stress-test the plan; surfaces blockers before coding starts
+     ↓
+[Analyst]          validates model math, lambdas, probabilities, market copy
+[Design]           defines UX, visual direction, responsive behavior, copy
+[Security]         audits secrets, CSP, API exposure, runtime boundaries
+     ↓
+task-runner + [Developer]   implements one scoped task per run
+     ↓
+[QA]               writes/runs Vitest tests, validates build and routes
+[Code Quality]     reviews maintainability, typing, simplicity, duplication
+[Reviewer]         audits harness compliance and spec-to-implementation consistency
+[Design / Security re-check]   re-validates if UI or runtime was touched
+     ↓
+grill re-check     confirms blockers resolved (new models / APIs / markets)
+     ↓
+spec-closeout      verifies ACs, tasks, docs index, checks
+     ↓
+pr-prep            drafts the PR body from spec + diff + gate results
+     ↓
+commit             conventional commit, English, single line, no co-author
+     ↓
+PR → Vercel preview → human approval → merge to main
+```
+
+Skills order the *process*; agents validate *quality* from their specialty. They are
+separate concerns: a skill never replaces a gate, and a gate never replaces a skill.
+
+### `.claude/` directory
+
+```
+.claude/
+├── agents/          specialized subagents, each with a defined scope and tool set
+│   ├── analyst.md
+│   ├── code-quality.md
+│   ├── design.md
+│   ├── developer.md
+│   ├── qa.md
+│   ├── reviewer.md
+│   └── security.md
+└── skills/          process skills that orchestrate or gate each phase of work
+    ├── adr.md
+    ├── commit.md
+    ├── data-contract.md
+    ├── grill.md
+    ├── pr-prep.md
+    ├── spec-closeout.md
+    ├── spec-init.md
+    ├── spec-review.md
+    └── task-runner.md
+```
+
+#### Agents
+
+| Agent | Role |
+|---|---|
+| `analyst` | Designs and validates statistical model logic: lambdas, probabilities, market contracts. |
+| `developer` | Implements TypeScript/Next.js code strictly following harness contracts. |
+| `design` | Defines and reviews visual direction, UX, responsive behavior, and copy. |
+| `qa` | Writes and runs Vitest tests; validates build, routes, and model sanity checks. |
+| `code-quality` | Reviews maintainability, typing, simplicity, and duplication. |
+| `reviewer` | Audits harness compliance and spec-to-implementation consistency. |
+| `security` | Reviews secrets, CSP, external API risks, and runtime boundaries. |
+
+#### Skills
+
+| Skill | When to use |
+|---|---|
+| `spec-init` | Create or normalize a spec folder and update `specs/README.md`. |
+| `spec-review` | Verify a spec is ready before implementation starts. |
+| `data-contract` | Define shapes, nullability, and fallbacks for APIs, JSON, models, and ISR. |
+| `adr` | Document an architectural decision that has lasting impact. |
+| `grill` | Pre-implementation stress-test; surfaces data, contract, and harness blockers. |
+| `task-runner` | Execute one scoped task from an approved spec without scope drift. |
+| `spec-closeout` | Close a spec: verify ACs, tasks, docs, checks before PR. |
+| `pr-prep` | Draft the PR body from spec, diff, checks, and gate results. |
+| `commit` | Create a conventional commit (English, single line, no co-author). |
 
 ## Deploy
 
