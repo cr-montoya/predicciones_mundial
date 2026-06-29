@@ -3,17 +3,20 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FixturesNavBadge } from '@/components/fixtures-nav-badge'
-
-const TABS = [
-  { label: 'Hoy', href: '/' },
-  { label: 'Grupos', href: '/groups' },
-  { label: 'Partidos', href: '/fixtures' },
-  { label: 'Bracket', href: '/bracket' },
-  { label: 'Mis Picks', href: '/mis-picks' },
-]
+import { LanguageToggle } from '@/components/language-toggle'
+import { useTranslation } from '@/lib/i18n/hook'
 
 export function Nav() {
   const pathname = usePathname()
+  const { t } = useTranslation()
+
+  const TABS = [
+    { label: t.nav.today, href: '/' },
+    { label: t.nav.groups, href: '/groups' },
+    { label: t.nav.fixtures, href: '/fixtures' },
+    { label: t.nav.bracket, href: '/bracket' },
+    { label: t.nav.myPicks, href: '/mis-picks' },
+  ]
 
   return (
     <div style={{
@@ -55,33 +58,37 @@ export function Nav() {
           </span>
         </div>
 
-        <div style={{ display: 'flex', gap: 32, height: '100%' }}>
-          {TABS.map(({ label, href }) => {
-            const active = pathname === href
-            return (
-              <Link
-                key={href}
-                href={href}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  height: '100%',
-                  paddingTop: 2,
-                  borderBottom: `2px solid ${active ? '#FFDB00' : 'transparent'}`,
-                  textDecoration: 'none',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: active ? '#FFDB00' : '#6b6d75',
-                  letterSpacing: '1px',
-                  textTransform: 'uppercase',
-                  transition: 'color 0.15s, border-color 0.15s',
-                }}
-              >
-                {label}
-                {href === '/fixtures' && <FixturesNavBadge />}
-              </Link>
-            )
-          })}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24, height: '100%' }}>
+          <div style={{ display: 'flex', gap: 32, height: '100%' }}>
+            {TABS.map(({ label, href }) => {
+              const active = pathname === href
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%',
+                    paddingTop: 2,
+                    borderBottom: `2px solid ${active ? '#FFDB00' : 'transparent'}`,
+                    textDecoration: 'none',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: active ? '#FFDB00' : '#6b6d75',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                    transition: 'color 0.15s, border-color 0.15s',
+                  }}
+                >
+                  {label}
+                  {href === '/fixtures' && <FixturesNavBadge />}
+                </Link>
+              )
+            })}
+          </div>
+
+          <LanguageToggle />
         </div>
       </div>
     </div>

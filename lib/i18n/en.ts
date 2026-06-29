@@ -1,0 +1,103 @@
+const en = {
+  nav: {
+    today: 'Today',
+    groups: 'Groups',
+    fixtures: 'Fixtures',
+    bracket: 'Bracket',
+    myPicks: 'My Picks',
+  },
+  disclaimer: 'Entertainment statistical analysis. Not betting advice.',
+  hero: {
+    defaultTitle: "Today's Matches",
+    firstMatchAt: 'First match at',
+    match: 'match',
+    matches: 'matches',
+  },
+  home: {
+    noFixtures: 'No upcoming matches with predictions available.',
+  },
+  topMarkets: {
+    sectionTitle: 'Most Interesting Markets',
+    viewMore: 'View more markets →',
+    hide: '← Hide',
+    confidence: {
+      high: 'HIGH',
+      medium: 'MED',
+      low: 'LOW',
+    },
+  },
+  candidates: {
+    sectionTitle: 'Tournament Projections',
+    champion: '🏆 Championship Candidates',
+    goldenBoot: '👟 Golden Boot Candidates',
+    probabilitiesAt: 'Probabilities calculated:',
+    viewMore: 'View more →',
+    hide: '← Hide',
+  },
+  accuracy: {
+    sectionTitle: 'Model Accuracy',
+    matches: 'matches',
+    footer: '1X2 Result · Finished matches only',
+  },
+  picksReminder: {
+    singleMatch: 'You have 1 upcoming match without a pick',
+    multipleMatches: (count: number) => `You have ${count} upcoming matches without a pick`,
+    closeLabel: 'Close notice',
+  },
+  lastUpdated: {
+    label: 'Updated',
+    ago: 'ago',
+    justNow: 'just now',
+    minutes: (n: number) => (n === 1 ? '1 min' : `${n} min`),
+    hours: (n: number) => (n === 1 ? '1 h' : `${n} h`),
+  },
+  goalsLabel: {
+    one: '1 goal',
+    many: (n: number) => `${n} goals`,
+  },
+  fixtureDetail: {
+    prediction: 'Prediction',
+    lineups: 'Lineups',
+    marketInfo: 'How does this market work?',
+    confidence: {
+      high: 'High confidence',
+      medium: 'Medium confidence',
+      low: 'Low confidence',
+    },
+    marketExample: 'Example',
+    noLineup: 'Lineup not yet available.',
+    lastMatches: 'Last matches',
+    context: 'Context',
+  },
+  pickPanel: {
+    yourPick: 'Your pick',
+    confirm: 'Confirm',
+    change: 'Change pick',
+    pickSaved: 'Pick saved',
+    home: 'Home',
+    away: 'Away',
+    draw: 'Draw',
+  },
+  share: {
+    share: 'Share',
+    copy: 'Copy link',
+    copied: 'Copied!',
+  },
+  outcomes: {
+    home: 'Home',
+    away: 'Away',
+    draw: 'Draw',
+    over: 'Over',
+    under: 'Under',
+    yes: 'Both score',
+    no: 'At least one does not score',
+    '1X': 'Home or draw',
+    '12': 'No draw',
+    X2: 'Away or draw',
+    red_yes: 'Red card',
+    red_no: 'No red card',
+    unknown: 'Other player',
+  },
+} as const
+
+export default en

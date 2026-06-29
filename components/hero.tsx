@@ -1,12 +1,15 @@
+'use client'
+
 import type { FixtureWithTeams } from '@/lib/agents/home-types'
+import { useTranslation } from '@/lib/i18n/hook'
 
 interface HeroProps {
   fixturesToday: FixtureWithTeams[]
   fallbackLabel: string | null
 }
 
-function formatKickoff(utc: string): string {
-  return new Date(utc).toLocaleTimeString('es-CO', {
+function formatKickoff(utc: string, locale: string): string {
+  return new Date(utc).toLocaleTimeString(locale === 'en' ? 'en-US' : 'es-CO', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
@@ -14,8 +17,8 @@ function formatKickoff(utc: string): string {
   })
 }
 
-function formatDate(): string {
-  return new Date().toLocaleDateString('es-CO', {
+function formatDate(locale: string): string {
+  return new Date().toLocaleDateString(locale === 'en' ? 'en-US' : 'es-CO', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -25,10 +28,11 @@ function formatDate(): string {
 }
 
 export function Hero({ fixturesToday, fallbackLabel }: HeroProps) {
+  const { t, locale } = useTranslation()
   const count = fixturesToday.length
   const first = fixturesToday[0]?.fixture
-  const dateStr = formatDate()
-  const firstKickoff = first ? formatKickoff(first.kickoffUtc) : null
+  const dateStr = formatDate(locale)
+  const firstKickoff = first ? formatKickoff(first.kickoffUtc, locale) : null
 
   return (
     <div style={{
@@ -51,12 +55,12 @@ export function Hero({ fixturesToday, fallbackLabel }: HeroProps) {
           FIFA World Cup
         </div>
         <div style={{ fontSize: 28, fontWeight: 700, color: '#f0ece4' }}>
-          {fallbackLabel ?? 'Partidos Hoy'}
+          {fallbackLabel ?? t.hero.defaultTitle}
         </div>
         <div style={{ fontSize: 13, color: '#6b6d75', marginTop: 4 }}>
           {dateStr}
           {!fallbackLabel && firstKickoff && (
-            <> · Primer partido a las {firstKickoff}</>
+            <> · {t.hero.firstMatchAt} {firstKickoff}</>
           )}
         </div>
       </div>
@@ -82,7 +86,7 @@ export function Hero({ fixturesToday, fallbackLabel }: HeroProps) {
             letterSpacing: '1px',
             fontWeight: 600,
           }}>
-            {count === 1 ? 'partido' : 'partidos'}
+            {count === 1 ? t.hero.match : t.hero.matches}
           </span>
         </div>
       )}

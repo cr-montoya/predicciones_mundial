@@ -3,6 +3,7 @@ import { Outfit } from 'next/font/google'
 import { DisclaimerBanner } from '@/components/disclaimer-banner'
 import { CaptureWrapper } from '@/components/capture-wrapper'
 import { Nav } from '@/components/nav'
+import { LanguageProvider } from '@/lib/i18n/context'
 import './globals.css'
 
 const outfit = Outfit({
@@ -12,8 +13,21 @@ const outfit = Outfit({
 })
 
 export const metadata: Metadata = {
-  title: 'Mundial 2026 IA Predictor',
-  description: 'Proyecciones estadísticas del Mundial 2026 generadas por IA',
+  title: {
+    default: 'World Cup 2026 Prediction Simulator',
+    template: '%s | World Cup 2026 Prediction Simulator',
+  },
+  description: 'AI-assisted statistical football analytics app for World Cup 2026 match and tournament projections.',
+  openGraph: {
+    title: 'World Cup 2026 Prediction Simulator',
+    description: 'AI-assisted statistical football analytics app for World Cup 2026 match and tournament projections.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'World Cup 2026 Prediction Simulator',
+    description: 'AI-assisted statistical football analytics app for World Cup 2026 match and tournament projections.',
+  },
 }
 
 export default function RootLayout({
@@ -25,11 +39,13 @@ export default function RootLayout({
         className="min-h-full flex flex-col"
         style={{ background: 'var(--bg)', color: 'var(--text)' }}
       >
-        <CaptureWrapper captureHidden={null}>
-          <Nav />
-          <DisclaimerBanner />
-        </CaptureWrapper>
-        <main className="flex-1 flex flex-col">{children}</main>
+        <LanguageProvider>
+          <CaptureWrapper captureHidden={null}>
+            <Nav />
+            <DisclaimerBanner />
+          </CaptureWrapper>
+          <main className="flex-1 flex flex-col">{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   )

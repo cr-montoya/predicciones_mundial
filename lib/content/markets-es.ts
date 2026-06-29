@@ -189,3 +189,4 @@ export function translateOutcome(market: string, outcome: string): string {
 export const MARKET_SHORT_LABELS: Record<string, string> = Object.fromEntries(
   Object.entries(MARKET_COPY).map(([k, v]) => [k, v.shortLabel])
 )
+

@@ -2,49 +2,50 @@
 
 ## Pre-implementation
 
-- [ ] **Spec Review**: validate requirements and design before starting.
-- [ ] **Grill**: run Grill gate to detect blockers.
-- [ ] **Design**: review LanguageToggle placement and visual style.
+- [x] **Spec Review**: passed — no blockers.
+- [x] **Grill**: passed — CLEAR TO IMPLEMENT.
+- [ ] **Design**: review LanguageToggle placement and visual style (pending).
 
 ## Developer — Infrastructure
 
-- [ ] Create `lib/i18n/en.ts` with all English strings (nav, hero, markets, labels,
+- [x] Create `lib/i18n/en.ts` with all English strings (nav, hero, markets, labels,
       disclaimers, section titles, empty states, pick labels).
-- [ ] Create `lib/i18n/es.ts` mirroring every key from `en.ts` with Spanish copy
+- [x] Create `lib/i18n/es.ts` mirroring every key from `en.ts` with Spanish copy
       extracted from current components.
-- [ ] Create `lib/i18n/types.ts` exporting `Translations` and `Locale` types.
-- [ ] Create `lib/i18n/context.tsx` with `LanguageProvider` and `useLanguage` hook.
+- [x] Create `lib/i18n/types.ts` exporting `Translations` and `Locale` types.
+- [x] Create `lib/i18n/context.tsx` with `LanguageProvider` and `useLanguage` hook.
       - Read `localStorage['wc2026-locale']` on mount.
       - Detect browser language if no preference saved.
       - Default to `'es'` if language is not `en` or `es`.
-      - Persist changes to `localStorage`.
-- [ ] Create `lib/i18n/hook.ts` exporting `useTranslation()`.
+      - Persist changes to `localStorage` and a cookie (`wc2026-locale`).
+- [x] Create `lib/i18n/hook.ts` exporting `useTranslation()`.
 
 ## Developer — Components
 
-- [ ] Create `components/language-toggle.tsx` (Client Component).
-      - Renders `[ EN | ES ]` pill.
+- [x] Create `components/language-toggle.tsx` (Client Component).
+      - Renders `[ ES | EN ]` pill.
       - Active locale highlighted.
       - Calls `setLocale` on click.
-- [ ] Add `LanguageToggle` to `components/nav.tsx`.
-- [ ] Wrap `app/layout.tsx` with `LanguageProvider`.
+- [x] Add `LanguageToggle` to `components/nav.tsx`.
+- [x] Wrap `app/layout.tsx` with `LanguageProvider`.
 
 ## Developer — UI Migration
 
-- [ ] Migrate `components/nav.tsx` strings to `useTranslation`.
-- [ ] Migrate `components/hero.tsx` strings.
-- [ ] Migrate `components/disclaimer-banner.tsx`.
-- [ ] Migrate `components/picks-reminder-banner.tsx`.
+- [x] Migrate `components/nav.tsx` strings to `useTranslation`.
+- [x] Migrate `components/hero.tsx` strings (converted to Client Component).
+- [x] Migrate `components/disclaimer-banner.tsx`.
+- [x] Migrate `components/picks-reminder-banner.tsx`.
 - [ ] Migrate `components/market-section.tsx` and `components/market-info.tsx`.
-- [ ] Migrate `app/page.tsx` (home page labels).
+- [x] Migrate `app/page.tsx` (home page labels — empty state via `NoFixturesMessage`).
 - [ ] Migrate `app/fixtures/page.tsx` and `app/fixtures/[id]/page.tsx`.
 - [ ] Migrate `app/bracket/page.tsx`.
 - [ ] Migrate `app/groups/page.tsx`.
 - [ ] Migrate `app/mis-picks/page.tsx`.
-- [ ] Migrate `components/candidates.tsx`, `components/top-markets.tsx`,
+- [x] Migrate `components/candidates.tsx`, `components/top-markets.tsx`,
       `components/accuracy-widget.tsx`.
-- [ ] Migrate `lib/content/markets-es.ts`: create `markets-en.ts` and
-      `getMarketContent(locale)` helper; update all call sites.
+- [x] Migrate `lib/content/markets-es.ts`: created `markets-en.ts` and
+      `getMarketContent(locale)` helper in `lib/content/get-market-content.ts`.
+- [x] Migrate `components/last-updated.tsx` (converted to Client Component).
 
 ## QA
 

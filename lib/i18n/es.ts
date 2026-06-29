@@ -1,0 +1,103 @@
+const es = {
+  nav: {
+    today: 'Hoy',
+    groups: 'Grupos',
+    fixtures: 'Partidos',
+    bracket: 'Bracket',
+    myPicks: 'Mis Picks',
+  },
+  disclaimer: 'Análisis estadístico de entretenimiento. No es asesoría de apuestas.',
+  hero: {
+    defaultTitle: 'Partidos Hoy',
+    firstMatchAt: 'Primer partido a las',
+    match: 'partido',
+    matches: 'partidos',
+  },
+  home: {
+    noFixtures: 'Sin partidos próximos con predicciones disponibles.',
+  },
+  topMarkets: {
+    sectionTitle: 'Mercados Más Interesantes',
+    viewMore: 'Ver más mercados →',
+    hide: '← Ocultar',
+    confidence: {
+      high: 'ALTA',
+      medium: 'MEDIA',
+      low: 'BAJA',
+    },
+  },
+  candidates: {
+    sectionTitle: 'Proyecciones del Torneo',
+    champion: '🏆 Candidatos a Campeón',
+    goldenBoot: '👟 Candidatos a Bota de Oro',
+    probabilitiesAt: 'Probabilidades calculadas:',
+    viewMore: 'Ver más →',
+    hide: '← Ocultar',
+  },
+  accuracy: {
+    sectionTitle: 'Precisión del Modelo',
+    matches: 'partidos',
+    footer: 'Resultado 1X2 · Solo partidos finalizados',
+  },
+  picksReminder: {
+    singleMatch: 'Tienes 1 partido próximo sin pick',
+    multipleMatches: (count: number) => `Tienes ${count} partidos próximos sin pick`,
+    closeLabel: 'Cerrar aviso',
+  },
+  lastUpdated: {
+    label: 'Actualizado',
+    ago: 'hace',
+    justNow: 'justo ahora',
+    minutes: (n: number) => (n === 1 ? '1 min' : `${n} min`),
+    hours: (n: number) => (n === 1 ? '1 h' : `${n} h`),
+  },
+  goalsLabel: {
+    one: '1 gol',
+    many: (n: number) => `${n} goles`,
+  },
+  fixtureDetail: {
+    prediction: 'Predicción',
+    lineups: 'Alineaciones',
+    marketInfo: '¿Cómo funciona este mercado?',
+    confidence: {
+      high: 'Confianza alta',
+      medium: 'Confianza media',
+      low: 'Confianza baja',
+    },
+    marketExample: 'Ejemplo',
+    noLineup: 'Alineación aún no disponible.',
+    lastMatches: 'Últimos partidos',
+    context: 'Contexto',
+  },
+  pickPanel: {
+    yourPick: 'Tu pick',
+    confirm: 'Confirmar',
+    change: 'Cambiar pick',
+    pickSaved: 'Pick guardado',
+    home: 'Local',
+    away: 'Visitante',
+    draw: 'Empate',
+  },
+  share: {
+    share: 'Compartir',
+    copy: 'Copiar enlace',
+    copied: '¡Copiado!',
+  },
+  outcomes: {
+    home: 'Local',
+    away: 'Visitante',
+    draw: 'Empate',
+    over: 'Más',
+    under: 'Menos',
+    yes: 'Ambos anotan',
+    no: 'Al menos uno no marca',
+    '1X': 'Local o empate',
+    '12': 'Sin empate',
+    X2: 'Visitante o empate',
+    red_yes: 'Hay roja',
+    red_no: 'Sin roja',
+    unknown: 'Otro jugador',
+  },
+} as const
+
+export default es

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { RankedMarket } from '@/lib/skills/rank-markets'
 import { MARKET_SHORT_LABELS, translateOutcome } from '@/lib/content/markets-es'
+import { useTranslation } from '@/lib/i18n/hook'
 
 interface TopMarketsProps {
   initial: RankedMarket[]
@@ -13,12 +14,6 @@ function marketLabel(market: string): string {
   return MARKET_SHORT_LABELS[market] ?? market.replace(/_/g, ' ')
 }
 
-function confidenceBadge(level: string): { label: string; bg: string; color: string } {
-  if (level === 'high') return { label: 'ALTA', bg: 'rgba(255,219,0,0.12)', color: '#FFDB00' }
-  if (level === 'medium') return { label: 'MEDIA', bg: 'rgba(255,165,0,0.12)', color: '#FFA500' }
-  return { label: 'BAJA', bg: 'rgba(255,255,255,0.06)', color: '#6b6d75' }
-}
-
 function pctColor(probability: number): string {
   if (probability >= 0.75) return '#FFDB00'
   if (probability >= 0.55) return '#D4A843'
@@ -26,12 +21,19 @@ function pctColor(probability: number): string {
 }
 
 export function TopMarkets({ initial, all }: TopMarketsProps) {
+  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const markets = expanded ? all : initial
 
   if (initial.length === 0) return null
 
   const hasMore = all.length > initial.length
+
+  const confidenceBadge = (level: string) => {
+    if (level === 'high') return { label: t.topMarkets.confidence.high, bg: 'rgba(255,219,0,0.12)', color: '#FFDB00' }
+    if (level === 'medium') return { label: t.topMarkets.confidence.medium, bg: 'rgba(255,165,0,0.12)', color: '#FFA500' }
+    return { label: t.topMarkets.confidence.low, bg: 'rgba(255,255,255,0.06)', color: '#6b6d75' }
+  }
 
   return (
     <section style={{ marginBottom: 36 }}>
@@ -45,7 +47,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
         paddingBottom: 8,
         borderBottom: '1px solid rgba(255,255,255,0.04)',
       }}>
-        Mercados Más Interesantes
+        {t.topMarkets.sectionTitle}
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -119,7 +121,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
               letterSpacing: '0.5px',
             }}
           >
-            {expanded ? '← Ocultar' : 'Ver más mercados →'}
+            {expanded ? t.topMarkets.hide : t.topMarkets.viewMore}
           </button>
         </div>
       )}
