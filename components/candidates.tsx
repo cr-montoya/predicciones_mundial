@@ -3,16 +3,12 @@
 import { useState } from 'react'
 import type { ModelOutput } from '@/lib/types'
 import type { CandidateRow } from '@/lib/skills/normalize-scorer-name'
+import { useTranslation } from '@/lib/i18n/hook'
 
 function rankColor(pos: number): string {
   if (pos === 0) return '#FFDB00'
   if (pos <= 2) return '#D4A843'
   return '#887044'
-}
-
-function goalsLabel(goals: number | null): string {
-  if (!goals || goals <= 0) return '—'
-  return goals === 1 ? '1 gol' : `${goals} goles`
 }
 
 function formatComputedAt(iso: string): string {
@@ -31,6 +27,7 @@ interface WinnerListProps {
 }
 
 function WinnerList({ output, title }: WinnerListProps) {
+  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const sorted = Object.entries(output.probabilities).sort(([, a], [, b]) => b - a)
   const displayed = expanded ? sorted : sorted.slice(0, 5)
@@ -116,7 +113,7 @@ function WinnerList({ output, title }: WinnerListProps) {
               fontWeight: 600,
             }}
           >
-            {expanded ? '← Ocultar' : 'Ver más →'}
+            {expanded ? t.candidates.hide : t.candidates.viewMore}
           </button>
         </div>
       )}
@@ -131,6 +128,7 @@ interface BootListProps {
 }
 
 function BootList({ candidates, computedAt, title }: BootListProps) {
+  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const displayed = expanded ? candidates : candidates.slice(0, 5)
   const hasMore = candidates.length > 5
@@ -156,7 +154,7 @@ function BootList({ candidates, computedAt, title }: BootListProps) {
 
       {computedDate && (
         <div style={{ fontSize: 11, color: '#6b6d75', marginBottom: 14 }}>
-          Probabilidades calculadas: {computedDate}
+          {t.candidates.probabilitiesAt} {computedDate}
         </div>
       )}
 
@@ -164,7 +162,9 @@ function BootList({ candidates, computedAt, title }: BootListProps) {
         {displayed.map((row, i) => {
           const color = rankColor(i)
           const pct = row.probability !== null ? `${Math.round(row.probability * 100)}%` : '—'
-          const goals = goalsLabel(row.goals)
+          const goals = row.goals && row.goals > 0
+            ? row.goals === 1 ? t.goalsLabel.one : t.goalsLabel.many(row.goals)
+            : '—'
           const hasGoals = (row.goals ?? 0) > 0
 
           return (
@@ -223,7 +223,7 @@ function BootList({ candidates, computedAt, title }: BootListProps) {
               fontWeight: 600,
             }}
           >
-            {expanded ? '← Ocultar' : 'Ver más →'}
+            {expanded ? t.candidates.hide : t.candidates.viewMore}
           </button>
         </div>
       )}
@@ -239,6 +239,8 @@ interface CandidatesProps {
 }
 
 export function Candidates({ winner, boot, candidates, goldenBootComputedAt }: CandidatesProps) {
+  const { t } = useTranslation()
+
   if (!winner && !boot && candidates.length === 0) return null
 
   return (
@@ -253,7 +255,7 @@ export function Candidates({ winner, boot, candidates, goldenBootComputedAt }: C
         paddingBottom: 8,
         borderBottom: '1px solid rgba(255,255,255,0.04)',
       }}>
-        Proyecciones del Torneo
+        {t.candidates.sectionTitle}
       </div>
 
       <div style={{
@@ -262,13 +264,13 @@ export function Candidates({ winner, boot, candidates, goldenBootComputedAt }: C
         gap: 16,
       }}>
         {winner && (
-          <WinnerList output={winner} title="🏆 Candidatos a Campeón" />
+          <WinnerList output={winner} title={t.candidates.champion} />
         )}
         {candidates.length > 0 && (
           <BootList
             candidates={candidates}
             computedAt={goldenBootComputedAt}
-            title="👟 Candidatos a Bota de Oro"
+            title={t.candidates.goldenBoot}
           />
         )}
       </div>

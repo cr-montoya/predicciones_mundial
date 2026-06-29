@@ -78,20 +78,39 @@ which also updates `localStorage`.
 
 ## Server Components Strategy
 
-Server Components that need translated copy receive `locale: Locale` as a prop
-from the nearest Client Component boundary (typically the page or a layout wrapper).
-They import the dictionary directly rather than using the hook:
+**Implemented approach (deviation from original design):**
+
+The original design proposed threading `locale` as a prop from a Client Component
+boundary. In practice, Server Component pages (e.g. `app/fixtures/page.tsx`) are
+the root of their render tree and have no Client Component ancestor to receive a
+prop from.
+
+The implemented approach uses a cookie:
+
+1. `LanguageProvider` sets `document.cookie = 'wc2026-locale=<locale>'` on every
+   locale change (client-side).
+2. `lib/i18n/server.ts` exports `getServerTranslations()`, which reads the cookie
+   via `cookies()` from `next/headers` and returns `{ t, locale }`.
+3. Server Components call `getServerTranslations()` directly:
 
 ```ts
-// In a Server Component
-import en from '@/lib/i18n/en'
-import es from '@/lib/i18n/es'
+// In a Server Component page
+import { getServerTranslations } from '@/lib/i18n/server'
 
-export default function MySection({ locale }: { locale: Locale }) {
-  const t = locale === 'en' ? en : es
-  return <h2>{t.section.title}</h2>
+export default async function Page() {
+  const { t, locale } = await getServerTranslations()
+  // use t and locale directly
 }
 ```
+
+**Trade-off:** Using `cookies()` forces Next.js to treat the route as Dynamic (`ƒ`)
+instead of Static (`○`). Routes that previously used ISR (`revalidate = 3600`) and
+now call `getServerTranslations()` lose ISR. Currently affected: `app/fixtures/page.tsx`.
+Routes that keep all translation in Client Components retain ISR (e.g. `/`, `/bracket`,
+`/groups`, `/mis-picks`).
+
+`lib/i18n/server.ts` is guarded with `import 'server-only'` to prevent accidental
+Client Component imports.
 
 ## markets-es.ts Migration
 

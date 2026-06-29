@@ -6,6 +6,7 @@ import { TopMarkets } from '@/components/top-markets'
 import { Candidates } from '@/components/candidates'
 import { AccuracyWidget } from '@/components/accuracy-widget'
 import { PicksReminderBanner } from '@/components/picks-reminder-banner'
+import { NoFixturesMessage } from '@/components/no-fixtures-message'
 
 export const revalidate = 3600
 
@@ -31,15 +32,7 @@ export default async function HomePage() {
       {rankedMarkets.length > 0 ? (
         <TopMarkets initial={rankedMarkets} all={allRankedMarkets} />
       ) : (
-        <div style={{
-          padding: '24px 16px',
-          border: '1px solid rgba(255,255,255,0.04)',
-          fontSize: 13,
-          color: '#6b6d75',
-          marginBottom: 36,
-        }}>
-          Sin partidos próximos con predicciones disponibles.
-        </div>
+        <NoFixturesMessage />
       )}
 
       <Candidates winner={tournamentWinner} boot={goldenBoot} candidates={candidates} goldenBootComputedAt={goldenBootComputedAt} />

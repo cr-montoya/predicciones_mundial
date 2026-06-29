@@ -1,4 +1,10 @@
+'use client'
+
+import { useTranslation } from '@/lib/i18n/hook'
+
 export function DisclaimerBanner() {
+  const { t } = useTranslation()
+
   return (
     <div style={{
       padding: '8px 28px',
@@ -9,7 +15,7 @@ export function DisclaimerBanner() {
       color: '#6b6d75',
       letterSpacing: '0.3px',
     }}>
-      Análisis estadístico de entretenimiento. No es asesoría de apuestas.
+      {t.disclaimer}
     </div>
   )
 }

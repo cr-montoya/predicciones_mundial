@@ -2,21 +2,12 @@
 
 import { useState } from 'react'
 import type { RankedMarket } from '@/lib/skills/rank-markets'
-import { MARKET_SHORT_LABELS, translateOutcome } from '@/lib/content/markets-es'
+import { getMarketContent } from '@/lib/content/get-market-content'
+import { useTranslation } from '@/lib/i18n/hook'
 
 interface TopMarketsProps {
   initial: RankedMarket[]
   all: RankedMarket[]
-}
-
-function marketLabel(market: string): string {
-  return MARKET_SHORT_LABELS[market] ?? market.replace(/_/g, ' ')
-}
-
-function confidenceBadge(level: string): { label: string; bg: string; color: string } {
-  if (level === 'high') return { label: 'ALTA', bg: 'rgba(255,219,0,0.12)', color: '#FFDB00' }
-  if (level === 'medium') return { label: 'MEDIA', bg: 'rgba(255,165,0,0.12)', color: '#FFA500' }
-  return { label: 'BAJA', bg: 'rgba(255,255,255,0.06)', color: '#6b6d75' }
 }
 
 function pctColor(probability: number): string {
@@ -26,12 +17,20 @@ function pctColor(probability: number): string {
 }
 
 export function TopMarkets({ initial, all }: TopMarketsProps) {
+  const { t, locale } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const markets = expanded ? all : initial
 
   if (initial.length === 0) return null
 
   const hasMore = all.length > initial.length
+  const { shortLabels, translateOutcome } = getMarketContent(locale)
+
+  const confidenceBadge = (level: string) => {
+    if (level === 'high') return { label: t.topMarkets.confidence.high, bg: 'rgba(255,219,0,0.12)', color: '#FFDB00' }
+    if (level === 'medium') return { label: t.topMarkets.confidence.medium, bg: 'rgba(255,165,0,0.12)', color: '#FFA500' }
+    return { label: t.topMarkets.confidence.low, bg: 'rgba(255,255,255,0.06)', color: '#6b6d75' }
+  }
 
   return (
     <section style={{ marginBottom: 36 }}>
@@ -45,13 +44,14 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
         paddingBottom: 8,
         borderBottom: '1px solid rgba(255,255,255,0.04)',
       }}>
-        Mercados Más Interesantes
+        {t.topMarkets.sectionTitle}
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {markets.map((m, i) => {
           const badge = confidenceBadge(m.confidence)
           const pct = Math.round(m.topProbability * 100)
+          const marketLabel = shortLabels[m.market] ?? m.market.replace(/_/g, ' ')
           const outcomeLabel = translateOutcome(m.market, m.topOutcome)
           return (
             <div
@@ -74,7 +74,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 3, flexWrap: 'wrap' }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: '#f0ece4' }}>
-                    {marketLabel(m.market)}
+                    {marketLabel}
                   </span>
                   <span style={{
                     background: badge.bg,
@@ -119,7 +119,7 @@ export function TopMarkets({ initial, all }: TopMarketsProps) {
               letterSpacing: '0.5px',
             }}
           >
-            {expanded ? '← Ocultar' : 'Ver más mercados →'}
+            {expanded ? t.topMarkets.hide : t.topMarkets.viewMore}
           </button>
         </div>
       )}

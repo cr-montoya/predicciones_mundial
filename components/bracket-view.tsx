@@ -3,9 +3,10 @@ import { BracketTree } from './bracket-tree'
 
 interface BracketViewProps {
   matchups: ResolvedMatchup[]
+  emptyState: string
 }
 
-export function BracketView({ matchups }: BracketViewProps) {
+export function BracketView({ matchups, emptyState }: BracketViewProps) {
   if (matchups.length === 0) {
     return (
       <div style={{
@@ -16,7 +17,7 @@ export function BracketView({ matchups }: BracketViewProps) {
         color: '#6b6d75',
         fontSize: 14,
       }}>
-        Los cruces se mostrarán cuando haya partidos jugados.
+        {emptyState}
       </div>
     )
   }
@@ -24,14 +25,6 @@ export function BracketView({ matchups }: BracketViewProps) {
   return (
     <div>
       <BracketTree matchups={matchups} />
-      <div style={{
-        marginTop: 24,
-        fontSize: 11,
-        color: '#4b4d54',
-        lineHeight: 1.6,
-      }}>
-        Proyecciones basadas en standings actuales · Octavos en adelante se confirman al cerrar la fase de grupos · Probabilidades a 90 min
-      </div>
     </div>
   )
 }

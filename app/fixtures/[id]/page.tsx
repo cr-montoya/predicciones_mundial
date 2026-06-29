@@ -16,10 +16,13 @@ import { CollapsibleSection } from '@/components/collapsible-section'
 import { TeamTotalsSection } from '@/components/team-totals-section'
 import { FadeIn } from '@/components/fade-in'
 import { ShareButton } from '@/components/share-button'
+import { FixtureHeader } from '@/components/fixture-header'
 import type { ModelOutput, MarketType } from '@/lib/types'
 import { squadsByTeamId } from '@/lib/data/squads'
+import { getServerTranslations } from '@/lib/i18n/server'
+import type { Translations } from '@/lib/i18n/types'
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://predicciones-mundial.vercel.app'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://predicciones-mundial-topaz.vercel.app'
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params
@@ -48,27 +51,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       }) : [])
   const r1x2 = predictions.find(p => p.market === 'result_1x2')
 
-  let description = `${homeName} vs ${awayName} — Predicción IA`
+  let description = `${homeName} vs ${awayName} — AI prediction`
   if (r1x2) {
     const h = Math.round((r1x2.probabilities['home'] ?? 0) * 100)
     const d = Math.round((r1x2.probabilities['draw'] ?? 0) * 100)
     const a = Math.round((r1x2.probabilities['away'] ?? 0) * 100)
-    description = `Local ${h}% · Empate ${d}% · Visita ${a}%`
+    description = `Home ${h}% · Draw ${d}% · Away ${a}%`
   }
 
   const ogImage = `${APP_URL}/og/fixture/${fixtureId}`
 
   return {
-    title: `${homeName} vs ${awayName} — Mundial 2026 IA Predictor`,
+    title: `${homeName} vs ${awayName}`,
     description,
     openGraph: {
-      title: `${homeName} vs ${awayName} — Predicción IA`,
+      title: `${homeName} vs ${awayName} — World Cup 2026 Prediction Simulator`,
       description,
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${homeName} vs ${awayName}` }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${homeName} vs ${awayName} — Predicción IA`,
+      title: `${homeName} vs ${awayName} — World Cup 2026 Prediction Simulator`,
       description,
       images: [ogImage],
     },
@@ -122,59 +125,14 @@ function buildValueMap(
   return Object.keys(result).length > 0 ? result : null
 }
 
-interface FixtureHeaderProps {
-  home: string
-  homeId: number
-  away: string
-  awayId: number
-  kickoff: string
-  homeGoals: number | null
-  awayGoals: number | null
-  status: string
-}
-
-function FixtureHeader({ home, homeId, away, awayId, kickoff, homeGoals, awayGoals, status }: FixtureHeaderProps) {
-  const hasScore = homeGoals !== null && awayGoals !== null
-  const date = new Date(kickoff).toLocaleString('es-CO', {
-    weekday: 'short',
-    day: '2-digit',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'America/Bogota',
-  })
-
-  return (
-    <div className="flex flex-col gap-4">
-      <p className="text-xs tracking-wider" style={{ color: 'var(--muted)' }}>{date}</p>
-      <div className="flex items-center gap-6">
-        <a href={`/teams/${homeId}`} className="text-xl font-bold flex-1 text-right" style={{ color: '#f0ece4', textDecoration: 'none' }}>
-          {home}
-        </a>
-        <span
-          className="text-4xl font-bold tabular-nums w-28 text-center"
-          style={{ color: hasScore ? 'var(--accent)' : 'var(--muted)' }}
-        >
-          {hasScore ? `${homeGoals} - ${awayGoals}` : 'vs'}
-        </span>
-        <a href={`/teams/${awayId}`} className="text-xl font-bold flex-1" style={{ color: '#f0ece4', textDecoration: 'none' }}>
-          {away}
-        </a>
-      </div>
-      <p className="text-xs tracking-widest text-center" style={{ color: 'var(--muted)' }}>
-        {status === 'finished' ? 'FINALIZADO' : status === 'live' ? 'EN VIVO' : 'PROGRAMADO'}
-      </p>
-    </div>
-  )
-}
-
-function formatLineupTimestamp(iso: string): string {
+function formatLineupTimestamp(iso: string, t: Translations['fixtureDetail'], locale: string): string {
   const diff = Date.now() - new Date(iso).getTime()
   const mins = Math.floor(diff / 60000)
-  if (mins < 60) return `Alineación obtenida hace ${mins} min`
+  if (mins < 60) return t.lineup.fetchedMinutes(mins)
   const hrs = Math.floor(diff / 3600000)
-  if (hrs < 24) return `Alineación obtenida hace ${hrs} h`
-  return `Alineación obtenida ${new Date(iso).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`
+  if (hrs < 24) return t.lineup.fetchedHours(hrs)
+  const dateLocale = locale === 'en' ? 'en-US' : 'es-CO'
+  return `${t.lineup.fetchedAt} ${new Date(iso).toLocaleDateString(dateLocale, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`
 }
 
 export default async function FixturePage({ params }: PageProps) {
@@ -183,7 +141,11 @@ export default async function FixturePage({ params }: PageProps) {
 
   if (isNaN(fixtureId)) notFound()
 
-  const allFixtures = await loadFixtures()
+  const [allFixtures, { t, locale }] = await Promise.all([
+    loadFixtures(),
+    getServerTranslations(),
+  ])
+
   const fixture = allFixtures.find((f) => f.id === fixtureId)
   if (!fixture) notFound()
 
@@ -252,10 +214,12 @@ export default async function FixturePage({ params }: PageProps) {
     .filter((m) => Object.keys(m.probabilities).length > 0)
 
   const fixturePath = `/fixtures/${fixture.id}`
-  const shareTitle = `${homeName} vs ${awayName} — Predicción IA`
+  const shareTitle = `${homeName} vs ${awayName} — ${t.fixtureDetail.prediction} IA`
   const shareText = r1x2Retro
-    ? `La IA predijo este partido. ¿Acertó?`
-    : `La IA predice este partido del Mundial 2026. ¿Qué opinas?`
+    ? t.fixtureDetail.shareTextFinished
+    : t.fixtureDetail.shareTextUpcoming
+
+  const fd = t.fixtureDetail
 
   return (
     <div className="flex flex-col gap-10 px-6 py-12 max-w-4xl mx-auto w-full">
@@ -313,26 +277,26 @@ export default async function FixturePage({ params }: PageProps) {
       {predictions.length === 0 ? null : (
         <div className="flex flex-col gap-12">
           <FadeIn delay={0.1}>
-            <MarketSection title="RESULTADO" markets={resultMarkets} odds={odds} valueMap={valueMap} />
+            <MarketSection title={fd.sections.result} markets={resultMarkets} odds={odds} valueMap={valueMap} />
           </FadeIn>
 
           {combinedMarkets.length > 0 && (
             <FadeIn delay={0.13}>
-              <CollapsibleSection title="COMBINADOS" count={combinedMarkets.length} defaultOpen={true}>
-                <MarketSection title="COMBINADOS" markets={combinedMarkets} noHeader={true} />
+              <CollapsibleSection title={fd.sections.combined} count={combinedMarkets.length} defaultOpen={true}>
+                <MarketSection title={fd.sections.combined} markets={combinedMarkets} noHeader={true} />
               </CollapsibleSection>
             </FadeIn>
           )}
 
           <FadeIn delay={0.15}>
-            <CollapsibleSection title="GOLES" count={goalMarkets.length} defaultOpen={true}>
-              <MarketSection title="GOLES" markets={goalMarkets} topN={5} noHeader={true} odds={odds} valueMap={valueMap} />
+            <CollapsibleSection title={fd.sections.goals} count={goalMarkets.length} defaultOpen={true}>
+              <MarketSection title={fd.sections.goals} markets={goalMarkets} topN={5} noHeader={true} odds={odds} valueMap={valueMap} />
             </CollapsibleSection>
           </FadeIn>
 
           {(homeTeamMarkets.length > 0 || awayTeamMarkets.length > 0) && (
             <FadeIn delay={0.18}>
-              <CollapsibleSection title="GOLES POR EQUIPO" defaultOpen={false}>
+              <CollapsibleSection title={fd.sections.goalsByTeam} defaultOpen={false}>
                 <TeamTotalsSection
                   homeMarkets={homeTeamMarkets}
                   awayMarkets={awayTeamMarkets}
@@ -346,14 +310,14 @@ export default async function FixturePage({ params }: PageProps) {
           )}
 
           <FadeIn delay={0.2}>
-            <CollapsibleSection title="DISCIPLINA" count={disciplineMarkets.length} defaultOpen={false}>
-              <MarketSection title="DISCIPLINA" markets={disciplineMarkets} noHeader={true} />
+            <CollapsibleSection title={fd.sections.discipline} count={disciplineMarkets.length} defaultOpen={false}>
+              <MarketSection title={fd.sections.discipline} markets={disciplineMarkets} noHeader={true} />
             </CollapsibleSection>
           </FadeIn>
 
           {scorerMarkets.length > 0 && (
             <FadeIn delay={0.25}>
-              <CollapsibleSection title="GOLEADORES" count={scorerMarkets.length} defaultOpen={true}>
+              <CollapsibleSection title={fd.sections.scorers} count={scorerMarkets.length} defaultOpen={true}>
                 {lineupFetchedAt ? (
                   <div className="flex flex-col gap-1.5 mb-4">
                     <span
@@ -364,10 +328,10 @@ export default async function FixturePage({ params }: PageProps) {
                         className="w-1.5 h-1.5 rounded-full"
                         style={{ background: '#02B906', animation: 'pulseGlow 2s ease-in-out infinite' }}
                       />
-                      ALINEACIÓN CONFIRMADA
+                      {fd.lineup.confirmed}
                     </span>
                     <span className="text-[11px]" style={{ color: '#555' }}>
-                      {formatLineupTimestamp(lineupFetchedAt)}
+                      {formatLineupTimestamp(lineupFetchedAt, fd, locale)}
                     </span>
                   </div>
                 ) : (
@@ -376,14 +340,14 @@ export default async function FixturePage({ params }: PageProps) {
                       className="inline-block text-xs font-bold tracking-wider px-2 py-0.5 w-fit"
                       style={{ background: 'rgba(255,165,0,0.12)', color: '#FFA500', borderRadius: 3, letterSpacing: 1 }}
                     >
-                      DATOS LIMITADOS
+                      {fd.lineup.limited}
                     </span>
                     <p className="text-xs" style={{ color: 'var(--muted)' }}>
-                      Sin alineación confirmada. Proyección por minutos históricos.
+                      {fd.lineup.limitedDesc}
                     </p>
                   </div>
                 )}
-                <MarketSection title="GOLEADORES" markets={scorerMarkets} topN={5} noHeader={true} />
+                <MarketSection title={fd.sections.scorers} markets={scorerMarkets} topN={5} noHeader={true} />
                 {excludedPlayers.length > 0 && (
                   <div className="flex flex-col gap-2 mt-4">
                     {excludedPlayers.map(ep => (
@@ -393,7 +357,11 @@ export default async function FixturePage({ params }: PageProps) {
                           className="text-[10px] font-bold tracking-widest px-1.5"
                           style={{ color: 'var(--muted)', background: 'rgba(255,255,255,0.04)', borderRadius: 3 }}
                         >
-                          {ep.reason === 'injured' ? 'LESIONADO' : ep.reason === 'suspended' ? 'SUSPENDIDO' : 'BAJA'}
+                          {ep.reason === 'injured'
+                            ? fd.playerStatus.injured
+                            : ep.reason === 'suspended'
+                            ? fd.playerStatus.suspended
+                            : fd.playerStatus.out}
                         </span>
                       </div>
                     ))}
