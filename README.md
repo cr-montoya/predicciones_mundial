@@ -95,9 +95,66 @@ pnpm precompute        # regenerate tournament Monte Carlo prediction
 pnpm refresh-fixtures  # refresh local fixture cache
 ```
 
+## Learning goals
+
+This repo is also a **learning and experimentation project**. Beyond building a real
+World Cup predictor, it was used to explore and practice two engineering disciplines
+end-to-end in a production context:
+
+### Spec Driven Development (SDD)
+
+Every feature and fix lives inside a spec before any code gets written. The idea is
+simple: write down *what* and *why* before figuring out *how*. Each spec has three files:
+
+```
+specs/<name>/
+  requirements.md   ← objective, scope, acceptance criteria, risks
+  design.md         ← architecture decisions, data contracts, UX notes
+  tasks.md          ← ordered implementation checklist
+```
+
+Gate statuses (`spec_review`, `grill`, `analyst`, `qa`, `code_quality`, `reviewer`) live
+inside `requirements.md` frontmatter, so the spec itself is the source of truth for
+what was reviewed and approved.
+
+The discipline forces clarity before commitment: if you can't write a testable acceptance
+criterion, the feature is not ready to build. It also creates a paper trail of *why*
+decisions were made — useful weeks later when revisiting something.
+
+### Layer harness
+
+The codebase enforces a strict, unidirectional dependency graph:
+
+```
+UI  ←  Agents  ←  Models  ←  Skills
+     (I/O)       (math)     (pure fn)
+```
+
+No layer may import from a layer above it. The goal was to make each layer independently
+testable and to clearly separate concerns:
+
+- **Skills** are pure functions — they have no knowledge of the network, the database,
+  or environment variables. They can be tested with a single input and a known output.
+- **Models** receive already-normalized data and return typed `ModelOutput` contracts.
+  They never call APIs and never touch the DB.
+- **Agents** are the only layer allowed to call external APIs, read env vars, use
+  runtime cache, and perform I/O. They normalize the data before passing it down.
+- **UI** (Server Components) consumes display-ready data from agents. Client Components
+  do not import from `lib/model`, `lib/db`, or providers.
+
+In practice this means a Poisson skill is just a math function you can test in isolation,
+the prediction model never knows where its input came from, and the bracket page just
+asks the agent layer for data and renders it.
+
+The harness is enforced by convention and by the `reviewer` gate in every PR — not by
+tooling — which made it a good way to internalize the discipline by *having to think
+about it explicitly* on every change.
+
+---
+
 ## Workflow
 
-This repo uses **Spec Driven Development** with trunk-based development:
+This repo uses SDD with trunk-based development:
 
 1. Create a short branch from `main`: `phase/<number>-<description>` or `fix/<description>`.
 2. Create or update a spec under `specs/<name>/` (see `specs/README.md`).
@@ -105,14 +162,8 @@ This repo uses **Spec Driven Development** with trunk-based development:
 4. Review the Vercel preview before merging.
 5. Merge only with human approval.
 
-Each spec contains:
-
-```
-specs/<name>/
-  requirements.md
-  design.md
-  tasks.md
-```
+The `specs/README.md` is the live roadmap index — every spec and its current status is
+listed there.
 
 ## Deploy
 
