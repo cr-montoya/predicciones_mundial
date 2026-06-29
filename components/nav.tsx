@@ -51,10 +51,10 @@ export function Nav() {
             ⚽
           </div>
           <span style={{ fontWeight: 700, fontSize: 16, color: '#f0ece4', letterSpacing: '0.5px' }}>
-            MUNDIAL 2026
+            {t.nav.brand}
           </span>
           <span style={{ fontWeight: 400, fontSize: 13, color: '#6b6d75' }}>
-            IA Predictor
+            {t.nav.tagline}
           </span>
         </div>
 

@@ -1,5 +1,7 @@
 const en = {
   nav: {
+    brand: 'WORLD CUP 2026',
+    tagline: 'AI Predictor',
     today: 'Today',
     groups: 'Groups',
     fixtures: 'Fixtures',
@@ -51,6 +53,12 @@ const en = {
     posFirst: (g: string) => `1st Group ${g}`,
     posSecond: (g: string) => `2nd Group ${g}`,
     bestThird: (groups: string) => `Best 3rd ${groups}`,
+    round32: 'ROUND 32',
+    r16: 'R16',
+    quarters: 'QF',
+    semis: 'SF',
+    final: 'FINAL',
+    tbd: 'TBD',
   },
   topMarkets: {
     sectionTitle: 'Most Interesting Markets',
