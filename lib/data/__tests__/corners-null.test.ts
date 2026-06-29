@@ -26,11 +26,11 @@ const fixture: Fixture = {
 }
 
 // ---------------------------------------------------------------------------
-// Test: corners null -> prior histórico (WC_AVG_CORNERS_PER_MATCH)
+// Test: corners null -> historical prior (WC_AVG_CORNERS_PER_MATCH)
 // ---------------------------------------------------------------------------
 
-describe('buildCornersOutput - tratamiento de null', () => {
-  it('con corners: null en ambos equipos, devuelve output válido (no explota)', () => {
+describe('buildCornersOutput - null handling', () => {
+  it('with corners: null on both teams, returns a valid output (does not throw)', () => {
     const statsWithNullCorners: MatchStats[] = [
       {
         fixtureId: 9001,
@@ -55,7 +55,7 @@ describe('buildCornersOutput - tratamiento de null', () => {
     expect(() => buildCornersOutput(fixture, statsWithNullCorners, 1001, 1002)).not.toThrow()
   })
 
-  it('con corners: null, el modelo usa prior histórico (WC_AVG_CORNERS), no trata como 0', () => {
+  it('with corners: null, model uses historical prior (WC_AVG_CORNERS), does not treat as 0', () => {
     const statsNull: MatchStats[] = [
       {
         fixtureId: 9001,
@@ -70,31 +70,31 @@ describe('buildCornersOutput - tratamiento de null', () => {
 
     const output = buildCornersOutput(fixture, statsNull, 1001, 1002)
 
-    // Cuando no hay datos, cae al prior: cornersLine = CORNERS_FALLBACK_LINE
-    // La línea en el mercado debe ser la de fallback (10.5), no 0
+    // When there is no data, falls back to prior: cornersLine = CORNERS_FALLBACK_LINE
+    // The market line must be the fallback (10.5), not 0
     const keys = Object.keys(output.probabilities)
     const hasZeroLine = keys.some(k => k.includes('_0'))
     expect(hasZeroLine).toBe(false)
 
-    // La línea debe ser CORNERS_FALLBACK_LINE
+    // The line must be CORNERS_FALLBACK_LINE
     const hasCorrectLine = keys.some(k => k.includes(String(CORNERS_FALLBACK_LINE)))
     expect(hasCorrectLine).toBe(true)
   })
 
-  it('con corners: null, sanityCheck pasa (probabilidades suman 1.0±0.001)', () => {
+  it('with corners: null, sanityCheck passes (probabilities sum to 1.0±0.001)', () => {
     const output = buildCornersOutput(fixture, [], 1001, 1002)
     expect(() => sanityCheck(output)).not.toThrow()
   })
 
-  it('con corners: null, confidence es low (no hay historial)', () => {
+  it('with corners: null, confidence is low (no historical data)', () => {
     const output = buildCornersOutput(fixture, [], 1001, 1002)
     expect(output.confidence).toBe('low')
   })
 
-  it('sin matchStats del todo (array vacío), usa prior histórico', () => {
+  it('with no matchStats at all (empty array), uses historical prior', () => {
     const output = buildCornersOutput(fixture, [], 1001, 1002)
 
-    // Con cero datos debe caer al prior
+    // With no data at all, must fall back to the prior
     expect(output.market).toBe('corners')
     expect(output.confidence).toBe('low')
     expect(() => sanityCheck(output)).not.toThrow()
@@ -103,7 +103,7 @@ describe('buildCornersOutput - tratamiento de null', () => {
     expect(keys.some(k => k.includes(String(CORNERS_FALLBACK_LINE)))).toBe(true)
   })
 
-  it('con corners con datos reales (no null), usa esos datos y confidence es medium o high', () => {
+  it('with real corners data (not null), uses that data and confidence is medium or high', () => {
     const statsReal: MatchStats[] = [
       {
         fixtureId: 9001,
@@ -127,17 +127,17 @@ describe('buildCornersOutput - tratamiento de null', () => {
 
     const output = buildCornersOutput(fixture, statsReal, 1001, 1002)
     expect(() => sanityCheck(output)).not.toThrow()
-    // Con datos el confidence no debería ser low
+    // With real data, confidence should not be low
     expect(['medium', 'high']).toContain(output.confidence)
   })
 })
 
 // ---------------------------------------------------------------------------
-// Test: cards null -> prior histórico (WC_AVG_YELLOW_PER_MATCH)
+// Test: cards null -> historical prior (WC_AVG_YELLOW_PER_MATCH)
 // ---------------------------------------------------------------------------
 
-describe('buildCardsOutputs - tratamiento de null', () => {
-  it('con yellowCards: null y redCards: null, devuelve outputs válidos (no explota)', () => {
+describe('buildCardsOutputs - null handling', () => {
+  it('with yellowCards: null and redCards: null, returns valid outputs (does not throw)', () => {
     const statsNull: MatchStats[] = [
       {
         fixtureId: 9001,
@@ -153,21 +153,21 @@ describe('buildCardsOutputs - tratamiento de null', () => {
     expect(() => buildCardsOutputs(fixture, statsNull, 1001, 1002)).not.toThrow()
   })
 
-  it('con yellowCards: null, sanityCheck pasa en todos los outputs', () => {
+  it('with yellowCards: null, sanityCheck passes on all outputs', () => {
     const outputs = buildCardsOutputs(fixture, [], 1001, 1002)
     for (const o of outputs) {
       expect(() => sanityCheck(o)).not.toThrow()
     }
   })
 
-  it('con yellowCards: null, confidence es low', () => {
+  it('with yellowCards: null, confidence is low', () => {
     const outputs = buildCardsOutputs(fixture, [], 1001, 1002)
     for (const o of outputs) {
       expect(o.confidence).toBe('low')
     }
   })
 
-  it('con yellowCards: null, el mercado total_cards usa prior y no está degenerado (probs no son 0 o 1 exacto)', () => {
+  it('with yellowCards: null, total_cards market uses prior and is not degenerate (probs are not exactly 0 or 1)', () => {
     const outputs = buildCardsOutputs(fixture, [], 1001, 1002)
     for (const o of outputs) {
       for (const [, p] of Object.entries(o.probabilities)) {
@@ -177,7 +177,7 @@ describe('buildCardsOutputs - tratamiento de null', () => {
     }
   })
 
-  it('stats parcialmente nulas (solo un equipo tiene datos), el modelo no explota', () => {
+  it('with partially null stats (only one team has data), model does not throw', () => {
     const statsPartial: MatchStats[] = [
       {
         fixtureId: 9001,
@@ -188,7 +188,7 @@ describe('buildCardsOutputs - tratamiento de null', () => {
         shotsOnTarget: 5,
         possession: 55,
       },
-      // equipo 1002 sin datos (simula football-data que no provee stats para el away)
+      // team 1002 has no data (simulates football-data not providing stats for the away team)
     ]
 
     expect(() => buildCornersOutput(fixture, statsPartial, 1001, 1002)).not.toThrow()

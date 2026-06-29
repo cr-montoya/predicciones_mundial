@@ -17,16 +17,19 @@ export const metadata: Metadata = {
     default: 'World Cup 2026 Prediction Simulator',
     template: '%s | World Cup 2026 Prediction Simulator',
   },
-  description: 'AI-assisted statistical football analytics app for World Cup 2026 match and tournament projections.',
+  description:
+    'AI-assisted statistical football analytics for the 2026 FIFA World Cup. ' +
+    'Explore probabilities, market projections, and tournament predictions ' +
+    'powered by a custom Poisson + Monte Carlo model.',
   openGraph: {
     title: 'World Cup 2026 Prediction Simulator',
-    description: 'AI-assisted statistical football analytics app for World Cup 2026 match and tournament projections.',
+    description: 'AI-assisted statistical football analytics for the 2026 FIFA World Cup.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'World Cup 2026 Prediction Simulator',
-    description: 'AI-assisted statistical football analytics app for World Cup 2026 match and tournament projections.',
+    description: 'AI-assisted statistical football analytics for the 2026 FIFA World Cup.',
   },
 }
 

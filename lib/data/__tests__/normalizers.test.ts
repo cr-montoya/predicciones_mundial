@@ -42,7 +42,7 @@ function normalizeApiFootballFixtures(raw: typeof apiFbRaw): Fixture[] {
   }))
 }
 
-// ---- football-data normalizer (inline, idéntico al provider) ----
+// ---- football-data normalizer (inline, mirrors the provider) ----
 
 const FD_TEAM_MAP: Record<number, number> = {
   759: 1001,
@@ -218,10 +218,10 @@ describe('shape de fetchTeamStats', () => {
     expect('avgGoalsScored' in result || Object.keys(result).length === 0).toBe(true)
   })
 
-  it('football-data devuelve partial vacío (free tier no expone stats) - mismo tipo Partial<Team>', () => {
-    // football-data fetchTeamStats devuelve {} por limitación del tier gratuito
+  it('football-data returns empty partial (free tier does not expose stats) - same Partial<Team> type', () => {
+    // football-data fetchTeamStats returns {} due to free tier limitation
     const result: Partial<{ avgGoalsScored: number | null; avgGoalsConceded: number | null }> = {}
-    // Debe ser un objeto (no null, no undefined)
+    // Must be an object (not null, not undefined)
     expect(typeof result).toBe('object')
     expect(result).not.toBeNull()
   })

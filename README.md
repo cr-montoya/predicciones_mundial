@@ -7,8 +7,29 @@ Statistical projection engine for the 2026 FIFA World Cup. The app runs a custom
 projections, and tournament predictions — framed as: *"this is how the AI predicts
 the World Cup"*.
 
+This repository is shaped as a portfolio project for cloud, DevOps, and AI-assisted
+engineering work: a production-style Next.js application with typed statistical
+contracts, external data providers, ISR-friendly runtime boundaries, automated tests,
+and a Spec Driven Development trail for feature planning and review.
+
 It is an entertainment and analysis experience: it shows probabilities, context, and
 explanations. It does not accept or process bets, and it makes no financial promises.
+
+## Portfolio fit
+
+This project complements my DevOps and Cloud Engineering profile by showing how I
+approach application delivery beyond infrastructure alone:
+
+- **System design:** clear boundaries between UI, runtime agents, statistical models,
+  and pure skills.
+- **Delivery discipline:** SDD specs, ADRs, gate reviews, tests, and PR-ready workflow
+  documentation.
+- **Runtime awareness:** Vercel ISR, API fallbacks, cacheable fixture data, and
+  environment-variable isolation.
+- **AI-assisted engineering:** an explicit agent orchestration process used to plan,
+  validate, implement, and review scoped changes.
+- **Product polish:** social preview images, localized UI copy, responsive views,
+  predictions, picks, standings, and bracket exploration.
 
 ## What it does
 
@@ -32,6 +53,17 @@ explanations. It does not accept or process bets, and it makes no financial prom
 | Live data | football-data.org (fixtures, scorers) |
 | Enriched data | API-Football / RapidAPI (lineups, events, stats) |
 | Prediction model | Custom Poisson distribution + Monte Carlo |
+
+## GitHub presentation
+
+Current repository metadata:
+
+| Field | Value |
+|---|---|
+| Repository name | `wc2026-prediction-simulator` |
+| Description | `AI-assisted World Cup 2026 analytics app with Poisson modeling, Monte Carlo simulation, ISR data loading, and SDD documentation.` |
+| Homepage | `https://predicciones-mundial-topaz.vercel.app` |
+| Topics | `nextjs`, `typescript`, `react`, `tailwindcss`, `vercel`, `football-data`, `monte-carlo`, `poisson`, `analytics`, `ai-assisted`, `sdd`, `portfolio` |
 
 ## Local Setup
 
